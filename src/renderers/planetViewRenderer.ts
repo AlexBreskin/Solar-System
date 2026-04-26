@@ -59,7 +59,7 @@ export function drawBody(
     ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(x, y, glowR, 0, TWO_PI); ctx.fill();
   }
 
-  if (id === 'sun') {
+  if (body.type === 'star') {
     const corona = ctx.createRadialGradient(x, y, r, x, y, r * 2.8);
     corona.addColorStop(0, 'rgba(255,160,0,0.3)');
     corona.addColorStop(1, 'rgba(255,80,0,0)');
@@ -67,7 +67,7 @@ export function drawBody(
   }
 
   const grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
-  if (id === 'sun') {
+  if (body.type === 'star') {
     grad.addColorStop(0, '#FFF5AA');
     grad.addColorStop(0.4, '#FDB813');
     grad.addColorStop(1, '#E07B00');
@@ -77,9 +77,9 @@ export function drawBody(
   }
   ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI); ctx.fill();
 
-  if (id === 'earth') {
+  if (body.atmosphereColor) {
     ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI);
-    ctx.strokeStyle = 'rgba(100,180,255,0.4)';
+    ctx.strokeStyle = body.atmosphereColor;
     ctx.lineWidth = Math.max(1, r * 0.1);
     ctx.stroke();
   }
@@ -104,7 +104,7 @@ export function drawBody(
   }
 }
 
-export function drawSaturnRings(
+export function drawBodyRings(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number,
   r: number,

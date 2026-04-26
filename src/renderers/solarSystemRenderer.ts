@@ -1,5 +1,5 @@
 import { CELESTIAL_BODIES, VISUAL_CONFIG } from '../data/celestialBodies';
-import type { BodyId, Vec2 } from '../types';
+import type { Vec2 } from '../types';
 
 const TWO_PI = Math.PI * 2;
 
@@ -101,17 +101,17 @@ export function drawAsteroidBelt(
 export function drawOrbits(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number,
-  selectedBody: BodyId,
-  hoveredBody: BodyId | null,
+  selectedBody: string,
+  hoveredBody: string | null,
   showOrbits: boolean,
 ): void {
   const { orbitalRadii } = VISUAL_CONFIG;
-  const planets: BodyId[] = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
-  for (const p of planets) {
-    const isHighlighted = p === selectedBody || p === hoveredBody;
+  for (const [id, body] of Object.entries(CELESTIAL_BODIES)) {
+    if (!body.showOrbitRing) continue;
+    const isHighlighted = id === selectedBody || id === hoveredBody;
     if (!showOrbits && !isHighlighted) continue;
     ctx.beginPath();
-    ctx.arc(cx, cy, orbitalRadii[p] ?? 0, 0, TWO_PI);
+    ctx.arc(cx, cy, orbitalRadii[id] ?? 0, 0, TWO_PI);
     if (isHighlighted) {
       ctx.strokeStyle = 'rgba(255,255,255,0.35)';
       ctx.lineWidth = 1;
@@ -146,77 +146,51 @@ export function drawSun(
   if (active) { ctx.strokeStyle = 'rgba(255,200,80,0.8)'; ctx.lineWidth = 1.5; ctx.stroke(); }
 }
 
-export function drawSaturnBody(
+export function drawBodyRings(
   ctx: CanvasRenderingContext2D,
-  pos: Vec2,
-  isSelected: boolean,
-  isHovered: boolean,
-  showLabels: boolean,
-): void {
-  const r = VISUAL_CONFIG.planetSizes['saturn'] ?? 18;
-  const body = CELESTIAL_BODIES['saturn'];
-  const grad = ctx.createRadialGradient(pos.x - r * 0.3, pos.y - r * 0.3, r * 0.1, pos.x, pos.y, r);
-  grad.addColorStop(0, lighten(body.color, 40));
-  grad.addColorStop(1, body.color);
-  ctx.fillStyle = grad;
-  ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, TWO_PI); ctx.fill();
-  if (isSelected) {
-    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.stroke();
-    ctx.beginPath(); ctx.arc(pos.x, pos.y, r + 5, 0, TWO_PI);
-    ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 0.5;
-    ctx.setLineDash([3, 4]); ctx.stroke(); ctx.setLineDash([]);
-  } else if (isHovered) {
-    ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; ctx.stroke();
-  }
-  if (showLabels || isSelected || isHovered) {
-    ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
-    ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,210,230,0.7)';
-    ctx.textAlign = 'center';
-    ctx.fillText('Saturn', pos.x, pos.y - r - 14);
-  }
-}
-
-export function drawSaturnRings(
-  ctx: CanvasRenderingContext2D,
-  positions: Record<BodyId, Vec2>,
+  positions: Record<string, Vec2>,
   pass: 'back' | 'front',
 ): void {
-  const pos = positions['saturn'];
-  const r = VISUAL_CONFIG.planetSizes['saturn'] ?? 18;
-  ctx.save();
-  ctx.translate(pos.x, pos.y);
-  const rings = [
-    { inner: r + 3,  outer: r + 8,  color: 'rgba(200,180,140,0.5)' },
-    { inner: r + 9,  outer: r + 14, color: 'rgba(220,200,160,0.4)' },
-    { inner: r + 15, outer: r + 19, color: 'rgba(180,160,120,0.3)' },
-  ];
-  for (const ring of rings) {
-    for (let ra = ring.inner; ra <= ring.outer; ra += 0.5) {
-      ctx.beginPath();
-      ctx.ellipse(0, 0, ra, ra * 0.38, 0,
-        pass === 'back' ? Math.PI : 0,
-        pass === 'back' ? TWO_PI : Math.PI);
-      ctx.strokeStyle = ring.color; ctx.lineWidth = 0.5; ctx.stroke();
+  for (const [id, body] of Object.entries(CELESTIAL_BODIES)) {
+    if (!body.hasRings) continue;
+    const pos = positions[id];
+    if (!pos) continue;
+    const r = VISUAL_CONFIG.planetSizes[id] ?? 18;
+    ctx.save();
+    ctx.translate(pos.x, pos.y);
+    const rings = [
+      { inner: r + 3,  outer: r + 8,  color: 'rgba(200,180,140,0.5)' },
+      { inner: r + 9,  outer: r + 14, color: 'rgba(220,200,160,0.4)' },
+      { inner: r + 15, outer: r + 19, color: 'rgba(180,160,120,0.3)' },
+    ];
+    for (const ring of rings) {
+      for (let ra = ring.inner; ra <= ring.outer; ra += 0.5) {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, ra, ra * 0.38, 0,
+          pass === 'back' ? Math.PI : 0,
+          pass === 'back' ? TWO_PI : Math.PI);
+        ctx.strokeStyle = ring.color; ctx.lineWidth = 0.5; ctx.stroke();
+      }
     }
+    ctx.restore();
   }
-  ctx.restore();
 }
 
 export function drawBodies(
   ctx: CanvasRenderingContext2D,
-  positions: Record<BodyId, Vec2>,
-  selectedBody: BodyId,
-  hoveredBody: BodyId | null,
+  positions: Record<string, Vec2>,
+  selectedBody: string,
+  hoveredBody: string | null,
   showLabels: boolean,
 ): void {
   const { planetSizes, moonOrbitalRadii } = VISUAL_CONFIG;
-  const allBodies = Object.keys(CELESTIAL_BODIES) as BodyId[];
+  const allBodies = Object.entries(CELESTIAL_BODIES);
 
   // Glows
-  for (const id of allBodies) {
-    if (id === 'asteroid-belt') continue;
-    const body = CELESTIAL_BODIES[id];
+  for (const [id, body] of allBodies) {
+    if (body.type === 'belt') continue;
     const pos = positions[id];
+    if (!pos) continue;
     const r = planetSizes[id] ?? 4;
     const isSelected = id === selectedBody;
     const isHovered = id === hoveredBody;
@@ -231,30 +205,28 @@ export function drawBodies(
   }
 
   // Moon orbit rings
-  const moonParentMap: Partial<Record<BodyId, BodyId>> = {
-    moon: 'earth', phobos: 'mars', deimos: 'mars',
-    io: 'jupiter', europa: 'jupiter', ganymede: 'jupiter', callisto: 'jupiter',
-    titan: 'saturn', enceladus: 'saturn', triton: 'neptune',
-  };
-  for (const [moon, parent] of Object.entries(moonParentMap) as [BodyId, BodyId][]) {
-    const { x: px, y: py } = positions[parent];
+  for (const [id, body] of allBodies) {
+    if (body.type !== 'moon') continue;
+    const parent = body.parent;
+    if (!parent) continue;
+    const { x: px, y: py } = positions[parent] ?? { x: 0, y: 0 };
     ctx.beginPath();
-    ctx.arc(px, py, moonOrbitalRadii[moon] ?? 0, 0, TWO_PI);
+    ctx.arc(px, py, moonOrbitalRadii[id] ?? 0, 0, TWO_PI);
     ctx.strokeStyle = 'rgba(255,255,255,0.06)';
     ctx.lineWidth = 0.5;
     ctx.stroke();
   }
 
   // Bodies
-  for (const id of allBodies) {
-    if (id === 'saturn' || id === 'asteroid-belt') continue;
-    const body = CELESTIAL_BODIES[id];
+  for (const [id, body] of allBodies) {
+    if (body.type === 'belt') continue;
     const pos = positions[id];
+    if (!pos) continue;
     const r = planetSizes[id] ?? 4;
     const isSelected = id === selectedBody;
     const isHovered = id === hoveredBody;
 
-    if (id === 'sun') {
+    if (body.type === 'star') {
       drawSun(ctx, pos.x, pos.y, r, isSelected || isHovered);
     } else {
       const grad = ctx.createRadialGradient(pos.x - r * 0.3, pos.y - r * 0.3, r * 0.1, pos.x, pos.y, r);
@@ -272,9 +244,9 @@ export function drawBodies(
         ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; ctx.stroke();
       }
 
-      if (id === 'earth') {
+      if (body.atmosphereColor) {
         ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
-        ctx.strokeStyle = 'rgba(100,180,255,0.4)'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.strokeStyle = body.atmosphereColor; ctx.lineWidth = 2; ctx.stroke();
       }
     }
 
@@ -282,9 +254,8 @@ export function drawBodies(
       ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
       ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,210,230,0.7)';
       ctx.textAlign = 'center';
-      ctx.fillText(body.name, pos.x, pos.y - r - 5);
+      const labelOffset = body.hasRings ? r + 14 : r + 5;
+      ctx.fillText(body.name, pos.x, pos.y - labelOffset);
     }
   }
-
-  drawSaturnBody(ctx, positions['saturn'], selectedBody === 'saturn', hoveredBody === 'saturn', showLabels);
 }

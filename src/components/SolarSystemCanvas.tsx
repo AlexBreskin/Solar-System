@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { SolarSystemSimulation, SOLAR_BODY_IDS } from '../simulation/solarSystemSimulation';
-import { drawStarField, drawOrbits, drawAsteroidBelt, drawBodies, drawSaturnRings } from '../renderers/solarSystemRenderer';
+import { drawStarField, drawOrbits, drawAsteroidBelt, drawBodies, drawBodyRings } from '../renderers/solarSystemRenderer';
 import { CELESTIAL_BODIES, VISUAL_CONFIG } from '../data/celestialBodies';
-import type { BodyId, CanvasSize, SolarSystemCanvasProps } from '../types';
+import type { CanvasSize, SolarSystemCanvasProps } from '../types';
+
+const BELT_ID = SOLAR_BODY_IDS.find(id => CELESTIAL_BODIES[id]?.type === 'belt') ?? null;
 
 interface PanState {
   panX: number; panY: number;
@@ -97,10 +99,10 @@ export default function SolarSystemCanvas({
       ctx.translate(-cx, -cy);
 
       drawOrbits(ctx, cx, cy, selectedBody, hoveredBody, showOrbits);
-      drawAsteroidBelt(ctx, cx, cy, selectedBody === 'asteroid-belt', hoveredBody === 'asteroid-belt', showLabels);
-      drawSaturnRings(ctx, sim.positions, 'back');
+      if (BELT_ID) drawAsteroidBelt(ctx, cx, cy, selectedBody === BELT_ID, hoveredBody === BELT_ID, showLabels);
+      drawBodyRings(ctx, sim.positions, 'back');
       drawBodies(ctx, sim.positions, selectedBody, hoveredBody, showLabels);
-      drawSaturnRings(ctx, sim.positions, 'front');
+      drawBodyRings(ctx, sim.positions, 'front');
 
       ctx.restore();
       ctx.restore();
@@ -120,19 +122,19 @@ export default function SolarSystemCanvas({
     let closest: BodyId | null = null;
     let closestDist = Infinity;
     for (const id of SOLAR_BODY_IDS) {
-      if (id === 'asteroid-belt') continue;
+      if (CELESTIAL_BODIES[id]?.type === 'belt') continue;
       if (!CELESTIAL_BODIES[id]) continue;
       const pos = simRef.current.positions[id];
       const r   = Math.max(planetSizes[id] ?? 4, 8);
       const dist = Math.hypot(wx - pos.x, wy - pos.y);
       if (dist < r * 1.5 && dist < closestDist) { closest = id; closestDist = dist; }
     }
-    if (!closest) {
+    if (!closest && BELT_ID) {
       const { innerRadius, outerRadius } = VISUAL_CONFIG.asteroidBelt;
       const { w, h } = sizeRef.current;
       const distFromCenter = Math.hypot(wx - w / 2, wy - h / 2);
       if (distFromCenter >= innerRadius && distFromCenter <= outerRadius) {
-        closest = 'asteroid-belt';
+        closest = BELT_ID;
       }
     }
     return closest;
@@ -178,7 +180,7 @@ export default function SolarSystemCanvas({
       const hit = getBodyAtPoint(x, y);
       if (hit) {
         onSelectBody(hit);
-        if (panRef.current.targetZoom < 1.5 && hit !== 'sun') {
+        if (panRef.current.targetZoom < 1.5 && CELESTIAL_BODIES[hit]?.type !== 'star') {
           panRef.current.targetZoom = Math.min(2.5, panRef.current.targetZoom * 1.8);
         }
       }

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { PlanetViewSimulation, getMoonsOf } from '../simulation/planetViewSimulation';
-import { drawStarField, drawBody, drawSaturnRings } from '../renderers/planetViewRenderer';
+import { drawStarField, drawBody, drawBodyRings } from '../renderers/planetViewRenderer';
 import { CELESTIAL_BODIES } from '../data/celestialBodies';
 import type { BodyId, CanvasSize, PlanetViewCanvasProps } from '../types';
 
@@ -112,10 +112,10 @@ export default function PlanetViewCanvas({
         ctx.stroke(); ctx.setLineDash([]);
       }
 
-      if (planetId === 'saturn') drawSaturnRings(ctx, cx, cy, planetR, 'back');
+      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, cx, cy, planetR, 'back');
       drawBody(ctx, planetId, cx, cy, planetR,
         selectedBody === planetId, hoveredBody === planetId, true);
-      if (planetId === 'saturn') drawSaturnRings(ctx, cx, cy, planetR, 'front');
+      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, cx, cy, planetR, 'front');
 
       for (const moonId of moons) {
         const pos = sim.positions[moonId];

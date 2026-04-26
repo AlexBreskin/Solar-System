@@ -1,29 +1,27 @@
-import { CELESTIAL_BODIES } from '../data/celestialBodies';
-import type { BodyId, Vec2, PlanetViewLayout } from '../types';
+import { CELESTIAL_BODIES, VISUAL_CONFIG } from '../data/celestialBodies';
+import type { Vec2, PlanetViewLayout } from '../types';
 
 const TWO_PI = Math.PI * 2;
 
-export const MOON_PARENT_MAP: Partial<Record<BodyId, BodyId>> = {
-  moon: 'earth', phobos: 'mars', deimos: 'mars',
-  io: 'jupiter', europa: 'jupiter', ganymede: 'jupiter', callisto: 'jupiter',
-  titan: 'saturn', enceladus: 'saturn', triton: 'neptune',
-};
+const { moonOrbitalRadii } = VISUAL_CONFIG;
 
-export const MOON_PERIODS: Partial<Record<BodyId, number>> = {
-  moon: 27.32, phobos: 0.319, deimos: 1.263,
-  io: 1.769, europa: 3.551, ganymede: 7.155, callisto: 16.69,
-  titan: 15.95, enceladus: 1.37, triton: -5.877,
-};
+export const MOON_PARENT_MAP: Record<string, string> = {};
+export const MOON_PERIODS: Record<string, number> = {};
 
-export function getMoonsOf(planetId: BodyId): BodyId[] {
-  return (Object.entries(MOON_PARENT_MAP) as [BodyId, BodyId][])
-    .filter(([, parent]) => parent === planetId)
-    .map(([moonId]) => moonId);
+for (const id of Object.keys(moonOrbitalRadii)) {
+  const body = CELESTIAL_BODIES[id];
+  if (!body) continue;
+  if (body.parent) MOON_PARENT_MAP[id] = body.parent;
+  MOON_PERIODS[id] = body.orbitalPeriod;
+}
+
+export function getMoonsOf(planetId: string): string[] {
+  return Object.keys(MOON_PARENT_MAP).filter(id => MOON_PARENT_MAP[id] === planetId);
 }
 
 export function computeScaledLayout(
-  planetId: BodyId,
-  moons: BodyId[],
+  planetId: string,
+  moons: string[],
   canvasW: number,
   canvasH: number,
 ): PlanetViewLayout {
@@ -43,15 +41,15 @@ export function computeScaledLayout(
   const moonDiameters = moons.map(m => CELESTIAL_BODIES[m]?.diameter ?? 1);
   const largestMoonDiam = moons.length ? Math.max(...moonDiameters) : 1;
 
-  const moonSizes: Partial<Record<BodyId, number>> = {};
+  const moonSizes: Record<string, number> = {};
   for (const moonId of moons) {
     const moon = CELESTIAL_BODIES[moonId];
     if (!moon) continue;
     moonSizes[moonId] = Math.max(MIN_MOON_R, (moon.diameter / largestMoonDiam) * MAX_MOON_R);
   }
 
-  const moonOrbitalRadii: Partial<Record<BodyId, number>> = {};
-  if (moons.length === 0) return { planetR, moonSizes, moonOrbitalRadii };
+  const localMoonOrbitalRadii: Record<string, number> = {};
+  if (moons.length === 0) return { planetR, moonSizes, moonOrbitalRadii: localMoonOrbitalRadii };
 
   const sortedMoons = [...moons].sort(
     (a, b) => (CELESTIAL_BODIES[a]?.distanceFromParent ?? 0) - (CELESTIAL_BODIES[b]?.distanceFromParent ?? 0),
@@ -66,7 +64,7 @@ export function computeScaledLayout(
   for (const moonId of sortedMoons) {
     const d = CELESTIAL_BODIES[moonId]?.distanceFromParent ?? 0;
     const t = moons.length === 1 ? 0.5 : (d - minRealDist) / distRange;
-    moonOrbitalRadii[moonId] = BASE_INNER + t * (FIT_RADIUS - BASE_INNER);
+    localMoonOrbitalRadii[moonId] = BASE_INNER + t * (FIT_RADIUS - BASE_INNER);
   }
 
   const MIN_GAP_PAD = 6;
@@ -74,28 +72,28 @@ export function computeScaledLayout(
     const inner = sortedMoons[i - 1];
     const outer = sortedMoons[i];
     const minGap = (moonSizes[inner] ?? 0) + (moonSizes[outer] ?? 0) + MIN_GAP_PAD;
-    if ((moonOrbitalRadii[outer] ?? 0) - (moonOrbitalRadii[inner] ?? 0) < minGap) {
-      moonOrbitalRadii[outer] = (moonOrbitalRadii[inner] ?? 0) + minGap;
+    if ((localMoonOrbitalRadii[outer] ?? 0) - (localMoonOrbitalRadii[inner] ?? 0) < minGap) {
+      localMoonOrbitalRadii[outer] = (localMoonOrbitalRadii[inner] ?? 0) + minGap;
     }
   }
 
-  const outermostR = moonOrbitalRadii[sortedMoons[sortedMoons.length - 1]] ?? 0;
+  const outermostR = localMoonOrbitalRadii[sortedMoons[sortedMoons.length - 1]] ?? 0;
   if (outermostR > FIT_RADIUS) {
     const scale = FIT_RADIUS / outermostR;
     for (const moonId of sortedMoons) {
-      moonOrbitalRadii[moonId] = (moonOrbitalRadii[moonId] ?? 0) * scale;
+      localMoonOrbitalRadii[moonId] = (localMoonOrbitalRadii[moonId] ?? 0) * scale;
     }
   }
 
-  return { planetR, moonSizes, moonOrbitalRadii };
+  return { planetR, moonSizes, moonOrbitalRadii: localMoonOrbitalRadii };
 }
 
 export class PlanetViewSimulation {
-  readonly angles: Partial<Record<BodyId, number>> = {};
-  positions: Partial<Record<BodyId, Vec2>> = {};
+  readonly angles: Record<string, number> = {};
+  positions: Record<string, Vec2> = {};
   layout: PlanetViewLayout | null = null;
 
-  initMoons(moons: BodyId[]): void {
+  initMoons(moons: string[]): void {
     this.layout = null;
     moons.forEach((m, i) => {
       if (this.angles[m] === undefined) {
@@ -108,7 +106,7 @@ export class PlanetViewSimulation {
     this.layout = null;
   }
 
-  advanceAngles(dt: number, speed: number, moons: BodyId[]): void {
+  advanceAngles(dt: number, speed: number, moons: string[]): void {
     const fastestPeriod = moons.length
       ? Math.min(...moons.map(m => Math.abs(MOON_PERIODS[m] ?? 27.32)))
       : 27.32;
@@ -123,19 +121,19 @@ export class PlanetViewSimulation {
   }
 
   updatePositions(
-    planetId: BodyId,
-    moons: BodyId[],
+    planetId: string,
+    moons: string[],
     cx: number,
     cy: number,
     canvasW: number,
     canvasH: number,
   ): PlanetViewLayout {
     if (!this.layout) this.layout = computeScaledLayout(planetId, moons, canvasW, canvasH);
-    const { moonOrbitalRadii } = this.layout;
+    const { moonOrbitalRadii: radii } = this.layout;
 
     this.positions[planetId] = { x: cx, y: cy };
     for (const moonId of moons) {
-      const r = moonOrbitalRadii[moonId] ?? 80;
+      const r = radii[moonId] ?? 80;
       const angle = this.angles[moonId] ?? 0;
       this.positions[moonId] = {
         x: cx + r * Math.cos(angle),

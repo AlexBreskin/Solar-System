@@ -1,10 +1,4 @@
-export type BodyId =
-  | 'sun' | 'mercury' | 'venus' | 'earth' | 'moon'
-  | 'mars' | 'phobos' | 'deimos'
-  | 'asteroid-belt' | 'ceres' | 'vesta' | 'pallas' | 'hygiea'
-  | 'jupiter' | 'io' | 'europa' | 'ganymede' | 'callisto'
-  | 'saturn' | 'titan' | 'enceladus'
-  | 'uranus' | 'neptune' | 'triton' | 'pluto';
+export type BodyId = string;
 
 export type TabId = 'solar-system' | 'planet-view';
 
@@ -35,6 +29,8 @@ export interface CelestialBody {
   color: string;
   glowColor?: string;
   hasRings?: boolean;
+  showOrbitRing?: boolean;
+  atmosphereColor?: string;
   description: string;
   surfaceTemp: string;
   moons: number;
@@ -54,10 +50,11 @@ export interface AsteroidBeltConfig {
 }
 
 export interface VisualConfig {
-  orbitalRadii: Partial<Record<BodyId, number>>;
-  planetSizes: Partial<Record<BodyId, number>>;
-  moonOrbitalRadii: Partial<Record<BodyId, number>>;
+  orbitalRadii: Record<string, number>;
+  planetSizes: Record<string, number>;
+  moonOrbitalRadii: Record<string, number>;
   speedMultiplier: number;
+  moonSpeedMultiplier: number;
   asteroidBelt: AsteroidBeltConfig;
 }
 
@@ -77,8 +74,8 @@ export interface SolarSystemCanvasProps {
 }
 
 export interface SolarSystemCanvasState {
-  angles: Partial<Record<BodyId, number>>;
-  positions: Partial<Record<BodyId, Vec2>>;
+  angles: Record<string, number>;
+  positions: Record<string, Vec2>;
   zoom: number;
   panX: number;
   panY: number;
@@ -99,8 +96,8 @@ export interface SolarSystemCanvasState {
 
 export interface PlanetViewLayout {
   planetR: number;
-  moonSizes: Partial<Record<BodyId, number>>;
-  moonOrbitalRadii: Partial<Record<BodyId, number>>;
+  moonSizes: Record<string, number>;
+  moonOrbitalRadii: Record<string, number>;
 }
 
 export interface PlanetViewCanvasProps {
@@ -115,8 +112,8 @@ export interface PlanetViewCanvasProps {
 }
 
 export interface PlanetViewCanvasState {
-  angles: Partial<Record<BodyId, number>>;
-  positions: Partial<Record<BodyId, Vec2>>;
+  angles: Record<string, number>;
+  positions: Record<string, Vec2>;
   layout: PlanetViewLayout | null;
   zoom: number;
   panX: number;

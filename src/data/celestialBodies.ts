@@ -1,5 +1,5 @@
 import type { CelestialBody, HierarchyNode, VisualConfig } from '../types';
-import rawData from './celestialBodies.json';
+import rawData from './sol.json';
 
 export const CELESTIAL_BODIES = rawData.bodies as Record<string, CelestialBody>;
 export const BODY_HIERARCHY = rawData.hierarchy as HierarchyNode[];

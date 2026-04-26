@@ -1,92 +1,58 @@
-import { VISUAL_CONFIG } from '../data/celestialBodies';
-import type { BodyId, Vec2 } from '../types';
+import { CELESTIAL_BODIES, VISUAL_CONFIG } from '../data/celestialBodies';
+import type { Vec2 } from '../types';
 
-export const SOLAR_BODY_IDS: BodyId[] = [
-  'sun', 'mercury', 'venus', 'earth', 'moon',
-  'mars', 'phobos', 'deimos',
-  'asteroid-belt', 'ceres', 'vesta', 'pallas', 'hygiea',
-  'jupiter', 'io', 'europa', 'ganymede', 'callisto',
-  'saturn', 'titan', 'enceladus',
-  'uranus', 'neptune', 'triton', 'pluto',
-];
+const { orbitalRadii, moonOrbitalRadii, moonSpeedMultiplier } = VISUAL_CONFIG;
 
-export const ORBITAL_SPEEDS: Record<BodyId, number> = {
-  sun: 0,
-  'asteroid-belt': 0,
-  mercury: 365.25 / 87.97,
-  venus:   365.25 / 224.70,
-  earth:   1.0,
-  mars:    365.25 / 686.97,
-  ceres:   365.25 / 1681.63,
-  vesta:   365.25 / 1325.75,
-  pallas:  365.25 / 1685.37,
-  hygiea:  365.25 / 2029.83,
-  jupiter: 365.25 / 4332.59,
-  saturn:  365.25 / 10759.22,
-  uranus:  365.25 / 30688.5,
-  neptune: 365.25 / 60195,
-  pluto:   365.25 / 90560,
-  moon:      365.25 / 27.32   * 0.1,
-  phobos:    365.25 / 0.319   * 0.05,
-  deimos:    365.25 / 1.263   * 0.05,
-  io:        365.25 / 1.769   * 0.05,
-  europa:    365.25 / 3.551   * 0.05,
-  ganymede:  365.25 / 7.155   * 0.05,
-  callisto:  365.25 / 16.69   * 0.05,
-  titan:     365.25 / 15.95   * 0.05,
-  enceladus: 365.25 / 1.37    * 0.05,
-  triton:  -(365.25 / 5.877)  * 0.05,
-};
+const FIXED_IDS = Object.keys(CELESTIAL_BODIES).filter(
+  id => CELESTIAL_BODIES[id].type === 'star' || CELESTIAL_BODIES[id].type === 'belt',
+);
+const PLANET_IDS = Object.keys(orbitalRadii);
+const MOON_IDS   = Object.keys(moonOrbitalRadii);
 
-const MOON_PARENTS: Partial<Record<BodyId, BodyId>> = {
-  moon: 'earth', phobos: 'mars', deimos: 'mars',
-  io: 'jupiter', europa: 'jupiter', ganymede: 'jupiter', callisto: 'jupiter',
-  titan: 'saturn', enceladus: 'saturn', triton: 'neptune',
-};
+export const SOLAR_BODY_IDS: string[] = [...FIXED_IDS, ...PLANET_IDS, ...MOON_IDS];
 
-const PLANETS: BodyId[] = [
-  'mercury', 'venus', 'earth', 'mars',
-  'ceres', 'vesta', 'pallas', 'hygiea',
-  'jupiter', 'saturn', 'uranus', 'neptune', 'pluto',
-];
+export const ORBITAL_SPEEDS: Record<string, number> = {};
+for (const id of FIXED_IDS) ORBITAL_SPEEDS[id] = 0;
+for (const id of PLANET_IDS) {
+  const body = CELESTIAL_BODIES[id];
+  ORBITAL_SPEEDS[id] = body?.orbitalPeriod ? 365.25 / body.orbitalPeriod : 0;
+}
+for (const id of MOON_IDS) {
+  const body = CELESTIAL_BODIES[id];
+  if (!body?.orbitalPeriod) { ORBITAL_SPEEDS[id] = 0; continue; }
+  ORBITAL_SPEEDS[id] =
+    (365.25 / Math.abs(body.orbitalPeriod)) * moonSpeedMultiplier * Math.sign(body.orbitalPeriod);
+}
 
-function buildPositions(
-  angles: Record<BodyId, number>,
-  cx: number,
-  cy: number,
-): Record<BodyId, Vec2> {
-  const { orbitalRadii, moonOrbitalRadii } = VISUAL_CONFIG;
-  const pos: { [k: string]: Vec2 } = {};
+const MOON_PARENT_MAP: Record<string, string> = {};
+for (const id of MOON_IDS) {
+  const parent = CELESTIAL_BODIES[id]?.parent;
+  if (parent) MOON_PARENT_MAP[id] = parent;
+}
 
-  pos['sun'] = { x: cx, y: cy };
-  pos['asteroid-belt'] = { x: cx, y: cy };
-
-  for (const p of PLANETS) {
-    const r = orbitalRadii[p] ?? 0;
-    pos[p] = { x: cx + r * Math.cos(angles[p]), y: cy + r * Math.sin(angles[p]) };
+function buildPositions(angles: Record<string, number>, cx: number, cy: number): Record<string, Vec2> {
+  const pos: Record<string, Vec2> = {};
+  for (const id of FIXED_IDS)  pos[id] = { x: cx, y: cy };
+  for (const id of PLANET_IDS) {
+    const r = orbitalRadii[id] ?? 0;
+    pos[id] = { x: cx + r * Math.cos(angles[id]), y: cy + r * Math.sin(angles[id]) };
   }
-
-  for (const [moon, parent] of Object.entries(MOON_PARENTS) as [BodyId, BodyId][]) {
-    const pr = moonOrbitalRadii[moon] ?? 0;
-    const { x: px, y: py } = pos[parent];
-    pos[moon] = { x: px + pr * Math.cos(angles[moon]), y: py + pr * Math.sin(angles[moon]) };
+  for (const id of MOON_IDS) {
+    const parentId = MOON_PARENT_MAP[id];
+    const pr = moonOrbitalRadii[id] ?? 0;
+    const { x: px, y: py } = pos[parentId] ?? { x: cx, y: cy };
+    pos[id] = { x: px + pr * Math.cos(angles[id]), y: py + pr * Math.sin(angles[id]) };
   }
-
-  return pos as Record<BodyId, Vec2>;
+  return pos;
 }
 
 export class SolarSystemSimulation {
-  angles: Record<BodyId, number>;
-  positions: Record<BodyId, Vec2>;
+  angles: Record<string, number>;
+  positions: Record<string, Vec2>;
 
   constructor() {
-    this.angles = Object.fromEntries(
-      SOLAR_BODY_IDS.map((id, i) => [id, i * 0.7]),
-    ) as unknown as Record<BodyId, number>;
-
-    this.positions = Object.fromEntries(
-      SOLAR_BODY_IDS.map(id => [id, { x: 0, y: 0 }]),
-    ) as unknown as Record<BodyId, Vec2>;
+    this.angles    = Object.fromEntries(SOLAR_BODY_IDS.map((id, i) => [id, i * 0.7]));
+    this.positions = Object.fromEntries(SOLAR_BODY_IDS.map(id => [id, { x: 0, y: 0 }]));
   }
 
   advanceAngles(dt: number, speed: number): void {
