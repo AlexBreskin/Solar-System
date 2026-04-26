@@ -1,4 +1,4 @@
-.outliner {
+.body-navigator {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--border);
@@ -6,7 +6,7 @@
   min-height: 180px;
 }
 
-.outliner-header {
+.nav-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,7 +15,7 @@
   flex-shrink: 0;
 }
 
-.outliner-title {
+.nav-title {
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -23,7 +23,7 @@
   color: var(--text-dim);
 }
 
-.outliner-count {
+.nav-count {
   font-family: 'Space Mono', monospace;
   font-size: 11px;
   color: var(--text-dim);
@@ -33,14 +33,14 @@
   border: 1px solid var(--border);
 }
 
-.outliner-scroll {
+.nav-scroll {
   overflow-y: auto;
   flex: 1;
 }
 
-.outliner-node {}
+.nav-node {}
 
-.outliner-row {
+.nav-row {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -52,16 +52,16 @@
   padding-right: 10px;
 }
 
-.outliner-row:hover,
-.outliner-row.hovered {
+.nav-row:hover,
+.nav-row.hovered {
   background: var(--bg-hover);
 }
 
-.outliner-row.selected {
+.nav-row.selected {
   background: var(--bg-selected);
 }
 
-.outliner-row.selected::before {
+.nav-row.selected::before {
   content: '';
   position: absolute;
   left: 0;
@@ -124,7 +124,7 @@
   text-overflow: ellipsis;
 }
 
-.outliner-row.selected .body-name {
+.nav-row.selected .body-name {
   color: #ffffff;
 }
 
@@ -147,7 +147,7 @@
   white-space: nowrap;
 }
 
-.outliner-section-label {
+.nav-section-label {
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -158,9 +158,53 @@
   margin-top: 2px;
 }
 
-.outliner-empty {
+.nav-empty {
   font-size: 12px;
   color: var(--text-dim);
   padding: 12px 14px;
   font-style: italic;
+}
+
+/* ─── Parent context rows (Milky Way / Sol System) ─── */
+.pv-context-row {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.pv-context-row .body-name {
+  color: var(--text-secondary);
+}
+
+.pv-system-row {
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.pv-system-row:hover {
+  background: var(--bg-hover);
+  opacity: 1;
+}
+
+.pv-system-row:hover .body-name {
+  color: var(--gold);
+}
+
+.pv-system-active {
+  opacity: 0.75;
+}
+
+/* Currently-viewed planet (not selected) gets a gold left bar */
+.nav-row.pv-viewed::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gold);
+}
+
+.nav-row.pv-viewed .body-dot {
+  box-shadow: 0 0 6px currentColor;
 }

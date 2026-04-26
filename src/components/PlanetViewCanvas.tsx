@@ -231,7 +231,7 @@ export default function PlanetViewCanvas({
           fontSize: 12, color: 'rgba(255,255,255,0.2)',
           fontFamily: 'Syne, sans-serif', pointerEvents: 'none', textAlign: 'center',
         }}>
-          {planet?.name} has no known moons in this simulation
+          {planet?.name} has no moons in this simulation
         </div>
       )}
       <div style={{

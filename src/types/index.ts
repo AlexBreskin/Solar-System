@@ -129,35 +129,6 @@ export interface PlanetViewCanvasState {
   dragStartPanY: number;
 }
 
-// Outliner
-
-export interface OutlinerProps {
-  selectedBody: BodyId;
-  hoveredBody: BodyId | null;
-  onSelectBody: (id: BodyId) => void;
-  onHoverBody: (id: BodyId | null) => void;
-  filterIds: BodyId[] | null;
-}
-
-export interface OutlinerNodeProps {
-  node: HierarchyNode;
-  depth: number;
-  selectedBody: BodyId;
-  hoveredBody: BodyId | null;
-  onSelectBody: (id: BodyId) => void;
-  onHoverBody: (id: BodyId | null) => void;
-  defaultOpen?: boolean;
-}
-
-export interface FlatOutlinerRowProps {
-  id: BodyId;
-  selectedBody: BodyId;
-  hoveredBody: BodyId | null;
-  onSelectBody: (id: BodyId) => void;
-  onHoverBody: (id: BodyId | null) => void;
-  isPlanet: boolean;
-}
-
 // InfoPanel
 
 export interface InfoPanelProps {
@@ -167,11 +138,4 @@ export interface InfoPanelProps {
 export interface StatRowProps {
   label: string;
   value: string | number | null | undefined;
-}
-
-// PlanetSelector
-
-export interface PlanetSelectorProps {
-  planetId: BodyId;
-  onSelectPlanet: (id: BodyId) => void;
 }

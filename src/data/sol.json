@@ -292,6 +292,61 @@
       "surfaceTemp": "-229°C (average)", "moons": 5,
       "funFact": "Pluto and its moon Charon are so close in size that they orbit a common center of gravity located in space between them — making them a binary system.",
       "atmosphere": "Thin nitrogen atmosphere (when near Sun)"
+    },
+    "charon": {
+      "id": "charon", "name": "Charon", "type": "moon", "parent": "pluto",
+      "diameter": 1212, "mass": "1.586 × 10²¹ kg",
+      "distanceFromParent": 0.0001269, "orbitalPeriod": 6.387, "rotationPeriod": 6.387,
+      "eccentricity": 0.0022, "inclination": 0.001,
+      "color": "#9898A8", "glowColor": "#7878A0",
+      "description": "Charon is the largest of Pluto's five moons and the largest known satellite relative to its parent body in the Solar System. Pluto and Charon are so similar in size that they orbit a common center of gravity located in space between them, making them a true binary system.",
+      "surfaceTemp": "-220°C (average)", "moons": 0,
+      "funFact": "Charon is so large compared to Pluto that the two are sometimes called a 'double dwarf planet' — their shared center of gravity lies outside Pluto itself.",
+      "atmosphere": "Virtually none"
+    },
+    "styx": {
+      "id": "styx", "name": "Styx", "type": "moon", "parent": "pluto",
+      "diameter": 16, "mass": "7.5 × 10¹⁵ kg",
+      "distanceFromParent": 0.000281, "orbitalPeriod": 20.16, "rotationPeriod": 20.16,
+      "eccentricity": 0.0058, "inclination": 0.81,
+      "color": "#808888", "glowColor": "#606868",
+      "description": "Styx is the smallest of Pluto's known moons, discovered in 2012 by the Hubble Space Telescope. It is irregularly shaped and very dark.",
+      "surfaceTemp": "-220°C (average)", "moons": 0,
+      "funFact": "Styx was discovered in 2012 using the Hubble Space Telescope in preparation for the New Horizons flyby of Pluto.",
+      "atmosphere": "None"
+    },
+    "nix": {
+      "id": "nix", "name": "Nix", "type": "moon", "parent": "pluto",
+      "diameter": 50, "mass": "4.5 × 10¹⁶ kg",
+      "distanceFromParent": 0.000325, "orbitalPeriod": 24.85, "rotationPeriod": 24.85,
+      "eccentricity": 0.0020, "inclination": 0.13,
+      "color": "#A89898", "glowColor": "#887878",
+      "description": "Nix is the second of Pluto's small moons, discovered in 2005 along with Hydra. New Horizons imagery revealed it has a reddish region on its surface, possibly due to Pluto's atmospheric deposits.",
+      "surfaceTemp": "-220°C (average)", "moons": 0,
+      "funFact": "Nix tumbles chaotically as it orbits — its rotation is so irregular that sunrise times are unpredictable.",
+      "atmosphere": "None"
+    },
+    "kerberos": {
+      "id": "kerberos", "name": "Kerberos", "type": "moon", "parent": "pluto",
+      "diameter": 19, "mass": "1.65 × 10¹⁶ kg",
+      "distanceFromParent": 0.000386, "orbitalPeriod": 32.17, "rotationPeriod": 32.17,
+      "eccentricity": 0.0033, "inclination": 0.39,
+      "color": "#908898", "glowColor": "#706878",
+      "description": "Kerberos is the fourth of Pluto's moons, discovered in 2011 by the Hubble Space Telescope. Surprisingly, it is darker than expected given its proximity to the bright Charon.",
+      "surfaceTemp": "-220°C (average)", "moons": 0,
+      "funFact": "Kerberos is darker than expected — scientists had predicted it would be as bright as Charon but it turned out to be as dark as charcoal.",
+      "atmosphere": "None"
+    },
+    "hydra": {
+      "id": "hydra", "name": "Hydra", "type": "moon", "parent": "pluto",
+      "diameter": 65, "mass": "4.8 × 10¹⁶ kg",
+      "distanceFromParent": 0.000432, "orbitalPeriod": 38.20, "rotationPeriod": 38.20,
+      "eccentricity": 0.0059, "inclination": 0.26,
+      "color": "#A8A098", "glowColor": "#888078",
+      "description": "Hydra is the outermost of Pluto's five known moons, discovered in 2005 along with Nix. New Horizons revealed it is coated in nearly pure water ice.",
+      "surfaceTemp": "-220°C (average)", "moons": 0,
+      "funFact": "Hydra is coated in nearly pure crystalline water ice — making it one of the most reflective surfaces in the outer Solar System.",
+      "atmosphere": "None"
     }
   },
   "hierarchy": [
@@ -330,7 +385,13 @@
         },
         { "id": "uranus", "children": [] },
         { "id": "neptune", "children": [{ "id": "triton", "children": [] }] },
-        { "id": "pluto", "children": [] }
+        { "id": "pluto", "children": [
+          { "id": "charon", "children": [] },
+          { "id": "styx", "children": [] },
+          { "id": "nix", "children": [] },
+          { "id": "kerberos", "children": [] },
+          { "id": "hydra", "children": [] }
+        ]}
       ]
     }
   ],
@@ -346,12 +407,14 @@
       "ceres": 2.5, "vesta": 2.0, "pallas": 1.8, "hygiea": 1.8,
       "jupiter": 22, "io": 4, "europa": 3.5, "ganymede": 5, "callisto": 4.5,
       "saturn": 18, "titan": 4.5, "rhea": 3.0, "enceladus": 2.5,
-      "uranus": 13, "neptune": 12, "triton": 3.5, "pluto": 3
+      "uranus": 13, "neptune": 12, "triton": 3.5, "pluto": 3,
+      "charon": 3.5, "styx": 1.2, "nix": 1.8, "kerberos": 1.3, "hydra": 2.0
     },
     "moonOrbitalRadii": {
       "moon": 22, "phobos": 14, "deimos": 22,
       "io": 32, "europa": 44, "ganymede": 60, "callisto": 80,
-      "titan": 38, "rhea": 31, "enceladus": 26, "triton": 30
+      "titan": 38, "rhea": 31, "enceladus": 26, "triton": 30,
+      "charon": 6, "styx": 9, "nix": 11, "kerberos": 13, "hydra": 15
     },
     "speedMultiplier": 0.3,
     "moonSpeedMultiplier": 0.05,

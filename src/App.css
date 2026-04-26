@@ -187,6 +187,22 @@ body {
   overflow: hidden;
 }
 
+.left-panel {
+  width: 240px;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.left-panel .body-navigator {
+  max-height: 100%;
+  border-bottom: none;
+  flex: 1;
+}
+
 .right-panel {
   width: var(--panel-width);
   background: var(--bg-panel);
