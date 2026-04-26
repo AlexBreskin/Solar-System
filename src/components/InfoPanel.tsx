@@ -1,16 +1,17 @@
 import React from 'react';
 import { CELESTIAL_BODIES } from '../data/celestialBodies';
+import type { BodyType, InfoPanelProps, StatRowProps } from '../types';
 import './InfoPanel.css';
 
-const TYPE_LABELS = {
+const TYPE_LABELS: Record<BodyType, string> = {
   star: 'Star',
   planet: 'Planet',
   'dwarf-planet': 'Dwarf Planet',
   moon: 'Moon',
 };
 
-function StatRow({ label, value }) {
-  if (!value && value !== 0) return null;
+function StatRow({ label, value }: StatRowProps): JSX.Element | null {
+  if (value === null || value === undefined || value === '') return null;
   return (
     <div className="stat-row">
       <span className="stat-label">{label}</span>
@@ -19,7 +20,7 @@ function StatRow({ label, value }) {
   );
 }
 
-function formatPeriod(days) {
+function formatPeriod(days: number): string {
   if (!days) return '—';
   const absDays = Math.abs(days);
   const retro = days < 0 ? ' (retrograde)' : '';
@@ -30,20 +31,20 @@ function formatPeriod(days) {
   return `${Math.round(years).toLocaleString()} years${retro}`;
 }
 
-function formatDistance(au) {
+function formatDistance(au: number): string {
   if (!au) return '—';
-  if (au < 0.001) return `${(au * 1.496e8).toFixed(0).toLocaleString()} km`;
+  if (au < 0.001) return `${(au * 1.496e8).toFixed(0)} km`;
   if (au < 0.1) return `${(au * 1.496e8 / 1000).toFixed(0)} thousand km`;
   return `${au.toFixed(3)} AU`;
 }
 
-function formatDiameter(km) {
+function formatDiameter(km: number): string {
   if (!km) return '—';
   if (km < 100) return `${km.toFixed(1)} km`;
   return `${km.toLocaleString()} km`;
 }
 
-export default function InfoPanel({ selectedBody }) {
+export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element {
   const body = CELESTIAL_BODIES[selectedBody];
   if (!body) return <div className="info-panel empty">Select a body</div>;
 
@@ -53,7 +54,7 @@ export default function InfoPanel({ selectedBody }) {
     <div className="info-panel">
       <div className="info-header">
         <div className="info-dot-wrap">
-          <div className="info-dot" style={{ background: body.color, boxShadow: `0 0 16px ${body.glowColor || body.color}80` }} />
+          <div className="info-dot" style={{ background: body.color, boxShadow: `0 0 16px ${body.glowColor ?? body.color}80` }} />
           {body.id === 'sun' && <div className="sun-pulse" style={{ borderColor: body.color }} />}
         </div>
         <div className="info-title-block">
@@ -85,9 +86,7 @@ export default function InfoPanel({ selectedBody }) {
         <StatRow label="Rotation Period" value={formatPeriod(body.rotationPeriod)} />
         <StatRow label="Eccentricity" value={body.eccentricity?.toFixed(3)} />
         <StatRow label="Inclination" value={body.inclination != null ? `${body.inclination}°` : null} />
-        {isRetrograde && (
-          <div className="retrograde-tag">⟲ Retrograde rotation</div>
-        )}
+        {isRetrograde && <div className="retrograde-tag">⟲ Retrograde rotation</div>}
       </div>
 
       {body.atmosphere && (
