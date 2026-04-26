@@ -45,17 +45,22 @@ An interactive solar system simulation built with React, TypeScript, and HTML Ca
 ## Getting Started
 
 ### Prerequisites
-- Node.js 16+ and npm
+- Node.js 18+ and npm
 
 ### Install & Run
 
 ```bash
-cd "E:\Code\Other\Solar-System"
 npm install
 npm start
 ```
 
-The app will open at `http://localhost:3000`.
+The app will open at `http://localhost:5173`.
+
+### Run Tests
+
+```bash
+npm test
+```
 
 ### Build for Production
 
@@ -63,7 +68,7 @@ The app will open at `http://localhost:3000`.
 npm run build
 ```
 
-Output is placed in the `build/` directory.
+Output is placed in the `dist/` directory.
 
 ## Controls
 
@@ -93,11 +98,12 @@ Output is placed in the `build/` directory.
 
 ```
 Solar-System/
+├── index.html                  # HTML entry point (Vite root)
 ├── package.json
 ├── tsconfig.json
+├── tsconfig.node.json          # TypeScript config for Vite config file
+├── vite.config.ts              # Vite + Vitest configuration
 ├── .gitignore
-├── public/
-│   └── index.html              # HTML entry point
 └── src/
     ├── index.tsx               # React entry point
     ├── App.tsx                 # Root component — tab state, shared state, layout
@@ -136,4 +142,5 @@ Solar-System/
 - **Camera** — pan and zoom use smooth lerp interpolation each frame; zoom anchors to the tracked body when tracking is active
 - **Stars** — seeded deterministic RNG (Mulberry32) for a consistent star field across renders
 - **Solar System visual scale** — orbital radii and body sizes are NOT to real scale; chosen for visual clarity
-- **Tests** — 27 unit tests covering both simulation modules (`npm test`); Jest is provided by `react-scripts` with `@types/jest` for TypeScript support
+- **Tooling** — Vite 6 for dev server and production builds; Vitest 2 for unit tests (Jest-compatible API, no configuration overhead); zero high-severity vulnerabilities
+- **Tests** — 27 unit tests covering both simulation modules; run with `npm test`
