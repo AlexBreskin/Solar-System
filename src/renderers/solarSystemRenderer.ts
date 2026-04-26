@@ -24,6 +24,23 @@ function getStarField(): StarTuple[] {
   return cachedStars;
 }
 
+// [angle, radius, size, opacity]
+type BeltParticle = [number, number, number, number];
+
+let cachedBeltParticles: BeltParticle[] | null = null;
+function getBeltParticles(): BeltParticle[] {
+  if (cachedBeltParticles) return cachedBeltParticles;
+  const { innerRadius, outerRadius, particleCount } = VISUAL_CONFIG.asteroidBelt;
+  const rng = mulberry32(99887);
+  cachedBeltParticles = Array.from({ length: particleCount }, (): BeltParticle => [
+    rng() * TWO_PI,
+    innerRadius + rng() * (outerRadius - innerRadius),
+    rng() * 1.2 + 0.4,
+    rng() * 0.4 + 0.15,
+  ]);
+  return cachedBeltParticles;
+}
+
 function lighten(hex: string, amount: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -42,6 +59,45 @@ export function drawStarField(ctx: CanvasRenderingContext2D): void {
   ctx.globalAlpha = 1;
 }
 
+export function drawAsteroidBelt(
+  ctx: CanvasRenderingContext2D,
+  cx: number, cy: number,
+  isSelected: boolean,
+  isHovered: boolean,
+  showLabels: boolean,
+): void {
+  const { innerRadius, outerRadius } = VISUAL_CONFIG.asteroidBelt;
+
+  if (isSelected || isHovered) {
+    const midRadius = (innerRadius + outerRadius) / 2;
+    const ringWidth = outerRadius - innerRadius;
+    ctx.beginPath();
+    ctx.arc(cx, cy, midRadius, 0, TWO_PI);
+    ctx.strokeStyle = isSelected ? 'rgba(220,190,120,0.35)' : 'rgba(220,190,120,0.18)';
+    ctx.lineWidth = ringWidth;
+    ctx.stroke();
+  }
+
+  for (const [angle, radius, size, opacity] of getBeltParticles()) {
+    const x = cx + Math.cos(angle) * radius;
+    const y = cy + Math.sin(angle) * radius;
+    ctx.globalAlpha = (isSelected || isHovered) ? Math.min(1, opacity * 1.6) : opacity;
+    ctx.fillStyle = '#B0A080';
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, TWO_PI);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  if (showLabels || isSelected || isHovered) {
+    ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
+    ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,210,230,0.7)';
+    ctx.textAlign = 'left';
+    ctx.fillText('Asteroid Belt', cx + outerRadius + 6, cy + 4);
+    ctx.textAlign = 'center';
+  }
+}
+
 export function drawOrbits(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number,
@@ -50,7 +106,7 @@ export function drawOrbits(
   showOrbits: boolean,
 ): void {
   const { orbitalRadii } = VISUAL_CONFIG;
-  const planets: BodyId[] = ['mercury', 'venus', 'earth', 'mars', 'ceres', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+  const planets: BodyId[] = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
   for (const p of planets) {
     const isHighlighted = p === selectedBody || p === hoveredBody;
     if (!showOrbits && !isHighlighted) continue;
@@ -158,6 +214,7 @@ export function drawBodies(
 
   // Glows
   for (const id of allBodies) {
+    if (id === 'asteroid-belt') continue;
     const body = CELESTIAL_BODIES[id];
     const pos = positions[id];
     const r = planetSizes[id] ?? 4;
@@ -190,7 +247,7 @@ export function drawBodies(
 
   // Bodies
   for (const id of allBodies) {
-    if (id === 'saturn') continue;
+    if (id === 'saturn' || id === 'asteroid-belt') continue;
     const body = CELESTIAL_BODIES[id];
     const pos = positions[id];
     const r = planetSizes[id] ?? 4;

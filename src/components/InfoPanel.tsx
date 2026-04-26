@@ -8,6 +8,8 @@ const TYPE_LABELS: Record<BodyType, string> = {
   planet: 'Planet',
   'dwarf-planet': 'Dwarf Planet',
   moon: 'Moon',
+  asteroid: 'Asteroid',
+  belt: 'Region',
 };
 
 function StatRow({ label, value }: StatRowProps): JSX.Element | null {

@@ -8,6 +8,8 @@ const TYPE_ICONS: Record<BodyType, string> = {
   planet: '●',
   'dwarf-planet': '◎',
   moon: '○',
+  asteroid: '·',
+  belt: '⌀',
 };
 
 const TYPE_LABELS: Record<BodyType, string> = {
@@ -15,6 +17,8 @@ const TYPE_LABELS: Record<BodyType, string> = {
   planet: 'Planet',
   'dwarf-planet': 'Dwarf Planet',
   moon: 'Moon',
+  asteroid: 'Asteroid',
+  belt: 'Region',
 };
 
 function OutlinerNode({

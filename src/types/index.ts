@@ -1,13 +1,14 @@
 export type BodyId =
   | 'sun' | 'mercury' | 'venus' | 'earth' | 'moon'
-  | 'mars' | 'phobos' | 'deimos' | 'ceres'
+  | 'mars' | 'phobos' | 'deimos'
+  | 'asteroid-belt' | 'ceres' | 'vesta' | 'pallas' | 'hygiea'
   | 'jupiter' | 'io' | 'europa' | 'ganymede' | 'callisto'
   | 'saturn' | 'titan' | 'enceladus'
   | 'uranus' | 'neptune' | 'triton' | 'pluto';
 
 export type TabId = 'solar-system' | 'planet-view';
 
-export type BodyType = 'star' | 'planet' | 'dwarf-planet' | 'moon';
+export type BodyType = 'star' | 'planet' | 'dwarf-planet' | 'moon' | 'asteroid' | 'belt';
 
 export interface Vec2 {
   x: number;
@@ -46,11 +47,18 @@ export interface HierarchyNode {
   children: HierarchyNode[];
 }
 
+export interface AsteroidBeltConfig {
+  innerRadius: number;
+  outerRadius: number;
+  particleCount: number;
+}
+
 export interface VisualConfig {
   orbitalRadii: Partial<Record<BodyId, number>>;
   planetSizes: Partial<Record<BodyId, number>>;
   moonOrbitalRadii: Partial<Record<BodyId, number>>;
   speedMultiplier: number;
+  asteroidBelt: AsteroidBeltConfig;
 }
 
 // SolarSystemCanvas

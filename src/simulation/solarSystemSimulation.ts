@@ -3,7 +3,8 @@ import type { BodyId, Vec2 } from '../types';
 
 export const SOLAR_BODY_IDS: BodyId[] = [
   'sun', 'mercury', 'venus', 'earth', 'moon',
-  'mars', 'phobos', 'deimos', 'ceres',
+  'mars', 'phobos', 'deimos',
+  'asteroid-belt', 'ceres', 'vesta', 'pallas', 'hygiea',
   'jupiter', 'io', 'europa', 'ganymede', 'callisto',
   'saturn', 'titan', 'enceladus',
   'uranus', 'neptune', 'triton', 'pluto',
@@ -11,11 +12,15 @@ export const SOLAR_BODY_IDS: BodyId[] = [
 
 export const ORBITAL_SPEEDS: Record<BodyId, number> = {
   sun: 0,
+  'asteroid-belt': 0,
   mercury: 365.25 / 87.97,
   venus:   365.25 / 224.70,
   earth:   1.0,
   mars:    365.25 / 686.97,
   ceres:   365.25 / 1681.63,
+  vesta:   365.25 / 1325.75,
+  pallas:  365.25 / 1685.37,
+  hygiea:  365.25 / 2029.83,
   jupiter: 365.25 / 4332.59,
   saturn:  365.25 / 10759.22,
   uranus:  365.25 / 30688.5,
@@ -40,7 +45,8 @@ const MOON_PARENTS: Partial<Record<BodyId, BodyId>> = {
 };
 
 const PLANETS: BodyId[] = [
-  'mercury', 'venus', 'earth', 'mars', 'ceres',
+  'mercury', 'venus', 'earth', 'mars',
+  'ceres', 'vesta', 'pallas', 'hygiea',
   'jupiter', 'saturn', 'uranus', 'neptune', 'pluto',
 ];
 
@@ -53,6 +59,7 @@ function buildPositions(
   const pos: { [k: string]: Vec2 } = {};
 
   pos['sun'] = { x: cx, y: cy };
+  pos['asteroid-belt'] = { x: cx, y: cy };
 
   for (const p of PLANETS) {
     const r = orbitalRadii[p] ?? 0;

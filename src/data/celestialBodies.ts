@@ -92,8 +92,18 @@ export const CELESTIAL_BODIES: Record<string, CelestialBody> = {
     funFact: 'Deimos takes 30 hours to orbit Mars — just slightly longer than a Martian day — so from Mars, it appears to move very slowly across the sky.',
     atmosphere: 'None',
   },
+  'asteroid-belt': {
+    id: 'asteroid-belt', name: 'Asteroid Belt', type: 'belt', parent: 'sun',
+    diameter: 0, mass: '2.39 × 10²¹ kg',
+    distanceFromParent: 0, orbitalPeriod: 0, rotationPeriod: 0,
+    eccentricity: 0, inclination: 0,
+    color: '#B0A080', glowColor: '#A09070',
+    description: 'The Asteroid Belt is a vast region between the orbits of Mars and Jupiter, home to millions of rocky bodies ranging from tiny pebbles to Ceres, a dwarf planet. It contains the majority of known minor planets in the Solar System.',
+    surfaceTemp: 'Varies widely', moons: 0,
+    funFact: 'Despite containing millions of objects, the total mass of the entire Asteroid Belt is less than 4% of the mass of the Moon — most of the space between Mars and Jupiter is empty.',
+  },
   ceres: {
-    id: 'ceres', name: 'Ceres', type: 'dwarf-planet', parent: 'sun',
+    id: 'ceres', name: 'Ceres', type: 'dwarf-planet', parent: 'asteroid-belt',
     diameter: 939, mass: '9.384 × 10²⁰ kg',
     distanceFromParent: 2.769, orbitalPeriod: 1681.63, rotationPeriod: 0.3781,
     eccentricity: 0.076, inclination: 10.59,
@@ -102,6 +112,36 @@ export const CELESTIAL_BODIES: Record<string, CelestialBody> = {
     surfaceTemp: '-105°C (average)', moons: 0,
     funFact: 'Ceres contains about one-third of the total mass of the entire asteroid belt, yet is still far smaller than our Moon.',
     atmosphere: 'Transient water vapour (near bright spots)',
+  },
+  vesta: {
+    id: 'vesta', name: 'Vesta', type: 'asteroid', parent: 'asteroid-belt',
+    diameter: 525, mass: '2.59 × 10²⁰ kg',
+    distanceFromParent: 2.361, orbitalPeriod: 1325.75, rotationPeriod: 0.2226,
+    eccentricity: 0.089, inclination: 7.14,
+    color: '#9A8870', glowColor: '#7A6850',
+    description: "Vesta is the second-most-massive body in the asteroid belt and the brightest asteroid visible from Earth. It was visited by NASA's Dawn spacecraft in 2011–2012, revealing a geologically diverse world with ancient volcanic activity.",
+    surfaceTemp: '-188°C to -18°C', moons: 0,
+    funFact: "Vesta is so large it was nearly classified as a planet — it has a giant impact crater at its south pole larger in diameter than Vesta itself is wide.",
+  },
+  pallas: {
+    id: 'pallas', name: 'Pallas', type: 'asteroid', parent: 'asteroid-belt',
+    diameter: 512, mass: '2.04 × 10²⁰ kg',
+    distanceFromParent: 2.772, orbitalPeriod: 1685.37, rotationPeriod: 0.326,
+    eccentricity: 0.231, inclination: 34.84,
+    color: '#8090A0', glowColor: '#607080',
+    description: 'Pallas is the third-largest asteroid in the belt. It has an unusually high orbital inclination and eccentricity compared to most belt objects, making it a dynamically distinct body.',
+    surfaceTemp: '-173°C (average)', moons: 0,
+    funFact: "Pallas has one of the most tilted and elongated orbits of any large asteroid — it's one of the hardest large bodies in the Solar System to reach with a spacecraft.",
+  },
+  hygiea: {
+    id: 'hygiea', name: 'Hygiea', type: 'asteroid', parent: 'asteroid-belt',
+    diameter: 434, mass: '8.74 × 10¹⁹ kg',
+    distanceFromParent: 3.141, orbitalPeriod: 2029.83, rotationPeriod: 0.5903,
+    eccentricity: 0.117, inclination: 3.84,
+    color: '#707878', glowColor: '#505858',
+    description: 'Hygiea is the fourth-largest object in the asteroid belt. Recent observations suggest it may be nearly spherical — raising the possibility of reclassifying it as a dwarf planet.',
+    surfaceTemp: '-120°C (average)', moons: 0,
+    funFact: 'Hygiea may qualify as a dwarf planet — it is remarkably round for an asteroid and could meet all the criteria, which would make it the fifth dwarf planet in the Solar System.',
   },
   jupiter: {
     id: 'jupiter', name: 'Jupiter', type: 'planet', parent: 'sun',
@@ -246,7 +286,15 @@ export const BODY_HIERARCHY: HierarchyNode[] = [
       { id: 'venus', children: [] },
       { id: 'earth', children: [{ id: 'moon', children: [] }] },
       { id: 'mars', children: [{ id: 'phobos', children: [] }, { id: 'deimos', children: [] }] },
-      { id: 'ceres', children: [] },
+      {
+        id: 'asteroid-belt',
+        children: [
+          { id: 'ceres', children: [] },
+          { id: 'vesta', children: [] },
+          { id: 'pallas', children: [] },
+          { id: 'hygiea', children: [] },
+        ],
+      },
       {
         id: 'jupiter',
         children: [
@@ -272,12 +320,14 @@ export const BODY_HIERARCHY: HierarchyNode[] = [
 
 export const VISUAL_CONFIG: VisualConfig = {
   orbitalRadii: {
-    mercury: 90, venus: 135, earth: 185, mars: 240, ceres: 290,
+    mercury: 90, venus: 135, earth: 185, mars: 240,
+    vesta: 265, pallas: 280, ceres: 290, hygiea: 313,
     jupiter: 340, saturn: 430, uranus: 510, neptune: 580, pluto: 640,
   },
   planetSizes: {
     sun: 38, mercury: 4, venus: 7, earth: 8, moon: 3,
-    mars: 5.5, phobos: 2, deimos: 2, ceres: 2.5,
+    mars: 5.5, phobos: 2, deimos: 2,
+    ceres: 2.5, vesta: 2.0, pallas: 1.8, hygiea: 1.8,
     jupiter: 22, io: 4, europa: 3.5, ganymede: 5, callisto: 4.5,
     saturn: 18, titan: 4.5, enceladus: 2.5,
     uranus: 13, neptune: 12, triton: 3.5, pluto: 3,
@@ -288,4 +338,9 @@ export const VISUAL_CONFIG: VisualConfig = {
     titan: 38, enceladus: 26, triton: 30,
   },
   speedMultiplier: 0.3,
+  asteroidBelt: {
+    innerRadius: 258,
+    outerRadius: 322,
+    particleCount: 280,
+  },
 };
