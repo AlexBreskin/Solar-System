@@ -347,6 +347,53 @@
       "surfaceTemp": "-220°C (average)", "moons": 0,
       "funFact": "Hydra is coated in nearly pure crystalline water ice — making it one of the most reflective surfaces in the outer Solar System.",
       "atmosphere": "None"
+    },
+    "kuiper-belt": {
+      "id": "kuiper-belt", "name": "Kuiper Belt", "type": "belt", "parent": null,
+      "diameter": 0, "mass": "Unknown",
+      "distanceFromParent": 0, "orbitalPeriod": 0, "rotationPeriod": 0,
+      "eccentricity": 0, "inclination": 0,
+      "color": "#809AB8", "glowColor": "#5070A0",
+      "description": "The Kuiper Belt is a vast ring of icy bodies extending from Neptune's orbit at 30 AU out to about 50 AU. It contains hundreds of thousands of objects, including dwarf planets Pluto, Eris, Makemake, and Haumea. It is similar to the asteroid belt but 20 times wider and 20–200 times more massive.",
+      "surfaceTemp": "~40 K (−233°C)", "moons": 0,
+      "funFact": "The Kuiper Belt contains more than 100,000 objects larger than 100 km in diameter — making it the Solar System's largest structure after the Oort Cloud.",
+      "atmosphere": "None"
+    },
+    "eris": {
+      "id": "eris", "name": "Eris", "type": "dwarf-planet", "parent": "sun",
+      "diameter": 2326, "mass": "1.647 × 10²² kg",
+      "distanceFromParent": 67.78, "orbitalPeriod": 203305, "rotationPeriod": 1.079,
+      "eccentricity": 0.436, "inclination": 44.04,
+      "color": "#C8C8C0", "glowColor": "#A0A0A0",
+      "showOrbitRing": true,
+      "description": "Eris is the most massive known dwarf planet in the Solar System, slightly smaller than Pluto in size but more massive. It orbits in the scattered disc beyond the Kuiper Belt and has one known moon, Dysnomia. Its discovery in 2005 directly led to Pluto's reclassification.",
+      "surfaceTemp": "-230°C (average)", "moons": 1,
+      "funFact": "Eris was nicknamed 'Xena' by its discoverers and was briefly considered the 'tenth planet' — its discovery forced astronomers to redefine what a planet is, ultimately demoting Pluto.",
+      "atmosphere": "Thin methane/nitrogen frost (near perihelion)"
+    },
+    "makemake": {
+      "id": "makemake", "name": "Makemake", "type": "dwarf-planet", "parent": "sun",
+      "diameter": 1430, "mass": "3.1 × 10²¹ kg",
+      "distanceFromParent": 45.79, "orbitalPeriod": 111692, "rotationPeriod": 0.9417,
+      "eccentricity": 0.162, "inclination": 29.01,
+      "color": "#C09880", "glowColor": "#986050",
+      "showOrbitRing": true,
+      "description": "Makemake is the second-brightest Kuiper Belt Object after Pluto. Named after the creator god of the Rapa Nui people, it lacks a significant atmosphere except possibly near perihelion, when its surface ices partially sublimate. It has one small moon, MK2.",
+      "surfaceTemp": "-243°C (average)", "moons": 1,
+      "funFact": "Makemake is so bright that it can be detected with a high-end amateur telescope, yet it wasn't discovered until 2005 because it was near the dense star fields of the Milky Way.",
+      "atmosphere": "Very thin methane"
+    },
+    "haumea": {
+      "id": "haumea", "name": "Haumea", "type": "dwarf-planet", "parent": "sun",
+      "diameter": 1560, "mass": "4.006 × 10²¹ kg",
+      "distanceFromParent": 43.13, "orbitalPeriod": 103774, "rotationPeriod": 0.163,
+      "eccentricity": 0.191, "inclination": 28.21,
+      "color": "#E0E0D8", "glowColor": "#B0B0B0",
+      "showOrbitRing": true,
+      "description": "Haumea is a uniquely egg-shaped dwarf planet that rotates faster than any other large object in the Solar System, completing a day in under 4 hours. This rapid spin has stretched it into a prolate spheroid. It has two known moons, Hi'iaka and Namaka, and even sports a thin ring.",
+      "surfaceTemp": "-241°C (average)", "moons": 2,
+      "funFact": "Haumea spins so fast — once every 3.9 hours — that centrifugal force has squashed it into an American-football shape. It is the fastest rotating large body in the Solar System.",
+      "atmosphere": "None"
     }
   },
   "hierarchy": [
@@ -391,7 +438,15 @@
           { "id": "nix", "children": [] },
           { "id": "kerberos", "children": [] },
           { "id": "hydra", "children": [] }
-        ]}
+        ]},
+        {
+          "id": "kuiper-belt",
+          "children": [
+            { "id": "eris", "children": [] },
+            { "id": "makemake", "children": [] },
+            { "id": "haumea", "children": [] }
+          ]
+        }
       ]
     }
   ],
@@ -399,7 +454,8 @@
     "orbitalRadii": {
       "mercury": 90, "venus": 135, "earth": 185, "mars": 240,
       "vesta": 265, "pallas": 280, "ceres": 290, "hygiea": 313,
-      "jupiter": 340, "saturn": 430, "uranus": 510, "neptune": 580, "pluto": 640
+      "jupiter": 340, "saturn": 430, "uranus": 510, "neptune": 580, "pluto": 640,
+      "haumea": 665, "makemake": 680, "eris": 708
     },
     "planetSizes": {
       "sun": 38, "mercury": 4, "venus": 7, "earth": 8, "moon": 3,
@@ -408,7 +464,8 @@
       "jupiter": 22, "io": 4, "europa": 3.5, "ganymede": 5, "callisto": 4.5,
       "saturn": 18, "titan": 4.5, "rhea": 3.0, "enceladus": 2.5,
       "uranus": 13, "neptune": 12, "triton": 3.5, "pluto": 3,
-      "charon": 3.5, "styx": 1.2, "nix": 1.8, "kerberos": 1.3, "hydra": 2.0
+      "charon": 3.5, "styx": 1.2, "nix": 1.8, "kerberos": 1.3, "hydra": 2.0,
+      "eris": 2.8, "makemake": 2.0, "haumea": 2.0
     },
     "moonOrbitalRadii": {
       "moon": 22, "phobos": 14, "deimos": 22,
@@ -418,10 +475,15 @@
     },
     "speedMultiplier": 0.3,
     "moonSpeedMultiplier": 0.05,
-    "asteroidBelt": {
-      "innerRadius": 258,
-      "outerRadius": 322,
-      "particleCount": 280
+    "beltConfigs": {
+      "asteroid-belt": {
+        "innerRadius": 258, "outerRadius": 322, "particleCount": 280,
+        "seed": 99887, "color": "#B0A080"
+      },
+      "kuiper-belt": {
+        "innerRadius": 568, "outerRadius": 728, "particleCount": 360,
+        "seed": 73291, "color": "#7898B4"
+      }
     }
   }
 }

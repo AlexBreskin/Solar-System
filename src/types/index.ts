@@ -43,10 +43,12 @@ export interface HierarchyNode {
   children: HierarchyNode[];
 }
 
-export interface AsteroidBeltConfig {
+export interface BeltConfig {
   innerRadius: number;
   outerRadius: number;
   particleCount: number;
+  seed: number;
+  color: string;
 }
 
 export interface VisualConfig {
@@ -55,7 +57,7 @@ export interface VisualConfig {
   moonOrbitalRadii: Record<string, number>;
   speedMultiplier: number;
   moonSpeedMultiplier: number;
-  asteroidBelt: AsteroidBeltConfig;
+  beltConfigs: Record<string, BeltConfig>;
 }
 
 // SolarSystemCanvas
