@@ -1,0 +1,341 @@
+{
+  "bodies": {
+    "sun": {
+      "id": "sun", "name": "Sun", "type": "star", "parent": null,
+      "diameter": 1391016, "mass": "1.989 × 10³⁰ kg",
+      "distanceFromParent": 0, "orbitalPeriod": 0, "rotationPeriod": 25.38,
+      "eccentricity": 0, "inclination": 0,
+      "color": "#FDB813", "glowColor": "#FF8C00",
+      "description": "The Sun is the star at the center of our Solar System. It is a nearly perfect sphere of hot plasma, generating energy by nuclear fusion of hydrogen into helium at its core.",
+      "surfaceTemp": "5,778 K (surface)", "moons": 0,
+      "funFact": "The Sun contains 99.86% of the mass of the entire Solar System.",
+      "atmosphere": "Hydrogen 71%, Helium 27%, Other 2%"
+    },
+    "mercury": {
+      "id": "mercury", "name": "Mercury", "type": "planet", "parent": "sun",
+      "diameter": 4879, "mass": "3.285 × 10²³ kg",
+      "distanceFromParent": 0.387, "orbitalPeriod": 87.97, "rotationPeriod": 58.65,
+      "eccentricity": 0.205, "inclination": 7.0,
+      "color": "#A8A8A8", "glowColor": "#888888",
+      "description": "Mercury is the smallest and innermost planet in the Solar System. Its surface is heavily cratered, similar to the Moon, and it has the most eccentric orbit of all the planets.",
+      "surfaceTemp": "-180°C to 430°C", "moons": 0,
+      "funFact": "A day on Mercury (sunrise to sunrise) lasts 176 Earth days — longer than its year!",
+      "atmosphere": "Virtually none — trace oxygen, sodium, hydrogen"
+    },
+    "venus": {
+      "id": "venus", "name": "Venus", "type": "planet", "parent": "sun",
+      "diameter": 12104, "mass": "4.867 × 10²⁴ kg",
+      "distanceFromParent": 0.723, "orbitalPeriod": 224.70, "rotationPeriod": -243.02,
+      "eccentricity": 0.007, "inclination": 3.39,
+      "color": "#E8C27A", "glowColor": "#C49A3C",
+      "description": "Venus is the second planet from the Sun and the hottest planet in our solar system. Its thick atmosphere traps heat in a runaway greenhouse effect, and it spins backwards compared to most planets.",
+      "surfaceTemp": "465°C (average)", "moons": 0,
+      "funFact": "Venus rotates so slowly that a day there is longer than its year. It also rotates backwards!",
+      "atmosphere": "Carbon dioxide 96%, Nitrogen 3.5%"
+    },
+    "earth": {
+      "id": "earth", "name": "Earth", "type": "planet", "parent": "sun",
+      "diameter": 12756, "mass": "5.972 × 10²⁴ kg",
+      "distanceFromParent": 1.0, "orbitalPeriod": 365.25, "rotationPeriod": 0.9973,
+      "eccentricity": 0.017, "inclination": 0.0,
+      "color": "#4A90D9", "glowColor": "#2E6EAE",
+      "description": "Earth is the third planet from the Sun and the only known planet to harbor life. It has one large natural satellite — the Moon — and a dynamic atmosphere that shields life from harmful radiation.",
+      "surfaceTemp": "-88°C to 58°C", "moons": 1,
+      "funFact": "Earth is the densest planet in the Solar System and the only one not named after a mythological figure.",
+      "atmosphere": "Nitrogen 78%, Oxygen 21%, Argon 1%"
+    },
+    "moon": {
+      "id": "moon", "name": "Moon", "type": "moon", "parent": "earth",
+      "diameter": 3475, "mass": "7.342 × 10²² kg",
+      "distanceFromParent": 0.00257, "orbitalPeriod": 27.32, "rotationPeriod": 27.32,
+      "eccentricity": 0.055, "inclination": 5.145,
+      "color": "#C8C8C8", "glowColor": "#A0A0A0",
+      "description": "The Moon is Earth's only natural satellite and the fifth-largest moon in the Solar System. It is the largest and most massive satellite relative to its parent planet.",
+      "surfaceTemp": "-173°C to 127°C", "moons": 0,
+      "funFact": "The Moon is slowly drifting away from Earth at about 3.8 cm per year.",
+      "atmosphere": "Virtually none — trace helium, neon, argon"
+    },
+    "mars": {
+      "id": "mars", "name": "Mars", "type": "planet", "parent": "sun",
+      "diameter": 6792, "mass": "6.39 × 10²³ kg",
+      "distanceFromParent": 1.524, "orbitalPeriod": 686.97, "rotationPeriod": 1.026,
+      "eccentricity": 0.094, "inclination": 1.85,
+      "color": "#E06B3A", "glowColor": "#B84C1E",
+      "description": "Mars is the fourth planet from the Sun and the second-smallest planet. Often called the Red Planet due to its reddish appearance, it hosts Olympus Mons, the tallest volcano in the Solar System.",
+      "surfaceTemp": "-87°C to -5°C", "moons": 2,
+      "funFact": "Mars has the largest dust storms in the Solar System, which can last for months and cover the entire planet.",
+      "atmosphere": "Carbon dioxide 95%, Nitrogen 2.6%"
+    },
+    "phobos": {
+      "id": "phobos", "name": "Phobos", "type": "moon", "parent": "mars",
+      "diameter": 22.2, "mass": "1.066 × 10¹⁶ kg",
+      "distanceFromParent": 0.0000627, "orbitalPeriod": 0.319, "rotationPeriod": 0.319,
+      "eccentricity": 0.015, "inclination": 1.08,
+      "color": "#B08060", "glowColor": "#907050",
+      "description": "Phobos is the larger and innermost of Mars's two moons. It orbits so close to Mars that it completes an orbit in less than one Martian day and is slowly spiraling inward.",
+      "surfaceTemp": "-40°C (average)", "moons": 0,
+      "funFact": "Phobos orbits faster than Mars rotates — from the Martian surface, it rises in the west and sets in the east!",
+      "atmosphere": "None"
+    },
+    "deimos": {
+      "id": "deimos", "name": "Deimos", "type": "moon", "parent": "mars",
+      "diameter": 12.4, "mass": "1.476 × 10¹⁵ kg",
+      "distanceFromParent": 0.000157, "orbitalPeriod": 1.263, "rotationPeriod": 1.263,
+      "eccentricity": 0.0002, "inclination": 1.79,
+      "color": "#A09080", "glowColor": "#807060",
+      "description": "Deimos is the smaller and outermost of Mars's two moons. It is a small, irregularly shaped object believed to be a captured asteroid.",
+      "surfaceTemp": "-40°C (average)", "moons": 0,
+      "funFact": "Deimos takes 30 hours to orbit Mars — just slightly longer than a Martian day — so from Mars, it appears to move very slowly across the sky.",
+      "atmosphere": "None"
+    },
+    "asteroid-belt": {
+      "id": "asteroid-belt", "name": "Asteroid Belt", "type": "belt", "parent": "sun",
+      "diameter": 0, "mass": "2.39 × 10²¹ kg",
+      "distanceFromParent": 0, "orbitalPeriod": 0, "rotationPeriod": 0,
+      "eccentricity": 0, "inclination": 0,
+      "color": "#B0A080", "glowColor": "#A09070",
+      "description": "The Asteroid Belt is a vast region between the orbits of Mars and Jupiter, home to millions of rocky bodies ranging from tiny pebbles to Ceres, a dwarf planet. It contains the majority of known minor planets in the Solar System.",
+      "surfaceTemp": "Varies widely", "moons": 0,
+      "funFact": "Despite containing millions of objects, the total mass of the entire Asteroid Belt is less than 4% of the mass of the Moon — most of the space between Mars and Jupiter is empty."
+    },
+    "ceres": {
+      "id": "ceres", "name": "Ceres", "type": "dwarf-planet", "parent": "asteroid-belt",
+      "diameter": 939, "mass": "9.384 × 10²⁰ kg",
+      "distanceFromParent": 2.769, "orbitalPeriod": 1681.63, "rotationPeriod": 0.3781,
+      "eccentricity": 0.076, "inclination": 10.59,
+      "color": "#A89880", "glowColor": "#887860",
+      "description": "Ceres is the largest object in the asteroid belt between Mars and Jupiter, and the only dwarf planet in the inner Solar System. It was the first asteroid ever discovered, in 1801, and later reclassified as a dwarf planet in 2006.",
+      "surfaceTemp": "-105°C (average)", "moons": 0,
+      "funFact": "Ceres contains about one-third of the total mass of the entire asteroid belt, yet is still far smaller than our Moon.",
+      "atmosphere": "Transient water vapour (near bright spots)"
+    },
+    "vesta": {
+      "id": "vesta", "name": "Vesta", "type": "asteroid", "parent": "asteroid-belt",
+      "diameter": 525, "mass": "2.59 × 10²⁰ kg",
+      "distanceFromParent": 2.361, "orbitalPeriod": 1325.75, "rotationPeriod": 0.2226,
+      "eccentricity": 0.089, "inclination": 7.14,
+      "color": "#9A8870", "glowColor": "#7A6850",
+      "description": "Vesta is the second-most-massive body in the asteroid belt and the brightest asteroid visible from Earth. It was visited by NASA's Dawn spacecraft in 2011–2012, revealing a geologically diverse world with ancient volcanic activity.",
+      "surfaceTemp": "-188°C to -18°C", "moons": 0,
+      "funFact": "Vesta is so large it was nearly classified as a planet — it has a giant impact crater at its south pole larger in diameter than Vesta itself is wide."
+    },
+    "pallas": {
+      "id": "pallas", "name": "Pallas", "type": "asteroid", "parent": "asteroid-belt",
+      "diameter": 512, "mass": "2.04 × 10²⁰ kg",
+      "distanceFromParent": 2.772, "orbitalPeriod": 1685.37, "rotationPeriod": 0.326,
+      "eccentricity": 0.231, "inclination": 34.84,
+      "color": "#8090A0", "glowColor": "#607080",
+      "description": "Pallas is the third-largest asteroid in the belt. It has an unusually high orbital inclination and eccentricity compared to most belt objects, making it a dynamically distinct body.",
+      "surfaceTemp": "-173°C (average)", "moons": 0,
+      "funFact": "Pallas has one of the most tilted and elongated orbits of any large asteroid — it's one of the hardest large bodies in the Solar System to reach with a spacecraft."
+    },
+    "hygiea": {
+      "id": "hygiea", "name": "Hygiea", "type": "asteroid", "parent": "asteroid-belt",
+      "diameter": 434, "mass": "8.74 × 10¹⁹ kg",
+      "distanceFromParent": 3.141, "orbitalPeriod": 2029.83, "rotationPeriod": 0.5903,
+      "eccentricity": 0.117, "inclination": 3.84,
+      "color": "#707878", "glowColor": "#505858",
+      "description": "Hygiea is the fourth-largest object in the asteroid belt. Recent observations suggest it may be nearly spherical — raising the possibility of reclassifying it as a dwarf planet.",
+      "surfaceTemp": "-120°C (average)", "moons": 0,
+      "funFact": "Hygiea may qualify as a dwarf planet — it is remarkably round for an asteroid and could meet all the criteria, which would make it the fifth dwarf planet in the Solar System."
+    },
+    "jupiter": {
+      "id": "jupiter", "name": "Jupiter", "type": "planet", "parent": "sun",
+      "diameter": 142984, "mass": "1.898 × 10²⁷ kg",
+      "distanceFromParent": 5.204, "orbitalPeriod": 4332.59, "rotationPeriod": 0.414,
+      "eccentricity": 0.049, "inclination": 1.3,
+      "color": "#C98A5A", "glowColor": "#A06035",
+      "description": "Jupiter is the fifth planet from the Sun and by far the largest planet, more than twice as massive as all the other planets combined. Its Great Red Spot is a storm that has raged for hundreds of years.",
+      "surfaceTemp": "-110°C (cloud tops)", "moons": 95,
+      "funFact": "Jupiter's Great Red Spot is a storm larger than Earth that has been raging for at least 350 years.",
+      "atmosphere": "Hydrogen 89%, Helium 10%"
+    },
+    "io": {
+      "id": "io", "name": "Io", "type": "moon", "parent": "jupiter",
+      "diameter": 3643, "mass": "8.932 × 10²² kg",
+      "distanceFromParent": 0.00282, "orbitalPeriod": 1.769, "rotationPeriod": 1.769,
+      "eccentricity": 0.0041, "inclination": 0.036,
+      "color": "#D4A843", "glowColor": "#B08020",
+      "description": "Io is the innermost of the four Galilean moons of Jupiter. It is the most volcanically active body in the Solar System, with hundreds of volcanoes constantly erupting.",
+      "surfaceTemp": "-143°C to 1600°C (volcanic)", "moons": 0,
+      "funFact": "Io's surface is constantly reshaped by volcanic activity — it has no impact craters because lava covers them almost immediately.",
+      "atmosphere": "Sulfur dioxide (trace)"
+    },
+    "europa": {
+      "id": "europa", "name": "Europa", "type": "moon", "parent": "jupiter",
+      "diameter": 3122, "mass": "4.80 × 10²² kg",
+      "distanceFromParent": 0.00449, "orbitalPeriod": 3.551, "rotationPeriod": 3.551,
+      "eccentricity": 0.009, "inclination": 0.466,
+      "color": "#C8B4A0", "glowColor": "#A09080",
+      "description": "Europa is the sixth-largest moon in the Solar System and one of the most promising candidates for extraterrestrial life. It has a smooth icy surface hiding a vast global ocean beneath.",
+      "surfaceTemp": "-160°C (surface)", "moons": 0,
+      "funFact": "Europa's subsurface ocean is estimated to be 60–150 km deep — containing more water than all of Earth's oceans combined.",
+      "atmosphere": "Thin oxygen atmosphere"
+    },
+    "ganymede": {
+      "id": "ganymede", "name": "Ganymede", "type": "moon", "parent": "jupiter",
+      "diameter": 5268, "mass": "1.482 × 10²³ kg",
+      "distanceFromParent": 0.00716, "orbitalPeriod": 7.155, "rotationPeriod": 7.155,
+      "eccentricity": 0.001, "inclination": 0.177,
+      "color": "#A09878", "glowColor": "#807860",
+      "description": "Ganymede is the largest and most massive moon in the Solar System, even larger than the planet Mercury. It is the only moon known to have its own magnetic field.",
+      "surfaceTemp": "-163°C (average)", "moons": 0,
+      "funFact": "Ganymede is the only moon in the Solar System with a magnetosphere, creating its own auroras.",
+      "atmosphere": "Thin oxygen atmosphere"
+    },
+    "callisto": {
+      "id": "callisto", "name": "Callisto", "type": "moon", "parent": "jupiter",
+      "diameter": 4821, "mass": "1.076 × 10²³ kg",
+      "distanceFromParent": 0.01259, "orbitalPeriod": 16.69, "rotationPeriod": 16.69,
+      "eccentricity": 0.0074, "inclination": 0.192,
+      "color": "#888880", "glowColor": "#686860",
+      "description": "Callisto is the outermost of the Galilean moons and the most heavily cratered object in the Solar System. Its ancient, battered surface has remained unchanged for billions of years.",
+      "surfaceTemp": "-139°C (average)", "moons": 0,
+      "funFact": "Callisto's surface is so heavily cratered that no area is safe from impacts — it is the most cratered body in the entire Solar System.",
+      "atmosphere": "Thin carbon dioxide atmosphere"
+    },
+    "saturn": {
+      "id": "saturn", "name": "Saturn", "type": "planet", "parent": "sun",
+      "diameter": 120536, "mass": "5.683 × 10²⁶ kg",
+      "distanceFromParent": 9.582, "orbitalPeriod": 10759.22, "rotationPeriod": 0.444,
+      "eccentricity": 0.057, "inclination": 2.49,
+      "color": "#E8D5A0", "glowColor": "#C0A860",
+      "hasRings": true,
+      "description": "Saturn is the sixth planet from the Sun and the second-largest, known for its stunning ring system. Its rings are made mostly of ice particles, rocky debris, and dust.",
+      "surfaceTemp": "-139°C (cloud tops)", "moons": 146,
+      "funFact": "Saturn is the least dense planet in the Solar System — it would float on water if you had an ocean big enough!",
+      "atmosphere": "Hydrogen 96%, Helium 3%"
+    },
+    "titan": {
+      "id": "titan", "name": "Titan", "type": "moon", "parent": "saturn",
+      "diameter": 5149, "mass": "1.345 × 10²³ kg",
+      "distanceFromParent": 0.00817, "orbitalPeriod": 15.95, "rotationPeriod": 15.95,
+      "eccentricity": 0.0288, "inclination": 0.34,
+      "color": "#C89050", "glowColor": "#A07030",
+      "description": "Titan is Saturn's largest moon and the only moon in the Solar System with a thick atmosphere and stable bodies of liquid on its surface. It has lakes and rivers of liquid methane and ethane.",
+      "surfaceTemp": "-179°C (average)", "moons": 0,
+      "funFact": "Titan is the only moon in the solar system with a dense atmosphere — so thick you could strap wings to your arms and fly through it!",
+      "atmosphere": "Nitrogen 95%, Methane 5%"
+    },
+    "enceladus": {
+      "id": "enceladus", "name": "Enceladus", "type": "moon", "parent": "saturn",
+      "diameter": 504, "mass": "1.08 × 10²⁰ kg",
+      "distanceFromParent": 0.00159, "orbitalPeriod": 1.37, "rotationPeriod": 1.37,
+      "eccentricity": 0.0047, "inclination": 0.02,
+      "color": "#E8E8F0", "glowColor": "#C0C0D0",
+      "description": "Enceladus is Saturn's sixth-largest moon and one of the most scientifically interesting objects in the Solar System. It has geysers of water vapor shooting from its south pole, indicating a subsurface ocean.",
+      "surfaceTemp": "-201°C (average)", "moons": 0,
+      "funFact": "Enceladus ejects water vapor from its south pole at 1,400 m/s — faster than a speeding bullet — creating one of Saturn's rings!",
+      "atmosphere": "Water vapor (near vents)"
+    },
+    "uranus": {
+      "id": "uranus", "name": "Uranus", "type": "planet", "parent": "sun",
+      "diameter": 51118, "mass": "8.681 × 10²⁵ kg",
+      "distanceFromParent": 19.201, "orbitalPeriod": 30688.5, "rotationPeriod": -0.718,
+      "eccentricity": 0.046, "inclination": 0.77,
+      "color": "#7DE8E8", "glowColor": "#40C0C0",
+      "description": "Uranus is the seventh planet from the Sun. It has the coldest planetary atmosphere in the Solar System and rotates on its side, with its axis tilted 98° — almost perpendicular to its orbit.",
+      "surfaceTemp": "-195°C (average)", "moons": 28,
+      "funFact": "Uranus is tipped on its side — it essentially rolls around the Sun like a ball, causing extreme seasons that last 21 years each.",
+      "atmosphere": "Hydrogen 83%, Helium 15%, Methane 2%"
+    },
+    "neptune": {
+      "id": "neptune", "name": "Neptune", "type": "planet", "parent": "sun",
+      "diameter": 49528, "mass": "1.024 × 10²⁶ kg",
+      "distanceFromParent": 30.047, "orbitalPeriod": 60195, "rotationPeriod": 0.671,
+      "eccentricity": 0.010, "inclination": 1.77,
+      "color": "#4060E8", "glowColor": "#2040C0",
+      "description": "Neptune is the eighth and outermost planet from the Sun. It is the windiest planet, with winds reaching 2,100 km/h. Its largest moon, Triton, orbits in the opposite direction to Neptune's rotation.",
+      "surfaceTemp": "-200°C (average)", "moons": 16,
+      "funFact": "Neptune has the strongest winds in the Solar System — over 2,000 km/h, faster than the speed of sound on Earth!",
+      "atmosphere": "Hydrogen 80%, Helium 19%, Methane 1%"
+    },
+    "triton": {
+      "id": "triton", "name": "Triton", "type": "moon", "parent": "neptune",
+      "diameter": 2707, "mass": "2.14 × 10²² kg",
+      "distanceFromParent": 0.00238, "orbitalPeriod": -5.877, "rotationPeriod": -5.877,
+      "eccentricity": 0.000016, "inclination": 129.8,
+      "color": "#C0A8D0", "glowColor": "#9080B0",
+      "description": "Triton is the largest moon of Neptune and the only large moon in the Solar System that orbits in the opposite direction to its planet's rotation. It is geologically active with nitrogen geysers.",
+      "surfaceTemp": "-235°C (one of the coldest in the solar system)", "moons": 0,
+      "funFact": "Triton is the coldest measured object in the Solar System at -235°C, and is slowly spiraling inward — it will eventually be torn apart by Neptune's gravity.",
+      "atmosphere": "Thin nitrogen atmosphere"
+    },
+    "pluto": {
+      "id": "pluto", "name": "Pluto", "type": "dwarf-planet", "parent": "sun",
+      "diameter": 2376, "mass": "1.303 × 10²² kg",
+      "distanceFromParent": 39.482, "orbitalPeriod": 90560, "rotationPeriod": -6.387,
+      "eccentricity": 0.249, "inclination": 17.14,
+      "color": "#C8A880", "glowColor": "#A08060",
+      "description": "Pluto is a dwarf planet in the Kuiper Belt. Once considered the ninth planet, it was reclassified in 2006. It has five known moons, with Charon being so large they are sometimes considered a binary system.",
+      "surfaceTemp": "-229°C (average)", "moons": 5,
+      "funFact": "Pluto and its moon Charon are so close in size that they orbit a common center of gravity located in space between them — making them a binary system.",
+      "atmosphere": "Thin nitrogen atmosphere (when near Sun)"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "sun",
+      "children": [
+        { "id": "mercury", "children": [] },
+        { "id": "venus", "children": [] },
+        { "id": "earth", "children": [{ "id": "moon", "children": [] }] },
+        { "id": "mars", "children": [{ "id": "phobos", "children": [] }, { "id": "deimos", "children": [] }] },
+        {
+          "id": "asteroid-belt",
+          "children": [
+            { "id": "ceres", "children": [] },
+            { "id": "vesta", "children": [] },
+            { "id": "pallas", "children": [] },
+            { "id": "hygiea", "children": [] }
+          ]
+        },
+        {
+          "id": "jupiter",
+          "children": [
+            { "id": "io", "children": [] },
+            { "id": "europa", "children": [] },
+            { "id": "ganymede", "children": [] },
+            { "id": "callisto", "children": [] }
+          ]
+        },
+        {
+          "id": "saturn",
+          "children": [
+            { "id": "titan", "children": [] },
+            { "id": "enceladus", "children": [] }
+          ]
+        },
+        { "id": "uranus", "children": [] },
+        { "id": "neptune", "children": [{ "id": "triton", "children": [] }] },
+        { "id": "pluto", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "mercury": 90, "venus": 135, "earth": 185, "mars": 240,
+      "vesta": 265, "pallas": 280, "ceres": 290, "hygiea": 313,
+      "jupiter": 340, "saturn": 430, "uranus": 510, "neptune": 580, "pluto": 640
+    },
+    "planetSizes": {
+      "sun": 38, "mercury": 4, "venus": 7, "earth": 8, "moon": 3,
+      "mars": 5.5, "phobos": 2, "deimos": 2,
+      "ceres": 2.5, "vesta": 2.0, "pallas": 1.8, "hygiea": 1.8,
+      "jupiter": 22, "io": 4, "europa": 3.5, "ganymede": 5, "callisto": 4.5,
+      "saturn": 18, "titan": 4.5, "enceladus": 2.5,
+      "uranus": 13, "neptune": 12, "triton": 3.5, "pluto": 3
+    },
+    "moonOrbitalRadii": {
+      "moon": 22, "phobos": 14, "deimos": 22,
+      "io": 32, "europa": 44, "ganymede": 60, "callisto": 80,
+      "titan": 38, "enceladus": 26, "triton": 30
+    },
+    "speedMultiplier": 0.3,
+    "asteroidBelt": {
+      "innerRadius": 258,
+      "outerRadius": 322,
+      "particleCount": 280
+    }
+  }
+}
