@@ -31,6 +31,7 @@ export interface CelestialBody {
   hasRings?: boolean;
   showOrbitRing?: boolean;
   atmosphereColor?: string;
+  binaryMassFraction?: number;
   description: string;
   surfaceTemp: string;
   moons: number;

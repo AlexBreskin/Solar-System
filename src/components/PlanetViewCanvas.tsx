@@ -101,9 +101,32 @@ export default function PlanetViewCanvas({
       ctx.scale(pan.zoom, pan.zoom);
       ctx.translate(-cx, -cy);
 
-      // Moon orbit rings
+      const hasBinary = moons.some(m => CELESTIAL_BODIES[m]?.binaryMassFraction !== undefined);
+
+      // Barycenter marker for binary systems
+      if (hasBinary) {
+        const s = 6;
+        ctx.globalAlpha = 0.25;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath(); ctx.moveTo(cx - s, cy); ctx.lineTo(cx + s, cy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx, cy - s); ctx.lineTo(cx, cy + s); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+        if (showLabels) {
+          ctx.font = '9px Syne, sans-serif';
+          ctx.fillStyle = 'rgba(255,255,255,0.35)';
+          ctx.textAlign = 'center';
+          ctx.fillText('barycenter', cx, cy + s + 10);
+        }
+      }
+
+      // Moon orbit rings — binary moon ring at its true orbital radius from barycenter
       for (const moonId of moons) {
-        const r = moonOrbitalRadii[moonId] ?? 80;
+        const μ = CELESTIAL_BODIES[moonId]?.binaryMassFraction;
+        const rawR = moonOrbitalRadii[moonId] ?? 80;
+        const r = μ !== undefined ? rawR * (1 - μ) : rawR;
         const isHighlighted = moonId === selectedBody || moonId === hoveredBody;
         ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
         ctx.strokeStyle = isHighlighted ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.18)';
@@ -112,10 +135,11 @@ export default function PlanetViewCanvas({
         ctx.stroke(); ctx.setLineDash([]);
       }
 
-      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, cx, cy, planetR, 'back');
-      drawBody(ctx, planetId, cx, cy, planetR,
+      const pPos = sim.positions[planetId] ?? { x: cx, y: cy };
+      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, pPos.x, pPos.y, planetR, 'back');
+      drawBody(ctx, planetId, pPos.x, pPos.y, planetR,
         selectedBody === planetId, hoveredBody === planetId, true);
-      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, cx, cy, planetR, 'front');
+      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, pPos.x, pPos.y, planetR, 'front');
 
       for (const moonId of moons) {
         const pos = sim.positions[moonId];

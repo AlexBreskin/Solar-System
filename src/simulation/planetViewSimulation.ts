@@ -131,15 +131,26 @@ export class PlanetViewSimulation {
     if (!this.layout) this.layout = computeScaledLayout(planetId, moons, canvasW, canvasH);
     const { moonOrbitalRadii: radii } = this.layout;
 
-    this.positions[planetId] = { x: cx, y: cy };
+    // Non-binary moons orbit the barycenter (cx, cy)
     for (const moonId of moons) {
+      if (CELESTIAL_BODIES[moonId]?.binaryMassFraction !== undefined) continue;
       const r = radii[moonId] ?? 80;
       const angle = this.angles[moonId] ?? 0;
-      this.positions[moonId] = {
-        x: cx + r * Math.cos(angle),
-        y: cy + r * Math.sin(angle),
-      };
+      this.positions[moonId] = { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
     }
+
+    // Binary moons: displace both the moon and the planet from the barycenter
+    let planetX = cx, planetY = cy;
+    for (const moonId of moons) {
+      const μ = CELESTIAL_BODIES[moonId]?.binaryMassFraction;
+      if (μ === undefined) continue;
+      const sep = radii[moonId] ?? 80;
+      const angle = this.angles[moonId] ?? 0;
+      planetX = cx - sep * μ * Math.cos(angle);
+      planetY = cy - sep * μ * Math.sin(angle);
+      this.positions[moonId] = { x: cx + sep * (1 - μ) * Math.cos(angle), y: cy + sep * (1 - μ) * Math.sin(angle) };
+    }
+    this.positions[planetId] = { x: planetX, y: planetY };
 
     return this.layout;
   }

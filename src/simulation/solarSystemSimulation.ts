@@ -37,12 +37,29 @@ function buildPositions(angles: Record<string, number>, cx: number, cy: number):
     const r = orbitalRadii[id] ?? 0;
     pos[id] = { x: cx + r * Math.cos(angles[id]), y: cy + r * Math.sin(angles[id]) };
   }
+
+  // Non-binary moons: orbit their parent's position, which equals the barycenter for binary parents
   for (const id of MOON_IDS) {
+    if (CELESTIAL_BODIES[id]?.binaryMassFraction !== undefined) continue;
     const parentId = MOON_PARENT_MAP[id];
     const pr = moonOrbitalRadii[id] ?? 0;
     const { x: px, y: py } = pos[parentId] ?? { x: cx, y: cy };
     pos[id] = { x: px + pr * Math.cos(angles[id]), y: py + pr * Math.sin(angles[id]) };
   }
+
+  // Binary moons: displace both the moon and its parent away from the barycenter
+  for (const id of MOON_IDS) {
+    const μ = CELESTIAL_BODIES[id]?.binaryMassFraction;
+    if (μ === undefined) continue;
+    const parentId = MOON_PARENT_MAP[id];
+    if (!parentId) continue;
+    const sep = moonOrbitalRadii[id] ?? 0;
+    const angle = angles[id];
+    const bary = pos[parentId];
+    pos[parentId] = { x: bary.x - sep * μ * Math.cos(angle), y: bary.y - sep * μ * Math.sin(angle) };
+    pos[id]       = { x: bary.x + sep * (1 - μ) * Math.cos(angle), y: bary.y + sep * (1 - μ) * Math.sin(angle) };
+  }
+
   return pos;
 }
 

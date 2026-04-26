@@ -294,7 +294,7 @@
       "atmosphere": "Thin nitrogen atmosphere (when near Sun)"
     },
     "charon": {
-      "id": "charon", "name": "Charon", "type": "moon", "parent": "pluto",
+      "id": "charon", "name": "Charon", "type": "moon", "parent": "pluto", "binaryMassFraction": 0.1085,
       "diameter": 1212, "mass": "1.586 × 10²¹ kg",
       "distanceFromParent": 0.0001269, "orbitalPeriod": 6.387, "rotationPeriod": 6.387,
       "eccentricity": 0.0022, "inclination": 0.001,
