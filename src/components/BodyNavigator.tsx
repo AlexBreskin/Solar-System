@@ -42,12 +42,13 @@ interface NodeProps {
   onSelectBody: (id: string) => void;
   onHoverBody: (id: string | null) => void;
   onViewPlanet: (id: string) => void;
+  onGoToSolarSystem: () => void;
   defaultOpen?: boolean;
 }
 
 function NavigatorNode({
   node, depth, activeTab, selectedBody, hoveredBody, viewedPlanet,
-  onSelectBody, onHoverBody, onViewPlanet, defaultOpen,
+  onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, defaultOpen,
 }: NodeProps): JSX.Element | null {
   const [open, setOpen] = useState<boolean>(defaultOpen ?? depth < 2);
   const body = CELESTIAL_BODIES[node.id];
@@ -61,9 +62,11 @@ function NavigatorNode({
   const handleClick = () => {
     onSelectBody(node.id);
     if (activeTab === 'planet-view') {
-      if (body.type === 'moon' && body.parent) {
+      if (body.type === 'belt') {
+        onGoToSolarSystem();
+      } else if (body.type === 'moon' && body.parent) {
         onViewPlanet(body.parent);
-      } else if (body.type !== 'belt' && body.type !== 'star') {
+      } else if (body.type !== 'star') {
         onViewPlanet(node.id);
       }
     }
@@ -113,6 +116,7 @@ function NavigatorNode({
               onSelectBody={onSelectBody}
               onHoverBody={onHoverBody}
               onViewPlanet={onViewPlanet}
+              onGoToSolarSystem={onGoToSolarSystem}
             />
           ))}
         </div>
@@ -173,6 +177,7 @@ export default function BodyNavigator({
             onSelectBody={onSelectBody}
             onHoverBody={onHoverBody}
             onViewPlanet={onViewPlanet}
+            onGoToSolarSystem={onGoToSolarSystem}
             defaultOpen={true}
           />
         ))}
