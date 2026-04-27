@@ -76,8 +76,8 @@ export default function SolarSystemCanvas({
 
       if (trackedBody && !drag.userDragging) {
         const bp = sim.positions[trackedBody];
-        pan.targetPanX += (cx - bp.x - pan.targetPanX) * 0.08;
-        pan.targetPanY += (cy - bp.y - pan.targetPanY) * 0.08;
+        pan.targetPanX += ((cx - bp.x) * pan.targetZoom - pan.targetPanX) * 0.08;
+        pan.targetPanY += ((cy - bp.y) * pan.targetZoom - pan.targetPanY) * 0.08;
       }
 
       pan.panX += (pan.targetPanX - pan.panX) * 0.1;
