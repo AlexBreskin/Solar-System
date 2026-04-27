@@ -1,4 +1,3 @@
-import React from 'react';
 import { CELESTIAL_BODIES } from '../data/celestialBodies';
 import type { BodyType, InfoPanelProps, StatRowProps } from '../types';
 import './InfoPanel.css';
@@ -33,10 +32,12 @@ function formatPeriod(days: number): string {
   return `${Math.round(years).toLocaleString()} years${retro}`;
 }
 
+const KM_PER_AU = 149_597_870.7; // IAU definition of 1 Astronomical Unit
+
 function formatDistance(au: number): string {
   if (!au) return '—';
-  if (au < 0.001) return `${(au * 1.496e8).toFixed(0)} km`;
-  if (au < 0.1) return `${(au * 1.496e8 / 1000).toFixed(0)} thousand km`;
+  if (au < 0.001) return `${(au * KM_PER_AU).toFixed(0)} km`;
+  if (au < 0.1)   return `${(au * KM_PER_AU / 1_000).toFixed(0)} thousand km`;
   return `${au.toFixed(3)} AU`;
 }
 
