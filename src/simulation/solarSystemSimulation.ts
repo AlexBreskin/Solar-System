@@ -11,6 +11,12 @@ const MOON_IDS   = Object.keys(moonOrbitalRadii);
 
 export const SOLAR_BODY_IDS: string[] = [...FIXED_IDS, ...PLANET_IDS, ...MOON_IDS];
 
+const MOON_PARENT_MAP: Record<string, string> = {};
+for (const id of MOON_IDS) {
+  const parent = CELESTIAL_BODIES[id]?.parent;
+  if (parent) MOON_PARENT_MAP[id] = parent;
+}
+
 export const ORBITAL_SPEEDS: Record<string, number> = {};
 for (const id of FIXED_IDS) ORBITAL_SPEEDS[id] = 0;
 for (const id of PLANET_IDS) {
@@ -20,14 +26,10 @@ for (const id of PLANET_IDS) {
 for (const id of MOON_IDS) {
   const body = CELESTIAL_BODIES[id];
   if (!body?.orbitalPeriod) { ORBITAL_SPEEDS[id] = 0; continue; }
-  ORBITAL_SPEEDS[id] =
-    (365.25 / Math.abs(body.orbitalPeriod)) * moonSpeedMultiplier * Math.sign(body.orbitalPeriod);
-}
-
-const MOON_PARENT_MAP: Record<string, string> = {};
-for (const id of MOON_IDS) {
-  const parent = CELESTIAL_BODIES[id]?.parent;
-  if (parent) MOON_PARENT_MAP[id] = parent;
+  const naturalSpeed = (365.25 / Math.abs(body.orbitalPeriod)) * moonSpeedMultiplier;
+  const parentSpeed  = MOON_PARENT_MAP[id] ? (ORBITAL_SPEEDS[MOON_PARENT_MAP[id]] ?? 0) : 0;
+  // Floor: moon must orbit visibly faster than its parent (guards against slow moons like Earth's)
+  ORBITAL_SPEEDS[id] = Math.max(naturalSpeed, parentSpeed * 2) * Math.sign(body.orbitalPeriod);
 }
 
 function buildPositions(angles: Record<string, number>, cx: number, cy: number): Record<string, Vec2> {
