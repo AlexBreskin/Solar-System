@@ -1,6 +1,13 @@
 export type BodyId = string;
 
-export type BodyType = 'star' | 'planet' | 'dwarf-planet' | 'moon' | 'asteroid' | 'belt';
+export enum BodyType {
+  Star = 'star',
+  Planet = 'planet',
+  DwarfPlanet = 'dwarf-planet',
+  Moon = 'moon',
+  Asteroid = 'asteroid',
+  Belt = 'belt',
+}
 
 export interface RingBand {
   innerFactor: number;

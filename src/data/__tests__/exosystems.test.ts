@@ -1,3 +1,4 @@
+import { BodyType } from '../../types';
 import type { CelestialBody, HierarchyNode, StarSystemMeta } from '../../types';
 import type { VisualConfig } from '../../types/visual';
 import { validateBodyShape, validateRingBand, flattenHierarchy } from './celestialBodies.test';
@@ -73,15 +74,15 @@ describe.each(exosystems)('$name — bodies shape', ({ data }) => {
   });
 
   it('exactly one star with no parent', () => {
-    const stars = bodies.filter(b => b.type === 'star');
+    const stars = bodies.filter(b => b.type === BodyType.Star);
     expect(stars).toHaveLength(1);
     expect(stars[0].parent).toBeNull();
   });
 
   it('all planets are direct children of the star', () => {
-    const starId = bodies.find(b => b.type === 'star')!.id;
+    const starId = bodies.find(b => b.type === BodyType.Star)!.id;
     for (const body of bodies) {
-      if (body.type === 'planet') {
+      if (body.type === BodyType.Planet) {
         expect(body.parent).toBe(starId);
       }
     }
@@ -135,7 +136,7 @@ describe.each(exosystems)('$name — visualConfig', ({ data }) => {
 
   it('orbitalRadii has an entry for every planet, all positive', () => {
     for (const body of allBodies) {
-      if (body.type === 'planet') {
+      if (body.type === BodyType.Planet) {
         expect(visualConfig.orbitalRadii).toHaveProperty(body.id);
         expect(visualConfig.orbitalRadii[body.id]).toBeGreaterThan(0);
       }

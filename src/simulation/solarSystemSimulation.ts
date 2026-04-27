@@ -1,3 +1,4 @@
+import { BodyType } from '../types';
 import type { CelestialBody, Vec2, VisualConfig } from '../types';
 
 export class SolarSystemSimulation {
@@ -21,7 +22,7 @@ export class SolarSystemSimulation {
     this.moonOrbitalRadii = moonOrbitalRadii;
 
     this.fixedIds = Object.keys(bodies).filter(
-      id => bodies[id].type === 'star' || bodies[id].type === 'belt',
+      id => bodies[id].type === BodyType.Star || bodies[id].type === BodyType.Belt,
     );
     this.planetIds = Object.keys(orbitalRadii);
     this.moonIds = Object.keys(moonOrbitalRadii);

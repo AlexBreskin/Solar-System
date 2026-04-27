@@ -1,14 +1,15 @@
 import { useStarSystem } from '../contexts/StarSystemContext';
-import type { BodyType, InfoPanelProps, StatRowProps } from '../types';
+import { BodyType } from '../types';
+import type { InfoPanelProps, StatRowProps } from '../types';
 import './InfoPanel.css';
 
 const TYPE_LABELS: Record<BodyType, string> = {
-  star: 'Star',
-  planet: 'Planet',
-  'dwarf-planet': 'Dwarf Planet',
-  moon: 'Moon',
-  asteroid: 'Asteroid',
-  belt: 'Region',
+  [BodyType.Star]: 'Star',
+  [BodyType.Planet]: 'Planet',
+  [BodyType.DwarfPlanet]: 'Dwarf Planet',
+  [BodyType.Moon]: 'Moon',
+  [BodyType.Asteroid]: 'Asteroid',
+  [BodyType.Belt]: 'Region',
 };
 
 function StatRow({ label, value }: StatRowProps): JSX.Element | null {
@@ -60,7 +61,7 @@ export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element
       <div className="info-header">
         <div className="info-dot-wrap">
           <div className="info-dot" style={{ background: body.color, boxShadow: `0 0 16px ${body.glowColor ?? body.color}80` }} />
-          {body.type === 'star' && <div className="sun-pulse" style={{ borderColor: body.color }} />}
+          {body.type === BodyType.Star && <div className="sun-pulse" style={{ borderColor: body.color }} />}
         </div>
         <div className="info-title-block">
           <div className="info-name">{body.name}</div>

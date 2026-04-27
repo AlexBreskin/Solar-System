@@ -1,9 +1,10 @@
 import { CELESTIAL_BODIES, BODY_HIERARCHY, VISUAL_CONFIG } from '../celestialBodies';
+import { BodyType } from '../../types';
 import type { CelestialBody, HierarchyNode, RingBand, BeltConfig } from '../../types';
 
 // ─── Reusable helpers ────────────────────────────────────────────────────────
 
-const VALID_TYPES = new Set(['star', 'planet', 'dwarf-planet', 'moon', 'asteroid', 'belt']);
+const VALID_TYPES = new Set(Object.values(BodyType));
 
 const SI_MASS_RE = /^(\d+(\.\d+)? × 10[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+ kg|Unknown)$/;
 
@@ -116,35 +117,35 @@ describe('CELESTIAL_BODIES — type-specific rules', () => {
   });
 
   it('exactly one star exists and it has no parent', () => {
-    const stars = bodies.filter(b => b.type === 'star');
+    const stars = bodies.filter(b => b.type === BodyType.Star);
     expect(stars).toHaveLength(1);
     expect(stars[0].parent).toBeNull();
   });
 
   it('all planets are direct children of the star', () => {
-    const starId = bodies.find(b => b.type === 'star')!.id;
+    const starId = bodies.find(b => b.type === BodyType.Star)!.id;
     for (const body of bodies) {
-      if (body.type === 'planet') {
+      if (body.type === BodyType.Planet) {
         expect(body.parent).toBe(starId);
       }
     }
   });
 
   it('all dwarf-planets are children of the star or a belt', () => {
-    const starId = bodies.find(b => b.type === 'star')!.id;
+    const starId = bodies.find(b => b.type === BodyType.Star)!.id;
     for (const body of bodies) {
-      if (body.type === 'dwarf-planet') {
+      if (body.type === BodyType.DwarfPlanet) {
         const parentBody = body.parent ? CELESTIAL_BODIES[body.parent] : null;
-        const isValidParent = body.parent === starId || parentBody?.type === 'belt';
+        const isValidParent = body.parent === starId || parentBody?.type === BodyType.Belt;
         expect(isValidParent).toBe(true);
       }
     }
   });
 
   it('all moons have a parent of type planet, dwarf-planet, or asteroid', () => {
-    const validParentTypes = new Set(['planet', 'dwarf-planet', 'asteroid']);
+    const validParentTypes = new Set([BodyType.Planet, BodyType.DwarfPlanet, BodyType.Asteroid]);
     for (const body of bodies) {
-      if (body.type === 'moon') {
+      if (body.type === BodyType.Moon) {
         expect(body.parent).not.toBeNull();
         const parent = CELESTIAL_BODIES[body.parent!];
         expect(parent).toBeDefined();
@@ -155,7 +156,7 @@ describe('CELESTIAL_BODIES — type-specific rules', () => {
 
   it('all belt bodies have orbitalPeriod === 0', () => {
     for (const body of bodies) {
-      if (body.type === 'belt') {
+      if (body.type === BodyType.Belt) {
         expect(body.orbitalPeriod).toBe(0);
       }
     }
@@ -231,7 +232,7 @@ describe('BODY_HIERARCHY', () => {
   it('root nodes are not moons', () => {
     for (const node of BODY_HIERARCHY) {
       const body = CELESTIAL_BODIES[node.id];
-      expect(body.type).not.toBe('moon');
+      expect(body.type).not.toBe(BodyType.Moon);
     }
   });
 });
@@ -248,7 +249,7 @@ describe('VISUAL_CONFIG', () => {
 
   it('orbitalRadii has an entry for every planet and dwarf-planet, all positive', () => {
     for (const body of bodies) {
-      if (body.type === 'planet' || body.type === 'dwarf-planet') {
+      if (body.type === BodyType.Planet || body.type === BodyType.DwarfPlanet) {
         expect(VISUAL_CONFIG.orbitalRadii).toHaveProperty(body.id);
         expect(VISUAL_CONFIG.orbitalRadii[body.id]).toBeGreaterThan(0);
       }
@@ -257,7 +258,7 @@ describe('VISUAL_CONFIG', () => {
 
   it('planetSizes has an entry for every non-belt body, all positive', () => {
     for (const body of bodies) {
-      if (body.type !== 'belt') {
+      if (body.type !== BodyType.Belt) {
         expect(VISUAL_CONFIG.planetSizes).toHaveProperty(body.id);
         expect(VISUAL_CONFIG.planetSizes[body.id]).toBeGreaterThan(0);
       }
@@ -266,7 +267,7 @@ describe('VISUAL_CONFIG', () => {
 
   it('moonOrbitalRadii has an entry for every moon, all positive', () => {
     for (const body of bodies) {
-      if (body.type === 'moon') {
+      if (body.type === BodyType.Moon) {
         expect(VISUAL_CONFIG.moonOrbitalRadii).toHaveProperty(body.id);
         expect(VISUAL_CONFIG.moonOrbitalRadii[body.id]).toBeGreaterThan(0);
       }
@@ -275,7 +276,7 @@ describe('VISUAL_CONFIG', () => {
 
   it('beltConfigs has an entry for every belt body with a valid config', () => {
     for (const body of bodies) {
-      if (body.type === 'belt') {
+      if (body.type === BodyType.Belt) {
         expect(VISUAL_CONFIG.beltConfigs).toHaveProperty(body.id);
         validateBeltConfig(VISUAL_CONFIG.beltConfigs[body.id]);
       }

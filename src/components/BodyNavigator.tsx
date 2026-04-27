@@ -1,24 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useStarSystem } from '../contexts/StarSystemContext';
-import type { BodyType, TabId, HierarchyNode } from '../types';
+import { BodyType } from '../types';
+import type { TabId, HierarchyNode } from '../types';
 import './BodyNavigator.css';
 
 const TYPE_ICONS: Record<BodyType, string> = {
-  star: '☀',
-  planet: '●',
-  'dwarf-planet': '◎',
-  moon: '○',
-  asteroid: '·',
-  belt: '⌀',
+  [BodyType.Star]: '☀',
+  [BodyType.Planet]: '●',
+  [BodyType.DwarfPlanet]: '◎',
+  [BodyType.Moon]: '○',
+  [BodyType.Asteroid]: '·',
+  [BodyType.Belt]: '⌀',
 };
 
 const TYPE_LABELS: Record<BodyType, string> = {
-  star: 'Star',
-  planet: 'Planet',
-  'dwarf-planet': 'Dwarf Planet',
-  moon: 'Moon',
-  asteroid: 'Asteroid',
-  belt: 'Region',
+  [BodyType.Star]: 'Star',
+  [BodyType.Planet]: 'Planet',
+  [BodyType.DwarfPlanet]: 'Dwarf Planet',
+  [BodyType.Moon]: 'Moon',
+  [BodyType.Asteroid]: 'Asteroid',
+  [BodyType.Belt]: 'Region',
 };
 
 interface BodyNavigatorProps {
@@ -64,11 +65,11 @@ function NavigatorNode({
   const handleClick = () => {
     onSelectBody(node.id);
     if (activeTab === 'planet-view') {
-      if (body.type === 'belt') {
+      if (body.type === BodyType.Belt) {
         onGoToSolarSystem();
-      } else if (body.type === 'moon' && body.parent) {
+      } else if (body.type === BodyType.Moon && body.parent) {
         onViewPlanet(body.parent);
-      } else if (body.type !== 'star') {
+      } else if (body.type !== BodyType.Star) {
         onViewPlanet(node.id);
       }
     }
@@ -140,7 +141,7 @@ export default function BodyNavigator({
 }: BodyNavigatorProps): JSX.Element {
   const { bodies, hierarchy, meta } = useStarSystem();
 
-  const starId = Object.values(bodies).find(b => b.type === 'star')?.id;
+  const starId = Object.values(bodies).find(b => b.type === BodyType.Star)?.id;
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set(starId ? [starId] : []));
   const navScrollRef = useRef<HTMLDivElement>(null);
 
@@ -155,7 +156,7 @@ export default function BodyNavigator({
 
   useEffect(() => {
     const body = bodies[selectedBody];
-    if (body?.type === 'moon' && body.parent) {
+    if (body?.type === BodyType.Moon && body.parent) {
       setExpandedIds(prev => {
         if (prev.has(body.parent!)) return prev;
         const next = new Set(prev);

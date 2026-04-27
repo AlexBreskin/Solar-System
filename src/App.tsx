@@ -7,6 +7,7 @@ import { loadStarSystem } from './data/celestialBodies';
 import { STAR_SYSTEMS } from './data/systems';
 import { StarSystemContext, type StarSystemData } from './contexts/StarSystemContext';
 import { CELESTIAL_BODIES, BODY_HIERARCHY, VISUAL_CONFIG } from './data/celestialBodies';
+import { BodyType } from './types';
 import type { BodyId, TabId, StarSystemMeta } from './types';
 import './App.css';
 
@@ -39,7 +40,7 @@ export default function App(): JSX.Element {
     if (id === systemData.id) return;
     setLoadingSystem(true);
     loadStarSystem(id).then(loaded => {
-      const starId = Object.values(loaded.bodies).find(b => b.type === 'star')?.id ?? id;
+      const starId = Object.values(loaded.bodies).find(b => b.type === BodyType.Star)?.id ?? id;
       setSystemData(loaded);
       setSelectedBody(starId);
       setHoveredBody(null);
@@ -53,7 +54,7 @@ export default function App(): JSX.Element {
   const handleSelectBody = useCallback((id: BodyId) => {
     setSelectedBody(id);
     if (activeTab === 'solar-system') {
-      if (systemData.bodies[id]?.type === 'belt') setTrackedBody(null);
+      if (systemData.bodies[id]?.type === BodyType.Belt) setTrackedBody(null);
       else setTrackedBody(id);
     }
   }, [activeTab, systemData.bodies]);
@@ -73,9 +74,9 @@ export default function App(): JSX.Element {
     setActiveTab(tab);
     if (tab === 'planet-view') {
       const body = systemData.bodies[selectedBody];
-      if (body?.type === 'moon' && body.parent) {
+      if (body?.type === BodyType.Moon && body.parent) {
         setViewedPlanet(body.parent);
-      } else if (body && body.type !== 'belt') {
+      } else if (body && body.type !== BodyType.Belt) {
         setViewedPlanet(selectedBody);
       }
       setTrackedBody(null);

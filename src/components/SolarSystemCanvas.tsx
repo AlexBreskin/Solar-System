@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import { SolarSystemSimulation } from '../simulation/solarSystemSimulation';
 import { drawStarField, drawOrbits, drawBelt, drawBodies, drawBodyRings } from '../renderers/solarSystemRenderer';
 import { useStarSystem } from '../contexts/StarSystemContext';
+import { BodyType } from '../types';
 import type { CanvasSize, SolarSystemCanvasProps } from '../types';
 
 interface PanState {
@@ -41,7 +42,7 @@ export default function SolarSystemCanvas({
   });
 
   const sim = simRef.current;
-  const beltIds = sim.bodyIds.filter(id => bodies[id]?.type === 'belt');
+  const beltIds = sim.bodyIds.filter(id => bodies[id]?.type === BodyType.Belt);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -148,7 +149,7 @@ export default function SolarSystemCanvas({
     let closest: string | null = null;
     let closestDist = Infinity;
     for (const id of sim.bodyIds) {
-      if (bodies[id]?.type === 'belt') continue;
+      if (bodies[id]?.type === BodyType.Belt) continue;
       if (!bodies[id]) continue;
       const pos = sim.positions[id];
       const r   = Math.max(planetSizes[id] ?? 4, 8);
@@ -219,7 +220,7 @@ export default function SolarSystemCanvas({
         onSelectBody(hit);
         if (bodies[hit]?.type === 'belt') {
           zoomToBelt(hit);
-        } else if (panRef.current.targetZoom < 1.5 && bodies[hit]?.type !== 'star') {
+        } else if (panRef.current.targetZoom < 1.5 && bodies[hit]?.type !== BodyType.Star) {
           panRef.current.targetZoom = Math.min(2.5, panRef.current.targetZoom * 1.8);
         }
       }

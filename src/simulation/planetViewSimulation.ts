@@ -1,4 +1,5 @@
 import { CELESTIAL_BODIES, VISUAL_CONFIG } from '../data/celestialBodies';
+import { BodyType } from '../types';
 import type { CelestialBody, Vec2, PlanetViewLayout } from '../types';
 
 const TWO_PI = Math.PI * 2;
@@ -15,7 +16,7 @@ for (const id of Object.keys(VISUAL_CONFIG.moonOrbitalRadii)) {
 
 export function getMoonsOf(planetId: string, bodies: Record<string, CelestialBody>): string[] {
   return Object.entries(bodies)
-    .filter(([, body]) => body.type === 'moon' && body.parent === planetId)
+    .filter(([, body]) => body.type === BodyType.Moon && body.parent === planetId)
     .map(([id]) => id);
 }
 

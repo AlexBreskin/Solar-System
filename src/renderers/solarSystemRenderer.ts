@@ -1,3 +1,4 @@
+import { BodyType } from '../types';
 import type { CelestialBody, Vec2, VisualConfig } from '../types';
 
 const TWO_PI = Math.PI * 2;
@@ -232,7 +233,7 @@ export function drawBodies(
 
   // Glows
   for (const [id, body] of allBodies) {
-    if (body.type === 'belt') continue;
+    if (body.type === BodyType.Belt) continue;
     const pos = positions[id];
     if (!pos) continue;
     const r = planetSizes[id] ?? 4;
@@ -253,7 +254,7 @@ export function drawBodies(
   // Moon orbit rings
   for (const [id, body] of allBodies) {
     if (!showOrbits) break;
-    if (body.type !== 'moon') continue;
+    if (body.type !== BodyType.Moon) continue;
     const parent = body.parent;
     if (!parent) continue;
     const { x: px, y: py } = positions[parent] ?? { x: 0, y: 0 };
@@ -266,14 +267,14 @@ export function drawBodies(
 
   // Bodies
   for (const [id, body] of allBodies) {
-    if (body.type === 'belt') continue;
+    if (body.type === BodyType.Belt) continue;
     const pos = positions[id];
     if (!pos) continue;
     const r = planetSizes[id] ?? 4;
     const isSelected = id === selectedBody;
     const isHovered = id === hoveredBody;
 
-    if (body.type === 'star') {
+    if (body.type === BodyType.Star) {
       drawSun(ctx, pos.x, pos.y, r, isSelected || isHovered);
     } else {
       const grad = ctx.createRadialGradient(pos.x - r * 0.3, pos.y - r * 0.3, r * 0.1, pos.x, pos.y, r);
