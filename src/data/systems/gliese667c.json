@@ -1,0 +1,118 @@
+{
+  "system": {
+    "id": "gliese667c",
+    "name": "Gliese 667C",
+    "description": "A red dwarf in a triple-star system 23.6 light-years away, hosting three super-Earths — two potentially in the habitable zone.",
+    "starColor": "#FF7040",
+    "displayOrder": 6
+  },
+  "bodies": {
+    "gliese667c-star": {
+      "id": "gliese667c-star",
+      "name": "Gliese 667C",
+      "type": "star",
+      "parent": null,
+      "diameter": 584226,
+      "mass": "5.89 × 10²⁹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 105.0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FF7040",
+      "glowColor": "#FF5020",
+      "description": "Gliese 667C is an M-class red dwarf star located 23.6 light-years from Earth in the constellation Scorpius. It is part of a triple star system together with the K-type binary Gliese 667A and 667B, and hosts at least three confirmed super-Earth planets.",
+      "surfaceTemp": "~3,700 K",
+      "moons": 0,
+      "funFact": "Gliese 667C is part of one of the few known triple star systems that hosts exoplanets, and the other two stars are visible from its planets as very bright stars in the sky.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Gliese_667"
+    },
+    "gliese667c-b": {
+      "id": "gliese667c-b",
+      "name": "Gliese 667C b",
+      "type": "planet",
+      "parent": "gliese667c-star",
+      "diameter": 22553,
+      "mass": "3.55 × 10²⁵ kg",
+      "distanceFromParent": 0.0500,
+      "orbitalPeriod": 7.203,
+      "rotationPeriod": 7.203,
+      "eccentricity": 0.09,
+      "inclination": 89.0,
+      "color": "#CC6040",
+      "showOrbitRing": true,
+      "description": "Gliese 667C b is the innermost planet in the system, orbiting extremely close to the red dwarf with a period of just over 7 days. It is a super-Earth likely too hot for liquid water, potentially exhibiting extreme volcanic activity due to tidal heating.",
+      "surfaceTemp": "~600 K (estimated)",
+      "moons": 0,
+      "funFact": "Gliese 667C b is tidally locked to its star, and the sky above its permanent dayside would show the companion stars 667A and 667B as two brilliant extra 'suns'.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Gliese_667C_b"
+    },
+    "gliese667c-c": {
+      "id": "gliese667c-c",
+      "name": "Gliese 667C c",
+      "type": "planet",
+      "parent": "gliese667c-star",
+      "diameter": 19622,
+      "mass": "2.25 × 10²⁵ kg",
+      "distanceFromParent": 0.1251,
+      "orbitalPeriod": 28.14,
+      "rotationPeriod": 28.14,
+      "eccentricity": 0.02,
+      "inclination": 89.0,
+      "color": "#6090A0",
+      "showOrbitRing": true,
+      "description": "Gliese 667C c is one of the best candidate habitable-zone exoplanets known. It orbits within the habitable zone of its red dwarf host star and is a super-Earth about 3.8 times Earth's mass, receiving a similar amount of energy from Gliese 667C as Earth receives from the Sun.",
+      "surfaceTemp": "~277 K (estimated)",
+      "moons": 0,
+      "funFact": "Gliese 667C c was one of the first exoplanets confirmed to reside in the habitable zone of a nearby star, making it a landmark discovery for the search for life.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Gliese_667C_c"
+    },
+    "gliese667c-f": {
+      "id": "gliese667c-f",
+      "name": "Gliese 667C f",
+      "type": "planet",
+      "parent": "gliese667c-star",
+      "diameter": 13507,
+      "mass": "1.31 × 10²⁵ kg",
+      "distanceFromParent": 0.1562,
+      "orbitalPeriod": 39.03,
+      "rotationPeriod": 39.03,
+      "eccentricity": 0.03,
+      "inclination": 89.0,
+      "color": "#7090A0",
+      "showOrbitRing": true,
+      "description": "Gliese 667C f is the outermost confirmed planet in the system, sitting near the outer edge of the habitable zone. It is a smaller super-Earth and likely the coolest of the three planets, with surface temperatures that could allow for water ice.",
+      "surfaceTemp": "~240 K (estimated)",
+      "moons": 0,
+      "funFact": "Gliese 667C f's relatively small mass and position near the habitable zone edge make it one of the most intriguing targets for future atmospheric characterization studies.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Gliese_667C_f"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "gliese667c-star",
+      "children": [
+        { "id": "gliese667c-b", "children": [] },
+        { "id": "gliese667c-c", "children": [] },
+        { "id": "gliese667c-f", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "gliese667c-b": 100,
+      "gliese667c-c": 210,
+      "gliese667c-f": 280
+    },
+    "planetSizes": {
+      "gliese667c-star": 22,
+      "gliese667c-b": 6,
+      "gliese667c-c": 5,
+      "gliese667c-f": 5
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1.0,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

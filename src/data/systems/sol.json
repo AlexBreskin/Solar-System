@@ -1,4 +1,11 @@
 {
+  "system": {
+    "id": "sol",
+    "name": "Solar System",
+    "description": "Our home system — 8 planets, 5 dwarf planets, and two asteroid belts orbiting the Sun.",
+    "starColor": "#FDB813",
+    "displayOrder": 0
+  },
   "bodies": {
     "sun": {
       "id": "sun",
@@ -417,24 +424,9 @@
       "color": "#E8D5A0",
       "glowColor": "#C0A860",
       "rings": [
-        {
-          "innerFactor": 1.17,
-          "outerFactor": 1.44,
-          "color": "#C8B48C",
-          "intensity": 0.5
-        },
-        {
-          "innerFactor": 1.5,
-          "outerFactor": 1.78,
-          "color": "#DCC8A0",
-          "intensity": 0.4
-        },
-        {
-          "innerFactor": 1.83,
-          "outerFactor": 2.06,
-          "color": "#B4A078",
-          "intensity": 0.3
-        }
+        { "innerFactor": 1.17, "outerFactor": 1.44, "color": "#C8B48C", "intensity": 0.5 },
+        { "innerFactor": 1.5,  "outerFactor": 1.78, "color": "#DCC8A0", "intensity": 0.4 },
+        { "innerFactor": 1.83, "outerFactor": 2.06, "color": "#B4A078", "intensity": 0.3 }
       ],
       "showOrbitRing": true,
       "description": "Saturn is the sixth planet from the Sun and the second-largest, known for its stunning ring system. Its rings are made mostly of ice particles, rocky debris, and dust.",
@@ -526,18 +518,8 @@
       "color": "#7DE8E8",
       "glowColor": "#40C0C0",
       "rings": [
-        {
-          "innerFactor": 1.65,
-          "outerFactor": 1.75,
-          "color": "#5898A0",
-          "intensity": 0.25
-        },
-        {
-          "innerFactor": 1.95,
-          "outerFactor": 2.05,
-          "color": "#5898A0",
-          "intensity": 0.3
-        }
+        { "innerFactor": 1.65, "outerFactor": 1.75, "color": "#5898A0", "intensity": 0.25 },
+        { "innerFactor": 1.95, "outerFactor": 2.05, "color": "#5898A0", "intensity": 0.3  }
       ],
       "showOrbitRing": true,
       "description": "Uranus is the seventh planet from the Sun. It has the coldest planetary atmosphere in the Solar System and rotates on its side, with its axis tilted 98° — almost perpendicular to its orbit.",
@@ -563,18 +545,8 @@
       "color": "#4060E8",
       "glowColor": "#2040C0",
       "rings": [
-        {
-          "innerFactor": 1.85,
-          "outerFactor": 1.95,
-          "color": "#404870",
-          "intensity": 0.18
-        },
-        {
-          "innerFactor": 2.2,
-          "outerFactor": 2.3,
-          "color": "#404870",
-          "intensity": 0.22
-        }
+        { "innerFactor": 1.85, "outerFactor": 1.95, "color": "#404870", "intensity": 0.18 },
+        { "innerFactor": 2.2,  "outerFactor": 2.3,  "color": "#404870", "intensity": 0.22 }
       ],
       "showOrbitRing": true,
       "description": "Neptune is the eighth and outermost planet from the Sun. It is the windiest planet, with winds reaching 2,100 km/h. Its largest moon, Triton, orbits in the opposite direction to Neptune's rotation.",
@@ -755,7 +727,7 @@
       "inclination": 0,
       "color": "#809AB8",
       "glowColor": "#5070A0",
-      "description": "The Kuiper Belt is a vast ring of icy bodies extending from Neptune's orbit at 30 AU out to about 50 AU. It contains hundreds of thousands of objects, including dwarf planets Pluto, Eris, Makemake, and Haumea. It is similar to the asteroid belt but 20 times wider and 20–200 times more massive.",
+      "description": "The Kuiper Belt is a vast ring of icy bodies extending from Neptune's orbit at 30 AU out to about 50 AU. It contains hundreds of thousands of objects, including dwarf planets Pluto, Eris, Makemake, and Haumea.",
       "surfaceTemp": "~40 K (−233°C)",
       "moons": 0,
       "funFact": "The Kuiper Belt contains more than 100,000 objects larger than 100 km in diameter — making it the Solar System's largest structure after the Oort Cloud.",
@@ -777,7 +749,7 @@
       "color": "#C8C8C0",
       "glowColor": "#A0A0A0",
       "showOrbitRing": true,
-      "description": "Eris is the most massive known dwarf planet in the Solar System, slightly smaller than Pluto in size but more massive. It orbits in the scattered disc beyond the Kuiper Belt and has one known moon, Dysnomia. Its discovery in 2005 directly led to Pluto's reclassification.",
+      "description": "Eris is the most massive known dwarf planet in the Solar System, slightly smaller than Pluto in size but more massive. It orbits in the scattered disc beyond the Kuiper Belt.",
       "surfaceTemp": "-230°C (average)",
       "moons": 1,
       "funFact": "Eris was nicknamed 'Xena' by its discoverers and was briefly considered the 'tenth planet' — its discovery forced astronomers to redefine what a planet is, ultimately demoting Pluto.",
@@ -800,7 +772,7 @@
       "color": "#C09880",
       "glowColor": "#986050",
       "showOrbitRing": true,
-      "description": "Makemake is the second-brightest Kuiper Belt Object after Pluto. Named after the creator god of the Rapa Nui people, it lacks a significant atmosphere except possibly near perihelion, when its surface ices partially sublimate. It has one small moon, MK2.",
+      "description": "Makemake is the second-brightest Kuiper Belt Object after Pluto. Named after the creator god of the Rapa Nui people, it lacks a significant atmosphere except possibly near perihelion.",
       "surfaceTemp": "-243°C (average)",
       "moons": 1,
       "funFact": "Makemake is so bright that it can be detected with a high-end amateur telescope, yet it wasn't discovered until 2005 because it was near the dense star fields of the Milky Way.",
@@ -823,10 +795,10 @@
       "color": "#E0E0D8",
       "glowColor": "#B0B0B0",
       "showOrbitRing": true,
-      "description": "Haumea is a uniquely egg-shaped dwarf planet that rotates faster than any other large object in the Solar System, completing a day in under 4 hours. This rapid spin has stretched it into a prolate spheroid. It has two known moons, Hi'iaka and Namaka, and even sports a thin ring.",
+      "description": "Haumea is a uniquely egg-shaped dwarf planet that rotates faster than any other large object in the Solar System, completing a day in under 4 hours.",
       "surfaceTemp": "-241°C (average)",
       "moons": 2,
-      "funFact": "Haumea spins so fast — once every 3.9 hours — that centrifugal force has squashed it into an American-football shape. It is the fastest rotating large body in the Solar System.",
+      "funFact": "Haumea spins so fast — once every 3.9 hours — that centrifugal force has squashed it into an American-football shape.",
       "atmosphere": "None",
       "nasaUrl": "https://science.nasa.gov/dwarf-planets/haumea/",
       "wikipediaUrl": "https://en.wikipedia.org/wiki/Haumea"
@@ -836,148 +808,66 @@
     {
       "id": "sun",
       "children": [
-        {
-          "id": "mercury",
-          "children": []
-        },
-        {
-          "id": "venus",
-          "children": []
-        },
+        { "id": "mercury", "children": [] },
+        { "id": "venus", "children": [] },
         {
           "id": "earth",
-          "children": [
-            {
-              "id": "moon",
-              "children": []
-            }
-          ]
+          "children": [{ "id": "moon", "children": [] }]
         },
         {
           "id": "mars",
           "children": [
-            {
-              "id": "phobos",
-              "children": []
-            },
-            {
-              "id": "deimos",
-              "children": []
-            }
+            { "id": "phobos", "children": [] },
+            { "id": "deimos", "children": [] }
           ]
         },
         {
           "id": "asteroid-belt",
           "children": [
-            {
-              "id": "ceres",
-              "children": []
-            },
-            {
-              "id": "vesta",
-              "children": []
-            },
-            {
-              "id": "pallas",
-              "children": []
-            },
-            {
-              "id": "hygiea",
-              "children": []
-            }
+            { "id": "ceres", "children": [] },
+            { "id": "vesta", "children": [] },
+            { "id": "pallas", "children": [] },
+            { "id": "hygiea", "children": [] }
           ]
         },
         {
           "id": "jupiter",
           "children": [
-            {
-              "id": "io",
-              "children": []
-            },
-            {
-              "id": "europa",
-              "children": []
-            },
-            {
-              "id": "ganymede",
-              "children": []
-            },
-            {
-              "id": "callisto",
-              "children": []
-            }
+            { "id": "io", "children": [] },
+            { "id": "europa", "children": [] },
+            { "id": "ganymede", "children": [] },
+            { "id": "callisto", "children": [] }
           ]
         },
         {
           "id": "saturn",
           "children": [
-            {
-              "id": "titan",
-              "children": []
-            },
-            {
-              "id": "rhea",
-              "children": []
-            },
-            {
-              "id": "enceladus",
-              "children": []
-            }
+            { "id": "titan", "children": [] },
+            { "id": "rhea", "children": [] },
+            { "id": "enceladus", "children": [] }
           ]
         },
-        {
-          "id": "uranus",
-          "children": []
-        },
+        { "id": "uranus", "children": [] },
         {
           "id": "neptune",
-          "children": [
-            {
-              "id": "triton",
-              "children": []
-            }
-          ]
+          "children": [{ "id": "triton", "children": [] }]
         },
         {
           "id": "pluto",
           "children": [
-            {
-              "id": "charon",
-              "children": []
-            },
-            {
-              "id": "styx",
-              "children": []
-            },
-            {
-              "id": "nix",
-              "children": []
-            },
-            {
-              "id": "kerberos",
-              "children": []
-            },
-            {
-              "id": "hydra",
-              "children": []
-            }
+            { "id": "charon", "children": [] },
+            { "id": "styx", "children": [] },
+            { "id": "nix", "children": [] },
+            { "id": "kerberos", "children": [] },
+            { "id": "hydra", "children": [] }
           ]
         },
         {
           "id": "kuiper-belt",
           "children": [
-            {
-              "id": "eris",
-              "children": []
-            },
-            {
-              "id": "makemake",
-              "children": []
-            },
-            {
-              "id": "haumea",
-              "children": []
-            }
+            { "id": "eris", "children": [] },
+            { "id": "makemake", "children": [] },
+            { "id": "haumea", "children": [] }
           ]
         }
       ]

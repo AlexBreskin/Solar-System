@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CELESTIAL_BODIES, BODY_HIERARCHY } from '../data/celestialBodies';
+import { useStarSystem } from '../contexts/StarSystemContext';
 import type { BodyType, TabId, HierarchyNode } from '../types';
 import './BodyNavigator.css';
 
@@ -40,6 +40,7 @@ interface NodeProps {
   hoveredBody: string | null;
   viewedPlanet: string;
   expandedIds: ReadonlySet<string>;
+  bodies: ReturnType<typeof useStarSystem>['bodies'];
   onSelectBody: (id: string) => void;
   onHoverBody: (id: string | null) => void;
   onViewPlanet: (id: string) => void;
@@ -49,9 +50,9 @@ interface NodeProps {
 
 function NavigatorNode({
   node, depth, activeTab, selectedBody, hoveredBody, viewedPlanet,
-  expandedIds, onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onToggle,
+  expandedIds, bodies, onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onToggle,
 }: NodeProps): JSX.Element | null {
-  const body = CELESTIAL_BODIES[node.id];
+  const body = bodies[node.id];
   if (!body) return null;
 
   const open       = expandedIds.has(node.id);
@@ -116,6 +117,7 @@ function NavigatorNode({
               hoveredBody={hoveredBody}
               viewedPlanet={viewedPlanet}
               expandedIds={expandedIds}
+              bodies={bodies}
               onSelectBody={onSelectBody}
               onHoverBody={onHoverBody}
               onViewPlanet={onViewPlanet}
@@ -129,16 +131,14 @@ function NavigatorNode({
   );
 }
 
-function initialExpandedIds(): Set<string> {
-  const starId = Object.values(CELESTIAL_BODIES).find(b => b.type === 'star')?.id;
-  return new Set(starId ? [starId] : []);
-}
-
 export default function BodyNavigator({
   activeTab, selectedBody, hoveredBody, viewedPlanet,
   onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem,
 }: BodyNavigatorProps): JSX.Element {
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(initialExpandedIds);
+  const { bodies, hierarchy, meta } = useStarSystem();
+
+  const starId = Object.values(bodies).find(b => b.type === 'star')?.id;
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set(starId ? [starId] : []));
   const navScrollRef = useRef<HTMLDivElement>(null);
 
   const toggleExpanded = useCallback((id: string) => {
@@ -151,7 +151,7 @@ export default function BodyNavigator({
   }, []);
 
   useEffect(() => {
-    const body = CELESTIAL_BODIES[selectedBody];
+    const body = bodies[selectedBody];
     if (body?.type === 'moon' && body.parent) {
       setExpandedIds(prev => {
         if (prev.has(body.parent!)) return prev;
@@ -160,19 +160,18 @@ export default function BodyNavigator({
         return next;
       });
     }
-    // Defer scroll until after React flushes any expand re-render
     const raf = requestAnimationFrame(() => {
       const el = navScrollRef.current?.querySelector(`[data-body-id="${selectedBody}"]`);
       el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     });
     return () => cancelAnimationFrame(raf);
-  }, [selectedBody]);
+  }, [selectedBody, bodies]);
 
   return (
     <div className="body-navigator">
       <div className="nav-header">
         <span className="nav-title">Celestial Bodies</span>
-        <span className="nav-count">{Object.keys(CELESTIAL_BODIES).length}</span>
+        <span className="nav-count">{Object.keys(bodies).length}</span>
       </div>
       <div className="nav-scroll" ref={navScrollRef}>
 
@@ -188,23 +187,23 @@ export default function BodyNavigator({
             className="nav-row pv-context-row pv-system-row"
             style={{ paddingLeft: 24 }}
             onClick={onGoToSolarSystem}
-            title="Back to Solar System view"
+            title="Back to system view"
           >
             <button className="expand-btn open" style={{ pointerEvents: 'none' }}>›</button>
             <span className="body-icon">⊙</span>
-            <span className="body-name">Sol System</span>
+            <span className="body-name">{meta.name}</span>
             <span className="body-type-badge">System</span>
           </div>
         ) : (
           <div className="nav-row pv-context-row pv-system-active" style={{ paddingLeft: 24 }}>
             <button className="expand-btn open" style={{ pointerEvents: 'none' }}>›</button>
             <span className="body-icon">⊙</span>
-            <span className="body-name">Sol System</span>
+            <span className="body-name">{meta.name}</span>
             <span className="body-type-badge">System</span>
           </div>
         )}
 
-        {BODY_HIERARCHY.map(node => (
+        {hierarchy.map(node => (
           <NavigatorNode
             key={node.id}
             node={node}
@@ -214,6 +213,7 @@ export default function BodyNavigator({
             hoveredBody={hoveredBody}
             viewedPlanet={viewedPlanet}
             expandedIds={expandedIds}
+            bodies={bodies}
             onSelectBody={onSelectBody}
             onHoverBody={onHoverBody}
             onViewPlanet={onViewPlanet}

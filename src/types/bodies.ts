@@ -40,3 +40,21 @@ export interface HierarchyNode {
   id: BodyId;
   children: HierarchyNode[];
 }
+
+import type { VisualConfig } from './visual';
+
+export interface StarSystemMeta {
+  id: string;
+  name: string;
+  description: string;
+  starColor: string;
+  displayOrder?: number;
+}
+
+export interface StarSystem {
+  id: string;
+  meta: StarSystemMeta;
+  bodies: Record<string, CelestialBody>;
+  hierarchy: HierarchyNode[];
+  visualConfig: VisualConfig;
+}

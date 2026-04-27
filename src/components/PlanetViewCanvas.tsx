@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { PlanetViewSimulation, getMoonsOf } from '../simulation/planetViewSimulation';
 import { drawStarField, drawBody, drawBodyRings } from '../renderers/planetViewRenderer';
-import { CELESTIAL_BODIES } from '../data/celestialBodies';
+import { useStarSystem } from '../contexts/StarSystemContext';
 import type { BodyId, CanvasSize, PlanetViewCanvasProps } from '../types';
 
 interface PanState {
@@ -21,8 +21,14 @@ export default function PlanetViewCanvas({
   planetId, selectedBody, hoveredBody, speed, paused, showLabels,
   onSelectBody, onHoverBody,
 }: PlanetViewCanvasProps): JSX.Element {
+  const { bodies } = useStarSystem();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const simRef    = useRef(new PlanetViewSimulation());
+  const simRef    = useRef<PlanetViewSimulation | null>(null);
+  if (!simRef.current) {
+    simRef.current = new PlanetViewSimulation(bodies);
+  }
+  const sim = simRef.current;
   const animRef   = useRef<number | null>(null);
   const sizeRef   = useRef<CanvasSize>({ w: 0, h: 0 });
   const panRef    = useRef<PanState>({
@@ -33,12 +39,12 @@ export default function PlanetViewCanvas({
     dragStartPanX: 0, dragStartPanY: 0, lastTime: null,
   });
 
-  const planet = CELESTIAL_BODIES[planetId];
-  const moons  = getMoonsOf(planetId);
+  const planet = bodies[planetId];
+  const moons  = getMoonsOf(planetId, bodies);
 
   useEffect(() => {
-    simRef.current.initMoons(moons);
-    simRef.current.resetLayout();
+    sim.initMoons(moons);
+    sim.resetLayout();
     const pan = panRef.current;
     pan.zoom = 1; pan.panX = 0; pan.panY = 0;
     pan.targetZoom = 1; pan.targetPanX = 0; pan.targetPanY = 0;
@@ -54,17 +60,16 @@ export default function PlanetViewCanvas({
         canvas.style.width  = `${width}px`;
         canvas.style.height = `${height}px`;
         sizeRef.current = { w: width, h: height };
-        simRef.current.resetLayout();
+        sim.resetLayout();
       }
     });
     ro.observe(canvas);
     return () => ro.disconnect();
-  }, []);
+  }, [sim]);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx    = canvas.getContext('2d')!;
-    const sim    = simRef.current;
     const pan    = panRef.current;
     const drag   = dragRef.current;
     const dpr    = window.devicePixelRatio;
@@ -101,7 +106,7 @@ export default function PlanetViewCanvas({
       ctx.scale(pan.zoom, pan.zoom);
       ctx.translate(-cx, -cy);
 
-      const hasBinary = moons.some(m => CELESTIAL_BODIES[m]?.binaryMassFraction !== undefined);
+      const hasBinary = moons.some(m => bodies[m]?.binaryMassFraction !== undefined);
 
       // Barycenter marker for binary systems
       if (hasBinary) {
@@ -124,7 +129,7 @@ export default function PlanetViewCanvas({
 
       // Moon orbit rings — binary moon ring at its true orbital radius from barycenter
       for (const moonId of moons) {
-        const μ = CELESTIAL_BODIES[moonId]?.binaryMassFraction;
+        const μ = bodies[moonId]?.binaryMassFraction;
         const rawR = moonOrbitalRadii[moonId] ?? 80;
         const r = μ !== undefined ? rawR * (1 - μ) : rawR;
         const isHighlighted = moonId === selectedBody || moonId === hoveredBody;
@@ -136,10 +141,10 @@ export default function PlanetViewCanvas({
       }
 
       const pPos  = sim.positions[planetId] ?? { x: cx, y: cy };
-      const rings = CELESTIAL_BODIES[planetId]?.rings ?? [];
+      const rings = bodies[planetId]?.rings ?? [];
       if (rings.length) drawBodyRings(ctx, rings, pPos.x, pPos.y, planetR, 'back');
       drawBody(ctx, planetId, pPos.x, pPos.y, planetR,
-        selectedBody === planetId, hoveredBody === planetId, true);
+        selectedBody === planetId, hoveredBody === planetId, true, bodies);
       if (rings.length) drawBodyRings(ctx, rings, pPos.x, pPos.y, planetR, 'front');
 
       for (const moonId of moons) {
@@ -148,7 +153,8 @@ export default function PlanetViewCanvas({
         const mr = moonSizes[moonId] ?? 5;
         drawBody(ctx, moonId, pos.x, pos.y, mr,
           selectedBody === moonId, hoveredBody === moonId,
-          showLabels || selectedBody === moonId || hoveredBody === moonId);
+          showLabels || selectedBody === moonId || hoveredBody === moonId,
+          bodies);
       }
 
       ctx.restore();
@@ -157,20 +163,19 @@ export default function PlanetViewCanvas({
 
     animRef.current = requestAnimationFrame(draw);
     return () => { if (animRef.current !== null) cancelAnimationFrame(animRef.current); };
-  }, [planetId, moons, selectedBody, hoveredBody, speed, paused, showLabels]); // eslint-disable-line
+  }, [planetId, moons, selectedBody, hoveredBody, speed, paused, showLabels, sim, bodies]); // eslint-disable-line
 
   const getBodyAtPoint = useCallback((canvasX: number, canvasY: number): BodyId | null => {
     const { w, h } = sizeRef.current;
     const pan = panRef.current;
-    const sim = simRef.current;
     const cx = w / 2, cy = h / 2;
     const wx = (canvasX - cx - pan.panX) / pan.zoom + cx;
     const wy = (canvasY - cy - pan.panY) / pan.zoom + cy;
     if (!sim.layout) return null;
     const { planetR, moonSizes } = sim.layout;
     let closest: BodyId | null = null, closestDist = Infinity;
-    const bodies: BodyId[] = [planetId, ...moons];
-    for (const id of bodies) {
+    const bodyList: BodyId[] = [planetId, ...moons];
+    for (const id of bodyList) {
       const pos = sim.positions[id];
       if (!pos) continue;
       const r = Math.max(id === planetId ? planetR : (moonSizes[id] ?? 5), 8);
@@ -178,7 +183,7 @@ export default function PlanetViewCanvas({
       if (dist < r * 1.6 && dist < closestDist) { closest = id; closestDist = dist; }
     }
     return closest;
-  }, [planetId, moons]);
+  }, [planetId, moons, sim]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current!;

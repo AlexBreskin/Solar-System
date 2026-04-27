@@ -1,5 +1,4 @@
-import { CELESTIAL_BODIES, VISUAL_CONFIG } from '../data/celestialBodies';
-import type { Vec2 } from '../types';
+import type { CelestialBody, Vec2, VisualConfig } from '../types';
 
 const TWO_PI = Math.PI * 2;
 
@@ -29,9 +28,9 @@ type BeltParticle = [number, number, number, number];
 
 const beltParticleCache = new Map<string, BeltParticle[]>();
 
-function getBeltParticles(beltId: string): BeltParticle[] {
+function getBeltParticles(beltId: string, visualConfig: VisualConfig): BeltParticle[] {
   if (beltParticleCache.has(beltId)) return beltParticleCache.get(beltId)!;
-  const config = VISUAL_CONFIG.beltConfigs[beltId];
+  const config = visualConfig.beltConfigs[beltId];
   if (!config) return [];
   const { innerRadius, outerRadius, particleCount, seed } = config;
   const rng = mulberry32(seed);
@@ -80,9 +79,11 @@ export function drawBelt(
   isHovered: boolean,
   showLabels: boolean,
   zoom: number,
+  bodies: Record<string, CelestialBody>,
+  visualConfig: VisualConfig,
 ): void {
-  const config = VISUAL_CONFIG.beltConfigs[beltId];
-  const body   = CELESTIAL_BODIES[beltId];
+  const config = visualConfig.beltConfigs[beltId];
+  const body   = bodies[beltId];
   if (!config || !body) return;
 
   const { innerRadius, outerRadius, color } = config;
@@ -105,7 +106,7 @@ export function drawBelt(
     ctx.lineWidth = ringWidth;
     ctx.stroke();
   } else {
-    for (const [angle, radius, size, opacity] of getBeltParticles(beltId)) {
+    for (const [angle, radius, size, opacity] of getBeltParticles(beltId, visualConfig)) {
       const x = cx + Math.cos(angle) * radius;
       const y = cy + Math.sin(angle) * radius;
       ctx.globalAlpha = (isSelected || isHovered) ? Math.min(1, opacity * 1.8) : opacity;
@@ -132,9 +133,11 @@ export function drawOrbits(
   selectedBody: string,
   hoveredBody: string | null,
   showOrbits: boolean,
+  bodies: Record<string, CelestialBody>,
+  visualConfig: VisualConfig,
 ): void {
-  const { orbitalRadii } = VISUAL_CONFIG;
-  for (const [id, body] of Object.entries(CELESTIAL_BODIES)) {
+  const { orbitalRadii } = visualConfig;
+  for (const [id, body] of Object.entries(bodies)) {
     if (!body.showOrbitRing) continue;
     const isHighlighted = id === selectedBody || id === hoveredBody;
     if (!showOrbits && !isHighlighted) continue;
@@ -178,12 +181,14 @@ export function drawBodyRings(
   ctx: CanvasRenderingContext2D,
   positions: Record<string, Vec2>,
   pass: 'back' | 'front',
+  bodies: Record<string, CelestialBody>,
+  visualConfig: VisualConfig,
 ): void {
-  for (const [id, body] of Object.entries(CELESTIAL_BODIES)) {
+  for (const [id, body] of Object.entries(bodies)) {
     if (!body.rings?.length) continue;
     const pos = positions[id];
     if (!pos) continue;
-    const r = VISUAL_CONFIG.planetSizes[id] ?? 18;
+    const r = visualConfig.planetSizes[id] ?? 18;
     ctx.save();
     ctx.translate(pos.x, pos.y);
     for (const band of body.rings) {
@@ -211,9 +216,11 @@ export function drawBodies(
   hoveredBody: string | null,
   showLabels: boolean,
   showOrbits: boolean,
+  bodies: Record<string, CelestialBody>,
+  visualConfig: VisualConfig,
 ): void {
-  const { planetSizes, moonOrbitalRadii } = VISUAL_CONFIG;
-  const allBodies = Object.entries(CELESTIAL_BODIES);
+  const { planetSizes, moonOrbitalRadii } = visualConfig;
+  const allBodies = Object.entries(bodies);
 
   // Glows
   for (const [id, body] of allBodies) {

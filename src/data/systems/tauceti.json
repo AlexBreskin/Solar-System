@@ -1,0 +1,141 @@
+{
+  "system": {
+    "id": "tauceti",
+    "name": "Tau Ceti",
+    "description": "One of the nearest Sun-like stars at 11.9 light-years, with four super-Earth candidates including two near the habitable zone.",
+    "starColor": "#FFE070",
+    "displayOrder": 5
+  },
+  "bodies": {
+    "tauceti-star": {
+      "id": "tauceti-star",
+      "name": "Tau Ceti",
+      "type": "star",
+      "parent": null,
+      "diameter": 1103045,
+      "mass": "1.58 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 34.0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFE070",
+      "glowColor": "#FFD040",
+      "description": "Tau Ceti is one of the nearest Sun-like stars to Earth, located just 11.9 light-years away in the constellation Cetus. It is a G-type main-sequence star slightly smaller and cooler than the Sun, and has been a popular target in the search for extraterrestrial life.",
+      "surfaceTemp": "5,344 K",
+      "moons": 0,
+      "funFact": "Tau Ceti was one of the two stars targeted in Project Ozma in 1960 — the first organized scientific search for extraterrestrial intelligence via radio signals.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Tau_Ceti"
+    },
+    "tauceti-g": {
+      "id": "tauceti-g",
+      "name": "Tau Ceti g",
+      "type": "planet",
+      "parent": "tauceti-star",
+      "diameter": 22299,
+      "mass": "1.04 × 10²⁵ kg",
+      "distanceFromParent": 0.133,
+      "orbitalPeriod": 20.0,
+      "rotationPeriod": 20.0,
+      "eccentricity": 0.0,
+      "inclination": 89.0,
+      "color": "#D08050",
+      "showOrbitRing": true,
+      "description": "Tau Ceti g is the innermost known planet of the system, orbiting very close to its star with a period of 20 days. It receives intense radiation at this distance and is likely a hot, rocky or volatile-rich super-Earth.",
+      "surfaceTemp": "~800 K (estimated)",
+      "moons": 0,
+      "funFact": "Tau Ceti g was confirmed in a 2017 paper that used improved stellar noise modeling to detect four super-Earths around this nearby star.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Tau_Ceti"
+    },
+    "tauceti-h": {
+      "id": "tauceti-h",
+      "name": "Tau Ceti h",
+      "type": "planet",
+      "parent": "tauceti-star",
+      "diameter": 23318,
+      "mass": "1.09 × 10²⁵ kg",
+      "distanceFromParent": 0.243,
+      "orbitalPeriod": 49.41,
+      "rotationPeriod": 49.41,
+      "eccentricity": 0.0,
+      "inclination": 89.0,
+      "color": "#A09070",
+      "showOrbitRing": true,
+      "description": "Tau Ceti h is the second planet from the star, completing an orbit every 49 days. It sits just inside the inner edge of the habitable zone and may be too hot for liquid water, but it remains one of the most studied candidates for planetary habitability.",
+      "surfaceTemp": "~600 K (estimated)",
+      "moons": 0,
+      "funFact": "Tau Ceti h was first announced as a candidate planet in 2012 and later confirmed as part of a four-planet system around this nearby star.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Tau_Ceti"
+    },
+    "tauceti-e": {
+      "id": "tauceti-e",
+      "name": "Tau Ceti e",
+      "type": "planet",
+      "parent": "tauceti-star",
+      "diameter": 50075,
+      "mass": "2.35 × 10²⁵ kg",
+      "distanceFromParent": 0.538,
+      "orbitalPeriod": 168.12,
+      "rotationPeriod": 168.12,
+      "eccentricity": 0.0,
+      "inclination": 89.0,
+      "color": "#608090",
+      "showOrbitRing": true,
+      "description": "Tau Ceti e is one of the most promising potentially habitable exoplanets. Orbiting near the inner edge of the habitable zone, it is a super-Earth about four times Earth's mass. However, Tau Ceti's high metallicity may mean a debris disk could cause frequent impacts.",
+      "surfaceTemp": "~350 K (estimated)",
+      "moons": 0,
+      "funFact": "Tau Ceti e is located close enough to Earth that future space telescopes may be able to directly image it and study its atmosphere.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Tau_Ceti_e"
+    },
+    "tauceti-f": {
+      "id": "tauceti-f",
+      "name": "Tau Ceti f",
+      "type": "planet",
+      "parent": "tauceti-star",
+      "diameter": 49184,
+      "mass": "2.30 × 10²⁵ kg",
+      "distanceFromParent": 1.334,
+      "orbitalPeriod": 642.0,
+      "rotationPeriod": 642.0,
+      "eccentricity": 0.0,
+      "inclination": 89.0,
+      "color": "#4A7080",
+      "showOrbitRing": true,
+      "description": "Tau Ceti f is the outermost known planet, orbiting near the outer edge of the habitable zone with a period of about 1.75 years. At this distance, temperatures are likely cool, but the potential for liquid water remains if greenhouse gases are present in sufficient quantities.",
+      "surfaceTemp": "~220 K (estimated)",
+      "moons": 0,
+      "funFact": "Tau Ceti f is located at a similar distance from its star as Mars is from the Sun, but receives more energy because Tau Ceti — though smaller than the Sun — is still quite luminous.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Tau_Ceti_f"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "tauceti-star",
+      "children": [
+        { "id": "tauceti-g", "children": [] },
+        { "id": "tauceti-h", "children": [] },
+        { "id": "tauceti-e", "children": [] },
+        { "id": "tauceti-f", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "tauceti-g": 100,
+      "tauceti-h": 180,
+      "tauceti-e": 330,
+      "tauceti-f": 530
+    },
+    "planetSizes": {
+      "tauceti-star": 32,
+      "tauceti-g": 6,
+      "tauceti-h": 6,
+      "tauceti-e": 11,
+      "tauceti-f": 11
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1.0,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

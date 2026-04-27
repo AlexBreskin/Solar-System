@@ -1,4 +1,4 @@
-import { CELESTIAL_BODIES } from '../data/celestialBodies';
+import { useStarSystem } from '../contexts/StarSystemContext';
 import type { BodyType, InfoPanelProps, StatRowProps } from '../types';
 import './InfoPanel.css';
 
@@ -48,27 +48,29 @@ function formatDiameter(km: number): string {
 }
 
 export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element {
-  const body = CELESTIAL_BODIES[selectedBody];
+  const { bodies } = useStarSystem();
+  const body = bodies[selectedBody];
   if (!body) return <div className="info-panel empty">Select a body</div>;
 
   const isRetrograde = body.rotationPeriod < 0;
+  const bodyType = body.type as BodyType;
 
   return (
     <div className="info-panel">
       <div className="info-header">
         <div className="info-dot-wrap">
           <div className="info-dot" style={{ background: body.color, boxShadow: `0 0 16px ${body.glowColor ?? body.color}80` }} />
-          {body.id === 'sun' && <div className="sun-pulse" style={{ borderColor: body.color }} />}
+          {body.type === 'star' && <div className="sun-pulse" style={{ borderColor: body.color }} />}
         </div>
         <div className="info-title-block">
           <div className="info-name">{body.name}</div>
-          <div className="info-type">{TYPE_LABELS[body.type]}</div>
+          <div className="info-type">{TYPE_LABELS[bodyType]}</div>
         </div>
       </div>
 
       {body.parent && (
         <div className="info-parent">
-          Orbiting <span>{CELESTIAL_BODIES[body.parent]?.name ?? body.parent}</span>
+          Orbiting <span>{bodies[body.parent]?.name ?? body.parent}</span>
         </div>
       )}
 

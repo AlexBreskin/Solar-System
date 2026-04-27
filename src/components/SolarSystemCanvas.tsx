@@ -1,10 +1,8 @@
 import React, { useRef, useEffect, useCallback } from 'react';
-import { SolarSystemSimulation, SOLAR_BODY_IDS } from '../simulation/solarSystemSimulation';
+import { SolarSystemSimulation } from '../simulation/solarSystemSimulation';
 import { drawStarField, drawOrbits, drawBelt, drawBodies, drawBodyRings } from '../renderers/solarSystemRenderer';
-import { CELESTIAL_BODIES, VISUAL_CONFIG } from '../data/celestialBodies';
+import { useStarSystem } from '../contexts/StarSystemContext';
 import type { CanvasSize, SolarSystemCanvasProps } from '../types';
-
-const BELT_IDS = SOLAR_BODY_IDS.filter(id => CELESTIAL_BODIES[id]?.type === 'belt');
 
 interface PanState {
   panX: number; panY: number;
@@ -24,8 +22,13 @@ export default function SolarSystemCanvas({
   selectedBody, hoveredBody, trackedBody, speed, paused,
   showOrbits, showLabels, onSelectBody, onHoverBody, onTrackBody,
 }: SolarSystemCanvasProps): JSX.Element {
+  const { bodies, visualConfig } = useStarSystem();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const simRef   = useRef(new SolarSystemSimulation());
+  const simRef    = useRef<SolarSystemSimulation | null>(null);
+  if (!simRef.current) {
+    simRef.current = new SolarSystemSimulation(bodies, visualConfig);
+  }
   const animRef  = useRef<number | null>(null);
   const sizeRef  = useRef<CanvasSize>({ w: 0, h: 0 });
   const panRef   = useRef<PanState>({
@@ -36,6 +39,9 @@ export default function SolarSystemCanvas({
     dragStartPanX: 0, dragStartPanY: 0,
     userDragging: false, dragBrokeFree: false, lastTime: null,
   });
+
+  const sim = simRef.current;
+  const beltIds = sim.bodyIds.filter(id => bodies[id]?.type === 'belt');
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -54,7 +60,7 @@ export default function SolarSystemCanvas({
   }, []);
 
   const zoomToBelt = useCallback((id: string) => {
-    const beltCfg = VISUAL_CONFIG.beltConfigs[id];
+    const beltCfg = visualConfig.beltConfigs[id];
     if (!beltCfg) return;
     const { w, h } = sizeRef.current;
     const halfSize = Math.min(w, h) / 2;
@@ -62,16 +68,15 @@ export default function SolarSystemCanvas({
     panRef.current.targetZoom = Math.max(0.3, (halfSize / beltCfg.outerRadius) * 0.82);
     panRef.current.targetPanX = 0;
     panRef.current.targetPanY = 0;
-  }, []);
+  }, [visualConfig]);
 
   useEffect(() => {
-    if (CELESTIAL_BODIES[selectedBody]?.type === 'belt') zoomToBelt(selectedBody);
-  }, [selectedBody, zoomToBelt]);
+    if (bodies[selectedBody]?.type === 'belt') zoomToBelt(selectedBody);
+  }, [selectedBody, zoomToBelt, bodies]);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx    = canvas.getContext('2d')!;
-    const sim    = simRef.current;
     const pan    = panRef.current;
     const drag   = dragRef.current;
     const dpr    = window.devicePixelRatio;
@@ -113,13 +118,13 @@ export default function SolarSystemCanvas({
       ctx.scale(pan.zoom, pan.zoom);
       ctx.translate(-cx, -cy);
 
-      drawOrbits(ctx, cx, cy, selectedBody, hoveredBody, showOrbits);
-      for (const beltId of BELT_IDS) {
-        drawBelt(ctx, cx, cy, beltId, selectedBody === beltId, hoveredBody === beltId, showLabels, pan.zoom);
+      drawOrbits(ctx, cx, cy, selectedBody, hoveredBody, showOrbits, bodies, visualConfig);
+      for (const beltId of beltIds) {
+        drawBelt(ctx, cx, cy, beltId, selectedBody === beltId, hoveredBody === beltId, showLabels, pan.zoom, bodies, visualConfig);
       }
-      drawBodyRings(ctx, sim.positions, 'back');
-      drawBodies(ctx, sim.positions, selectedBody, hoveredBody, showLabels, showOrbits);
-      drawBodyRings(ctx, sim.positions, 'front');
+      drawBodyRings(ctx, sim.positions, 'back', bodies, visualConfig);
+      drawBodies(ctx, sim.positions, selectedBody, hoveredBody, showLabels, showOrbits, bodies, visualConfig);
+      drawBodyRings(ctx, sim.positions, 'front', bodies, visualConfig);
 
       ctx.restore();
       ctx.restore();
@@ -127,7 +132,7 @@ export default function SolarSystemCanvas({
 
     animRef.current = requestAnimationFrame(draw);
     return () => { if (animRef.current !== null) cancelAnimationFrame(animRef.current); };
-  }, [selectedBody, hoveredBody, trackedBody, speed, paused, showOrbits, showLabels]);
+  }, [selectedBody, hoveredBody, trackedBody, speed, paused, showOrbits, showLabels, sim, beltIds, bodies, visualConfig]);
 
   const getBodyAtPoint = useCallback((canvasX: number, canvasY: number): string | null => {
     const { w, h } = sizeRef.current;
@@ -135,21 +140,21 @@ export default function SolarSystemCanvas({
     const cx = w / 2, cy = h / 2;
     const wx = (canvasX - cx - pan.panX) / pan.zoom + cx;
     const wy = (canvasY - cy - pan.panY) / pan.zoom + cy;
-    const { planetSizes } = VISUAL_CONFIG;
+    const { planetSizes } = visualConfig;
     let closest: string | null = null;
     let closestDist = Infinity;
-    for (const id of SOLAR_BODY_IDS) {
-      if (CELESTIAL_BODIES[id]?.type === 'belt') continue;
-      if (!CELESTIAL_BODIES[id]) continue;
-      const pos = simRef.current.positions[id];
+    for (const id of sim.bodyIds) {
+      if (bodies[id]?.type === 'belt') continue;
+      if (!bodies[id]) continue;
+      const pos = sim.positions[id];
       const r   = Math.max(planetSizes[id] ?? 4, 8);
       const dist = Math.hypot(wx - pos.x, wy - pos.y);
       if (dist < r * 1.5 && dist < closestDist) { closest = id; closestDist = dist; }
     }
     if (!closest) {
       const distFromCenter = Math.hypot(wx - cx, wy - cy);
-      for (const beltId of BELT_IDS) {
-        const cfg = VISUAL_CONFIG.beltConfigs[beltId];
+      for (const beltId of beltIds) {
+        const cfg = visualConfig.beltConfigs[beltId];
         if (cfg && distFromCenter >= cfg.innerRadius && distFromCenter <= cfg.outerRadius) {
           closest = beltId;
           break;
@@ -157,7 +162,7 @@ export default function SolarSystemCanvas({
       }
     }
     return closest;
-  }, []);
+  }, [sim, bodies, visualConfig, beltIds]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current!;
@@ -199,16 +204,16 @@ export default function SolarSystemCanvas({
       const hit = getBodyAtPoint(x, y);
       if (hit) {
         onSelectBody(hit);
-        if (CELESTIAL_BODIES[hit]?.type === 'belt') {
+        if (bodies[hit]?.type === 'belt') {
           zoomToBelt(hit);
-        } else if (panRef.current.targetZoom < 1.5 && CELESTIAL_BODIES[hit]?.type !== 'star') {
+        } else if (panRef.current.targetZoom < 1.5 && bodies[hit]?.type !== 'star') {
           panRef.current.targetZoom = Math.min(2.5, panRef.current.targetZoom * 1.8);
         }
       }
     }
     drag.dragging = false; drag.userDragging = false; drag.dragBrokeFree = false;
     canvas.style.cursor = 'grab';
-  }, [getBodyAtPoint, onSelectBody, zoomToBelt]);
+  }, [getBodyAtPoint, onSelectBody, zoomToBelt, bodies]);
 
   const handleWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
     e.preventDefault();
@@ -220,7 +225,7 @@ export default function SolarSystemCanvas({
     const newZoom   = Math.max(0.3, Math.min(8, pan.targetZoom * (e.deltaY > 0 ? 0.9 : 1.1)));
     const zoomRatio = newZoom / pan.targetZoom;
     if (trackedBody) {
-      const bp = simRef.current.positions[trackedBody];
+      const bp = sim.positions[trackedBody];
       const sbx = cx + pan.targetPanX + (bp.x - cx) * pan.targetZoom;
       const sby = cy + pan.targetPanY + (bp.y - cy) * pan.targetZoom;
       pan.targetPanX = sbx - zoomRatio * (sbx - (cx + pan.targetPanX)) - cx;
@@ -230,7 +235,7 @@ export default function SolarSystemCanvas({
       pan.targetPanY = my - zoomRatio * (my - (cy + pan.targetPanY)) - cy;
     }
     pan.targetZoom = newZoom;
-  }, [trackedBody]);
+  }, [trackedBody, sim]);
 
   const handleDoubleClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const rect = canvasRef.current!.getBoundingClientRect();

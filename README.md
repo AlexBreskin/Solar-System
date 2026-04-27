@@ -1,12 +1,17 @@
-# Solar System
+# Star Systems
 
-An interactive solar system simulation built with React, TypeScript, and HTML Canvas. Features real orbital mechanics, a dedicated planet view with physically-scaled layouts, and detailed information for every body.
+An interactive multi-system space simulator built with React, TypeScript, and HTML Canvas. Explore the Solar System and six exoplanetary systems, with real orbital mechanics, a planet view with physically-scaled moon layouts, and detailed information for every body.
 
 ## Features
 
+### System Selector
+- **Multiple star systems** — switch between the Solar System and six confirmed exoplanetary systems: TRAPPIST-1, Kepler-90, 55 Cancri, HD 10180, Tau Ceti, and Gliese 667C
+- **Auto-discovery** — the app scans `src/data/systems/` at build time; adding a new JSON file with a `"system"` metadata block makes it appear in the selector automatically
+- **Seamless switching** — switching systems resets the camera and simulation while preserving all UI preferences
+
 ### Solar System View
 - **Orbital mechanics** — all bodies orbit at speeds derived from their real orbital periods
-- **Interactive canvas** — scroll to zoom, drag to pan, click to select, double-click to track
+- **Interactive canvas** — scroll to zoom, drag to pan, click to select and follow, double-click to untrack
 - **Tracking mode** — camera smoothly follows any selected body; dragging breaks free
 - **Asteroid Belt & Kuiper Belt** — rendered as particle fields; both are selectable with info panels
 - **Planetary rings** — Saturn, Jupiter, Uranus, and Neptune rendered with elliptical arcs; each planet has its own ring bands with individual intensity and colour, drawn with a front/back depth pass
@@ -18,13 +23,24 @@ An interactive solar system simulation built with React, TypeScript, and HTML Ca
 - **Binary system** — Pluto and Charon orbit their shared barycenter rather than Charon orbiting Pluto's centre; a barycenter marker is shown in this view
 
 ### Shared
-- **Celestial body navigator** — persistent left panel showing the body hierarchy across both tabs; collapsed by default (showing Sun, planets, and belts); clicking a moon in the canvas auto-expands its parent planet and scrolls it into view; tab-aware clicks switch the Planet View target
+- **Celestial body navigator** — persistent left panel showing the body hierarchy across both tabs; collapsed by default (showing the star, planets, and belts); clicking a moon in the canvas auto-expands its parent and scrolls it into view; displays the active system name
 - **Info panel** — physical properties, orbital data, atmosphere, a fun fact, and direct links to NASA and Wikipedia articles for every body
 - **Bidirectional highlighting** — hovering or selecting in the canvas syncs with the navigator, and vice versa
 
 ## Celestial Bodies
 
-The simulation covers the solar system from Mercury to the Kuiper Belt: all eight planets, five dwarf planets (Ceres, Pluto, Eris, Makemake, Haumea), the Asteroid Belt with its major members, the Kuiper Belt, and moons for Earth, Mars, Jupiter, Saturn, Neptune, and Pluto (including all five of Pluto's known moons).
+**Solar System** — all eight planets, five dwarf planets (Ceres, Pluto, Eris, Makemake, Haumea), the Asteroid Belt with its major members, the Kuiper Belt, and moons for Earth, Mars, Jupiter, Saturn, Neptune, and Pluto.
+
+**Exosystems** — each system includes star and planet data with orbital mechanics tuned for visual clarity:
+
+| System | Type | Planets | Highlight |
+|--------|------|---------|-----------|
+| TRAPPIST-1 | Ultra-cool red dwarf | 7 | Three planets in the habitable zone |
+| Kepler-90 | G-type (Solar twin) | 8 | First exosystem with 8 confirmed planets |
+| 55 Cancri | G8V binary primary | 5 | Lava-world super-Earth + super-Jupiter |
+| HD 10180 | G1V Sun-like | 6 | Densest known Neptune-class system |
+| Tau Ceti | G8.5V nearby | 4 | 11.9 light-years away; habitable-zone candidates |
+| Gliese 667C | M1.5V red dwarf | 3 | Triple star system; two habitable-zone worlds |
 
 ## Getting Started
 
@@ -57,7 +73,7 @@ Output goes to `dist/`.
 
 ## Controls
 
-### Solar System View
+### System View
 
 | Action | Effect |
 |--------|--------|
@@ -84,15 +100,25 @@ Output goes to `dist/`.
 
 ```
 src/
-├── App.tsx / App.css           # Root layout, tab state, shared state
+├── App.tsx / App.css           # Root layout, system loading, tab state
 ├── types/
-│   ├── bodies.ts               # BodyId, BodyType, CelestialBody, HierarchyNode, RingBand
+│   ├── bodies.ts               # BodyId, BodyType, CelestialBody, HierarchyNode, StarSystemMeta
 │   ├── visual.ts               # Vec2, CanvasSize, BeltConfig, VisualConfig, PlanetViewLayout
-│   ├── components.ts           # TabId, canvas props/state, InfoPanelProps, StatRowProps
-│   └── index.ts                # Barrel re-export of all types above
+│   ├── components.ts           # TabId, canvas props, InfoPanelProps
+│   └── index.ts                # Barrel re-export
+├── contexts/
+│   └── StarSystemContext.tsx   # Active system data distributed via React context
 ├── data/
-│   ├── sol.json                # All body data: physical, orbital, visual, hierarchy
-│   └── celestialBodies.ts     # Typed loader for sol.json
+│   ├── systems/                # One JSON file per star system (add a file to add a system)
+│   │   ├── sol.json
+│   │   ├── trappist1.json
+│   │   ├── kepler90.json
+│   │   └── ...
+│   ├── celestialBodies.ts      # Typed loader — auto-discovers systems via import.meta.glob
+│   ├── systems.ts              # STAR_SYSTEMS list — auto-built from JSON metadata
+│   └── __tests__/
+│       ├── celestialBodies.test.ts   # Full Sol validation suite (shape, hierarchy, visualConfig)
+│       └── exosystems.test.ts        # Runs the same checks against every non-Sol system
 ├── simulation/
 │   ├── solarSystemSimulation.ts    # Orbital angle and position state
 │   ├── planetViewSimulation.ts     # Moon angles, scaled layout, binary adjustment
@@ -101,18 +127,25 @@ src/
 │   ├── solarSystemRenderer.ts  # Canvas drawing — orbits, bodies, belts, rings
 │   └── planetViewRenderer.ts   # Canvas drawing — planet, moons, rings
 └── components/
-    ├── SolarSystemCanvas.tsx   # Solar System tab — animation loop, camera, hit-testing
-    ├── PlanetViewCanvas.tsx    # Planet View tab — animation loop, camera, hit-testing
-    ├── BodyNavigator.tsx/css   # Persistent left-panel body hierarchy tree
-    └── InfoPanel.tsx/css       # Selected body detail panel
+    ├── SolarSystemCanvas.tsx   # System view — animation loop, camera, hit-testing
+    ├── PlanetViewCanvas.tsx    # Planet view — animation loop, camera, hit-testing
+    ├── BodyNavigator.tsx/css   # Left-panel body hierarchy tree (context-driven)
+    └── InfoPanel.tsx/css       # Selected body detail panel (context-driven)
 ```
+
+## Adding a New Star System
+
+1. Create `src/data/systems/<id>.json` with the standard schema (see any existing file)
+2. Include a `"system"` block at the top with `id`, `name`, `description`, `starColor`, and `displayOrder`
+3. Populate `"bodies"`, `"hierarchy"`, and `"visualConfig"` following the same structure as `sol.json`
+4. The new system appears in the selector automatically — no TypeScript changes required
 
 ## Technical Notes
 
 - **Architecture** — three layers: simulation (pure state classes), renderers (pure canvas functions with no React dependency), components (React lifecycle, events, refs)
-- **Data** — all body data lives in `sol.json`; adding or modifying a body requires only a JSON edit
-- **Binary systems** — modelled via a `binaryMassFraction` field on the secondary body; the simulation does a two-pass position update so both bodies orbit the true barycenter; other moons of the primary orbit that same barycenter
+- **Multi-system** — active system data flows from `App` through `StarSystemContext`; all components read bodies, hierarchy, and visualConfig from context rather than static imports; canvas components remount on system switch via `key` prop
+- **Auto-discovery** — `import.meta.glob('./systems/*.json')` at build time scans the directory; the `"system"` metadata block in each JSON provides the name and display order without any TypeScript registration
+- **Binary systems** — modelled via a `binaryMassFraction` field on the secondary body; the simulation does a two-pass position update so both bodies orbit the true barycenter
 - **Rendering** — HTML5 Canvas 2D with `requestAnimationFrame`; DevicePixelRatio-aware for high-DPI displays
 - **Deterministic particles** — belt particle fields use a seeded RNG (Mulberry32) so the layout is consistent across renders
-- **Visual scale** — orbital radii and body sizes are not to real scale; chosen for visual clarity
-- **Tooling** — Vite for dev and builds; Vitest for tests
+- **Tooling** — Vite for dev and builds; Vitest for tests; 178 tests across 4 suites

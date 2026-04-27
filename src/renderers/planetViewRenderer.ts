@@ -1,5 +1,4 @@
-import { CELESTIAL_BODIES } from '../data/celestialBodies';
-import type { BodyId, RingBand } from '../types';
+import type { BodyId, CelestialBody, RingBand } from '../types';
 
 const TWO_PI = Math.PI * 2;
 
@@ -47,8 +46,9 @@ export function drawBody(
   isSelected: boolean,
   isHovered: boolean,
   showLabel: boolean,
+  bodies: Record<string, CelestialBody>,
 ): void {
-  const body = CELESTIAL_BODIES[id];
+  const body = bodies[id];
   if (!body) return;
 
   if (isSelected || isHovered) {
