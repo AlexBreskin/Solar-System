@@ -115,7 +115,7 @@ export default function SolarSystemCanvas({
 
       drawOrbits(ctx, cx, cy, selectedBody, hoveredBody, showOrbits);
       for (const beltId of BELT_IDS) {
-        drawBelt(ctx, cx, cy, beltId, selectedBody === beltId, hoveredBody === beltId, showLabels);
+        drawBelt(ctx, cx, cy, beltId, selectedBody === beltId, hoveredBody === beltId, showLabels, pan.zoom);
       }
       drawBodyRings(ctx, sim.positions, 'back');
       drawBodies(ctx, sim.positions, selectedBody, hoveredBody, showLabels);

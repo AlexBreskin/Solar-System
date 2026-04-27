@@ -53,11 +53,20 @@ function lighten(hex: string, amount: number): string {
 }
 
 export function drawStarField(ctx: CanvasRenderingContext2D): void {
-  for (const [x, y, r, a] of getStarField()) {
-    ctx.globalAlpha = a;
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  // Batch into 4 alpha buckets: 300 fill calls → 4
+  const buckets: StarTuple[][] = [[], [], [], []];
+  for (const star of getStarField()) {
+    buckets[Math.min(3, Math.floor((star[3] - 0.2) / 0.16))]?.push(star);
+  }
+  const alphas = [0.25, 0.41, 0.57, 0.72];
+  ctx.fillStyle = '#ffffff';
+  for (let b = 0; b < 4; b++) {
+    ctx.globalAlpha = alphas[b];
     ctx.beginPath();
-    ctx.arc(x, y, r, 0, TWO_PI);
+    for (const [x, y, r] of buckets[b]) {
+      ctx.moveTo(x + r, y);
+      ctx.arc(x, y, r, 0, TWO_PI);
+    }
     ctx.fill();
   }
   ctx.globalAlpha = 1;
@@ -70,16 +79,17 @@ export function drawBelt(
   isSelected: boolean,
   isHovered: boolean,
   showLabels: boolean,
+  zoom: number,
 ): void {
   const config = VISUAL_CONFIG.beltConfigs[beltId];
   const body   = CELESTIAL_BODIES[beltId];
   if (!config || !body) return;
 
   const { innerRadius, outerRadius, color } = config;
+  const midRadius = (innerRadius + outerRadius) / 2;
+  const ringWidth = outerRadius - innerRadius;
 
   if (isSelected || isHovered) {
-    const midRadius = (innerRadius + outerRadius) / 2;
-    const ringWidth = outerRadius - innerRadius;
     ctx.beginPath();
     ctx.arc(cx, cy, midRadius, 0, TWO_PI);
     ctx.strokeStyle = isSelected ? (body.glowColor ?? color) + '60' : (body.glowColor ?? color) + '30';
@@ -87,16 +97,25 @@ export function drawBelt(
     ctx.stroke();
   }
 
-  for (const [angle, radius, size, opacity] of getBeltParticles(beltId)) {
-    const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius;
-    ctx.globalAlpha = (isSelected || isHovered) ? Math.min(1, opacity * 1.8) : opacity;
-    ctx.fillStyle = color;
+  if (zoom < 0.7) {
+    // Below this threshold most particles are sub-pixel — draw a single ring instead
     ctx.beginPath();
-    ctx.arc(x, y, size, 0, TWO_PI);
-    ctx.fill();
+    ctx.arc(cx, cy, midRadius, 0, TWO_PI);
+    ctx.strokeStyle = color + '48';
+    ctx.lineWidth = ringWidth;
+    ctx.stroke();
+  } else {
+    for (const [angle, radius, size, opacity] of getBeltParticles(beltId)) {
+      const x = cx + Math.cos(angle) * radius;
+      const y = cy + Math.sin(angle) * radius;
+      ctx.globalAlpha = (isSelected || isHovered) ? Math.min(1, opacity * 1.8) : opacity;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, TWO_PI);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
   }
-  ctx.globalAlpha = 1;
 
   if (showLabels || isSelected || isHovered) {
     ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
@@ -172,14 +191,16 @@ export function drawBodyRings(
       { inner: r + 9,  outer: r + 14, color: 'rgba(220,200,160,0.4)' },
       { inner: r + 15, outer: r + 19, color: 'rgba(180,160,120,0.3)' },
     ];
+    // One thick arc per band instead of ~31 thin overlapping arcs
     for (const ring of rings) {
-      for (let ra = ring.inner; ra <= ring.outer; ra += 0.5) {
-        ctx.beginPath();
-        ctx.ellipse(0, 0, ra, ra * 0.38, 0,
-          pass === 'back' ? Math.PI : 0,
-          pass === 'back' ? TWO_PI : Math.PI);
-        ctx.strokeStyle = ring.color; ctx.lineWidth = 0.5; ctx.stroke();
-      }
+      const midR = (ring.inner + ring.outer) / 2;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, midR, midR * 0.38, 0,
+        pass === 'back' ? Math.PI : 0,
+        pass === 'back' ? TWO_PI : Math.PI);
+      ctx.strokeStyle = ring.color;
+      ctx.lineWidth = ring.outer - ring.inner;
+      ctx.stroke();
     }
     ctx.restore();
   }
