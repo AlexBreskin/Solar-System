@@ -53,6 +53,21 @@ export default function SolarSystemCanvas({
     return () => ro.disconnect();
   }, []);
 
+  const zoomToBelt = useCallback((id: string) => {
+    const beltCfg = VISUAL_CONFIG.beltConfigs[id];
+    if (!beltCfg) return;
+    const { w, h } = sizeRef.current;
+    const halfSize = Math.min(w, h) / 2;
+    if (!halfSize) return;
+    panRef.current.targetZoom = Math.max(0.3, (halfSize / beltCfg.outerRadius) * 0.82);
+    panRef.current.targetPanX = 0;
+    panRef.current.targetPanY = 0;
+  }, []);
+
+  useEffect(() => {
+    if (CELESTIAL_BODIES[selectedBody]?.type === 'belt') zoomToBelt(selectedBody);
+  }, [selectedBody, zoomToBelt]);
+
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx    = canvas.getContext('2d')!;
@@ -184,14 +199,16 @@ export default function SolarSystemCanvas({
       const hit = getBodyAtPoint(x, y);
       if (hit) {
         onSelectBody(hit);
-        if (panRef.current.targetZoom < 1.5 && CELESTIAL_BODIES[hit]?.type !== 'star') {
+        if (CELESTIAL_BODIES[hit]?.type === 'belt') {
+          zoomToBelt(hit);
+        } else if (panRef.current.targetZoom < 1.5 && CELESTIAL_BODIES[hit]?.type !== 'star') {
           panRef.current.targetZoom = Math.min(2.5, panRef.current.targetZoom * 1.8);
         }
       }
     }
     drag.dragging = false; drag.userDragging = false; drag.dragBrokeFree = false;
     canvas.style.cursor = 'grab';
-  }, [getBodyAtPoint, onSelectBody]);
+  }, [getBodyAtPoint, onSelectBody, zoomToBelt]);
 
   const handleWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
     e.preventDefault();
@@ -244,7 +261,7 @@ export default function SolarSystemCanvas({
         fontSize: 11, color: 'rgba(255,255,255,0.25)',
         fontFamily: 'Syne, sans-serif', pointerEvents: 'none', lineHeight: 1.8,
       }}>
-        Scroll to zoom · Drag to pan · Click to select · Double-click to track
+        Scroll to zoom · Drag to pan · Click to select and follow · Double-click to untrack
       </div>
     </div>
   );

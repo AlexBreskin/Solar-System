@@ -20,7 +20,10 @@ export default function App(): JSX.Element {
 
   const handleSelectBody = useCallback((id: BodyId) => {
     setSelectedBody(id);
-    if (activeTab === 'solar-system') setTrackedBody(id);
+    if (activeTab === 'solar-system') {
+      if (CELESTIAL_BODIES[id]?.type === 'belt') setTrackedBody(null);
+      else setTrackedBody(id);
+    }
   }, [activeTab]);
 
   const handleHoverBody  = useCallback((id: BodyId | null) => setHoveredBody(id), []);
