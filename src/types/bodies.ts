@@ -2,6 +2,13 @@ export type BodyId = string;
 
 export type BodyType = 'star' | 'planet' | 'dwarf-planet' | 'moon' | 'asteroid' | 'belt';
 
+export interface RingBand {
+  innerFactor: number;
+  outerFactor: number;
+  color: string;
+  intensity: number;
+}
+
 export interface CelestialBody {
   id: BodyId;
   name: string;
@@ -16,7 +23,7 @@ export interface CelestialBody {
   inclination: number;
   color: string;
   glowColor?: string;
-  hasRings?: boolean;
+  rings?: RingBand[];
   showOrbitRing?: boolean;
   atmosphereColor?: string;
   binaryMassFraction?: number;

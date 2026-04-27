@@ -135,11 +135,12 @@ export default function PlanetViewCanvas({
         ctx.stroke(); ctx.setLineDash([]);
       }
 
-      const pPos = sim.positions[planetId] ?? { x: cx, y: cy };
-      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, pPos.x, pPos.y, planetR, 'back');
+      const pPos  = sim.positions[planetId] ?? { x: cx, y: cy };
+      const rings = CELESTIAL_BODIES[planetId]?.rings ?? [];
+      if (rings.length) drawBodyRings(ctx, rings, pPos.x, pPos.y, planetR, 'back');
       drawBody(ctx, planetId, pPos.x, pPos.y, planetR,
         selectedBody === planetId, hoveredBody === planetId, true);
-      if (CELESTIAL_BODIES[planetId]?.hasRings) drawBodyRings(ctx, pPos.x, pPos.y, planetR, 'front');
+      if (rings.length) drawBodyRings(ctx, rings, pPos.x, pPos.y, planetR, 'front');
 
       for (const moonId of moons) {
         const pos = sim.positions[moonId];

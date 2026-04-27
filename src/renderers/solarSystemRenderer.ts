@@ -180,28 +180,26 @@ export function drawBodyRings(
   pass: 'back' | 'front',
 ): void {
   for (const [id, body] of Object.entries(CELESTIAL_BODIES)) {
-    if (!body.hasRings) continue;
+    if (!body.rings?.length) continue;
     const pos = positions[id];
     if (!pos) continue;
     const r = VISUAL_CONFIG.planetSizes[id] ?? 18;
     ctx.save();
     ctx.translate(pos.x, pos.y);
-    const rings = [
-      { inner: r + 3,  outer: r + 8,  color: 'rgba(200,180,140,0.5)' },
-      { inner: r + 9,  outer: r + 14, color: 'rgba(220,200,160,0.4)' },
-      { inner: r + 15, outer: r + 19, color: 'rgba(180,160,120,0.3)' },
-    ];
-    // One thick arc per band instead of ~31 thin overlapping arcs
-    for (const ring of rings) {
-      const midR = (ring.inner + ring.outer) / 2;
+    for (const band of body.rings) {
+      const inner = r * band.innerFactor;
+      const outer = r * band.outerFactor;
+      const midR  = (inner + outer) / 2;
+      ctx.globalAlpha = band.intensity;
       ctx.beginPath();
       ctx.ellipse(0, 0, midR, midR * 0.38, 0,
         pass === 'back' ? Math.PI : 0,
         pass === 'back' ? TWO_PI : Math.PI);
-      ctx.strokeStyle = ring.color;
-      ctx.lineWidth = ring.outer - ring.inner;
+      ctx.strokeStyle = band.color;
+      ctx.lineWidth = outer - inner;
       ctx.stroke();
     }
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
 }
@@ -284,7 +282,7 @@ export function drawBodies(
       ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
       ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,210,230,0.7)';
       ctx.textAlign = 'center';
-      const labelOffset = body.hasRings ? r + 14 : r + 5;
+      const labelOffset = body.rings?.length ? r + 14 : r + 5;
       ctx.fillText(body.name, pos.x, pos.y - labelOffset);
     }
   }

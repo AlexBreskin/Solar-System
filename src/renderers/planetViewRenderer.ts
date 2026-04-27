@@ -1,5 +1,5 @@
 import { CELESTIAL_BODIES } from '../data/celestialBodies';
-import type { BodyId } from '../types';
+import type { BodyId, RingBand } from '../types';
 
 const TWO_PI = Math.PI * 2;
 
@@ -106,23 +106,23 @@ export function drawBody(
 
 export function drawBodyRings(
   ctx: CanvasRenderingContext2D,
+  rings: RingBand[],
   cx: number, cy: number,
   r: number,
   pass: 'back' | 'front',
 ): void {
-  const rings = [
-    { inner: r * 1.10, outer: r * 1.30, color: 'rgba(200,180,140,0.5)' },
-    { inner: r * 1.33, outer: r * 1.55, color: 'rgba(220,200,160,0.4)' },
-    { inner: r * 1.58, outer: r * 1.75, color: 'rgba(180,160,120,0.3)' },
-  ];
-  const step = Math.max(0.5, r * 0.02);
-  for (const ring of rings) {
-    for (let ra = ring.inner; ra <= ring.outer; ra += step) {
-      ctx.beginPath();
-      ctx.ellipse(cx, cy, ra, ra * 0.38, 0,
-        pass === 'back' ? Math.PI : 0,
-        pass === 'back' ? TWO_PI : Math.PI);
-      ctx.strokeStyle = ring.color; ctx.lineWidth = 0.6; ctx.stroke();
-    }
+  for (const band of rings) {
+    const inner = r * band.innerFactor;
+    const outer = r * band.outerFactor;
+    const midR  = (inner + outer) / 2;
+    ctx.globalAlpha = band.intensity;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, midR, midR * 0.38, 0,
+      pass === 'back' ? Math.PI : 0,
+      pass === 'back' ? TWO_PI : Math.PI);
+    ctx.strokeStyle = band.color;
+    ctx.lineWidth = outer - inner;
+    ctx.stroke();
   }
+  ctx.globalAlpha = 1;
 }
