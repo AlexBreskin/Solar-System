@@ -1,0 +1,33 @@
+export type BodyId = string;
+
+export type BodyType = 'star' | 'planet' | 'dwarf-planet' | 'moon' | 'asteroid' | 'belt';
+
+export interface CelestialBody {
+  id: BodyId;
+  name: string;
+  type: BodyType;
+  parent: BodyId | null;
+  diameter: number;
+  mass: string;
+  distanceFromParent: number;
+  orbitalPeriod: number;
+  rotationPeriod: number;
+  eccentricity: number;
+  inclination: number;
+  color: string;
+  glowColor?: string;
+  hasRings?: boolean;
+  showOrbitRing?: boolean;
+  atmosphereColor?: string;
+  binaryMassFraction?: number;
+  description: string;
+  surfaceTemp: string;
+  moons: number;
+  funFact: string;
+  atmosphere?: string;
+}
+
+export interface HierarchyNode {
+  id: BodyId;
+  children: HierarchyNode[];
+}
