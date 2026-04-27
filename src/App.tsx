@@ -32,7 +32,6 @@ export default function App(): JSX.Element {
 
   const handleViewPlanet = useCallback((id: BodyId) => {
     setViewedPlanet(id);
-    setSelectedBody(id);
   }, []);
 
   const handleTabChange = useCallback((tab: TabId) => {
