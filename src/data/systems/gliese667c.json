@@ -111,7 +111,7 @@
       "gliese667c-f": 5
     },
     "moonOrbitalRadii": {},
-    "speedMultiplier": 1.0,
+    "speedMultiplier": 0.099,
     "moonSpeedMultiplier": 0.5,
     "beltConfigs": {}
   }

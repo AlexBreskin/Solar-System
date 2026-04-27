@@ -945,7 +945,7 @@
       "kerberos": 13,
       "hydra": 15
     },
-    "speedMultiplier": 0.3,
+    "speedMultiplier": 1.0,
     "moonSpeedMultiplier": 0.05,
     "beltConfigs": {
       "asteroid-belt": {

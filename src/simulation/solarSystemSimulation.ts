@@ -16,7 +16,7 @@ export class SolarSystemSimulation {
 
   constructor(bodies: Record<string, CelestialBody>, visualConfig: VisualConfig) {
     this.bodies = bodies;
-    const { orbitalRadii, moonOrbitalRadii, moonSpeedMultiplier } = visualConfig;
+    const { orbitalRadii, moonOrbitalRadii, moonSpeedMultiplier, speedMultiplier } = visualConfig;
     this.orbitalRadii = orbitalRadii;
     this.moonOrbitalRadii = moonOrbitalRadii;
 
@@ -37,7 +37,7 @@ export class SolarSystemSimulation {
     for (const id of this.fixedIds) this.orbitalSpeeds[id] = 0;
     for (const id of this.planetIds) {
       const body = bodies[id];
-      this.orbitalSpeeds[id] = body?.orbitalPeriod ? 365.25 / body.orbitalPeriod : 0;
+      this.orbitalSpeeds[id] = body?.orbitalPeriod ? (365.25 / body.orbitalPeriod) * speedMultiplier : 0;
     }
     for (const id of this.moonIds) {
       const body = bodies[id];

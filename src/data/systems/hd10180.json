@@ -180,7 +180,7 @@
       "hd10180-g": 12
     },
     "moonOrbitalRadii": {},
-    "speedMultiplier": 1.0,
+    "speedMultiplier": 0.016,
     "moonSpeedMultiplier": 0.5,
     "beltConfigs": {}
   }

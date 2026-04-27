@@ -226,7 +226,7 @@
       "kepler90-h": 28
     },
     "moonOrbitalRadii": {},
-    "speedMultiplier": 1.0,
+    "speedMultiplier": 0.096,
     "moonSpeedMultiplier": 0.5,
     "beltConfigs": {}
   }
