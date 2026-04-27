@@ -118,7 +118,7 @@ export default function SolarSystemCanvas({
         drawBelt(ctx, cx, cy, beltId, selectedBody === beltId, hoveredBody === beltId, showLabels, pan.zoom);
       }
       drawBodyRings(ctx, sim.positions, 'back');
-      drawBodies(ctx, sim.positions, selectedBody, hoveredBody, showLabels);
+      drawBodies(ctx, sim.positions, selectedBody, hoveredBody, showLabels, showOrbits);
       drawBodyRings(ctx, sim.positions, 'front');
 
       ctx.restore();

@@ -210,6 +210,7 @@ export function drawBodies(
   selectedBody: string,
   hoveredBody: string | null,
   showLabels: boolean,
+  showOrbits: boolean,
 ): void {
   const { planetSizes, moonOrbitalRadii } = VISUAL_CONFIG;
   const allBodies = Object.entries(CELESTIAL_BODIES);
@@ -234,6 +235,7 @@ export function drawBodies(
 
   // Moon orbit rings
   for (const [id, body] of allBodies) {
+    if (!showOrbits) break;
     if (body.type !== 'moon') continue;
     const parent = body.parent;
     if (!parent) continue;
