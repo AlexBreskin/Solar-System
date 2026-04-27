@@ -32,6 +32,8 @@ export interface CelestialBody {
   moons: number;
   funFact: string;
   atmosphere?: string;
+  nasaUrl?: string;
+  wikipediaUrl?: string;
 }
 
 export interface HierarchyNode {

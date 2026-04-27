@@ -102,6 +102,44 @@ export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element
         <div className="funfact-label">★ Did you know?</div>
         <div className="funfact-text">{body.funFact}</div>
       </div>
+
+      <div className="info-section">
+        <div className="info-section-title">Learn More</div>
+        {!body.nasaUrl && !body.wikipediaUrl ? (
+          <div className="links-unavailable">No publicly available information</div>
+        ) : (
+          <div className="links-list">
+            {body.nasaUrl ? (
+              <a className="ext-link ext-link-active" href={body.nasaUrl} target="_blank" rel="noopener noreferrer">
+                <span className="ext-badge nasa-badge">NASA</span>
+                <span className="ext-link-label">NASA</span>
+                <svg className="ext-arrow" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            ) : (
+              <span className="ext-link ext-link-none">
+                <span className="ext-badge nasa-badge">NASA</span>
+                <span className="ext-link-label">Not available</span>
+              </span>
+            )}
+            {body.wikipediaUrl ? (
+              <a className="ext-link ext-link-active" href={body.wikipediaUrl} target="_blank" rel="noopener noreferrer">
+                <span className="ext-badge wiki-badge">W</span>
+                <span className="ext-link-label">Wikipedia</span>
+                <svg className="ext-arrow" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            ) : (
+              <span className="ext-link ext-link-none">
+                <span className="ext-badge wiki-badge">W</span>
+                <span className="ext-link-label">Not available</span>
+              </span>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
