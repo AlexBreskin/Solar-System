@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CELESTIAL_BODIES, BODY_HIERARCHY } from '../data/celestialBodies';
 import type { BodyType, TabId, HierarchyNode } from '../types';
 import './BodyNavigator.css';
@@ -39,21 +39,22 @@ interface NodeProps {
   selectedBody: string;
   hoveredBody: string | null;
   viewedPlanet: string;
+  expandedIds: ReadonlySet<string>;
   onSelectBody: (id: string) => void;
   onHoverBody: (id: string | null) => void;
   onViewPlanet: (id: string) => void;
   onGoToSolarSystem: () => void;
-  defaultOpen?: boolean;
+  onToggle: (id: string) => void;
 }
 
 function NavigatorNode({
   node, depth, activeTab, selectedBody, hoveredBody, viewedPlanet,
-  onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, defaultOpen,
+  expandedIds, onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onToggle,
 }: NodeProps): JSX.Element | null {
-  const [open, setOpen] = useState<boolean>(defaultOpen ?? depth < 2);
   const body = CELESTIAL_BODIES[node.id];
   if (!body) return null;
 
+  const open       = expandedIds.has(node.id);
   const hasChildren = node.children.length > 0;
   const isSelected  = selectedBody === node.id;
   const isHovered   = hoveredBody === node.id;
@@ -77,6 +78,7 @@ function NavigatorNode({
       <div
         className={`nav-row${isSelected ? ' selected' : ''}${!isSelected && isViewed ? ' pv-viewed' : ''}${isHovered ? ' hovered' : ''}`}
         style={{ paddingLeft: 12 + depth * 16 }}
+        data-body-id={node.id}
         onClick={handleClick}
         onMouseEnter={() => onHoverBody(node.id)}
         onMouseLeave={() => onHoverBody(null)}
@@ -84,7 +86,7 @@ function NavigatorNode({
         {hasChildren ? (
           <button
             className={`expand-btn${open ? ' open' : ''}`}
-            onClick={e => { e.stopPropagation(); setOpen(o => !o); }}
+            onClick={e => { e.stopPropagation(); onToggle(node.id); }}
             aria-label={open ? 'Collapse' : 'Expand'}
           >›</button>
         ) : (
@@ -113,10 +115,12 @@ function NavigatorNode({
               selectedBody={selectedBody}
               hoveredBody={hoveredBody}
               viewedPlanet={viewedPlanet}
+              expandedIds={expandedIds}
               onSelectBody={onSelectBody}
               onHoverBody={onHoverBody}
               onViewPlanet={onViewPlanet}
               onGoToSolarSystem={onGoToSolarSystem}
+              onToggle={onToggle}
             />
           ))}
         </div>
@@ -125,17 +129,52 @@ function NavigatorNode({
   );
 }
 
+function initialExpandedIds(): Set<string> {
+  const starId = Object.values(CELESTIAL_BODIES).find(b => b.type === 'star')?.id;
+  return new Set(starId ? [starId] : []);
+}
+
 export default function BodyNavigator({
   activeTab, selectedBody, hoveredBody, viewedPlanet,
   onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem,
 }: BodyNavigatorProps): JSX.Element {
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(initialExpandedIds);
+  const navScrollRef = useRef<HTMLDivElement>(null);
+
+  const toggleExpanded = useCallback((id: string) => {
+    setExpandedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    const body = CELESTIAL_BODIES[selectedBody];
+    if (body?.type === 'moon' && body.parent) {
+      setExpandedIds(prev => {
+        if (prev.has(body.parent!)) return prev;
+        const next = new Set(prev);
+        next.add(body.parent!);
+        return next;
+      });
+    }
+    // Defer scroll until after React flushes any expand re-render
+    const raf = requestAnimationFrame(() => {
+      const el = navScrollRef.current?.querySelector(`[data-body-id="${selectedBody}"]`);
+      el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [selectedBody]);
+
   return (
     <div className="body-navigator">
       <div className="nav-header">
         <span className="nav-title">Celestial Bodies</span>
         <span className="nav-count">{Object.keys(CELESTIAL_BODIES).length}</span>
       </div>
-      <div className="nav-scroll">
+      <div className="nav-scroll" ref={navScrollRef}>
 
         <div className="nav-row pv-context-row" style={{ paddingLeft: 12 }}>
           <span className="expand-spacer" />
@@ -174,11 +213,12 @@ export default function BodyNavigator({
             selectedBody={selectedBody}
             hoveredBody={hoveredBody}
             viewedPlanet={viewedPlanet}
+            expandedIds={expandedIds}
             onSelectBody={onSelectBody}
             onHoverBody={onHoverBody}
             onViewPlanet={onViewPlanet}
             onGoToSolarSystem={onGoToSolarSystem}
-            defaultOpen={true}
+            onToggle={toggleExpanded}
           />
         ))}
       </div>

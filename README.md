@@ -18,7 +18,7 @@ An interactive solar system simulation built with React, TypeScript, and HTML Ca
 - **Binary system** — Pluto and Charon orbit their shared barycenter rather than Charon orbiting Pluto's centre; a barycenter marker is shown in this view
 
 ### Shared
-- **Celestial body navigator** — persistent left panel showing the full hierarchy (Sun → planets → moons → belt members) across both tabs; tab-aware clicks switch the Planet View target
+- **Celestial body navigator** — persistent left panel showing the body hierarchy across both tabs; collapsed by default (showing Sun, planets, and belts); clicking a moon in the canvas auto-expands its parent planet and scrolls it into view; tab-aware clicks switch the Planet View target
 - **Info panel** — physical properties, orbital data, atmosphere, a fun fact, and direct links to NASA and Wikipedia articles for every body
 - **Bidirectional highlighting** — hovering or selecting in the canvas syncs with the navigator, and vice versa
 
