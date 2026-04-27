@@ -2,37 +2,116 @@
 
 Add a new "Galaxy" tab showing a top-down view of the Milky Way with the Solar System and exosystems from Prompt 5 marked as points of interest.
 
+## Current architecture
+
+- **Tab system**: `src/App.tsx` uses `TabId = 'solar-system' | 'planet-view'` (from `src/types/components.ts`)
+- **Canvas pattern**: each view is a `<canvas>`-based component with its own animation loop, camera (pan/zoom via refs), and hit-testing — follow the same pattern as `src/components/SolarSystemCanvas.tsx`
+- **Renderer pattern**: pure canvas drawing functions in `src/renderers/` with no React dependency — follow `src/renderers/solarSystemRenderer.ts`
+- **Simulation pattern**: stateful class or module in `src/simulation/` that owns positions and update logic
+- **Types barrel**: `src/types/index.ts` re-exports everything from `bodies.ts`, `visual.ts`, `components.ts` — add new types there
+- **RNG**: `src/utils/mulberry32.ts` (seeded, deterministic) — already used for asteroid belt and Kuiper Belt particle placement
+- **Multi-system data**: after Prompt 5, each star system has a JSON file at `src/data/<systemId>.json` and a registry in `src/data/systems.ts` (see `StarSystemMeta`)
+
 ## What to do
 
-Add a third top-level tab ("Galaxy") alongside the existing "Solar System" and "Planet View" tabs. This view renders a stylised top-down Milky Way with labelled markers for our Solar System and each of the 6 exosystems added in Prompt 5.
+### 1. Create a galaxy data file
 
-## Visual requirements
+Create `src/data/galaxy.json` (or `milkyway.json`) containing galactic positions and metadata for each known system:
 
-- Render a stylised spiral galaxy (Milky Way approximation) on an HTML5 Canvas — spiral arms as faint particle clouds or arc bands, a bright central bulge, overall blue-white colour palette on a black background
-- Use the same seeded Mulberry32 RNG already in the project for deterministic star/particle placement
-- Mark each known system (Solar System + 6 exosystems) as a glowing dot with a label
-- Positions should be plausible (not random): place the Solar System roughly 26,000 light-years from the galactic centre, in the Orion Arm; place exosystems at their approximate real galactic coordinates if known, otherwise distribute them plausibly within the Milky Way disc
-- Hovering a marker highlights it and shows the system name; clicking selects the system and updates the info panel
-- Support zoom (scroll) and pan (drag) as in the other canvas views
+```json
+{
+  "systems": [
+    {
+      "id": "sol",
+      "galacticX": 0,
+      "galacticY": 0,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.0
+    },
+    ...
+  ]
+}
+```
 
-## Technical requirements
+Positions should be plausible:
+- Solar System: ~26,000 light-years from galactic centre, in the Orion Arm
+- Exosystems: use real galactic coordinates where known (from SIMBAD or NASA Exoplanet Archive); otherwise distribute within the Milky Way disc at their correct approximate distances from Earth
 
-- New component: `src/components/GalaxyCanvas.tsx` — follows the same animation loop / camera / hit-testing pattern as `SolarSystemCanvas.tsx`
-- New renderer: `src/renderers/galaxyRenderer.ts` — pure canvas drawing functions, no React dependency
-- New simulation or layout module if needed: `src/simulation/galaxySimulation.ts` — positions and state for the galaxy markers
-- New types in `src/types/index.ts` for galaxy-level data (e.g. `GalacticBody`, `GalaxyMarker`)
-- Tab navigation in `src/App.tsx` extended with the new "Galaxy" tab; clicking a system marker in the Galaxy view switches to the Solar System tab with that system loaded (uses the system selector from Prompt 5)
-- Add CSS for the new tab in `src/App.css` or a dedicated `GalaxyCanvas.css`
+### 2. Create a galaxy loader
+
+Create `src/data/galaxy.ts`:
+```ts
+import rawData from './galaxy.json';
+export const GALAXY_DATA = rawData;
+```
+
+Add a new type to `src/types/` (e.g. `src/types/galaxy.ts`) and re-export from the barrel:
+
+```ts
+export interface GalacticSystemEntry {
+  id: string;                  // matches StarSystemMeta.id from systems.ts
+  galacticX: number;           // canvas-space x after projection
+  galacticY: number;           // canvas-space y after projection
+  galacticArmHint?: string;    // 'orion' | 'sagittarius' | 'perseus' | etc.
+  distanceFromCentreKly: number;
+}
+```
+
+### 3. Create the galaxy simulation
+
+Create `src/simulation/galaxySimulation.ts`:
+- Projects galactic coordinates to canvas positions (scale factor configurable)
+- Owns hover and selection state for system markers
+- Methods: `update(mousePos)` for hover detection, `selectSystem(id)`, `getMarkers()`
+
+### 4. Create the galaxy renderer
+
+Create `src/renderers/galaxyRenderer.ts` — pure canvas drawing functions:
+
+- `drawGalaxyBackground(ctx, width, height, seed)` — stylised spiral Milky Way:
+  - Bright central bulge (radial gradient)
+  - Spiral arms as faint particle clouds using Mulberry32 RNG (deterministic, matches seeded belt approach)
+  - Overall blue-white colour palette on a black background
+- `drawSystemMarkers(ctx, markers, hoveredId, selectedId)` — glowing dot + label for each system:
+  - Default: small white/gold dot
+  - Hovered: slightly larger, highlighted label
+  - Selected: pulsing glow ring (same style as the sun pulse in the Info Panel)
+
+### 5. Create the galaxy canvas component
+
+Create `src/components/GalaxyCanvas.tsx` — follows the same animation loop / camera / hit-testing pattern as `SolarSystemCanvas.tsx`:
+- Scroll to zoom, drag to pan
+- `onHoverSystem(id | null)` and `onSelectSystem(id)` callbacks
+- On click: calls `onSelectSystem`, which switches to Solar System tab with that system loaded (uses the system selector from Prompt 5)
+
+### 6. Wire up the new tab
+
+Extend `TabId` in `src/types/components.ts`:
+```ts
+export type TabId = 'solar-system' | 'planet-view' | 'galaxy';
+```
+
+In `src/App.tsx`:
+- Add a "Galaxy" tab button alongside "Solar System" and "Planet View"
+- Render `<GalaxyCanvas>` when `activeTab === 'galaxy'`
+- When a system marker is clicked in the Galaxy view, set `activeSystem` to that system's ID and switch `activeTab` to `'solar-system'`
+
+Add CSS for the new tab in `src/App.css` or a dedicated `src/components/GalaxyCanvas.css`.
 
 ## Test requirements
 
-- Create `src/simulation/__tests__/galaxySimulation.test.ts` (or equivalent) with unit tests for any new simulation/layout logic
-- Tests must cover: marker positions are finite numbers, all known systems have a marker, hover/selection state transitions work correctly
-- Run `npm test` after implementing — all tests (existing + new) must pass
+Create `src/simulation/__tests__/galaxySimulation.test.ts`:
+- All marker positions are finite numbers
+- Every system ID in `GALAXY_DATA` matches a known system in the registry from `systems.ts`
+- Hover state transitions work correctly (hovered ID updates, clears on null)
+- Selection state transitions work correctly
+
+Run `npm test` — all existing tests plus new ones must pass.
 
 ## Context
 
-- This is the most ambitious feature; plan the implementation in layers: data → renderer → component → tab wiring → tests
+- Test runner: Vitest 2 with `globals: true`
+- This is the most ambitious feature — plan the implementation in layers: data → renderer → simulation → component → tab wiring → tests
 - The galaxy canvas does not need to be scientifically accurate, but positions should be internally consistent and plausible
-- Clicking "Solar System" marker should behave like switching the system selector (Prompt 5) to that system and switching to the Solar System tab
-- After implementing, run `npm start` and verify: Galaxy tab renders, markers visible, hover/click works, switching to Solar System from a marker works
+- Clicking a system marker in the Galaxy view should behave identically to using the system selector (Prompt 5) to choose that system, then switch to the Solar System tab
+- After implementing, run `npm start` and verify: Galaxy tab renders, spiral background visible, system markers labelled, hover/click works, clicking a marker loads that system in the Solar System tab
