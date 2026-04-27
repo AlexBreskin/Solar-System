@@ -9,7 +9,7 @@ An interactive solar system simulation built with React, TypeScript, and HTML Ca
 - **Interactive canvas** — scroll to zoom, drag to pan, click to select, double-click to track
 - **Tracking mode** — camera smoothly follows any selected body; dragging breaks free
 - **Asteroid Belt & Kuiper Belt** — rendered as particle fields; both are selectable with info panels
-- **Saturn's rings** — elliptical arcs with a front/back depth pass
+- **Planetary rings** — Saturn, Jupiter, Uranus, and Neptune rendered with elliptical arcs; each planet has its own ring bands with individual intensity and colour, drawn with a front/back depth pass
 - **Speed control** — 0.1× to 10× with pause/resume
 
 ### Planet View
@@ -19,7 +19,7 @@ An interactive solar system simulation built with React, TypeScript, and HTML Ca
 
 ### Shared
 - **Celestial body navigator** — persistent left panel showing the full hierarchy (Sun → planets → moons → belt members) across both tabs; tab-aware clicks switch the Planet View target
-- **Info panel** — physical properties, orbital data, atmosphere, and a fun fact for every body
+- **Info panel** — physical properties, orbital data, atmosphere, a fun fact, and direct links to NASA and Wikipedia articles for every body
 - **Bidirectional highlighting** — hovering or selecting in the canvas syncs with the navigator, and vice versa
 
 ## Celestial Bodies
@@ -63,8 +63,8 @@ Output goes to `dist/`.
 |--------|--------|
 | Scroll | Zoom toward cursor |
 | Drag | Pan the view |
-| Click body | Select and zoom in |
-| Double-click body | Track body with camera |
+| Click body | Select, zoom in, and follow with camera |
+| Double-click body | Untrack (stop following) |
 | Drag while tracking | Break free from tracking |
 | Hover | Highlight in canvas and navigator |
 | Click in navigator | Select and track |
@@ -85,7 +85,11 @@ Output goes to `dist/`.
 ```
 src/
 ├── App.tsx / App.css           # Root layout, tab state, shared state
-├── types/index.ts              # All shared TypeScript interfaces
+├── types/
+│   ├── bodies.ts               # BodyId, BodyType, CelestialBody, HierarchyNode, RingBand
+│   ├── visual.ts               # Vec2, CanvasSize, BeltConfig, VisualConfig, PlanetViewLayout
+│   ├── components.ts           # TabId, canvas props/state, InfoPanelProps, StatRowProps
+│   └── index.ts                # Barrel re-export of all types above
 ├── data/
 │   ├── sol.json                # All body data: physical, orbital, visual, hierarchy
 │   └── celestialBodies.ts     # Typed loader for sol.json
