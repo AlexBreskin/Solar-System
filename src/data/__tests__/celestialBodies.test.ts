@@ -5,6 +5,12 @@ import type { CelestialBody, HierarchyNode, RingBand, BeltConfig } from '../../t
 
 const VALID_TYPES = new Set(['star', 'planet', 'dwarf-planet', 'moon', 'asteroid', 'belt']);
 
+const SI_MASS_RE = /^(\d+(\.\d+)? × 10[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+ kg|Unknown)$/;
+
+export function validateMassFormat(mass: string): void {
+  expect(SI_MASS_RE.test(mass)).toBe(true);
+}
+
 export function validateBodyShape(body: CelestialBody): void {
   expect(typeof body.id).toBe('string');
   expect(body.id.length).toBeGreaterThan(0);
@@ -31,6 +37,7 @@ export function validateBodyShape(body: CelestialBody): void {
   expect(body.description.length).toBeGreaterThan(0);
   expect(typeof body.funFact).toBe('string');
   expect(body.funFact.length).toBeGreaterThan(0);
+  validateMassFormat(body.mass);
 }
 
 export function validateRingBand(band: RingBand): void {
