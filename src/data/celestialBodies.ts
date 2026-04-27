@@ -8,9 +8,9 @@ export const VISUAL_CONFIG = rawSolData.visualConfig as VisualConfig;
 
 type RawSystemJson = {
   system?: StarSystemMeta;
-  bodies: unknown;
-  hierarchy: unknown;
-  visualConfig: unknown;
+  bodies: Record<string, CelestialBody>;
+  hierarchy: HierarchyNode[];
+  visualConfig: VisualConfig;
 };
 
 const systemModules = import.meta.glob('./systems/*.json') as Record<
@@ -26,8 +26,8 @@ export async function loadStarSystem(id: string): Promise<StarSystem> {
   return {
     id,
     meta,
-    bodies: raw.bodies as Record<string, CelestialBody>,
-    hierarchy: raw.hierarchy as HierarchyNode[],
-    visualConfig: raw.visualConfig as VisualConfig,
+    bodies: raw.bodies,
+    hierarchy: raw.hierarchy,
+    visualConfig: raw.visualConfig,
   };
 }
