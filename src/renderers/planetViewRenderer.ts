@@ -34,7 +34,9 @@ export function drawStarField(ctx: CanvasRenderingContext2D): void {
   for (const [x, y, r, a] of getStarField()) {
     ctx.globalAlpha = a;
     ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI); ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TWO_PI);
+    ctx.fill();
   }
   ctx.globalAlpha = 1;
 }
@@ -56,14 +58,20 @@ export function drawBody(
     const grad = ctx.createRadialGradient(x, y, r * 0.5, x, y, glowR);
     grad.addColorStop(0, (body.glowColor ?? body.color) + '55');
     grad.addColorStop(1, (body.glowColor ?? body.color) + '00');
-    ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(x, y, glowR, 0, TWO_PI); ctx.fill();
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(x, y, glowR, 0, TWO_PI);
+    ctx.fill();
   }
 
   if (body.type === 'star') {
     const corona = ctx.createRadialGradient(x, y, r, x, y, r * 2.8);
     corona.addColorStop(0, 'rgba(255,160,0,0.3)');
     corona.addColorStop(1, 'rgba(255,80,0,0)');
-    ctx.fillStyle = corona; ctx.beginPath(); ctx.arc(x, y, r * 2.8, 0, TWO_PI); ctx.fill();
+    ctx.fillStyle = corona;
+    ctx.beginPath();
+    ctx.arc(x, y, r * 2.8, 0, TWO_PI);
+    ctx.fill();
   }
 
   const grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
@@ -75,24 +83,38 @@ export function drawBody(
     grad.addColorStop(0, lighten(body.color, 40));
     grad.addColorStop(1, body.color);
   }
-  ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI); ctx.fill();
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, TWO_PI);
+  ctx.fill();
 
   if (body.atmosphereColor) {
-    ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI);
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TWO_PI);
     ctx.strokeStyle = body.atmosphereColor;
     ctx.lineWidth = Math.max(1, r * 0.1);
     ctx.stroke();
   }
 
   if (isSelected) {
-    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI); ctx.stroke();
-    ctx.beginPath(); ctx.arc(x, y, r + Math.max(4, r * 0.15), 0, TWO_PI);
-    ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 0.5;
-    ctx.setLineDash([3, 4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TWO_PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x, y, r + Math.max(4, r * 0.15), 0, TWO_PI);
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([3, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
   } else if (isHovered) {
-    ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TWO_PI);
+    ctx.stroke();
   }
 
   if (showLabel) {

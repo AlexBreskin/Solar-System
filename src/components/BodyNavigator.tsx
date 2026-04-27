@@ -87,7 +87,10 @@ function NavigatorNode({
         {hasChildren ? (
           <button
             className={`expand-btn${open ? ' open' : ''}`}
-            onClick={e => { e.stopPropagation(); onToggle(node.id); }}
+            onClick={e => {
+              e.stopPropagation();
+              onToggle(node.id);
+            }}
             aria-label={open ? 'Collapse' : 'Expand'}
           >›</button>
         ) : (

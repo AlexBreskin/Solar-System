@@ -89,7 +89,8 @@ export default function SolarSystemCanvas({
       const dt = drag.lastTime !== null ? Math.min((ts - drag.lastTime) / 1000, 0.1) : 0;
       drag.lastTime = ts;
 
-      const cx = w / 2, cy = h / 2;
+      const cx = w / 2;
+      const cy = h / 2;
 
       if (!paused) sim.advanceAngles(dt, speed);
       sim.updatePositions(cx, cy);
@@ -131,13 +132,16 @@ export default function SolarSystemCanvas({
     }
 
     animRef.current = requestAnimationFrame(draw);
-    return () => { if (animRef.current !== null) cancelAnimationFrame(animRef.current); };
+    return () => {
+      if (animRef.current !== null) cancelAnimationFrame(animRef.current);
+    };
   }, [selectedBody, hoveredBody, trackedBody, speed, paused, showOrbits, showLabels, sim, beltIds, bodies, visualConfig]);
 
   const getBodyAtPoint = useCallback((canvasX: number, canvasY: number): string | null => {
     const { w, h } = sizeRef.current;
     const pan = panRef.current;
-    const cx = w / 2, cy = h / 2;
+    const cx = w / 2;
+    const cy = h / 2;
     const wx = (canvasX - cx - pan.panX) / pan.zoom + cx;
     const wy = (canvasY - cy - pan.panY) / pan.zoom + cy;
     const { planetSizes } = visualConfig;
@@ -149,7 +153,10 @@ export default function SolarSystemCanvas({
       const pos = sim.positions[id];
       const r   = Math.max(planetSizes[id] ?? 4, 8);
       const dist = Math.hypot(wx - pos.x, wy - pos.y);
-      if (dist < r * 1.5 && dist < closestDist) { closest = id; closestDist = dist; }
+      if (dist < r * 1.5 && dist < closestDist) {
+        closest = id;
+        closestDist = dist;
+      }
     }
     if (!closest) {
       const distFromCenter = Math.hypot(wx - cx, wy - cy);
@@ -167,10 +174,12 @@ export default function SolarSystemCanvas({
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     const drag = dragRef.current;
     if (drag.dragging) {
-      const dx = x - drag.dragStartX, dy = y - drag.dragStartY;
+      const dx = x - drag.dragStartX;
+      const dy = y - drag.dragStartY;
       if (!drag.dragBrokeFree && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
         drag.dragBrokeFree = true;
         onTrackBody(null);
@@ -188,8 +197,11 @@ export default function SolarSystemCanvas({
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     const drag = dragRef.current;
-    drag.dragging = true; drag.userDragging = true; drag.dragBrokeFree = false;
-    drag.dragStartX = e.clientX - rect.left; drag.dragStartY = e.clientY - rect.top;
+    drag.dragging = true;
+    drag.userDragging = true;
+    drag.dragBrokeFree = false;
+    drag.dragStartX = e.clientX - rect.left;
+    drag.dragStartY = e.clientY - rect.top;
     drag.dragStartPanX = panRef.current.targetPanX;
     drag.dragStartPanY = panRef.current.targetPanY;
     canvas.style.cursor = 'grabbing';
@@ -199,7 +211,8 @@ export default function SolarSystemCanvas({
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     const drag = dragRef.current;
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     if (Math.abs(x - drag.dragStartX) + Math.abs(y - drag.dragStartY) < 5) {
       const hit = getBodyAtPoint(x, y);
       if (hit) {
@@ -211,7 +224,9 @@ export default function SolarSystemCanvas({
         }
       }
     }
-    drag.dragging = false; drag.userDragging = false; drag.dragBrokeFree = false;
+    drag.dragging = false;
+    drag.userDragging = false;
+    drag.dragBrokeFree = false;
     canvas.style.cursor = 'grab';
   }, [getBodyAtPoint, onSelectBody, zoomToBelt, bodies]);
 
@@ -219,9 +234,11 @@ export default function SolarSystemCanvas({
     e.preventDefault();
     const pan = panRef.current;
     const rect = canvasRef.current!.getBoundingClientRect();
-    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
     const { w, h } = sizeRef.current;
-    const cx = w / 2, cy = h / 2;
+    const cx = w / 2;
+    const cy = h / 2;
     const newZoom   = Math.max(0.3, Math.min(8, pan.targetZoom * (e.deltaY > 0 ? 0.9 : 1.1)));
     const zoomRatio = newZoom / pan.targetZoom;
     if (trackedBody) {

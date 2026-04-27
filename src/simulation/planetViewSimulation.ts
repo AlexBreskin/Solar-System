@@ -126,7 +126,8 @@ export class PlanetViewSimulation {
       const angle = this.angles[moonId] ?? 0;
       this.positions[moonId] = { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
     }
-    let planetX = cx, planetY = cy;
+    let planetX = cx;
+    let planetY = cy;
     for (const moonId of moons) {
       const μ = this.bodies[moonId]?.binaryMassFraction;
       if (μ === undefined) continue;

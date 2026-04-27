@@ -166,15 +166,23 @@ export function drawSun(
   corona.addColorStop(0, 'rgba(255,160,0,0.3)');
   corona.addColorStop(1, 'rgba(255,80,0,0)');
   ctx.fillStyle = corona;
-  ctx.beginPath(); ctx.arc(x, y, r * 3.5, 0, TWO_PI); ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x, y, r * 3.5, 0, TWO_PI);
+  ctx.fill();
 
   const grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
   grad.addColorStop(0, '#FFF5AA');
   grad.addColorStop(0.4, '#FDB813');
   grad.addColorStop(1, '#E07B00');
   ctx.fillStyle = grad;
-  ctx.beginPath(); ctx.arc(x, y, r, 0, TWO_PI); ctx.fill();
-  if (active) { ctx.strokeStyle = 'rgba(255,200,80,0.8)'; ctx.lineWidth = 1.5; ctx.stroke(); }
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, TWO_PI);
+  ctx.fill();
+  if (active) {
+    ctx.strokeStyle = 'rgba(255,200,80,0.8)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
 }
 
 export function drawBodyRings(
@@ -236,7 +244,9 @@ export function drawBodies(
       grad.addColorStop(0, (body.glowColor ?? body.color) + '60');
       grad.addColorStop(1, (body.glowColor ?? body.color) + '00');
       ctx.fillStyle = grad;
-      ctx.beginPath(); ctx.arc(pos.x, pos.y, glowR * 2, 0, TWO_PI); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, glowR * 2, 0, TWO_PI);
+      ctx.fill();
     }
   }
 
@@ -270,20 +280,33 @@ export function drawBodies(
       grad.addColorStop(0, lighten(body.color, 40));
       grad.addColorStop(1, body.color);
       ctx.fillStyle = grad;
-      ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, TWO_PI); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
+      ctx.fill();
 
       if (isSelected) {
-        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.stroke();
-        ctx.beginPath(); ctx.arc(pos.x, pos.y, r + 5, 0, TWO_PI);
-        ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 0.5;
-        ctx.setLineDash([3, 4]); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, r + 5, 0, TWO_PI);
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.lineWidth = 0.5;
+        ctx.setLineDash([3, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
       } else if (isHovered) {
-        ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
       }
 
       if (body.atmosphereColor) {
-        ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
-        ctx.strokeStyle = body.atmosphereColor; ctx.lineWidth = 2; ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
+        ctx.strokeStyle = body.atmosphereColor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
       }
     }
 

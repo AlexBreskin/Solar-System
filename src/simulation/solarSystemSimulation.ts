@@ -41,7 +41,10 @@ export class SolarSystemSimulation {
     }
     for (const id of this.moonIds) {
       const body = bodies[id];
-      if (!body?.orbitalPeriod) { this.orbitalSpeeds[id] = 0; continue; }
+      if (!body?.orbitalPeriod) {
+        this.orbitalSpeeds[id] = 0;
+        continue;
+      }
       const naturalSpeed = (365.25 / Math.abs(body.orbitalPeriod)) * moonSpeedMultiplier;
       const parentSpeed = this.moonParentMap[id] ? (this.orbitalSpeeds[this.moonParentMap[id]] ?? 0) : 0;
       this.orbitalSpeeds[id] = Math.max(naturalSpeed, parentSpeed * 2) * Math.sign(body.orbitalPeriod);

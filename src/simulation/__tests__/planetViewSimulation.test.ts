@@ -36,7 +36,8 @@ describe('getMoonsOf', () => {
 });
 
 describe('computeScaledLayout', () => {
-  const W = 800, H = 600;
+  const W = 800;
+  const H = 600;
 
   it('returns a positive planetR', () => {
     const { planetR } = computeScaledLayout('earth', ['moon'], W, H, CELESTIAL_BODIES);

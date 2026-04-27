@@ -46,9 +46,13 @@ export default function PlanetViewCanvas({
     sim.initMoons(moons);
     sim.resetLayout();
     const pan = panRef.current;
-    pan.zoom = 1; pan.panX = 0; pan.panY = 0;
-    pan.targetZoom = 1; pan.targetPanX = 0; pan.targetPanY = 0;
-  }, [planetId]); // eslint-disable-line
+    pan.zoom = 1;
+    pan.panX = 0;
+    pan.panY = 0;
+    pan.targetZoom = 1;
+    pan.targetPanX = 0;
+    pan.targetPanY = 0;
+  }, [planetId]);  
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -82,7 +86,8 @@ export default function PlanetViewCanvas({
       const dt = drag.lastTime !== null ? Math.min((ts - drag.lastTime) / 1000, 0.1) : 0;
       drag.lastTime = ts;
 
-      const cx = w / 2, cy = h / 2;
+      const cx = w / 2;
+      const cy = h / 2;
 
       if (!paused) sim.advanceAngles(dt, speed, moons);
       const layout = sim.updatePositions(planetId, moons, cx, cy, w, h);
@@ -115,8 +120,14 @@ export default function PlanetViewCanvas({
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1;
         ctx.setLineDash([2, 3]);
-        ctx.beginPath(); ctx.moveTo(cx - s, cy); ctx.lineTo(cx + s, cy); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(cx, cy - s); ctx.lineTo(cx, cy + s); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx - s, cy);
+        ctx.lineTo(cx + s, cy);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - s);
+        ctx.lineTo(cx, cy + s);
+        ctx.stroke();
         ctx.setLineDash([]);
         ctx.globalAlpha = 1;
         if (showLabels) {
@@ -133,11 +144,13 @@ export default function PlanetViewCanvas({
         const rawR = moonOrbitalRadii[moonId] ?? 80;
         const r = μ !== undefined ? rawR * (1 - μ) : rawR;
         const isHighlighted = moonId === selectedBody || moonId === hoveredBody;
-        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
         ctx.strokeStyle = isHighlighted ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.18)';
         ctx.lineWidth = isHighlighted ? 1 : 0.5;
         ctx.setLineDash(isHighlighted ? [] : [3, 8]);
-        ctx.stroke(); ctx.setLineDash([]);
+        ctx.stroke();
+        ctx.setLineDash([]);
       }
 
       const pPos  = sim.positions[planetId] ?? { x: cx, y: cy };
@@ -162,25 +175,32 @@ export default function PlanetViewCanvas({
     }
 
     animRef.current = requestAnimationFrame(draw);
-    return () => { if (animRef.current !== null) cancelAnimationFrame(animRef.current); };
-  }, [planetId, moons, selectedBody, hoveredBody, speed, paused, showLabels, sim, bodies]); // eslint-disable-line
+    return () => {
+      if (animRef.current !== null) cancelAnimationFrame(animRef.current);
+    };
+  }, [planetId, moons, selectedBody, hoveredBody, speed, paused, showLabels, sim, bodies]);  
 
   const getBodyAtPoint = useCallback((canvasX: number, canvasY: number): BodyId | null => {
     const { w, h } = sizeRef.current;
     const pan = panRef.current;
-    const cx = w / 2, cy = h / 2;
+    const cx = w / 2;
+    const cy = h / 2;
     const wx = (canvasX - cx - pan.panX) / pan.zoom + cx;
     const wy = (canvasY - cy - pan.panY) / pan.zoom + cy;
     if (!sim.layout) return null;
     const { planetR, moonSizes } = sim.layout;
-    let closest: BodyId | null = null, closestDist = Infinity;
+    let closest: BodyId | null = null;
+    let closestDist = Infinity;
     const bodyList: BodyId[] = [planetId, ...moons];
     for (const id of bodyList) {
       const pos = sim.positions[id];
       if (!pos) continue;
       const r = Math.max(id === planetId ? planetR : (moonSizes[id] ?? 5), 8);
       const dist = Math.hypot(wx - pos.x, wy - pos.y);
-      if (dist < r * 1.6 && dist < closestDist) { closest = id; closestDist = dist; }
+      if (dist < r * 1.6 && dist < closestDist) {
+        closest = id;
+        closestDist = dist;
+      }
     }
     return closest;
   }, [planetId, moons, sim]);
@@ -188,7 +208,8 @@ export default function PlanetViewCanvas({
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     const drag = dragRef.current;
     if (drag.dragging) {
       panRef.current.targetPanX = drag.dragStartPanX + (x - drag.dragStartX);
@@ -205,7 +226,8 @@ export default function PlanetViewCanvas({
     const rect = canvas.getBoundingClientRect();
     const drag = dragRef.current;
     drag.dragging = true;
-    drag.dragStartX = e.clientX - rect.left; drag.dragStartY = e.clientY - rect.top;
+    drag.dragStartX = e.clientX - rect.left;
+    drag.dragStartY = e.clientY - rect.top;
     drag.dragStartPanX = panRef.current.targetPanX;
     drag.dragStartPanY = panRef.current.targetPanY;
     canvas.style.cursor = 'grabbing';
@@ -215,7 +237,8 @@ export default function PlanetViewCanvas({
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     const drag = dragRef.current;
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     if (Math.abs(x - drag.dragStartX) + Math.abs(y - drag.dragStartY) < 5) {
       const hit = getBodyAtPoint(x, y);
       if (hit) onSelectBody(hit);
@@ -228,9 +251,11 @@ export default function PlanetViewCanvas({
     e.preventDefault();
     const pan = panRef.current;
     const rect = canvasRef.current!.getBoundingClientRect();
-    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
     const { w, h } = sizeRef.current;
-    const cx = w / 2, cy = h / 2;
+    const cx = w / 2;
+    const cy = h / 2;
     const newZoom   = Math.max(0.2, Math.min(8, pan.targetZoom * (e.deltaY > 0 ? 0.9 : 1.1)));
     const zoomRatio = newZoom / pan.targetZoom;
     pan.targetPanX = mx - zoomRatio * (mx - (cx + pan.targetPanX)) - cx;
