@@ -1,0 +1,121 @@
+{
+  "system": {
+    "id": "alphacentauri",
+    "name": "Alpha Centauri",
+    "description": "The closest star system to Earth at 4.37 light-years. Alpha Centauri A and B form a tight binary pair; a third member, Proxima Centauri, orbits far away and hosts the nearest known exoplanet.",
+    "starColor": "#FFF5AA",
+    "displayOrder": 8
+  },
+  "bodies": {
+    "alphacena": {
+      "id": "alphacena",
+      "name": "Alpha Centauri A",
+      "type": "star",
+      "parent": null,
+      "diameter": 1703700,
+      "mass": "2.19 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 22.0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFF5AA",
+      "glowColor": "#FFFBC0",
+      "moons": 0,
+      "description": "A G2V star almost identical to our Sun, slightly larger and more luminous. It forms a gravitationally bound binary with Alpha Centauri B, the pair orbiting their common barycenter every 79.9 years.",
+      "surfaceTemp": "5,790 K",
+      "funFact": "Alpha Centauri A is so similar to our Sun that if you stood on a planet there, the Sun would appear as just another bright star in the sky.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Alpha_Centauri_A"
+    },
+    "alphacenb": {
+      "id": "alphacenb",
+      "name": "Alpha Centauri B",
+      "type": "companion",
+      "parent": "alphacena",
+      "diameter": 1202200,
+      "mass": "1.79 × 10³⁰ kg",
+      "distanceFromParent": 23.4,
+      "orbitalPeriod": 29188,
+      "rotationPeriod": 41.0,
+      "eccentricity": 0.518,
+      "inclination": 79.2,
+      "color": "#FFD080",
+      "glowColor": "#FFE0A0",
+      "binaryMassFraction": 0.450,
+      "moons": 0,
+      "description": "A K1V star slightly smaller and cooler than the Sun, orbiting Alpha Centauri A with a highly eccentric 79.9-year period. Their separation varies from 11.2 to 35.6 AU over each orbit.",
+      "surfaceTemp": "5,260 K",
+      "funFact": "Alpha Centauri B is so close in mass to A that their barycenter sits almost exactly between the two stars, making this one of the most equal-mass stellar binaries known.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Alpha_Centauri_B"
+    },
+    "proxima": {
+      "id": "proxima",
+      "name": "Proxima Centauri",
+      "type": "companion",
+      "parent": "alphacena",
+      "diameter": 215000,
+      "mass": "2.43 × 10²⁹ kg",
+      "distanceFromParent": 13400,
+      "orbitalPeriod": 13750000,
+      "rotationPeriod": 83.5,
+      "eccentricity": 0.50,
+      "inclination": 107.6,
+      "color": "#FF5030",
+      "glowColor": "#FF7050",
+      "binaryMassFraction": 0.058,
+      "moons": 0,
+      "description": "A dim M5Ve red dwarf and the closest known star to the Sun at 4.24 light-years. It orbits the Alpha Centauri A+B pair at an enormous distance of ~13,400 AU — so remote that it may barely be gravitationally bound.",
+      "surfaceTemp": "3,042 K",
+      "funFact": "Proxima Centauri is so faint that despite being our nearest stellar neighbour, it cannot be seen with the naked eye from Earth.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Proxima_Centauri"
+    },
+    "proxima-b": {
+      "id": "proxima-b",
+      "name": "Proxima Centauri b",
+      "type": "planet",
+      "parent": "alphacena",
+      "diameter": 14400,
+      "mass": "7.20 × 10²⁴ kg",
+      "distanceFromParent": 0.0485,
+      "orbitalPeriod": 11.186,
+      "rotationPeriod": 11.186,
+      "eccentricity": 0.035,
+      "inclination": 0,
+      "color": "#607080",
+      "moons": 0,
+      "description": "The nearest known exoplanet to Earth, orbiting in the habitable zone of Proxima Centauri at just 0.05 AU. It is likely tidally locked, with one hemisphere in permanent day and one in permanent night.",
+      "surfaceTemp": "−39 °C (equilibrium estimate)",
+      "funFact": "Proxima Centauri b is the closest exoplanet to Earth, yet a journey there at current spacecraft speeds would take over 70,000 years.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7167/proxima-centauri-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Proxima_Centauri_b"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "alphacena",
+      "children": [
+        { "id": "alphacenb", "children": [] },
+        { "id": "proxima", "children": [] },
+        { "id": "proxima-b", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "proxima-b": 160
+    },
+    "planetSizes": {
+      "alphacena": 24,
+      "alphacenb": 20,
+      "proxima": 7,
+      "proxima-b": 8
+    },
+    "moonOrbitalRadii": {
+      "alphacenb": 60,
+      "proxima": 300
+    },
+    "speedMultiplier": 0.154,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

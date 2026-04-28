@@ -254,7 +254,7 @@ export function drawBodies(
   // Moon orbit rings
   for (const [id, body] of allBodies) {
     if (!showOrbits) break;
-    if (body.type !== BodyType.Moon) continue;
+    if (body.type !== BodyType.Moon && body.type !== BodyType.Companion) continue;
     const parent = body.parent;
     if (!parent) continue;
     const { x: px, y: py } = positions[parent] ?? { x: 0, y: 0 };

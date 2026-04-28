@@ -11,6 +11,7 @@ const TYPE_ICONS: Record<BodyType, string> = {
   [BodyType.Moon]: '○',
   [BodyType.Asteroid]: '·',
   [BodyType.Belt]: '⌀',
+  [BodyType.Companion]: '✦',
 };
 
 const TYPE_LABELS: Record<BodyType, string> = {
@@ -20,6 +21,7 @@ const TYPE_LABELS: Record<BodyType, string> = {
   [BodyType.Moon]: 'Moon',
   [BodyType.Asteroid]: 'Asteroid',
   [BodyType.Belt]: 'Region',
+  [BodyType.Companion]: 'Companion Star',
 };
 
 interface BodyNavigatorProps {
@@ -67,7 +69,7 @@ function NavigatorNode({
     if (activeTab === 'planet-view') {
       if (body.type === BodyType.Belt) {
         onGoToSolarSystem();
-      } else if (body.type === BodyType.Moon && body.parent) {
+      } else if ((body.type === BodyType.Moon || body.type === BodyType.Companion) && body.parent) {
         onViewPlanet(body.parent);
       } else if (body.type !== BodyType.Star) {
         onViewPlanet(node.id);

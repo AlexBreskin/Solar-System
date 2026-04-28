@@ -16,7 +16,7 @@ for (const id of Object.keys(VISUAL_CONFIG.moonOrbitalRadii)) {
 
 export function getMoonsOf(planetId: string, bodies: Record<string, CelestialBody>): string[] {
   return Object.entries(bodies)
-    .filter(([, body]) => body.type === BodyType.Moon && body.parent === planetId)
+    .filter(([, body]) => (body.type === BodyType.Moon || body.type === BodyType.Companion) && body.parent === planetId)
     .map(([id]) => id);
 }
 

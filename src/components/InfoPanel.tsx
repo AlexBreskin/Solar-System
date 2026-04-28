@@ -10,6 +10,7 @@ const TYPE_LABELS: Record<BodyType, string> = {
   [BodyType.Moon]: 'Moon',
   [BodyType.Asteroid]: 'Asteroid',
   [BodyType.Belt]: 'Region',
+  [BodyType.Companion]: 'Companion Star',
 };
 
 function StatRow({ label, value }: StatRowProps): JSX.Element | null {

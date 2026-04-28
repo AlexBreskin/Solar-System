@@ -74,7 +74,7 @@ export default function App(): JSX.Element {
     setActiveTab(tab);
     if (tab === 'planet-view') {
       const body = systemData.bodies[selectedBody];
-      if (body?.type === BodyType.Moon && body.parent) {
+      if ((body?.type === BodyType.Moon || body?.type === BodyType.Companion) && body.parent) {
         setViewedPlanet(body.parent);
       } else if (body && body.type !== BodyType.Belt) {
         setViewedPlanet(selectedBody);

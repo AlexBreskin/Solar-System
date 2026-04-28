@@ -1,11 +1,11 @@
 # Star Systems
 
-An interactive multi-system space simulator built with React, TypeScript, and HTML Canvas. Explore the Solar System and six exoplanetary systems, with real orbital mechanics, a planet view with physically-scaled moon layouts, and detailed information for every body.
+An interactive multi-system space simulator built with React, TypeScript, and HTML Canvas. Explore the Solar System and eight exoplanetary/stellar systems, with real orbital mechanics, a planet view with physically-scaled moon layouts, and detailed information for every body.
 
 ## Features
 
 ### System Selector
-- **Multiple star systems** — switch between the Solar System and six confirmed exoplanetary systems: TRAPPIST-1, Kepler-90, 55 Cancri, HD 10180, Tau Ceti, and Gliese 667C
+- **Multiple star systems** — switch between the Solar System and eight confirmed exoplanetary/stellar systems: TRAPPIST-1, Kepler-90, 55 Cancri, HD 10180, Tau Ceti, Gliese 667C, Kepler-16, and Alpha Centauri
 - **Auto-discovery** — the app scans `src/data/systems/` at build time; adding a new JSON file with a `"system"` metadata block makes it appear in the selector automatically
 - **Seamless switching** — switching systems resets the camera and simulation while preserving all UI preferences
 
@@ -20,7 +20,7 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 ### Planet View
 - **Moon systems** — every planet's moons orbit with speeds proportional to their real periods, including retrograde (e.g. Triton)
 - **Physically scaled** — planet size derived from real diameter; moon sizes and orbital radii proportional to real values, auto-fitted to the canvas
-- **Binary system** — Pluto and Charon orbit their shared barycenter rather than Charon orbiting Pluto's centre; a barycenter marker is shown in this view
+- **Binary systems** — bodies with a `binaryMassFraction` orbit their shared barycenter; Pluto/Charon demonstrates this for moons, and Kepler-16 / Alpha Centauri demonstrate it for stellar companions; a barycenter marker is shown in Planet View
 
 ### Shared
 - **Celestial body navigator** — persistent left panel showing the body hierarchy across both tabs; collapsed by default (showing the star, planets, and belts); clicking a moon in the canvas auto-expands its parent and scrolls it into view; displays the active system name
@@ -41,6 +41,8 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 | HD 10180 | G1V Sun-like | 6 | Densest known Neptune-class system |
 | Tau Ceti | G8.5V nearby | 4 | 11.9 light-years away; habitable-zone candidates |
 | Gliese 667C | M1.5V red dwarf | 3 | Triple star system; two habitable-zone worlds |
+| Kepler-16 | K+M binary ("Tatooine") | 1 | First confirmed circumbinary planet — two suns in the sky |
+| Alpha Centauri | G+K+M triple star | 1 | Nearest stellar system; hosts closest known exoplanet |
 
 ## Getting Started
 
@@ -145,7 +147,7 @@ src/
 - **Architecture** — three layers: simulation (pure state classes), renderers (pure canvas functions with no React dependency), components (React lifecycle, events, refs)
 - **Multi-system** — active system data flows from `App` through `StarSystemContext`; all components read bodies, hierarchy, and visualConfig from context rather than static imports; canvas components remount on system switch via `key` prop
 - **Auto-discovery** — `import.meta.glob('./systems/*.json')` at build time scans the directory; the `"system"` metadata block in each JSON provides the name and display order without any TypeScript registration
-- **Binary systems** — modelled via a `binaryMassFraction` field on the secondary body; the simulation does a two-pass position update so both bodies orbit the true barycenter
+- **Binary/multi-star systems** — stellar companions use `BodyType.Companion` and a `binaryMassFraction` field; the simulation does a two-pass position update so both bodies orbit the true barycenter; supports double and triple star configurations
 - **Rendering** — HTML5 Canvas 2D with `requestAnimationFrame`; DevicePixelRatio-aware for high-DPI displays
 - **Deterministic particles** — belt particle fields use a seeded RNG (Mulberry32) so the layout is consistent across renders
-- **Tooling** — Vite for dev and builds; Vitest for tests; 178 tests across 4 suites
+- **Tooling** — Vite for dev and builds; Vitest for tests; 210 tests across 4 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style

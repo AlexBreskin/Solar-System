@@ -1,0 +1,98 @@
+{
+  "system": {
+    "id": "kepler16",
+    "name": "Kepler-16",
+    "description": "A binary star system 245 light-years away hosting the first confirmed circumbinary planet — a Saturn-sized world orbiting both stars, earning the nickname 'Tatooine'.",
+    "starColor": "#FFB060",
+    "displayOrder": 7
+  },
+  "bodies": {
+    "kepler16a": {
+      "id": "kepler16a",
+      "name": "Kepler-16A",
+      "type": "star",
+      "parent": null,
+      "diameter": 903980,
+      "mass": "1.37 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 35.1,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFB060",
+      "glowColor": "#FFC080",
+      "moons": 0,
+      "description": "An orange K-type main-sequence star slightly smaller and cooler than the Sun. It forms a tight binary with Kepler-16B, and together they host the iconic circumbinary planet Kepler-16(AB)b.",
+      "surfaceTemp": "4,450 K",
+      "funFact": "Kepler-16A is so cool that it hosts a strong star-spot cycle, making it dimmer than a typical Sun-like star.",
+      "nasaUrl": "https://www.nasa.gov/mission_pages/kepler/multimedia/images/kepler-16-system.html",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Kepler-16"
+    },
+    "kepler16b": {
+      "id": "kepler16b",
+      "name": "Kepler-16B",
+      "type": "companion",
+      "parent": "kepler16a",
+      "diameter": 314940,
+      "mass": "4.03 × 10²⁹ kg",
+      "distanceFromParent": 0.2244,
+      "orbitalPeriod": 41.079,
+      "rotationPeriod": 41.079,
+      "eccentricity": 0.159,
+      "inclination": 1.6,
+      "color": "#FF7040",
+      "glowColor": "#FF9060",
+      "binaryMassFraction": 0.227,
+      "moons": 0,
+      "description": "A small M-type red dwarf star that orbits Kepler-16A every 41 days at a separation of about 0.22 AU. Its much lower mass shifts the binary barycenter noticeably toward Kepler-16A.",
+      "surfaceTemp": "3,311 K",
+      "funFact": "Kepler-16B is so small and cool it sits right at the boundary between a very-low-mass star and a brown dwarf.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Kepler-16"
+    },
+    "kepler16-planet": {
+      "id": "kepler16-planet",
+      "name": "Kepler-16(AB)b",
+      "type": "planet",
+      "parent": "kepler16a",
+      "diameter": 107800,
+      "mass": "6.28 × 10²⁶ kg",
+      "distanceFromParent": 0.7048,
+      "orbitalPeriod": 228.776,
+      "rotationPeriod": 228.776,
+      "eccentricity": 0.0069,
+      "inclination": 0.3,
+      "color": "#C89070",
+      "moons": 0,
+      "description": "The first confirmed circumbinary planet — it orbits both Kepler-16A and B in a near-circular path every 229 days. With two suns in its sky, it inspired the nickname 'Tatooine' after the Star Wars world.",
+      "surfaceTemp": "-100 °C (estimated)",
+      "funFact": "Sunsets on Kepler-16(AB)b would show two suns setting at different times, just like Tatooine in Star Wars — and this world is real.",
+      "nasaUrl": "https://www.nasa.gov/mission_pages/kepler/multimedia/images/kepler-16-system.html",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Kepler-16b"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "kepler16a",
+      "children": [
+        { "id": "kepler16b", "children": [] },
+        { "id": "kepler16-planet", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "kepler16-planet": 200
+    },
+    "planetSizes": {
+      "kepler16a": 22,
+      "kepler16b": 9,
+      "kepler16-planet": 14
+    },
+    "moonOrbitalRadii": {
+      "kepler16b": 38
+    },
+    "speedMultiplier": 3.15,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

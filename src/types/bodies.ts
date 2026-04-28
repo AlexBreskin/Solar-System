@@ -7,6 +7,7 @@ export enum BodyType {
   Moon = 'moon',
   Asteroid = 'asteroid',
   Belt = 'belt',
+  Companion = 'companion',
 }
 
 export interface RingBand {

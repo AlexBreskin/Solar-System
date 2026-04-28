@@ -110,8 +110,9 @@ describe('CELESTIAL_BODIES — shape and required fields', () => {
 describe('CELESTIAL_BODIES — type-specific rules', () => {
   const bodies = Object.values(CELESTIAL_BODIES);
 
-  it('at least one body of each type is present', () => {
-    for (const type of VALID_TYPES) {
+  it('at least one body of each core type is present', () => {
+    const coreTypes = [BodyType.Star, BodyType.Planet, BodyType.Moon, BodyType.Belt];
+    for (const type of coreTypes) {
       expect(bodies.some(b => b.type === type)).toBe(true);
     }
   });
