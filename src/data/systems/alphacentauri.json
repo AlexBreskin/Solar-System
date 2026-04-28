@@ -4,7 +4,8 @@
     "name": "Alpha Centauri",
     "description": "The closest star system to Earth at 4.37 light-years. Alpha Centauri A and B form a tight binary pair; a third member, Proxima Centauri, orbits far away and hosts the nearest known exoplanet.",
     "starColor": "#FFF5AA",
-    "displayOrder": 8
+    "displayOrder": 8,
+    "distanceFromEarth": 4.37
   },
   "bodies": {
     "alphacena": {

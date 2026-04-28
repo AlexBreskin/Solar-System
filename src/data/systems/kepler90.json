@@ -4,7 +4,8 @@
     "name": "Kepler-90",
     "description": "The first exosolar system confirmed with eight planets — matching our Solar System's count — 2,545 light-years from Earth.",
     "starColor": "#FFF0A0",
-    "displayOrder": 2
+    "displayOrder": 2,
+    "distanceFromEarth": 2545
   },
   "bodies": {
     "kepler90-star": {

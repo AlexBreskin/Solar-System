@@ -1,4 +1,5 @@
 export const KM_PER_AU = 149_597_870.7;
+export const AU_PER_LY = 63_241.077;
 
 export function auToKm(au: number): number {
   return au * KM_PER_AU;
@@ -26,4 +27,16 @@ export function formatAU(au: number): string {
   const exp = Math.floor(Math.log10(Math.abs(au)));
   const decimals = Math.max(0, 3 - exp);
   return `${au.toFixed(decimals)} AU`;
+}
+
+export function lyToAU(ly: number): number {
+  return ly * AU_PER_LY;
+}
+
+export function formatLY(ly: number): string {
+  if (!ly) return '—';
+  if (ly < 0.1) return `${ly.toFixed(4)} ly`;
+  if (ly < 10) return `${ly.toFixed(2)} ly`;
+  if (ly < 1_000) return `${ly.toFixed(1)} ly`;
+  return `${Math.round(ly).toLocaleString()} ly`;
 }

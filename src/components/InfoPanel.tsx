@@ -1,7 +1,7 @@
 import { useStarSystem } from '../contexts/StarSystemContext';
 import { BodyType } from '../types';
 import type { InfoPanelProps, StatRowProps } from '../types';
-import { auToKm, formatAU, formatKm } from '../utils/distance';
+import { auToKm, formatAU, formatKm, formatLY, lyToAU } from '../utils/distance';
 import './InfoPanel.css';
 
 const TYPE_LABELS: Record<BodyType, string> = {
@@ -43,7 +43,7 @@ function formatDiameter(km: number): string {
 }
 
 export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element {
-  const { bodies } = useStarSystem();
+  const { bodies, meta } = useStarSystem();
   const body = bodies[selectedBody];
   if (!body) return <div className="info-panel empty">Select a body</div>;
 
@@ -92,6 +92,17 @@ export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element
         <StatRow label="Inclination" value={body.inclination != null ? `${body.inclination}°` : null} />
         {isRetrograde && <div className="retrograde-tag">⟲ Retrograde rotation</div>}
       </div>
+
+      {body.type === BodyType.Star && meta.distanceFromEarth != null && (
+        <div className="info-section">
+          <div className="info-section-title">Location</div>
+          <StatRow
+            label="Distance from Earth"
+            value={formatLY(meta.distanceFromEarth)}
+            title={formatAU(lyToAU(meta.distanceFromEarth))}
+          />
+        </div>
+      )}
 
       {body.atmosphere && (
         <div className="info-section">

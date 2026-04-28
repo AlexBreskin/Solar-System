@@ -4,7 +4,8 @@
     "name": "HD 10180",
     "description": "A Sun-like star 127 light-years away with six confirmed Neptune-class worlds packed into a tightly ordered system.",
     "starColor": "#FFF5C0",
-    "displayOrder": 4
+    "displayOrder": 4,
+    "distanceFromEarth": 127
   },
   "bodies": {
     "hd10180-star": {

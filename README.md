@@ -150,5 +150,5 @@ src/
 - **Binary/multi-star systems** — stellar companions use `BodyType.Companion` and a `binaryMassFraction` field; the simulation does a two-pass position update so both bodies orbit the true barycenter; supports double and triple star configurations
 - **Rendering** — HTML5 Canvas 2D with `requestAnimationFrame`; DevicePixelRatio-aware for high-DPI displays
 - **Deterministic particles** — belt particle fields use a seeded RNG (Mulberry32) so the layout is consistent across renders
-- **Distance formatting** — `src/utils/distance.ts` converts AU↔km; distances default to AU with 4 significant figures; hovering the value shows the km equivalent in scientific notation (full integers below 10,000 km)
-- **Tooling** — Vite for dev and builds; Vitest for tests; 228 tests across 5 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
+- **Distance formatting** — `src/utils/distance.ts` converts AU↔km↔ly; orbital distances default to AU (4 sig figs, km on hover); star info panels show system distance from Earth in light-years (AU on hover)
+- **Tooling** — Vite for dev and builds; Vitest for tests; 236 tests across 5 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style

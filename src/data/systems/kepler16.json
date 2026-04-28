@@ -4,7 +4,8 @@
     "name": "Kepler-16",
     "description": "A binary star system 245 light-years away hosting the first confirmed circumbinary planet — a Saturn-sized world orbiting both stars, earning the nickname 'Tatooine'.",
     "starColor": "#FFB060",
-    "displayOrder": 7
+    "displayOrder": 7,
+    "distanceFromEarth": 245
   },
   "bodies": {
     "kepler16a": {

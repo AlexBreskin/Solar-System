@@ -4,7 +4,8 @@
     "name": "Gliese 667C",
     "description": "A red dwarf in a triple-star system 23.6 light-years away, hosting three super-Earths — two potentially in the habitable zone.",
     "starColor": "#FF7040",
-    "displayOrder": 6
+    "displayOrder": 6,
+    "distanceFromEarth": 23.6
   },
   "bodies": {
     "gliese667c-star": {

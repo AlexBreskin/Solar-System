@@ -4,7 +4,8 @@
     "name": "55 Cancri",
     "description": "A nearby star 41 light-years away hosting five planets, from a scorching super-Earth to a distant outer giant.",
     "starColor": "#FFE080",
-    "displayOrder": 3
+    "displayOrder": 3,
+    "distanceFromEarth": 41
   },
   "bodies": {
     "55cancri-star": {

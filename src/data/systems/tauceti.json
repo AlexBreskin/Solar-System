@@ -4,7 +4,8 @@
     "name": "Tau Ceti",
     "description": "One of the nearest Sun-like stars at 11.9 light-years, with four super-Earth candidates including two near the habitable zone.",
     "starColor": "#FFE070",
-    "displayOrder": 5
+    "displayOrder": 5,
+    "distanceFromEarth": 11.9
   },
   "bodies": {
     "tauceti-star": {

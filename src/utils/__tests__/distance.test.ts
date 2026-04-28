@@ -1,4 +1,4 @@
-import { auToKm, formatAU, formatKm, KM_PER_AU } from '../distance';
+import { auToKm, AU_PER_LY, formatAU, formatKm, formatLY, KM_PER_AU, lyToAU } from '../distance';
 
 describe('auToKm', () => {
   it('converts 0 AU to 0 km', () => {
@@ -78,5 +78,43 @@ describe('formatAU', () => {
 
   it('gives 0 decimal places for values >= 1000', () => {
     expect(formatAU(13400)).toBe('13400 AU');
+  });
+});
+
+describe('lyToAU', () => {
+  it('converts 0 ly to 0 AU', () => {
+    expect(lyToAU(0)).toBe(0);
+  });
+
+  it('converts 1 ly to AU_PER_LY', () => {
+    expect(lyToAU(1)).toBeCloseTo(AU_PER_LY, 1);
+  });
+
+  it('converts Alpha Centauri distance correctly', () => {
+    expect(lyToAU(4.37)).toBeCloseTo(4.37 * AU_PER_LY, 1);
+  });
+});
+
+describe('formatLY', () => {
+  it('returns — for 0', () => {
+    expect(formatLY(0)).toBe('—');
+  });
+
+  it('gives 4 decimal places for values below 0.1 ly', () => {
+    expect(formatLY(0.0012)).toBe('0.0012 ly');
+  });
+
+  it('gives 2 decimal places for values between 0.1 and 10 ly', () => {
+    expect(formatLY(4.37)).toBe('4.37 ly');
+    expect(formatLY(11.9)).toBe('11.9 ly');
+  });
+
+  it('gives 1 decimal place for values between 10 and 1000 ly', () => {
+    expect(formatLY(39)).toBe('39.0 ly');
+    expect(formatLY(245)).toBe('245.0 ly');
+  });
+
+  it('gives 0 decimal places with locale separator for values >= 1000 ly', () => {
+    expect(formatLY(2545)).toBe('2,545 ly');
   });
 });
