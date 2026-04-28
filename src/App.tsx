@@ -7,7 +7,7 @@ import { loadStarSystem } from './data/celestialBodies';
 import { STAR_SYSTEMS } from './data/systems';
 import { StarSystemContext, type StarSystemData } from './contexts/StarSystemContext';
 import { CELESTIAL_BODIES, BODY_HIERARCHY, VISUAL_CONFIG } from './data/celestialBodies';
-import { BodyType } from './types';
+import { BodyType, ROOT_BODY_TYPES } from './types';
 import type { BodyId, TabId, StarSystemMeta } from './types';
 import './App.css';
 
@@ -40,7 +40,7 @@ export default function App(): JSX.Element {
     if (id === systemData.id) return;
     setLoadingSystem(true);
     loadStarSystem(id).then(loaded => {
-      const starId = Object.values(loaded.bodies).find(b => b.type === BodyType.Star)?.id ?? id;
+      const starId = Object.values(loaded.bodies).find(b => ROOT_BODY_TYPES.has(b.type))?.id ?? id;
       setSystemData(loaded);
       setSelectedBody(starId);
       setHoveredBody(null);

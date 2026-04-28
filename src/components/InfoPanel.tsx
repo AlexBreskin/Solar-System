@@ -1,5 +1,5 @@
 import { useStarSystem } from '../contexts/StarSystemContext';
-import { BodyType } from '../types';
+import { BodyType, ROOT_BODY_TYPES } from '../types';
 import type { InfoPanelProps, StatRowProps } from '../types';
 import { auToKm, formatAU, formatKm, formatLY, lyToAU } from '../utils/distance';
 import './InfoPanel.css';
@@ -12,6 +12,9 @@ const TYPE_LABELS: Record<BodyType, string> = {
   [BodyType.Asteroid]: 'Asteroid',
   [BodyType.Belt]: 'Region',
   [BodyType.Companion]: 'Companion Star',
+  [BodyType.BlackHole]: 'Black Hole',
+  [BodyType.NeutronStar]: 'Neutron Star',
+  [BodyType.Quasar]: 'Quasar',
 };
 
 function StatRow({ label, value, title }: StatRowProps): JSX.Element | null {
@@ -93,7 +96,7 @@ export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element
         {isRetrograde && <div className="retrograde-tag">⟲ Retrograde rotation</div>}
       </div>
 
-      {body.type === BodyType.Star && meta.distanceFromEarth != null && (
+      {ROOT_BODY_TYPES.has(body.type) && meta.distanceFromEarth != null && (
         <div className="info-section">
           <div className="info-section-title">Location</div>
           <StatRow

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useStarSystem } from '../contexts/StarSystemContext';
-import { BodyType } from '../types';
+import { BodyType, ROOT_BODY_TYPES } from '../types';
 import type { TabId, HierarchyNode } from '../types';
 import './BodyNavigator.css';
 
@@ -12,6 +12,9 @@ const TYPE_ICONS: Record<BodyType, string> = {
   [BodyType.Asteroid]: '·',
   [BodyType.Belt]: '⌀',
   [BodyType.Companion]: '✦',
+  [BodyType.BlackHole]: '◉',
+  [BodyType.NeutronStar]: '✶',
+  [BodyType.Quasar]: '✵',
 };
 
 const TYPE_LABELS: Record<BodyType, string> = {
@@ -22,6 +25,9 @@ const TYPE_LABELS: Record<BodyType, string> = {
   [BodyType.Asteroid]: 'Asteroid',
   [BodyType.Belt]: 'Region',
   [BodyType.Companion]: 'Companion Star',
+  [BodyType.BlackHole]: 'Black Hole',
+  [BodyType.NeutronStar]: 'Neutron Star',
+  [BodyType.Quasar]: 'Quasar',
 };
 
 interface BodyNavigatorProps {
@@ -71,7 +77,7 @@ function NavigatorNode({
         onGoToSolarSystem();
       } else if ((body.type === BodyType.Moon || body.type === BodyType.Companion) && body.parent) {
         onViewPlanet(body.parent);
-      } else if (body.type !== BodyType.Star) {
+      } else if (!ROOT_BODY_TYPES.has(body.type)) {
         onViewPlanet(node.id);
       }
     }
@@ -143,7 +149,7 @@ export default function BodyNavigator({
 }: BodyNavigatorProps): JSX.Element {
   const { bodies, hierarchy, meta } = useStarSystem();
 
-  const starId = Object.values(bodies).find(b => b.type === BodyType.Star)?.id;
+  const starId = Object.values(bodies).find(b => ROOT_BODY_TYPES.has(b.type))?.id;
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set(starId ? [starId] : []));
   const navScrollRef = useRef<HTMLDivElement>(null);
 

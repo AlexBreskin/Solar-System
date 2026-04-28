@@ -1,0 +1,49 @@
+{
+  "system": {
+    "id": "m87",
+    "name": "M87*",
+    "description": "The supermassive black hole at the heart of galaxy M87, 53.5 million light-years away. In April 2019 it became the first black hole ever directly imaged, its glowing accretion disk revealing a dark shadow the size of our entire solar system.",
+    "starColor": "#FF8800",
+    "displayOrder": 10,
+    "distanceFromEarth": 53500000
+  },
+  "bodies": {
+    "m87bh": {
+      "id": "m87bh",
+      "name": "M87*",
+      "type": "black-hole",
+      "parent": null,
+      "diameter": 38360000000,
+      "mass": "1.29 × 10⁴⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#080400",
+      "glowColor": "#FF8800",
+      "moons": 0,
+      "description": "At 6.5 billion solar masses, M87* is one of the most massive black holes known. Its event horizon spans roughly 38 billion km — larger than our entire solar system. The Event Horizon Telescope image, assembled from radio dishes across Earth, showed the characteristic bright ring of superheated plasma encircling a dark shadow.",
+      "surfaceTemp": "N/A (event horizon)",
+      "funFact": "M87* launches a relativistic jet of plasma stretching 5,000 light-years from its poles — one of the most powerful natural phenomena in the known universe.",
+      "nasaUrl": "https://www.nasa.gov/press-release/nasa-scientist-helps-make-first-image-of-a-black-hole",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Messier_87#Supermassive_black_hole"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "m87bh",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "m87bh": 26
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1.0,
+    "moonSpeedMultiplier": 1.0,
+    "beltConfigs": {}
+  }
+}

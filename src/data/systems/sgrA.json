@@ -1,0 +1,72 @@
+{
+  "system": {
+    "id": "sgrA",
+    "name": "Sagittarius A*",
+    "description": "The supermassive black hole at the centre of the Milky Way, 26,000 light-years from Earth. Its gravity sculpts the motion of millions of stars — including S2, which races around it every 16 years at 2.7% the speed of light.",
+    "starColor": "#FF6000",
+    "displayOrder": 9,
+    "distanceFromEarth": 26000
+  },
+  "bodies": {
+    "sgra": {
+      "id": "sgra",
+      "name": "Sgr A*",
+      "type": "black-hole",
+      "parent": null,
+      "diameter": 24500000,
+      "mass": "8.26 × 10³⁶ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#0a0400",
+      "glowColor": "#FF6000",
+      "moons": 0,
+      "description": "The 4.15-million-solar-mass black hole anchoring the Milky Way. Hidden behind dense dust in the constellation Sagittarius, its existence was confirmed by tracking the orbits of nearby stars over decades — most famously S2, whose path traces a near-perfect Keplerian ellipse around an invisible point.",
+      "surfaceTemp": "N/A (event horizon)",
+      "funFact": "If you could somehow stand just outside Sgr A*'s event horizon, time would flow about 200 times slower than on Earth due to extreme gravitational time dilation.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Sagittarius_A*"
+    },
+    "s2": {
+      "id": "s2",
+      "name": "S2",
+      "type": "companion",
+      "parent": "sgra",
+      "diameter": 10930000,
+      "mass": "2.71 × 10³¹ kg",
+      "distanceFromParent": 970,
+      "orbitalPeriod": 5860,
+      "rotationPeriod": 0,
+      "eccentricity": 0.884,
+      "inclination": 134.5,
+      "color": "#A0CFFF",
+      "moons": 0,
+      "description": "An O8-B0 main-sequence star that provided the first direct proof of a supermassive black hole at the Galactic Centre. Its 16-year orbit, tracked since 1995 by multiple telescopes, passes within 120 AU of Sgr A* at closest approach — reaching 2.7% of light speed.",
+      "surfaceTemp": "~30,000 K",
+      "funFact": "S2's orbit around Sgr A* shows a measurable relativistic precession, confirming that general relativity holds even in the extreme gravity near a supermassive black hole.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/S2_(star)"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "sgra",
+      "children": [
+        { "id": "s2", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "sgra": 20,
+      "s2": 7
+    },
+    "moonOrbitalRadii": {
+      "s2": 120
+    },
+    "speedMultiplier": 80.7,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

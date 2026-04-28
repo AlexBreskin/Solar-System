@@ -1,0 +1,48 @@
+{
+  "system": {
+    "id": "ton618",
+    "name": "TON 618",
+    "description": "One of the most massive known black holes in the universe, 10.4 billion light-years away. Its event horizon alone spans roughly 2,600 AU — wider than the entire outer solar system — and it radiates with the power of 140 trillion Suns.",
+    "starColor": "#FFF8E0",
+    "displayOrder": 15,
+    "distanceFromEarth": 10400000000
+  },
+  "bodies": {
+    "ton618-bh": {
+      "id": "ton618-bh",
+      "name": "TON 618",
+      "type": "quasar",
+      "parent": null,
+      "diameter": 389000000000,
+      "mass": "1.31 × 10⁴¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFF8E0",
+      "glowColor": "#FFE090",
+      "moons": 0,
+      "description": "A hyperluminous quasar powered by a 66-billion-solar-mass black hole — one of the largest ever measured. Its event horizon diameter of ~2,600 AU dwarfs the entire solar system. Light we observe from TON 618 today left before the Solar System even existed, when the universe was only about 3 billion years old.",
+      "surfaceTemp": "Accretion disk: ~200,000 K",
+      "funFact": "TON 618's black hole is so massive that if placed at the Sun's position, its event horizon would extend well past the orbit of Neptune — swallowing every planet in our solar system.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/TON_618"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "ton618-bh",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "ton618-bh": 28
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1.0,
+    "moonSpeedMultiplier": 1.0,
+    "beltConfigs": {}
+  }
+}

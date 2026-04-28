@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import { SolarSystemSimulation } from '../simulation/solarSystemSimulation';
 import { drawStarField, drawOrbits, drawBelt, drawBodies, drawBodyRings } from '../renderers/solarSystemRenderer';
 import { useStarSystem } from '../contexts/StarSystemContext';
-import { BodyType } from '../types';
+import { BodyType, ROOT_BODY_TYPES } from '../types';
 import type { CanvasSize, SolarSystemCanvasProps } from '../types';
 
 interface PanState {
@@ -220,7 +220,7 @@ export default function SolarSystemCanvas({
         onSelectBody(hit);
         if (bodies[hit]?.type === 'belt') {
           zoomToBelt(hit);
-        } else if (panRef.current.targetZoom < 1.5 && bodies[hit]?.type !== BodyType.Star) {
+        } else if (panRef.current.targetZoom < 1.5 && !ROOT_BODY_TYPES.has(bodies[hit]?.type as BodyType)) {
           panRef.current.targetZoom = Math.min(2.5, panRef.current.targetZoom * 1.8);
         }
       }

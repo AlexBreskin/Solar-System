@@ -1,0 +1,49 @@
+{
+  "system": {
+    "id": "3c273",
+    "name": "3C 273",
+    "description": "The first quasar ever optically identified and the brightest in the sky, 2.4 billion light-years away. It blazes with the luminosity of four trillion Suns as a supermassive black hole consumes surrounding gas at a ferocious rate.",
+    "starColor": "#FFFFF0",
+    "displayOrder": 14,
+    "distanceFromEarth": 2400000000
+  },
+  "bodies": {
+    "3c273-bh": {
+      "id": "3c273-bh",
+      "name": "3C 273",
+      "type": "quasar",
+      "parent": null,
+      "diameter": 5230000000,
+      "mass": "1.76 × 10³⁹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFFFF0",
+      "glowColor": "#FFFFE0",
+      "moons": 0,
+      "description": "A quasar powered by a 886-million-solar-mass black hole surrounded by a blazing accretion disk. First identified in 1963, 3C 273 was the first object recognised as being at a cosmological distance — its enormous redshift revealed it lay billions of light-years away. Its luminosity varies on timescales of weeks, implying the energy-producing region is only light-weeks across.",
+      "surfaceTemp": "Accretion disk: ~100,000 K",
+      "funFact": "Despite being 2.4 billion light-years away, 3C 273 is visible through a modest amateur telescope — it outshines the entire Milky Way by a factor of over 100.",
+      "nasaUrl": "https://www.nasa.gov/universe/what-is-a-quasar/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/3C_273"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "3c273-bh",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "3c273-bh": 24
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1.0,
+    "moonSpeedMultiplier": 1.0,
+    "beltConfigs": {}
+  }
+}

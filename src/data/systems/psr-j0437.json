@@ -1,0 +1,75 @@
+{
+  "system": {
+    "id": "psr-j0437",
+    "name": "PSR J0437-4715",
+    "description": "The closest millisecond pulsar to Earth at just 510 light-years away, spinning 174 times per second. It orbits a white dwarf companion — the burnt-out remnant of the very star that once fed the pulsar and spun it up to its extreme rotation rate.",
+    "starColor": "#A0BFFF",
+    "displayOrder": 13,
+    "distanceFromEarth": 510
+  },
+  "bodies": {
+    "j0437-pulsar": {
+      "id": "j0437-pulsar",
+      "name": "PSR J0437-4715",
+      "type": "neutron-star",
+      "parent": null,
+      "diameter": 20,
+      "mass": "3.50 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0.0000057,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#A0BFFF",
+      "glowColor": "#6090FF",
+      "moons": 0,
+      "description": "A millisecond pulsar spinning 174 times per second and the nearest of its class to Earth. Its precise, clock-like pulses make it a natural laboratory for testing general relativity and detecting gravitational waves. It belongs to a pulsar timing array used by astronomers as a galaxy-scale detector.",
+      "surfaceTemp": "~10,000 K (surface)",
+      "funFact": "PSR J0437-4715 is so close and its pulses so regular that it has been used as a natural gravitational-wave detector — tiny changes in pulse timing reveal ripples in spacetime from merging black holes across the cosmos.",
+      "nasaUrl": "https://www.nasa.gov/universe/nasa-measures-universe-expansion-rate-using-x-ray-binary-stars/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/PSR_J0437-4715"
+    },
+    "j0437-wd": {
+      "id": "j0437-wd",
+      "name": "J0437 White Dwarf",
+      "type": "companion",
+      "parent": "j0437-pulsar",
+      "diameter": 14000,
+      "mass": "5.05 × 10²⁹ kg",
+      "distanceFromParent": 0.14,
+      "orbitalPeriod": 5.74,
+      "rotationPeriod": 5.74,
+      "eccentricity": 0.00002,
+      "inclination": 42.0,
+      "color": "#D0DCFF",
+      "glowColor": "#E0E8FF",
+      "binaryMassFraction": 0.126,
+      "moons": 0,
+      "description": "A low-mass helium white dwarf — the burned-out core of the star that once donated material to the pulsar. Over billions of years, accretion from this companion spun the neutron star up from a slow rotator to the millisecond pulsar we observe today. The white dwarf is now cold and inert, an orbital relic of a long relationship.",
+      "surfaceTemp": "~4,000 K",
+      "funFact": "This white dwarf is thought to be one of the coolest and oldest white dwarfs known in the Milky Way — its age rivals that of the galaxy itself.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/PSR_J0437-4715"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "j0437-pulsar",
+      "children": [
+        { "id": "j0437-wd", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "j0437-pulsar": 10,
+      "j0437-wd": 12
+    },
+    "moonOrbitalRadii": {
+      "j0437-wd": 60
+    },
+    "speedMultiplier": 0.079,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

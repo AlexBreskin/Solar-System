@@ -1,0 +1,75 @@
+{
+  "system": {
+    "id": "cygnusx1",
+    "name": "Cygnus X-1",
+    "description": "One of the first stellar black hole candidates ever identified, 7,240 light-years away. It feeds on mass stripped from its blue supergiant companion HDE 226868, shining brilliantly in X-rays as matter spirals into the accretion disk.",
+    "starColor": "#80B0FF",
+    "displayOrder": 11,
+    "distanceFromEarth": 7240
+  },
+  "bodies": {
+    "cygnusx1-bh": {
+      "id": "cygnusx1-bh",
+      "name": "Cygnus X-1",
+      "type": "black-hole",
+      "parent": null,
+      "diameter": 125,
+      "mass": "4.22 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#040408",
+      "glowColor": "#4488FF",
+      "moons": 0,
+      "description": "A stellar-mass black hole of about 21 solar masses, formed when a massive star collapsed. It accretes material from the wind of its companion star, generating intense X-ray emission that was first detected in 1964 — making it one of the earliest black hole candidates ever found.",
+      "surfaceTemp": "N/A (event horizon)",
+      "funFact": "In 1974, Stephen Hawking bet Kip Thorne that Cygnus X-1 was NOT a black hole — he conceded the bet in 1990 once the evidence became overwhelming.",
+      "nasaUrl": "https://www.nasa.gov/universe/nasa-s-chandra-x-ray-observatory-celebrates-25-years/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Cygnus_X-1"
+    },
+    "hde226868": {
+      "id": "hde226868",
+      "name": "HDE 226868",
+      "type": "companion",
+      "parent": "cygnusx1-bh",
+      "diameter": 30600000,
+      "mass": "7.96 × 10³¹ kg",
+      "distanceFromParent": 0.2,
+      "orbitalPeriod": 5.6,
+      "rotationPeriod": 5.6,
+      "eccentricity": 0.018,
+      "inclination": 27.5,
+      "color": "#80B0FF",
+      "glowColor": "#A0C8FF",
+      "binaryMassFraction": 0.653,
+      "moons": 0,
+      "description": "A luminous O9.7 Iab blue supergiant and one of the brightest stars in the sky. Its powerful stellar wind feeds a constant stream of gas onto the Cygnus X-1 black hole. Despite being roughly twice as massive as the black hole, the star is slowly being cannibalized by its dark companion.",
+      "surfaceTemp": "~30,000 K",
+      "funFact": "HDE 226868 is so luminous it would outshine every star visible to the naked eye if placed at the same distance as Alpha Centauri.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/HDE_226868"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "cygnusx1-bh",
+      "children": [
+        { "id": "hde226868", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "cygnusx1-bh": 12,
+      "hde226868": 22
+    },
+    "moonOrbitalRadii": {
+      "hde226868": 55
+    },
+    "speedMultiplier": 0.077,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

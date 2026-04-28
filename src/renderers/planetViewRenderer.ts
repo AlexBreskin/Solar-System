@@ -1,4 +1,4 @@
-import { BodyType } from '../types';
+import { BodyType, ROOT_BODY_TYPES } from '../types';
 import type { BodyId, CelestialBody, RingBand } from '../types';
 
 const TWO_PI = Math.PI * 2;
@@ -65,29 +65,46 @@ export function drawBody(
     ctx.fill();
   }
 
-  if (body.type === BodyType.Star) {
+  if (ROOT_BODY_TYPES.has(body.type) && body.type !== BodyType.BlackHole) {
+    const glowColor = body.type === BodyType.Star ? 'rgba(255,160,0,0.3)' : (body.glowColor ?? body.color) + '55';
     const corona = ctx.createRadialGradient(x, y, r, x, y, r * 2.8);
-    corona.addColorStop(0, 'rgba(255,160,0,0.3)');
-    corona.addColorStop(1, 'rgba(255,80,0,0)');
+    corona.addColorStop(0, glowColor);
+    corona.addColorStop(1, (body.glowColor ?? body.color) + '00');
     ctx.fillStyle = corona;
     ctx.beginPath();
     ctx.arc(x, y, r * 2.8, 0, TWO_PI);
     ctx.fill();
   }
 
-  const grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
-  if (body.type === BodyType.Star) {
-    grad.addColorStop(0, '#FFF5AA');
-    grad.addColorStop(0.4, '#FDB813');
-    grad.addColorStop(1, '#E07B00');
+  if (body.type === BodyType.BlackHole) {
+    const diskColor = body.glowColor ?? '#FF8800';
+    const disk = ctx.createRadialGradient(x, y, r, x, y, r * 3);
+    disk.addColorStop(0, diskColor + 'CC');
+    disk.addColorStop(0.5, diskColor + '50');
+    disk.addColorStop(1, diskColor + '00');
+    ctx.fillStyle = disk;
+    ctx.beginPath();
+    ctx.arc(x, y, r * 3, 0, TWO_PI);
+    ctx.fill();
+    ctx.fillStyle = '#000000';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TWO_PI);
+    ctx.fill();
   } else {
-    grad.addColorStop(0, lighten(body.color, 40));
-    grad.addColorStop(1, body.color);
+    const grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    if (body.type === BodyType.Star) {
+      grad.addColorStop(0, '#FFF5AA');
+      grad.addColorStop(0.4, '#FDB813');
+      grad.addColorStop(1, '#E07B00');
+    } else {
+      grad.addColorStop(0, lighten(body.color, 40));
+      grad.addColorStop(1, body.color);
+    }
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TWO_PI);
+    ctx.fill();
   }
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, TWO_PI);
-  ctx.fill();
 
   if (body.atmosphereColor) {
     ctx.beginPath();

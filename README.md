@@ -43,6 +43,13 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 | Gliese 667C | M1.5V red dwarf | 3 | Triple star system; two habitable-zone worlds |
 | Kepler-16 | K+M binary ("Tatooine") | 1 | First confirmed circumbinary planet — two suns in the sky |
 | Alpha Centauri | G+K+M triple star | 1 | Nearest stellar system; hosts closest known exoplanet |
+| Sagittarius A* | Black hole + S2 star | — | Milky Way's central black hole; S2 orbits at 2.7% light speed |
+| M87* | Supermassive black hole | — | First ever imaged black hole; event horizon spans the solar system |
+| Cygnus X-1 | Black hole + blue supergiant | — | One of the first identified black hole candidates; Hawking's lost bet |
+| Lich (PSR B1257+12) | Millisecond pulsar | 3 | First confirmed exoplanets ever discovered, orbiting a stellar corpse |
+| PSR J0437-4715 | Millisecond pulsar + white dwarf | — | Nearest millisecond pulsar; used as a gravitational-wave detector |
+| 3C 273 | Quasar | — | Brightest quasar in the sky; 4 trillion solar luminosities |
+| TON 618 | Quasar | — | One of the most massive black holes known; event horizon spans 2,600 AU |
 
 ## Getting Started
 
@@ -151,4 +158,5 @@ src/
 - **Rendering** — HTML5 Canvas 2D with `requestAnimationFrame`; DevicePixelRatio-aware for high-DPI displays
 - **Deterministic particles** — belt particle fields use a seeded RNG (Mulberry32) so the layout is consistent across renders
 - **Distance formatting** — `src/utils/distance.ts` converts AU↔km↔ly; orbital distances default to AU (4 sig figs, km on hover); star info panels show system distance from Earth in light-years (AU on hover)
-- **Tooling** — Vite for dev and builds; Vitest for tests; 236 tests across 5 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
+- **Exotic objects** — `BodyType.BlackHole`, `BodyType.NeutronStar`, and `BodyType.Quasar` supported; black holes render as a dark disc with an accretion-disk glow; the `ROOT_BODY_TYPES` set replaces hardcoded star checks throughout
+- **Tooling** — Vite for dev and builds; Vitest for tests; 349 tests across 5 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style

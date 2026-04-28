@@ -38,5 +38,8 @@ export function formatLY(ly: number): string {
   if (ly < 0.1) return `${ly.toFixed(4)} ly`;
   if (ly < 10) return `${ly.toFixed(2)} ly`;
   if (ly < 1_000) return `${ly.toFixed(1)} ly`;
-  return `${Math.round(ly).toLocaleString()} ly`;
+  if (ly < 1_000_000) return `${Math.round(ly).toLocaleString()} ly`;
+  const exp = Math.floor(Math.log10(ly));
+  const mantissa = ly / Math.pow(10, exp);
+  return `${mantissa.toFixed(2)} × 10${toSuperscript(exp)} ly`;
 }

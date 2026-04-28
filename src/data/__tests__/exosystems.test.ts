@@ -1,4 +1,4 @@
-import { BodyType } from '../../types';
+import { BodyType, ROOT_BODY_TYPES } from '../../types';
 import type { CelestialBody, HierarchyNode, StarSystemMeta } from '../../types';
 import type { VisualConfig } from '../../types/visual';
 import { validateBodyShape, validateRingBand, flattenHierarchy } from './celestialBodies.test';
@@ -73,17 +73,17 @@ describe.each(exosystems)('$name — bodies shape', ({ data }) => {
     }
   });
 
-  it('exactly one star with no parent', () => {
-    const stars = bodies.filter(b => b.type === BodyType.Star);
-    expect(stars).toHaveLength(1);
-    expect(stars[0].parent).toBeNull();
+  it('exactly one root body (star, black hole, neutron star, or quasar) with no parent', () => {
+    const roots = bodies.filter(b => ROOT_BODY_TYPES.has(b.type));
+    expect(roots).toHaveLength(1);
+    expect(roots[0].parent).toBeNull();
   });
 
-  it('all planets are direct children of the star', () => {
-    const starId = bodies.find(b => b.type === BodyType.Star)!.id;
+  it('all planets are direct children of the root body', () => {
+    const rootId = bodies.find(b => ROOT_BODY_TYPES.has(b.type))!.id;
     for (const body of bodies) {
       if (body.type === BodyType.Planet) {
-        expect(body.parent).toBe(starId);
+        expect(body.parent).toBe(rootId);
       }
     }
   });

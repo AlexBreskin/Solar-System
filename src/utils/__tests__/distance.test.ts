@@ -117,4 +117,9 @@ describe('formatLY', () => {
   it('gives 0 decimal places with locale separator for values >= 1000 ly', () => {
     expect(formatLY(2545)).toBe('2,545 ly');
   });
+
+  it('uses scientific notation for distances >= 1,000,000 ly (quasar scale)', () => {
+    expect(formatLY(2_400_000_000)).toBe('2.40 × 10⁹ ly');
+    expect(formatLY(10_400_000_000)).toBe('1.04 × 10¹⁰ ly');
+  });
 });

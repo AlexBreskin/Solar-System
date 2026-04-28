@@ -186,6 +186,34 @@ export function drawSun(
   }
 }
 
+export function drawBlackHole(
+  ctx: CanvasRenderingContext2D,
+  x: number, y: number, r: number,
+  glowColor: string,
+  active: boolean,
+): void {
+  const diskOuter = r * 3;
+  const disk = ctx.createRadialGradient(x, y, r, x, y, diskOuter);
+  disk.addColorStop(0, glowColor + 'CC');
+  disk.addColorStop(0.4, glowColor + '60');
+  disk.addColorStop(1, glowColor + '00');
+  ctx.fillStyle = disk;
+  ctx.beginPath();
+  ctx.arc(x, y, diskOuter, 0, TWO_PI);
+  ctx.fill();
+
+  ctx.fillStyle = '#000000';
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, TWO_PI);
+  ctx.fill();
+
+  if (active) {
+    ctx.strokeStyle = glowColor + 'CC';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+}
+
 export function drawBodyRings(
   ctx: CanvasRenderingContext2D,
   positions: Record<string, Vec2>,
@@ -276,6 +304,8 @@ export function drawBodies(
 
     if (body.type === BodyType.Star) {
       drawSun(ctx, pos.x, pos.y, r, isSelected || isHovered);
+    } else if (body.type === BodyType.BlackHole) {
+      drawBlackHole(ctx, pos.x, pos.y, r, body.glowColor ?? '#FF8800', isSelected || isHovered);
     } else {
       const grad = ctx.createRadialGradient(pos.x - r * 0.3, pos.y - r * 0.3, r * 0.1, pos.x, pos.y, r);
       grad.addColorStop(0, lighten(body.color, 40));

@@ -1,0 +1,116 @@
+{
+  "system": {
+    "id": "lich",
+    "name": "Lich (PSR B1257+12)",
+    "description": "A millisecond pulsar 2,300 light-years away hosting the first confirmed exoplanets ever discovered. Three rocky worlds orbit a dead stellar remnant spinning 161 times per second — a system born from the wreckage of a supernova.",
+    "starColor": "#B0D0FF",
+    "displayOrder": 12,
+    "distanceFromEarth": 2300
+  },
+  "bodies": {
+    "lich-pulsar": {
+      "id": "lich-pulsar",
+      "name": "Lich",
+      "type": "neutron-star",
+      "parent": null,
+      "diameter": 20,
+      "mass": "2.78 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0.00000620,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#C0DCFF",
+      "glowColor": "#80B0FF",
+      "moons": 0,
+      "description": "A millisecond pulsar spinning 161 times per second, formed when a massive star exploded as a supernova and its core collapsed to a city-sized ball of neutrons. It was recycled to such extreme spin rates by accreting mass from a companion star — which the pulsar then destroyed, leaving behind three orphaned planets.",
+      "surfaceTemp": "~30,000 K (surface)",
+      "funFact": "Lich is only about 20 km across yet contains more mass than our entire Sun — a teaspoon of neutron-star material would weigh roughly a billion tonnes.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/PSR_B1257%2B12"
+    },
+    "draugr": {
+      "id": "draugr",
+      "name": "Draugr",
+      "type": "planet",
+      "parent": "lich-pulsar",
+      "diameter": 3456,
+      "mass": "1.19 × 10²³ kg",
+      "distanceFromParent": 0.19,
+      "orbitalPeriod": 25.26,
+      "rotationPeriod": 25.26,
+      "eccentricity": 0.0,
+      "inclination": 0,
+      "color": "#607060",
+      "moons": 0,
+      "description": "The innermost and least massive of the Lich system's three planets, with only 2% of Earth's mass. This sub-Mercury world sweeps around the pulsar every 25 days, bathed in deadly X-ray and gamma radiation — among the most hostile environments for any planet in the known universe.",
+      "surfaceTemp": "Unknown",
+      "funFact": "Draugr was the first exoplanet ever confirmed around a pulsar, announced in 1992 — predating the discovery of the first planet around a sun-like star by three years.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/PSR_B1257%2B12_b"
+    },
+    "poltergeist": {
+      "id": "poltergeist",
+      "name": "Poltergeist",
+      "type": "planet",
+      "parent": "lich-pulsar",
+      "diameter": 20000,
+      "mass": "2.57 × 10²⁵ kg",
+      "distanceFromParent": 0.36,
+      "orbitalPeriod": 66.54,
+      "rotationPeriod": 66.54,
+      "eccentricity": 0.018,
+      "inclination": 0,
+      "color": "#708070",
+      "moons": 0,
+      "description": "A super-Earth 4.3 times the mass of our planet, orbiting within the approximate habitable zone of its pulsar host. Any surface would be scoured by intense pulsar radiation, making life as we know it impossible despite the otherwise temperate orbital distance.",
+      "surfaceTemp": "Unknown",
+      "funFact": "Poltergeist and its sibling Phobetor have near-identical orbital resonances — their periods are very close to a 3:2 ratio, suggesting they formed together from the same disk of debris.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/PSR_B1257%2B12_c"
+    },
+    "phobetor": {
+      "id": "phobetor",
+      "name": "Phobetor",
+      "type": "planet",
+      "parent": "lich-pulsar",
+      "diameter": 20000,
+      "mass": "2.33 × 10²⁵ kg",
+      "distanceFromParent": 0.46,
+      "orbitalPeriod": 98.21,
+      "rotationPeriod": 98.21,
+      "eccentricity": 0.025,
+      "inclination": 0,
+      "color": "#686868",
+      "moons": 0,
+      "description": "The outermost confirmed planet of the Lich system, with 3.9 Earth masses. It orbits at 0.46 AU every 98 days in a nearly circular path. Like its siblings, it is thought to have formed from the disc of debris created when the pulsar's predecessor companion was evaporated.",
+      "surfaceTemp": "Unknown",
+      "funFact": "The three Lich system planets were named after undead creatures from Slavic and Norse mythology, reflecting the nature of their host — a stellar corpse.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/PSR_B1257%2B12_d"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "lich-pulsar",
+      "children": [
+        { "id": "draugr", "children": [] },
+        { "id": "poltergeist", "children": [] },
+        { "id": "phobetor", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "draugr": 100,
+      "poltergeist": 160,
+      "phobetor": 210
+    },
+    "planetSizes": {
+      "lich-pulsar": 10,
+      "draugr": 4,
+      "poltergeist": 8,
+      "phobetor": 8
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 0.347,
+    "moonSpeedMultiplier": 1.0,
+    "beltConfigs": {}
+  }
+}

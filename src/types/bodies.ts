@@ -8,7 +8,17 @@ export enum BodyType {
   Asteroid = 'asteroid',
   Belt = 'belt',
   Companion = 'companion',
+  BlackHole = 'black-hole',
+  NeutronStar = 'neutron-star',
+  Quasar = 'quasar',
 }
+
+export const ROOT_BODY_TYPES = new Set<BodyType>([
+  BodyType.Star,
+  BodyType.BlackHole,
+  BodyType.NeutronStar,
+  BodyType.Quasar,
+]);
 
 export interface RingBand {
   innerFactor: number;
