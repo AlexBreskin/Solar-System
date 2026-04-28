@@ -24,5 +24,12 @@ Thumbs.db
 # AI Harness
 .claude
 
+# TypeScript incremental build caches
+*.tsbuildinfo
+
+# Vite compiled config artifacts
+vite.config.js
+vite.config.d.ts
+
 # Other files
 Todos/
