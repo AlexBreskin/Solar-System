@@ -39,6 +39,7 @@ interface BodyNavigatorProps {
   onHoverBody: (id: string | null) => void;
   onViewPlanet: (id: string) => void;
   onGoToSolarSystem: () => void;
+  onGoToGalaxy: () => void;
 }
 
 interface NodeProps {
@@ -145,7 +146,7 @@ function NavigatorNode({
 
 export default function BodyNavigator({
   activeTab, selectedBody, hoveredBody, viewedPlanet,
-  onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem,
+  onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onGoToGalaxy,
 }: BodyNavigatorProps): JSX.Element {
   const { bodies, hierarchy, meta } = useStarSystem();
 
@@ -187,7 +188,12 @@ export default function BodyNavigator({
       </div>
       <div className="nav-scroll" ref={navScrollRef}>
 
-        <div className="nav-row pv-context-row" style={{ paddingLeft: 12 }}>
+        <div
+          className={`nav-row pv-context-row${activeTab === 'galaxy' ? ' pv-system-active' : ' pv-system-row'}`}
+          style={{ paddingLeft: 12 }}
+          onClick={onGoToGalaxy}
+          title="Galaxy view"
+        >
           <span className="expand-spacer" />
           <span className="body-icon">⬡</span>
           <span className="body-name">Milky Way</span>

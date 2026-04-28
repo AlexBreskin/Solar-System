@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import SolarSystemCanvas from './components/SolarSystemCanvas';
 import PlanetViewCanvas from './components/PlanetViewCanvas';
+import GalaxyCanvas from './components/GalaxyCanvas';
 import BodyNavigator from './components/BodyNavigator';
 import InfoPanel from './components/InfoPanel';
 import { loadStarSystem } from './data/celestialBodies';
@@ -87,6 +88,18 @@ export default function App(): JSX.Element {
     setActiveTab('solar-system');
   }, []);
 
+  const handleGoToGalaxy = useCallback(() => {
+    setActiveTab('galaxy');
+  }, []);
+
+  const handleSelectFromGalaxy = useCallback((id: string) => {
+    if (id === systemData.id) {
+      setActiveTab('solar-system');
+    } else {
+      handleSystemChange(id);
+    }
+  }, [systemData.id, handleSystemChange]);
+
   return (
     <StarSystemContext.Provider value={systemData}>
       <div className="app">
@@ -113,6 +126,13 @@ export default function App(): JSX.Element {
             </div>
 
             <div className="tab-bar">
+              <button
+                className={`tab-btn${activeTab === 'galaxy' ? ' active' : ''}`}
+                onClick={() => handleTabChange('galaxy')}
+              >
+                <span className="tab-icon">✦</span>
+                Galaxy
+              </button>
               <button
                 className={`tab-btn${activeTab === 'solar-system' ? ' active' : ''}`}
                 onClick={() => handleTabChange('solar-system')}
@@ -194,6 +214,7 @@ export default function App(): JSX.Element {
               onHoverBody={handleHoverBody}
               onViewPlanet={handleViewPlanet}
               onGoToSolarSystem={handleGoToSolarSystem}
+              onGoToGalaxy={handleGoToGalaxy}
             />
           </aside>
 
@@ -211,6 +232,12 @@ export default function App(): JSX.Element {
                 onSelectBody={handleSelectBody}
                 onHoverBody={handleHoverBody}
                 onTrackBody={handleTrackBody}
+              />
+            )}
+            {activeTab === 'galaxy' && (
+              <GalaxyCanvas
+                selectedSystem={systemData.id}
+                onSelectSystem={handleSelectFromGalaxy}
               />
             )}
             {activeTab === 'planet-view' && (
