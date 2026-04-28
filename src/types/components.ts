@@ -69,4 +69,5 @@ export interface InfoPanelProps {
 export interface StatRowProps {
   label: string;
   value: string | number | null | undefined;
+  title?: string;
 }

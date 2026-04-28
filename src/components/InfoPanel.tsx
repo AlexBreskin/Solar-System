@@ -1,6 +1,7 @@
 import { useStarSystem } from '../contexts/StarSystemContext';
 import { BodyType } from '../types';
 import type { InfoPanelProps, StatRowProps } from '../types';
+import { auToKm, formatAU, formatKm } from '../utils/distance';
 import './InfoPanel.css';
 
 const TYPE_LABELS: Record<BodyType, string> = {
@@ -13,12 +14,12 @@ const TYPE_LABELS: Record<BodyType, string> = {
   [BodyType.Companion]: 'Companion Star',
 };
 
-function StatRow({ label, value }: StatRowProps): JSX.Element | null {
+function StatRow({ label, value, title }: StatRowProps): JSX.Element | null {
   if (value === null || value === undefined || value === '') return null;
   return (
     <div className="stat-row">
       <span className="stat-label">{label}</span>
-      <span className="stat-value">{value}</span>
+      <span className="stat-value" title={title}>{value}</span>
     </div>
   );
 }
@@ -34,14 +35,6 @@ function formatPeriod(days: number): string {
   return `${Math.round(years).toLocaleString()} years${retro}`;
 }
 
-const KM_PER_AU = 149_597_870.7; // IAU definition of 1 Astronomical Unit
-
-function formatDistance(au: number): string {
-  if (!au) return '—';
-  if (au < 0.001) return `${(au * KM_PER_AU).toFixed(0)} km`;
-  if (au < 0.1)   return `${(au * KM_PER_AU / 1_000).toFixed(0)} thousand km`;
-  return `${au.toFixed(3)} AU`;
-}
 
 function formatDiameter(km: number): string {
   if (!km) return '—';
@@ -88,7 +81,11 @@ export default function InfoPanel({ selectedBody }: InfoPanelProps): JSX.Element
 
       <div className="info-section">
         <div className="info-section-title">Orbital</div>
-        <StatRow label="Distance" value={formatDistance(body.distanceFromParent)} />
+        <StatRow
+          label="Distance"
+          value={formatAU(body.distanceFromParent)}
+          title={body.distanceFromParent ? formatKm(auToKm(body.distanceFromParent)) : undefined}
+        />
         <StatRow label="Orbital Period" value={formatPeriod(body.orbitalPeriod)} />
         <StatRow label="Rotation Period" value={formatPeriod(body.rotationPeriod)} />
         <StatRow label="Eccentricity" value={body.eccentricity?.toFixed(3)} />
