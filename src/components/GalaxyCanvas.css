@@ -1,0 +1,76 @@
+.galaxy-beyond-panel {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(5, 10, 25, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-width: 200px;
+  backdrop-filter: blur(6px);
+}
+
+.galaxy-beyond-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: rgba(140, 160, 210, 0.65);
+  margin-bottom: 8px;
+  font-family: 'Syne', sans-serif;
+}
+
+.galaxy-beyond-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: rgba(195, 210, 240, 0.8);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  padding: 6px 4px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  text-align: left;
+}
+
+.galaxy-beyond-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.galaxy-beyond-item.active {
+  background: rgba(74, 144, 226, 0.18);
+  color: #ffffff;
+}
+
+.galaxy-beyond-icon {
+  font-size: 14px;
+  color: rgba(160, 200, 255, 0.75);
+  flex-shrink: 0;
+}
+
+.galaxy-beyond-name {
+  flex: 1;
+}
+
+.galaxy-beyond-dist {
+  margin-left: auto;
+  font-size: 10px;
+  color: rgba(110, 135, 180, 0.75);
+  font-family: 'Space Mono', monospace;
+  white-space: nowrap;
+}
+
+.galaxy-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.22);
+  font-family: 'Syne', sans-serif;
+  pointer-events: none;
+  line-height: 1.8;
+}

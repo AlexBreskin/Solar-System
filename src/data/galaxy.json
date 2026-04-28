@@ -1,0 +1,108 @@
+{
+  "systems": [
+    {
+      "id": "sol",
+      "galacticX": 0,
+      "galacticY": 0,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.0,
+      "rootType": "star"
+    },
+    {
+      "id": "alphacentauri",
+      "galacticX": -3.1,
+      "galacticY": -3.1,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.0,
+      "rootType": "star"
+    },
+    {
+      "id": "tauceti",
+      "galacticX": 0.4,
+      "galacticY": 3.4,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.0,
+      "rootType": "star"
+    },
+    {
+      "id": "gliese667c",
+      "galacticX": -0.04,
+      "galacticY": -23.6,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.98,
+      "rootType": "star"
+    },
+    {
+      "id": "trappist1",
+      "galacticX": 16.6,
+      "galacticY": -16.8,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.02,
+      "rootType": "star"
+    },
+    {
+      "id": "55cancri",
+      "galacticX": -9.7,
+      "galacticY": 29.9,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.05,
+      "rootType": "star"
+    },
+    {
+      "id": "hd10180",
+      "galacticX": -68.5,
+      "galacticY": -9.6,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.98,
+      "rootType": "star"
+    },
+    {
+      "id": "kepler16",
+      "galacticX": 228.5,
+      "galacticY": -65.5,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.1,
+      "rootType": "star"
+    },
+    {
+      "id": "psr-j0437",
+      "galacticX": -362.4,
+      "galacticY": 110.8,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.1,
+      "rootType": "neutron-star"
+    },
+    {
+      "id": "lich",
+      "galacticX": -503.0,
+      "galacticY": -386.0,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.6,
+      "rootType": "neutron-star"
+    },
+    {
+      "id": "kepler90",
+      "galacticX": 2348.0,
+      "galacticY": -763.0,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 27.0,
+      "rootType": "star"
+    },
+    {
+      "id": "cygnusx1",
+      "galacticX": 6849.0,
+      "galacticY": -2313.0,
+      "galacticArmHint": "sagittarius",
+      "distanceFromCentreKly": 24.7,
+      "rootType": "black-hole"
+    },
+    {
+      "id": "sgrA",
+      "galacticX": 0,
+      "galacticY": -26000,
+      "galacticArmHint": "core",
+      "distanceFromCentreKly": 0,
+      "rootType": "black-hole"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import type { BodyId } from './bodies';
 
-export type TabId = 'solar-system' | 'planet-view';
+export type TabId = 'solar-system' | 'planet-view' | 'galaxy';
 
 export interface SolarSystemCanvasProps {
   selectedBody: BodyId;
