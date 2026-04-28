@@ -2,10 +2,10 @@
   "system": {
     "id": "trappist1",
     "name": "TRAPPIST-1",
-    "description": "Seven Earth-sized rocky planets orbit an ultra-cool red dwarf 39 light-years away, three within the habitable zone.",
+    "description": "Seven Earth-sized rocky planets orbit an ultra-cool red dwarf 40.7 light-years away, three within the habitable zone.",
     "starColor": "#FF4500",
     "displayOrder": 1,
-    "distanceFromEarth": 39
+    "distanceFromEarth": 40.7
   },
   "bodies": {
     "trappist1-star": {

@@ -31,6 +31,7 @@ function formatPeriod(days: number): string {
   if (!days) return '—';
   const absDays = Math.abs(days);
   const retro = days < 0 ? ' (retrograde)' : '';
+  if (absDays < 1 / 86_400_000) return `${(absDays * 86_400_000).toFixed(1)} ms${retro}`;
   if (absDays < 1) return `${(absDays * 24).toFixed(1)} hours${retro}`;
   if (absDays < 365) return `${absDays.toFixed(2)} days${retro}`;
   const years = absDays / 365.25;
