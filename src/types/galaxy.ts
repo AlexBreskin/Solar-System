@@ -11,4 +11,3 @@ export interface GalaxyData {
   systems: GalacticSystemEntry[];
 }
 
-export const EXTRAGALACTIC_IDS = new Set<string>(['m87', '3c273', 'ton618']);

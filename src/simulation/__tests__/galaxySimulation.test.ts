@@ -1,7 +1,6 @@
 import { GalaxySimulation } from '../galaxySimulation';
-import { GALAXY_DATA } from '../../data/galaxy';
+import { GALAXY_DATA, GALACTIC_IDS } from '../../data/galaxy';
 import { STAR_SYSTEMS } from '../../data/systems';
-import { EXTRAGALACTIC_IDS } from '../../types';
 
 function makeSim(): GalaxySimulation {
   return new GalaxySimulation(GALAXY_DATA, STAR_SYSTEMS);
@@ -65,10 +64,11 @@ describe('GalaxySimulation — data integrity', () => {
     }
   });
 
-  it('extragalactic IDs are NOT present in GALAXY_DATA', () => {
-    const galaxyIds = new Set(GALAXY_DATA.systems.map(e => e.id));
-    for (const id of EXTRAGALACTIC_IDS) {
-      expect(galaxyIds.has(id)).toBe(false);
+  it('any STAR_SYSTEMS entry absent from GALACTIC_IDS is not in GALAXY_DATA', () => {
+    const extragalactic = STAR_SYSTEMS.filter(s => !GALACTIC_IDS.has(s.id));
+    expect(extragalactic.length).toBeGreaterThan(0);
+    for (const s of extragalactic) {
+      expect(GALAXY_DATA.systems.find(e => e.id === s.id)).toBeUndefined();
     }
   });
 

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { STAR_SYSTEMS } from '../data/systems';
-import { GALAXY_DATA } from '../data/galaxy';
-import { EXTRAGALACTIC_IDS } from '../types';
+import { GALAXY_DATA, GALACTIC_IDS } from '../data/galaxy';
 import { formatLY } from '../utils/distance';
 import './GalaxySystemPanel.css';
 
@@ -30,8 +29,8 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
     for (const entry of GALAXY_DATA.systems) {
       map[entry.id] = entry.rootType;
     }
-    for (const id of EXTRAGALACTIC_IDS) {
-      if (!map[id]) map[id] = 'quasar';
+    for (const s of STAR_SYSTEMS) {
+      if (!map[s.id]) map[s.id] = 'quasar';
     }
     return map;
   }, []);
@@ -56,7 +55,7 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
   const rootType = rootTypeById[systemId] ?? 'star';
   const rootTypeLabel = ROOT_TYPE_LABELS[rootType] ?? 'Star System';
   const rootTypeIcon = ROOT_TYPE_ICONS[rootType] ?? '☀';
-  const isExtragalactic = EXTRAGALACTIC_IDS.has(systemId);
+  const isExtragalactic = !GALACTIC_IDS.has(systemId);
 
   return (
     <div className="galaxy-system-panel">

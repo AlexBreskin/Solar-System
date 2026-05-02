@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { STAR_SYSTEMS } from '../data/systems';
-import { GALAXY_DATA } from '../data/galaxy';
-import { EXTRAGALACTIC_IDS } from '../types';
+import { GALAXY_DATA, GALACTIC_IDS } from '../data/galaxy';
 import { formatLY } from '../utils/distance';
 import './GalaxyNavigator.css';
 
@@ -34,8 +33,8 @@ export default function GalaxyNavigator({
     for (const entry of GALAXY_DATA.systems) {
       map[entry.id] = entry.rootType;
     }
-    for (const id of EXTRAGALACTIC_IDS) {
-      if (!map[id]) map[id] = 'quasar';
+    for (const s of STAR_SYSTEMS) {
+      if (!map[s.id]) map[s.id] = 'quasar';
     }
     return map;
   }, []);
@@ -54,7 +53,7 @@ export default function GalaxyNavigator({
         {sortedSystems.map(s => {
           const isSelected = selectedSystem === s.id;
           const isHovered = hoveredSystem === s.id;
-          const isExtragalactic = EXTRAGALACTIC_IDS.has(s.id);
+          const isExtragalactic = !GALACTIC_IDS.has(s.id);
           const rootType = rootTypeById[s.id] ?? 'star';
           return (
             <div
