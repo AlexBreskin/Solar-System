@@ -19,21 +19,23 @@ function armParticleColor(r: number): string {
   return '#A8C4FF';
 }
 
-// Bar geometry — matches the gradient overlay angle and aspect ratio
-const BAR_ANGLE = Math.PI / 5.5;
-const BAR_COS = Math.cos(BAR_ANGLE);
-const BAR_SIN = Math.sin(BAR_ANGLE);
-const BAR_MINOR_RATIO = 0.30; // slightly wider than the gradient's 0.26 for a softer edge
+// Bar geometry — angles match SVG reference (rotate(-55) for Galactic Bar, rotate(-45) for Long Bar).
+// Negative rotation = CCW in canvas = upper-right → lower-left orientation on screen.
+const GALACTIC_BAR_ANGLE = Math.PI * 55 / 180;
+const GALACTIC_BAR_COS = Math.cos(GALACTIC_BAR_ANGLE);
+const GALACTIC_BAR_SIN = Math.sin(GALACTIC_BAR_ANGLE);
+const GALACTIC_BAR_MINOR_RATIO = 0.40;  // ry/rx = 40/100 from SVG, 2.5:1 aspect
+
+const LONG_BAR_ANGLE = Math.PI / 4;
+const LONG_BAR_MINOR_RATIO = 1 / 6;  // ry/rx = 20/120 from SVG, 6:1 aspect
 
 // Returns an (x, y) position sampled from a bar-elongated elliptical shell at major radius rMajor.
-// Uses one rng() call for the angle.
+// Negative rotation matrix: upper-right → lower-left, matching SVG rotate(-55) for the Galactic Bar.
 function barEllipsePoint(rng: () => number, rMajor: number): [number, number] {
   const theta = rng() * TWO_PI;
   const ex = rMajor * Math.cos(theta);
-  const ey = rMajor * BAR_MINOR_RATIO * Math.sin(theta);
-  // Rotate by -BAR_ANGLE: galactic coords have Y-up, but canvas renders Y-down,
-  // so a positive canvas rotation corresponds to a negative galactic rotation.
-  return [ex * BAR_COS + ey * BAR_SIN, -ex * BAR_SIN + ey * BAR_COS];
+  const ey = rMajor * GALACTIC_BAR_MINOR_RATIO * Math.sin(theta);
+  return [ex * GALACTIC_BAR_COS + ey * GALACTIC_BAR_SIN, -ex * GALACTIC_BAR_SIN + ey * GALACTIC_BAR_COS];
 }
 
 // --- LOD 0: full galaxy ±56 Kly, 1024×1024. Best at zoom < 1.5. ---
@@ -65,7 +67,7 @@ function getLOD0Particles(): GalParticle[] {
     const theta = rng() * TWO_PI;
     p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.04 + 0.01, '#A8C4FF']);
   }
-  // 4 major arms
+  // 4 major arms — negative sin gives CW winding on screen
   for (const off of [0, Math.PI / 2, Math.PI, Math.PI * 3 / 2]) {
     for (let i = 0; i < 8000; i++) {
       const t = (i / 8000) * Math.PI * 4.5 + 0.4;
@@ -75,7 +77,7 @@ function getLOD0Particles(): GalParticle[] {
       const tj = gaussianRng(rng) * 0.035;
       const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
-      const py = (r + scatter) * Math.sin(theta);
+      const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.12);
       const aScale = Math.max(0.1, 1 - df * df);
       const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
@@ -92,7 +94,7 @@ function getLOD0Particles(): GalParticle[] {
       const tj = gaussianRng(rng) * 0.035;
       const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
-      const py = (r + scatter) * Math.sin(theta);
+      const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.12);
       const aScale = Math.max(0.1, 1 - df * df);
       p.push([px, py, (rng() * 0.28 + 0.10) * aScale, armParticleColor(r)]);
@@ -108,7 +110,7 @@ function getLOD0Particles(): GalParticle[] {
       const tj = gaussianRng(rng) * 0.03;
       const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
-      const py = (r + scatter) * Math.sin(theta);
+      const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.11);
       const aScale = Math.max(0.1, 1 - df * df);
       p.push([px, py, (rng() * 0.20 + 0.08) * aScale, armParticleColor(r)]);
@@ -154,7 +156,7 @@ function getLOD1Particles(): GalParticle[] {
       const tj = gaussianRng(rng) * 0.04;
       const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
-      const py = (r + scatter) * Math.sin(theta);
+      const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.14);
       const aScale = Math.max(0.1, 1 - df * df);
       const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
@@ -171,7 +173,7 @@ function getLOD1Particles(): GalParticle[] {
       const tj = gaussianRng(rng) * 0.04;
       const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
-      const py = (r + scatter) * Math.sin(theta);
+      const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.14);
       const aScale = Math.max(0.1, 1 - df * df);
       p.push([px, py, (rng() * 0.30 + 0.10) * aScale, armParticleColor(r)]);
@@ -217,7 +219,7 @@ function getLOD2Particles(): GalParticle[] {
       const tj = gaussianRng(rng) * 0.045;
       const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
-      const py = (r + scatter) * Math.sin(theta);
+      const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.16);
       const aScale = Math.max(0.1, 1 - df * df);
       const dv = 0.7 + 0.3 * Math.sin(t * 5 + off * 1.3);
@@ -233,7 +235,7 @@ function getLOD2Particles(): GalParticle[] {
       const tj = gaussianRng(rng) * 0.045;
       const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
-      const py = (r + scatter) * Math.sin(theta);
+      const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.16);
       const aScale = Math.max(0.1, 1 - df * df);
       p.push([px, py, (rng() * 0.22 + 0.08) * aScale, armParticleColor(r)]);
@@ -265,7 +267,7 @@ function buildOffscreen(size: number, halfLY: number, particles: GalParticle[], 
   let currentColor = '';
   for (const [galX, galY, alpha, color] of particles) {
     const px = c + galX * s;
-    const py = c - galY * s;
+    const py = c + galY * s;
     if (px < 0 || px > size || py < 0 || py > size) continue;
     if (color !== currentColor) {
       ctx.fillStyle = color;
@@ -316,7 +318,7 @@ function getArmGuidePoints(): Array<Array<[number, number]>> {
       const r = 2000 * Math.exp(0.22 * t);
       if (r > 52000) break;
       const theta = t + offset;
-      points.push([r * Math.cos(theta), r * Math.sin(theta)]);
+      points.push([r * Math.cos(theta), -r * Math.sin(theta)]);
     }
     return points;
   });
@@ -398,8 +400,8 @@ function drawViewportStars(
 
   const wxMin = (0 - gcx) / scale;
   const wxMax = (w - gcx) / scale;
-  const wyMin = (gcy - h) / scale;
-  const wyMax = gcy / scale;
+  const wyMin = (0 - gcy) / scale;
+  const wyMax = (h - gcy) / scale;
 
   const txMin = Math.floor(wxMin / TILE_LY);
   const txMax = Math.floor(wxMax / TILE_LY);
@@ -419,7 +421,7 @@ function drawViewportStars(
         const alpha = rng() * 0.5 + 0.25;
         const sizeRaw = rng();
         const px = gcx + wx * scale;
-        const py = gcy - wy * scale;
+        const py = gcy + wy * scale;
         if (px < 0 || px > w || py < 0 || py > h) continue;
         const galR = Math.sqrt(wx * wx + wy * wy);
         const distFade = Math.max(0, Math.min(1, 1 - (galR - 30000) / 22000));
@@ -508,10 +510,10 @@ export function drawGalaxyBackground(
     const points = armPoints[ai];
     ctx.beginPath();
     const [wx0, wy0] = points[0];
-    ctx.moveTo(gcx + wx0 * scale, gcy - wy0 * scale);
+    ctx.moveTo(gcx + wx0 * scale, gcy + wy0 * scale);
     for (let pi = 1; pi < points.length; pi++) {
       const [wx, wy] = points[pi];
-      ctx.lineTo(gcx + wx * scale, gcy - wy * scale);
+      ctx.lineTo(gcx + wx * scale, gcy + wy * scale);
     }
     ctx.strokeStyle = `rgba(160,190,255,${(opacity * neighbourFade).toFixed(3)})`;
     ctx.stroke();
@@ -534,17 +536,35 @@ export function drawGalaxyBackground(
   // Galactic bar and nucleus drawn AFTER particle LODs so the bar shape is never hidden by
   // the circular particle distribution in the offscreen canvases
   if (barFade > 0) {
+    // Long Bar: 45° CCW (SVG rotate(-45)), 6:1 aspect, dimmer than Galactic Bar
+    const longBarSemiMajor = Math.max(5, 15000 * scale);
+    ctx.save();
+    ctx.translate(gcx, gcy);
+    ctx.rotate(-LONG_BAR_ANGLE);
+    ctx.scale(1, LONG_BAR_MINOR_RATIO);
+    const longBar = ctx.createRadialGradient(0, 0, 0, 0, 0, longBarSemiMajor);
+    longBar.addColorStop(0,    `rgba(255,250,215,${(0.18 * barFade).toFixed(3)})`);
+    longBar.addColorStop(0.30, `rgba(255,235,165,${(0.08 * barFade).toFixed(3)})`);
+    longBar.addColorStop(0.65, `rgba(235,195,100,${(0.03 * barFade).toFixed(3)})`);
+    longBar.addColorStop(1,    'rgba(175,125,50,0)');
+    ctx.fillStyle = longBar;
+    ctx.beginPath();
+    ctx.arc(0, 0, longBarSemiMajor, 0, TWO_PI);
+    ctx.fill();
+    ctx.restore();
+
+    // Galactic Bar: 55° CCW (SVG rotate(-55)), 2.5:1 aspect
     const barSemiMajor = Math.max(5, 12000 * scale);
     ctx.save();
     ctx.translate(gcx, gcy);
-    ctx.rotate(Math.PI / 5.5);  // ~33° bar angle
-    ctx.scale(1, 0.26);         // semi-minor/semi-major ≈ 0.26 → roughly 4:1 bar
-    const bar = ctx.createRadialGradient(0, 0, 0, 0, 0, barSemiMajor);
-    bar.addColorStop(0,    `rgba(255,250,215,${(0.30 * barFade).toFixed(3)})`);
-    bar.addColorStop(0.30, `rgba(255,235,165,${(0.14 * barFade).toFixed(3)})`);
-    bar.addColorStop(0.65, `rgba(235,195,100,${(0.05 * barFade).toFixed(3)})`);
-    bar.addColorStop(1,    'rgba(175,125,50,0)');
-    ctx.fillStyle = bar;
+    ctx.rotate(-GALACTIC_BAR_ANGLE);
+    ctx.scale(1, GALACTIC_BAR_MINOR_RATIO);
+    const galBar = ctx.createRadialGradient(0, 0, 0, 0, 0, barSemiMajor);
+    galBar.addColorStop(0,    `rgba(255,250,215,${(0.30 * barFade).toFixed(3)})`);
+    galBar.addColorStop(0.30, `rgba(255,235,165,${(0.14 * barFade).toFixed(3)})`);
+    galBar.addColorStop(0.65, `rgba(235,195,100,${(0.05 * barFade).toFixed(3)})`);
+    galBar.addColorStop(1,    'rgba(175,125,50,0)');
+    ctx.fillStyle = galBar;
     ctx.beginPath();
     ctx.arc(0, 0, barSemiMajor, 0, TWO_PI);
     ctx.fill();
@@ -573,7 +593,7 @@ function markerCanvasPos(
   panY: number,
   scale: number,
 ): [number, number] {
-  return [cx + panX + worldX * scale, cy + panY - worldY * scale];
+  return [cx + panX + worldX * scale, cy + panY + worldY * scale];
 }
 
 export function drawSystemMarkers(

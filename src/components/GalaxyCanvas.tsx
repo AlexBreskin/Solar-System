@@ -147,7 +147,7 @@ export default function GalaxyCanvas({
       const cx    = w / 2;
       const cy    = h / 2;
       const gcx   = cx + pan.panX;
-      const gcy   = cy + pan.panY - GALACTIC_CENTRE_WORLD_Y * scale;
+      const gcy   = cy + pan.panY + GALACTIC_CENTRE_WORLD_Y * scale;
 
       // Background canvas — only repaint when the view has actually changed
       const bgChanged = gcx !== lastBg.gcx || gcy !== lastBg.gcy
@@ -187,7 +187,7 @@ export default function GalaxyCanvas({
     const cy    = h / 2;
     const scale = GALAXY_SCALE * pan.zoom;
     const worldX = (canvasX - cx - pan.panX) / scale;
-    const worldY = (cy + pan.panY - canvasY) / scale;
+    const worldY = (canvasY - cy - pan.panY) / scale;
     return { worldX, worldY, scale };
   }, []);
 
