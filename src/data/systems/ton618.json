@@ -6,7 +6,8 @@
     "starColor": "#FFF8E0",
     "displayOrder": 15,
     "distanceFromEarth": 10400000000,
-    "rootType": "quasar"
+    "rootType": "quasar",
+    "hostGalaxy": "TON 618 host galaxy"
   },
   "bodies": {
     "ton618-bh": {

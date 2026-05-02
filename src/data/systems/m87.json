@@ -6,7 +6,8 @@
     "starColor": "#FF8800",
     "displayOrder": 10,
     "distanceFromEarth": 53500000,
-    "rootType": "black-hole"
+    "rootType": "black-hole",
+    "hostGalaxy": "Messier 87"
   },
   "bodies": {
     "m87bh": {

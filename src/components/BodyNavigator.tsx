@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useStarSystem } from '../contexts/StarSystemContext';
 import { BodyType, ROOT_BODY_TYPES } from '../types';
+import { GALACTIC_IDS } from '../data/galaxy';
 import type { TabId, HierarchyNode } from '../types';
 import './BodyNavigator.css';
 
@@ -188,17 +189,30 @@ export default function BodyNavigator({
       </div>
       <div className="nav-scroll" ref={navScrollRef}>
 
-        <div
-          className={`nav-row pv-context-row${activeTab === 'galaxy' ? ' pv-system-active' : ' pv-system-row'}`}
-          style={{ paddingLeft: 12 }}
-          onClick={onGoToGalaxy}
-          title="Galaxy view"
-        >
-          <span className="expand-spacer" />
-          <span className="body-icon">⬡</span>
-          <span className="body-name">Milky Way</span>
-          <span className="body-type-badge">Galaxy</span>
-        </div>
+        {GALACTIC_IDS.has(meta.id) ? (
+          <div
+            className={`nav-row pv-context-row${activeTab === 'galaxy' ? ' pv-system-active' : ' pv-system-row'}`}
+            style={{ paddingLeft: 12 }}
+            onClick={onGoToGalaxy}
+            title="Galaxy view"
+          >
+            <span className="expand-spacer" />
+            <span className="body-icon">⬡</span>
+            <span className="body-name">Milky Way</span>
+            <span className="body-type-badge">Galaxy</span>
+          </div>
+        ) : (
+          <div
+            className="nav-row pv-context-row"
+            style={{ paddingLeft: 12 }}
+            title="Host galaxy — not yet navigable"
+          >
+            <span className="expand-spacer" />
+            <span className="body-icon">⬡</span>
+            <span className="body-name">{meta.hostGalaxy ?? 'Unknown galaxy'}</span>
+            <span className="body-type-badge">Galaxy</span>
+          </div>
+        )}
 
         {activeTab === 'planet-view' ? (
           <div

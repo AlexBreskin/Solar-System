@@ -6,7 +6,8 @@
     "starColor": "#FFFFF0",
     "displayOrder": 14,
     "distanceFromEarth": 2400000000,
-    "rootType": "quasar"
+    "rootType": "quasar",
+    "hostGalaxy": "3C 273 host galaxy"
   },
   "bodies": {
     "3c273-bh": {

@@ -69,6 +69,7 @@ export interface StarSystemMeta {
   displayOrder?: number;
   distanceFromEarth?: number;
   rootType?: string;
+  hostGalaxy?: string;
 }
 
 export interface StarSystem {
