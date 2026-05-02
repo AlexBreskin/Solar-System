@@ -51,6 +51,17 @@ export class GalaxySimulation {
     return best;
   }
 
+  getSystemsNear(worldX: number, worldY: number, lyThreshold: number): GalaxyMarker[] {
+    const result: GalaxyMarker[] = [];
+    for (const m of this.markers) {
+      const d = Math.hypot(worldX - m.worldX, worldY - m.worldY);
+      if (d < lyThreshold) {
+        result.push(m);
+      }
+    }
+    return result;
+  }
+
   setHovered(id: string | null): void {
     this.hoveredId = id;
   }

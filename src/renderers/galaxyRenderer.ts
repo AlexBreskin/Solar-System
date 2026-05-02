@@ -3,46 +3,409 @@ import type { GalaxyMarker } from '../simulation/galaxySimulation';
 
 const TWO_PI = Math.PI * 2;
 
-type GalParticle = [number, number, number];
+// x, y, alpha, colour
+type GalParticle = [number, number, number, string];
 
-let cachedBgParticles: GalParticle[] | null = null;
+function gaussianRng(rng: () => number): number {
+  const u1 = Math.max(1e-10, rng());
+  const u2 = rng();
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(TWO_PI * u2);
+}
 
-function getBgParticles(): GalParticle[] {
-  if (cachedBgParticles) return cachedBgParticles;
+function armParticleColor(r: number): string {
+  if (r < 4000) return '#FFF4C0';
+  if (r < 12000) return '#FFE8A0';
+  if (r < 22000) return '#D8E8FF';
+  return '#A8C4FF';
+}
+
+// --- LOD 0: full galaxy ±56 Kly, 1024×1024. Best at zoom < 1.5. ---
+
+let lod0Particles: GalParticle[] | null = null;
+
+function getLOD0Particles(): GalParticle[] {
+  if (lod0Particles) return lod0Particles;
   const rng = mulberry32(77777);
-  const particles: GalParticle[] = [];
+  const p: GalParticle[] = [];
 
-  for (let i = 0; i < 600; i++) {
-    const r = Math.pow(rng(), 0.5) * 5000;
+  for (let i = 0; i < 3000; i++) {
+    const r = Math.pow(rng(), 0.5) * 9000;
     const theta = rng() * TWO_PI;
-    particles.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.5 + 0.2]);
+    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.35 + 0.08, armParticleColor(r)]);
   }
-
-  const armCount = 4;
-  for (let a = 0; a < armCount; a++) {
-    const armOffset = (a / armCount) * TWO_PI;
-    const pCount = 2000;
-    for (let i = 0; i < pCount; i++) {
-      const t = (i / pCount) * Math.PI * 4.5 + 0.4;
+  for (let i = 0; i < 6000; i++) {
+    const r = 3000 + Math.pow(rng(), 0.5) * 47000;
+    const theta = rng() * TWO_PI;
+    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.055 + 0.01, armParticleColor(r)]);
+  }
+  for (const off of [0, Math.PI / 2, Math.PI, Math.PI * 3 / 2]) {
+    for (let i = 0; i < 5000; i++) {
+      const t = (i / 5000) * Math.PI * 4.5 + 0.4;
       const r = 2000 * Math.exp(0.22 * t);
       if (r > 52000) continue;
-      const scatter = (rng() * 2 - 1) * r * 0.1;
-      const thetaJitter = (rng() - 0.5) * 0.2;
-      const theta = t + armOffset + thetaJitter;
+      const scatter = gaussianRng(rng) * r * 0.06;
+      const tj = gaussianRng(rng) * 0.035;
+      const theta = t + off + tj;
       const px = (r + scatter) * Math.cos(theta);
       const py = (r + scatter) * Math.sin(theta);
-      particles.push([px, py, (rng() * 0.18 + 0.03)]);
+      const df = Math.abs(scatter) / (r * 0.12);
+      const aScale = Math.max(0.1, 1 - df * df);
+      const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
+      p.push([px, py, (rng() * 0.26 + 0.08) * aScale * dv, armParticleColor(r)]);
+    }
+  }
+  for (const off of [Math.PI / 4, Math.PI + Math.PI / 4]) {
+    for (let i = 0; i < 3000; i++) {
+      const t = (i / 3000) * Math.PI * 4.5 + 0.4;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > 52000) continue;
+      const scatter = gaussianRng(rng) * r * 0.06;
+      const tj = gaussianRng(rng) * 0.035;
+      const theta = t + off + tj;
+      const px = (r + scatter) * Math.cos(theta);
+      const py = (r + scatter) * Math.sin(theta);
+      const df = Math.abs(scatter) / (r * 0.12);
+      const aScale = Math.max(0.1, 1 - df * df);
+      p.push([px, py, (rng() * 0.18 + 0.05) * aScale, armParticleColor(r)]);
+    }
+  }
+  for (const off of [Math.PI * 3 / 8, Math.PI + Math.PI * 3 / 8]) {
+    for (let i = 0; i < 1500; i++) {
+      const t = (i / 1500) * Math.PI * 2.8 + 0.8;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > 38000) continue;
+      const scatter = gaussianRng(rng) * r * 0.055;
+      const tj = gaussianRng(rng) * 0.03;
+      const theta = t + off + tj;
+      const px = (r + scatter) * Math.cos(theta);
+      const py = (r + scatter) * Math.sin(theta);
+      const df = Math.abs(scatter) / (r * 0.11);
+      const aScale = Math.max(0.1, 1 - df * df);
+      p.push([px, py, (rng() * 0.12 + 0.02) * aScale, armParticleColor(r)]);
+    }
+  }
+  for (let i = 0; i < 1500; i++) {
+    const r = 12000 + rng() * 40000;
+    const theta = rng() * TWO_PI;
+    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.06 + 0.01, '#A8C4FF']);
+  }
+
+  lod0Particles = p;
+  return p;
+}
+
+// --- LOD 1: inner galaxy ±22 Kly, 2048×2048. Best at zoom 1–4. ---
+
+const LOD1_MAX_R = 22000;
+let lod1Particles: GalParticle[] | null = null;
+
+function getLOD1Particles(): GalParticle[] {
+  if (lod1Particles) return lod1Particles;
+  const rng = mulberry32(88888);
+  const p: GalParticle[] = [];
+
+  for (let i = 0; i < 5000; i++) {
+    const r = Math.pow(rng(), 0.6) * 8000;
+    const theta = rng() * TWO_PI;
+    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.4 + 0.08, armParticleColor(r)]);
+  }
+  for (let i = 0; i < 8000; i++) {
+    const r = 1000 + Math.pow(rng(), 0.7) * 19000;
+    if (r > LOD1_MAX_R) { rng(); continue; }
+    const theta = rng() * TWO_PI;
+    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.065 + 0.015, armParticleColor(r)]);
+  }
+  for (const off of [0, Math.PI / 2, Math.PI, Math.PI * 3 / 2]) {
+    for (let i = 0; i < 7000; i++) {
+      const t = (i / 7000) * Math.PI * 4.5 + 0.4;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > LOD1_MAX_R) break;
+      const scatter = gaussianRng(rng) * r * 0.07;
+      const tj = gaussianRng(rng) * 0.04;
+      const theta = t + off + tj;
+      const px = (r + scatter) * Math.cos(theta);
+      const py = (r + scatter) * Math.sin(theta);
+      const df = Math.abs(scatter) / (r * 0.14);
+      const aScale = Math.max(0.1, 1 - df * df);
+      const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
+      p.push([px, py, (rng() * 0.28 + 0.09) * aScale * dv, armParticleColor(r)]);
+    }
+  }
+  for (const off of [Math.PI / 4, Math.PI + Math.PI / 4]) {
+    for (let i = 0; i < 5000; i++) {
+      const t = (i / 5000) * Math.PI * 4.5 + 0.4;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > LOD1_MAX_R) break;
+      const scatter = gaussianRng(rng) * r * 0.07;
+      const tj = gaussianRng(rng) * 0.04;
+      const theta = t + off + tj;
+      const px = (r + scatter) * Math.cos(theta);
+      const py = (r + scatter) * Math.sin(theta);
+      const df = Math.abs(scatter) / (r * 0.14);
+      const aScale = Math.max(0.1, 1 - df * df);
+      p.push([px, py, (rng() * 0.2 + 0.06) * aScale, armParticleColor(r)]);
     }
   }
 
-  for (let i = 0; i < 300; i++) {
-    const r = 15000 + rng() * 35000;
+  lod1Particles = p;
+  return p;
+}
+
+// --- LOD 2: core ±9 Kly, 2048×2048. Best at zoom 3+. ---
+
+const LOD2_MAX_R = 9000;
+let lod2Particles: GalParticle[] | null = null;
+
+function getLOD2Particles(): GalParticle[] {
+  if (lod2Particles) return lod2Particles;
+  const rng = mulberry32(99999);
+  const p: GalParticle[] = [];
+
+  for (let i = 0; i < 8000; i++) {
+    const r = Math.pow(rng(), 0.7) * LOD2_MAX_R;
     const theta = rng() * TWO_PI;
-    particles.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.05 + 0.01]);
+    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.45 + 0.1, armParticleColor(r)]);
+  }
+  for (let i = 0; i < 5000; i++) {
+    const r = 500 + Math.pow(rng(), 0.8) * 8000;
+    if (r > LOD2_MAX_R) { rng(); continue; }
+    const theta = rng() * TWO_PI;
+    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.08 + 0.02, armParticleColor(r)]);
+  }
+  for (const off of [0, Math.PI / 2, Math.PI, Math.PI * 3 / 2]) {
+    for (let i = 0; i < 6000; i++) {
+      const t = (i / 6000) * Math.PI * 4.5 + 0.4;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > LOD2_MAX_R) break;
+      const scatter = gaussianRng(rng) * r * 0.08;
+      const tj = gaussianRng(rng) * 0.045;
+      const theta = t + off + tj;
+      const px = (r + scatter) * Math.cos(theta);
+      const py = (r + scatter) * Math.sin(theta);
+      const df = Math.abs(scatter) / (r * 0.16);
+      const aScale = Math.max(0.1, 1 - df * df);
+      const dv = 0.7 + 0.3 * Math.sin(t * 5 + off * 1.3);
+      p.push([px, py, (rng() * 0.32 + 0.12) * aScale * dv, armParticleColor(r)]);
+    }
+  }
+  for (const off of [Math.PI / 4, Math.PI + Math.PI / 4]) {
+    for (let i = 0; i < 4000; i++) {
+      const t = (i / 4000) * Math.PI * 4.5 + 0.4;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > LOD2_MAX_R) break;
+      const scatter = gaussianRng(rng) * r * 0.08;
+      const tj = gaussianRng(rng) * 0.045;
+      const theta = t + off + tj;
+      const px = (r + scatter) * Math.cos(theta);
+      const py = (r + scatter) * Math.sin(theta);
+      const df = Math.abs(scatter) / (r * 0.16);
+      const aScale = Math.max(0.1, 1 - df * df);
+      p.push([px, py, (rng() * 0.22 + 0.08) * aScale, armParticleColor(r)]);
+    }
   }
 
-  cachedBgParticles = particles;
-  return particles;
+  lod2Particles = p;
+  return p;
+}
+
+// --- Offscreen canvas helpers ---
+
+const LOD0_SIZE = 1024;
+const LOD0_HALF_LY = 56000;
+const LOD1_SIZE = 2048;
+const LOD1_HALF_LY = 22000;
+const LOD2_SIZE = 2048;
+const LOD2_HALF_LY = 9000;
+
+function buildOffscreen(size: number, halfLY: number, particles: GalParticle[]): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+  const s = size / (2 * halfLY);
+  const c = size / 2;
+  let currentColor = '';
+  for (const [galX, galY, alpha, color] of particles) {
+    const px = c + galX * s;
+    const py = c - galY * s;
+    if (px < 0 || px > size || py < 0 || py > size) continue;
+    if (color !== currentColor) {
+      ctx.fillStyle = color;
+      currentColor = color;
+    }
+    ctx.globalAlpha = alpha;
+    ctx.fillRect(Math.round(px), Math.round(py), 1, 1);
+  }
+  ctx.globalAlpha = 1;
+  return canvas;
+}
+
+let lod0Offscreen: HTMLCanvasElement | null = null;
+let lod1Offscreen: HTMLCanvasElement | null = null;
+let lod2Offscreen: HTMLCanvasElement | null = null;
+
+function getLOD0Offscreen(): HTMLCanvasElement {
+  return lod0Offscreen ??= buildOffscreen(LOD0_SIZE, LOD0_HALF_LY, getLOD0Particles());
+}
+function getLOD1Offscreen(): HTMLCanvasElement {
+  return lod1Offscreen ??= buildOffscreen(LOD1_SIZE, LOD1_HALF_LY, getLOD1Particles());
+}
+function getLOD2Offscreen(): HTMLCanvasElement {
+  return lod2Offscreen ??= buildOffscreen(LOD2_SIZE, LOD2_HALF_LY, getLOD2Particles());
+}
+
+// Arm guide configs at module level so world points can be pre-computed alongside them
+const armGuideConfigs = [
+  { offset: 0, opacity: 0.07 },
+  { offset: Math.PI / 2, opacity: 0.07 },
+  { offset: Math.PI, opacity: 0.07 },
+  { offset: Math.PI * 3 / 2, opacity: 0.07 },
+  { offset: Math.PI / 4, opacity: 0.04 },
+  { offset: Math.PI + Math.PI / 4, opacity: 0.04 },
+  { offset: Math.PI * 3 / 8, opacity: 0.025 },
+  { offset: Math.PI + Math.PI * 3 / 8, opacity: 0.025 },
+];
+
+let armGuideWorldPoints: Array<Array<[number, number]>> | null = null;
+
+function getArmGuidePoints(): Array<Array<[number, number]>> {
+  if (armGuideWorldPoints) return armGuideWorldPoints;
+  armGuideWorldPoints = armGuideConfigs.map(({ offset }) => {
+    const points: Array<[number, number]> = [];
+    for (let i = 0; i <= 300; i++) {
+      const t = (i / 300) * Math.PI * 4.5 + 0.4;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > 52000) break;
+      const theta = t + offset;
+      points.push([r * Math.cos(theta), r * Math.sin(theta)]);
+    }
+    return points;
+  });
+  return armGuideWorldPoints;
+}
+
+// Marker bitmaps pre-rendered per (rootType, starColor) — eliminates per-frame gradient creation
+const MARKER_SIZE = 64;
+const MARKER_BASE_R = 12;
+const markerBitmapCache = new Map<string, HTMLCanvasElement>();
+
+function getMarkerBitmap(rootType: string, starColor: string): HTMLCanvasElement {
+  const key = `${rootType}:${starColor}`;
+  const cached = markerBitmapCache.get(key);
+  if (cached) return cached;
+  const canvas = document.createElement('canvas');
+  canvas.width = MARKER_SIZE;
+  canvas.height = MARKER_SIZE;
+  const bctx = canvas.getContext('2d')!;
+  const cx = MARKER_SIZE / 2;
+  const cy = MARKER_SIZE / 2;
+  const r = MARKER_BASE_R;
+  if (rootType === 'black-hole') {
+    const ring = bctx.createRadialGradient(cx, cy, r * 0.4, cx, cy, r * 2.2);
+    ring.addColorStop(0, 'rgba(220,110,30,0.75)');
+    ring.addColorStop(1, 'rgba(180,70,10,0)');
+    bctx.fillStyle = ring;
+    bctx.beginPath();
+    bctx.arc(cx, cy, r * 2.2, 0, TWO_PI);
+    bctx.fill();
+    bctx.fillStyle = '#050202';
+    bctx.beginPath();
+    bctx.arc(cx, cy, r, 0, TWO_PI);
+    bctx.fill();
+  } else if (rootType === 'neutron-star') {
+    const grad = bctx.createRadialGradient(cx, cy, 0, cx, cy, r * 1.6);
+    grad.addColorStop(0, '#FFFFFF');
+    grad.addColorStop(0.3, '#B8D8FF');
+    grad.addColorStop(1, 'rgba(80,140,255,0)');
+    bctx.fillStyle = grad;
+    bctx.beginPath();
+    bctx.arc(cx, cy, r * 1.6, 0, TWO_PI);
+    bctx.fill();
+  } else {
+    const grad = bctx.createRadialGradient(cx - r * 0.25, cy - r * 0.25, 0, cx, cy, r);
+    grad.addColorStop(0, '#FFFFFF');
+    grad.addColorStop(0.45, starColor);
+    grad.addColorStop(1, starColor + 'AA');
+    bctx.fillStyle = grad;
+    bctx.beginPath();
+    bctx.arc(cx, cy, r, 0, TWO_PI);
+    bctx.fill();
+  }
+  markerBitmapCache.set(key, canvas);
+  return canvas;
+}
+
+function hashTile(tx: number, ty: number): number {
+  const a = (Math.imul(tx, 0x6D2B79F5) ^ Math.imul(ty, 0x4A0D6E3F)) | 0;
+  return ((a ^ (a >>> 15)) * 0x735A2D97) >>> 0;
+}
+
+function drawViewportStars(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  gcx: number,
+  gcy: number,
+  scale: number,
+  largeStars: boolean,
+  globalFade: number,
+): void {
+  if (globalFade <= 0) return;
+  const TARGET_PX = largeStars ? 28 : 22;
+  const STARS_PER_TILE = 4;
+  const MAX_TILES = 2500;
+  const rawLY = TARGET_PX / scale;
+  const TILE_LY = Math.pow(2, Math.ceil(Math.log2(Math.max(1, rawLY))));
+
+  const wxMin = (0 - gcx) / scale;
+  const wxMax = (w - gcx) / scale;
+  const wyMin = (gcy - h) / scale;
+  const wyMax = gcy / scale;
+
+  const txMin = Math.floor(wxMin / TILE_LY);
+  const txMax = Math.floor(wxMax / TILE_LY);
+  const tyMin = Math.floor(wyMin / TILE_LY);
+  const tyMax = Math.floor(wyMax / TILE_LY);
+
+  if ((txMax - txMin + 1) * (tyMax - tyMin + 1) > MAX_TILES) return;
+
+  ctx.fillStyle = '#D8EEFF';
+  for (let tx = txMin; tx <= txMax; tx++) {
+    for (let ty = tyMin; ty <= tyMax; ty++) {
+      const seed = hashTile(tx, ty);
+      const rng = mulberry32(seed);
+      for (let i = 0; i < STARS_PER_TILE; i++) {
+        const wx = (tx + rng()) * TILE_LY;
+        const wy = (ty + rng()) * TILE_LY;
+        const alpha = rng() * 0.5 + 0.25;
+        const sizeRaw = rng();
+        const px = gcx + wx * scale;
+        const py = gcy - wy * scale;
+        if (px < 0 || px > w || py < 0 || py > h) continue;
+        const galR = Math.sqrt(wx * wx + wy * wy);
+        const distFade = Math.max(0, Math.min(1, 1 - (galR - 30000) / 22000));
+        if (distFade <= 0) continue;
+        const size = largeStars ? (sizeRaw < 0.65 ? 1 : sizeRaw < 0.90 ? 1.5 : 2) : 1;
+        ctx.globalAlpha = alpha * globalFade * distFade;
+        ctx.fillRect(px, py, size, size);
+      }
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawLOD(
+  ctx: CanvasRenderingContext2D,
+  offscreen: HTMLCanvasElement,
+  halfLY: number,
+  gcx: number,
+  gcy: number,
+  scale: number,
+  alpha: number,
+): void {
+  const gp = halfLY * scale;
+  ctx.globalAlpha = alpha;
+  ctx.drawImage(offscreen, gcx - gp, gcy - gp, gp * 2, gp * 2);
 }
 
 export function drawGalaxyBackground(
@@ -52,16 +415,34 @@ export function drawGalaxyBackground(
   gcx: number,
   gcy: number,
   scale: number,
+  zoom: number,
 ): void {
   ctx.fillStyle = '#020509';
   ctx.fillRect(0, 0, w, h);
 
-  const diskR = 50000 * scale;
-  if (diskR > 1) {
+  const isLocal = zoom > 8;
+  const neighbourFade = zoom <= 0.5 ? 1 : isLocal ? 0 : 1 - (zoom - 0.5) / 7.5;
+
+  const starFade = isLocal ? 1 : Math.max(0, Math.min(1, (zoom - 1) / 1.5));
+  drawViewportStars(ctx, w, h, gcx, gcy, scale, isLocal, starFade);
+
+  if (isLocal) {
+    ctx.font = '11px Syne, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.textAlign = 'center';
+    ctx.fillText('You are viewing the Solar neighbourhood', w / 2, h - 32);
+    return;
+  }
+
+  const barFade = neighbourFade * Math.max(0, Math.min(1, 3 - zoom));
+  const diskFade = neighbourFade * Math.max(0, Math.min(1, 2.5 - zoom));
+
+  const diskR = 52000 * scale;
+  if (diskR > 1 && diskFade > 0) {
     const disk = ctx.createRadialGradient(gcx, gcy, 0, gcx, gcy, diskR);
-    disk.addColorStop(0, 'rgba(120,145,240,0.09)');
-    disk.addColorStop(0.5, 'rgba(70,95,190,0.05)');
-    disk.addColorStop(0.85, 'rgba(40,60,140,0.02)');
+    disk.addColorStop(0, `rgba(150,160,255,${(0.18 * diskFade).toFixed(3)})`);
+    disk.addColorStop(0.3, `rgba(100,120,220,${(0.10 * diskFade).toFixed(3)})`);
+    disk.addColorStop(0.65, `rgba(60,80,170,${(0.05 * diskFade).toFixed(3)})`);
     disk.addColorStop(1, 'rgba(20,30,80,0)');
     ctx.fillStyle = disk;
     ctx.beginPath();
@@ -69,56 +450,60 @@ export function drawGalaxyBackground(
     ctx.fill();
   }
 
-  const armColors = [
-    'rgba(140,170,255,0.07)',
-    'rgba(120,155,240,0.055)',
-    'rgba(140,170,255,0.07)',
-    'rgba(120,155,240,0.055)',
-  ];
-  for (let a = 0; a < 4; a++) {
-    const armOffset = (a / 4) * TWO_PI;
-    const armWidth = Math.max(2, 3500 * scale);
+  if (barFade > 0) {
+    const nucleusR = Math.max(4, 2000 * scale);
+    const nucleus = ctx.createRadialGradient(gcx, gcy, 0, gcx, gcy, nucleusR);
+    nucleus.addColorStop(0, `rgba(255,252,220,${(0.95 * barFade).toFixed(3)})`);
+    nucleus.addColorStop(0.2, `rgba(255,240,180,${(0.70 * barFade).toFixed(3)})`);
+    nucleus.addColorStop(0.55, `rgba(240,210,130,${(0.30 * barFade).toFixed(3)})`);
+    nucleus.addColorStop(1, 'rgba(200,160,80,0)');
+    ctx.fillStyle = nucleus;
     ctx.beginPath();
-    let started = false;
-    for (let i = 0; i <= 300; i++) {
-      const t = (i / 300) * Math.PI * 4.5 + 0.4;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > 52000) break;
-      const theta = t + armOffset;
-      const px = gcx + r * Math.cos(theta) * scale;
-      const py = gcy - r * Math.sin(theta) * scale;
-      if (!started) {
-        ctx.moveTo(px, py);
-        started = true;
-      } else {
-        ctx.lineTo(px, py);
-      }
-    }
-    ctx.strokeStyle = armColors[a];
-    ctx.lineWidth = armWidth;
+    ctx.arc(gcx, gcy, nucleusR, 0, TWO_PI);
+    ctx.fill();
+  }
+
+  if (neighbourFade > 0) {
+    ctx.strokeStyle = `rgba(0,0,0,${(0.14 * neighbourFade).toFixed(3)})`;
+    ctx.lineWidth = Math.max(2, 1800 * scale);
+    ctx.beginPath();
+    ctx.arc(gcx, gcy, 8000 * scale, 0, TWO_PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(gcx, gcy, 22000 * scale, 0, TWO_PI);
     ctx.stroke();
   }
 
-  ctx.fillStyle = '#C4D4FF';
-  for (const [galX, galY, brightness] of getBgParticles()) {
-    const px = gcx + galX * scale;
-    const py = gcy - galY * scale;
-    if (px < -1 || px > w + 1 || py < -1 || py > h + 1) continue;
-    ctx.globalAlpha = brightness;
-    ctx.fillRect(px, py, 1, 1);
+  // Arm guide lines — only screen-space linear transform per repaint, no trig
+  const armPoints = getArmGuidePoints();
+  ctx.lineWidth = 1;
+  for (let ai = 0; ai < armGuideConfigs.length; ai++) {
+    const { opacity } = armGuideConfigs[ai];
+    const points = armPoints[ai];
+    ctx.beginPath();
+    const [wx0, wy0] = points[0];
+    ctx.moveTo(gcx + wx0 * scale, gcy - wy0 * scale);
+    for (let pi = 1; pi < points.length; pi++) {
+      const [wx, wy] = points[pi];
+      ctx.lineTo(gcx + wx * scale, gcy - wy * scale);
+    }
+    ctx.strokeStyle = `rgba(160,190,255,${(opacity * neighbourFade).toFixed(3)})`;
+    ctx.stroke();
   }
-  ctx.globalAlpha = 1;
 
-  const bulgeR = Math.max(6, 5000 * scale);
-  const bulge = ctx.createRadialGradient(gcx, gcy, 0, gcx, gcy, bulgeR);
-  bulge.addColorStop(0, 'rgba(255,245,200,0.95)');
-  bulge.addColorStop(0.15, 'rgba(255,210,140,0.60)');
-  bulge.addColorStop(0.4, 'rgba(220,170,100,0.25)');
-  bulge.addColorStop(1, 'rgba(180,120,60,0)');
-  ctx.fillStyle = bulge;
-  ctx.beginPath();
-  ctx.arc(gcx, gcy, bulgeR, 0, TWO_PI);
-  ctx.fill();
+  // LOD 0: full galaxy — fades out above zoom 2 as inner LODs take over
+  const lod0Alpha = neighbourFade * Math.max(0, Math.min(1, 2 - zoom));
+  if (lod0Alpha > 0) drawLOD(ctx, getLOD0Offscreen(), LOD0_HALF_LY, gcx, gcy, scale, lod0Alpha);
+
+  // LOD 1: inner ±22 Kly — fades in at zoom 0.7, always crisp at this zoom range
+  const lod1Alpha = neighbourFade * Math.max(0, Math.min(1, (zoom - 0.7) / 0.8));
+  if (lod1Alpha > 0) drawLOD(ctx, getLOD1Offscreen(), LOD1_HALF_LY, gcx, gcy, scale, lod1Alpha);
+
+  // LOD 2: core ±9 Kly — fades in at zoom 2.5, crisp 1px particles at zoom 3+
+  const lod2Alpha = neighbourFade * Math.max(0, Math.min(1, (zoom - 2.5) / 1));
+  if (lod2Alpha > 0) drawLOD(ctx, getLOD2Offscreen(), LOD2_HALF_LY, gcx, gcy, scale, lod2Alpha);
+
+  ctx.globalAlpha = 1;
 }
 
 function markerCanvasPos(
@@ -144,13 +529,22 @@ export function drawSystemMarkers(
   panY: number,
   scale: number,
   ts: number,
+  zoom: number,
 ): void {
+  const isLocal = zoom > 8;
+  const isGalaxyScale = zoom <= 0.5;
+
   for (const m of markers) {
     const [mx, my] = markerCanvasPos(m.worldX, m.worldY, cx, cy, panX, panY, scale);
     const isHovered = m.id === hoveredId;
     const isSelected = m.id === selectedId;
     const isSol = m.id === 'sol';
-    const baseR = isSol ? 5 : 3.5;
+
+    const baseR = isLocal
+      ? (isSol ? 7 : 5)
+      : isGalaxyScale
+        ? (isSol ? 4 : 2.5)
+        : (isSol ? 5 : 3.5);
     const r = baseR * (isHovered ? 1.4 : 1);
 
     if (isSelected) {
@@ -174,37 +568,9 @@ export function drawSystemMarkers(
       ctx.fill();
     }
 
-    if (m.rootType === 'black-hole') {
-      const ring = ctx.createRadialGradient(mx, my, r * 0.4, mx, my, r * 2.2);
-      ring.addColorStop(0, 'rgba(220,110,30,0.75)');
-      ring.addColorStop(1, 'rgba(180,70,10,0)');
-      ctx.fillStyle = ring;
-      ctx.beginPath();
-      ctx.arc(mx, my, r * 2.2, 0, TWO_PI);
-      ctx.fill();
-      ctx.fillStyle = '#050202';
-      ctx.beginPath();
-      ctx.arc(mx, my, r, 0, TWO_PI);
-      ctx.fill();
-    } else if (m.rootType === 'neutron-star') {
-      const grad = ctx.createRadialGradient(mx, my, 0, mx, my, r * 1.6);
-      grad.addColorStop(0, '#FFFFFF');
-      grad.addColorStop(0.3, '#B8D8FF');
-      grad.addColorStop(1, 'rgba(80,140,255,0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(mx, my, r * 1.6, 0, TWO_PI);
-      ctx.fill();
-    } else {
-      const grad = ctx.createRadialGradient(mx - r * 0.25, my - r * 0.25, 0, mx, my, r);
-      grad.addColorStop(0, '#FFFFFF');
-      grad.addColorStop(0.45, m.starColor);
-      grad.addColorStop(1, m.starColor + 'AA');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(mx, my, r, 0, TWO_PI);
-      ctx.fill();
-    }
+    const bitmap = getMarkerBitmap(m.rootType, m.starColor);
+    const drawHalf = (MARKER_SIZE / 2) * (r / MARKER_BASE_R);
+    ctx.drawImage(bitmap, mx - drawHalf, my - drawHalf, drawHalf * 2, drawHalf * 2);
 
     if (isSelected) {
       ctx.strokeStyle = m.starColor + 'CC';
@@ -215,7 +581,17 @@ export function drawSystemMarkers(
     }
 
     const showLabel = isSol || isHovered || isSelected;
-    if (showLabel) {
+    if (!showLabel) continue;
+
+    if (isLocal && m.distanceFromEarth !== undefined && m.distanceFromEarth > 0) {
+      ctx.font = `${isSelected ? 600 : 400} ${isSelected ? 12 : 11}px Syne, sans-serif`;
+      ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,215,240,0.9)';
+      ctx.textAlign = 'center';
+      ctx.fillText(m.name, mx, my - r - 18);
+      ctx.font = '400 10px Syne, sans-serif';
+      ctx.fillStyle = 'rgba(160,190,230,0.75)';
+      ctx.fillText(`${m.distanceFromEarth.toFixed(1)} ly`, mx, my - r - 6);
+    } else {
       ctx.font = `${isSelected ? 600 : 400} ${isSelected ? 12 : 11}px Syne, sans-serif`;
       ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,215,240,0.9)';
       ctx.textAlign = 'center';

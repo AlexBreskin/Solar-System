@@ -115,6 +115,27 @@ describe('GalaxySimulation — state transitions', () => {
   });
 });
 
+describe('GalaxySimulation — getSystemsNear', () => {
+  it('returns multiple systems when several are within threshold', () => {
+    const sim = makeSim();
+    const result = sim.getSystemsNear(0, 0, 100_000);
+    expect(result.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('returns empty array when none are within threshold', () => {
+    const sim = makeSim();
+    const result = sim.getSystemsNear(999_999, 999_999, 1);
+    expect(result).toEqual([]);
+  });
+
+  it('includes Sol when called at (0, 0) with a large threshold', () => {
+    const sim = makeSim();
+    const result = sim.getSystemsNear(0, 0, 100_000);
+    const ids = result.map(m => m.id);
+    expect(ids).toContain('sol');
+  });
+});
+
 describe('GalaxySimulation — hitTest', () => {
   it('returns null when no systems are within threshold', () => {
     const sim = makeSim();

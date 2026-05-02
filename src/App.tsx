@@ -3,7 +3,9 @@ import SolarSystemCanvas from './components/SolarSystemCanvas';
 import PlanetViewCanvas from './components/PlanetViewCanvas';
 import GalaxyCanvas from './components/GalaxyCanvas';
 import BodyNavigator from './components/BodyNavigator';
+import GalaxyNavigator from './components/GalaxyNavigator';
 import InfoPanel from './components/InfoPanel';
+import GalaxySystemPanel from './components/GalaxySystemPanel';
 import { loadStarSystem } from './data/celestialBodies';
 import { STAR_SYSTEMS } from './data/systems';
 import { StarSystemContext, type StarSystemData } from './contexts/StarSystemContext';
@@ -36,6 +38,8 @@ export default function App(): JSX.Element {
   const [showOrbits, setShowOrbits]     = useState<boolean>(true);
   const [showLabels, setShowLabels]     = useState<boolean>(false);
   const [viewedPlanet, setViewedPlanet] = useState<BodyId>('earth');
+  const [galaxySelectedSystem, setGalaxySelectedSystem] = useState<string | null>(defaultSystemData.id);
+  const [galaxyHoveredSystem, setGalaxyHoveredSystem]   = useState<string | null>(null);
 
   const handleSystemChange = useCallback((id: string) => {
     if (id === systemData.id) return;
@@ -43,6 +47,7 @@ export default function App(): JSX.Element {
     loadStarSystem(id).then(loaded => {
       const starId = Object.values(loaded.bodies).find(b => ROOT_BODY_TYPES.has(b.type))?.id ?? id;
       setSystemData(loaded);
+      setGalaxySelectedSystem(id);
       setSelectedBody(starId);
       setHoveredBody(null);
       setTrackedBody(null);
@@ -92,13 +97,24 @@ export default function App(): JSX.Element {
     setActiveTab('galaxy');
   }, []);
 
-  const handleSelectFromGalaxy = useCallback((id: string) => {
+  const handleExploreSystem = useCallback((id: string) => {
+    setGalaxySelectedSystem(id);
     if (id === systemData.id) {
       setActiveTab('solar-system');
     } else {
       handleSystemChange(id);
     }
   }, [systemData.id, handleSystemChange]);
+
+  const handleGalaxySelectSystem = useCallback((id: string) => {
+    setGalaxySelectedSystem(id);
+  }, []);
+
+  const handleGalaxyHoverSystem = useCallback((id: string | null) => {
+    setGalaxyHoveredSystem(id);
+  }, []);
+
+  const isGalaxy = activeTab === 'galaxy';
 
   return (
     <StarSystemContext.Provider value={systemData}>
@@ -140,32 +156,38 @@ export default function App(): JSX.Element {
                 <span className="tab-icon">🌌</span>
                 System View
               </button>
-              <button
-                className={`tab-btn${activeTab === 'planet-view' ? ' active' : ''}`}
-                onClick={() => handleTabChange('planet-view')}
-              >
-                <span className="tab-icon">🪐</span>
-                Body View
-              </button>
+              {!isGalaxy && (
+                <button
+                  className={`tab-btn${activeTab === 'planet-view' ? ' active' : ''}`}
+                  onClick={() => handleTabChange('planet-view')}
+                >
+                  <span className="tab-icon">🪐</span>
+                  Body View
+                </button>
+              )}
             </div>
 
             <div className="header-controls">
-              <button
-                className={`ctrl-btn${paused ? ' active' : ''}`}
-                onClick={() => setPaused(p => !p)}
-                title={paused ? 'Resume' : 'Pause'}
-              >
-                {paused ? '▶' : '⏸'}
-              </button>
-              <div className="speed-control">
-                <span className="ctrl-label">Speed</span>
-                <input
-                  type="range" min="0.1" max="10" step="0.1" value={speed}
-                  onChange={e => setSpeed(parseFloat(e.target.value))}
-                  className="speed-slider"
-                />
-                <span className="speed-value">{speed.toFixed(1)}×</span>
-              </div>
+              {!isGalaxy && (
+                <>
+                  <button
+                    className={`ctrl-btn${paused ? ' active' : ''}`}
+                    onClick={() => setPaused(p => !p)}
+                    title={paused ? 'Resume' : 'Pause'}
+                  >
+                    {paused ? '▶' : '⏸'}
+                  </button>
+                  <div className="speed-control">
+                    <span className="ctrl-label">Speed</span>
+                    <input
+                      type="range" min="0.1" max="10" step="0.1" value={speed}
+                      onChange={e => setSpeed(parseFloat(e.target.value))}
+                      className="speed-slider"
+                    />
+                    <span className="speed-value">{speed.toFixed(1)}×</span>
+                  </div>
+                </>
+              )}
               {activeTab === 'solar-system' && (
                 <>
                   <button
@@ -204,18 +226,27 @@ export default function App(): JSX.Element {
 
         <main className="app-main">
           <aside className="left-panel">
-            <BodyNavigator
-              key={systemData.id}
-              activeTab={activeTab}
-              selectedBody={selectedBody}
-              hoveredBody={hoveredBody}
-              viewedPlanet={viewedPlanet}
-              onSelectBody={handleSelectBody}
-              onHoverBody={handleHoverBody}
-              onViewPlanet={handleViewPlanet}
-              onGoToSolarSystem={handleGoToSolarSystem}
-              onGoToGalaxy={handleGoToGalaxy}
-            />
+            {isGalaxy ? (
+              <GalaxyNavigator
+                selectedSystem={galaxySelectedSystem}
+                hoveredSystem={galaxyHoveredSystem}
+                onSelectSystem={handleGalaxySelectSystem}
+                onHoverSystem={handleGalaxyHoverSystem}
+              />
+            ) : (
+              <BodyNavigator
+                key={systemData.id}
+                activeTab={activeTab}
+                selectedBody={selectedBody}
+                hoveredBody={hoveredBody}
+                viewedPlanet={viewedPlanet}
+                onSelectBody={handleSelectBody}
+                onHoverBody={handleHoverBody}
+                onViewPlanet={handleViewPlanet}
+                onGoToSolarSystem={handleGoToSolarSystem}
+                onGoToGalaxy={handleGoToGalaxy}
+              />
+            )}
           </aside>
 
           <div className="canvas-area">
@@ -236,8 +267,10 @@ export default function App(): JSX.Element {
             )}
             {activeTab === 'galaxy' && (
               <GalaxyCanvas
-                selectedSystem={systemData.id}
-                onSelectSystem={handleSelectFromGalaxy}
+                selectedSystem={galaxySelectedSystem}
+                hoveredSystem={galaxyHoveredSystem}
+                onSelectSystem={handleGalaxySelectSystem}
+                onHoverSystem={handleGalaxyHoverSystem}
               />
             )}
             {activeTab === 'planet-view' && (
@@ -256,7 +289,14 @@ export default function App(): JSX.Element {
           </div>
 
           <aside className="right-panel">
-            <InfoPanel selectedBody={selectedBody} />
+            {isGalaxy ? (
+              <GalaxySystemPanel
+                systemId={galaxySelectedSystem}
+                onExplore={handleExploreSystem}
+              />
+            ) : (
+              <InfoPanel selectedBody={selectedBody} />
+            )}
           </aside>
         </main>
       </div>

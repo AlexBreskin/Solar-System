@@ -24,12 +24,16 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 
 ### Galaxy View
 - **Milky Way map** — top-down spiral galaxy with 13 systems plotted at their real approximate galactic coordinates; Sol is the reference point at (0, 0)
-- **Extragalactic sidebar** — M87*, 3C 273, and TON 618 are listed separately with their distances; clicking any loads that system
-- **Visual differentiation** — stars show as gold/white dots; black holes as dark discs with orange glow; neutron stars as blue-white sharp points; pulsing ring around the selected system
-- **Navigation** — scroll to zoom (0.1×–100×), drag to pan; clicking a marker loads that system and switches to System View
+- **Zoom-dependent detail** — three rendering tiers: galaxy scale (≤0.5×, full spiral visible), neighbourhood scale (0.5–8×, spiral fades, star field grows), local scale (>8×, rich star field, distance labels, "Solar neighbourhood" hint)
+- **Improved spiral** — 2 major arms (2000 particles each) + 2 minor arms (800 each) with warm inner / cool outer colouring; dust lane arcs at 8 kly and 22 kly; feathered scatter (15% vs 10%)
+- **System list** — left panel shows all 16 systems sorted by distance from Earth; hover a row to highlight its map marker; click to select and show details
+- **System info panel** — clicking a marker or list row selects the system and shows its name, type badge, distance, and description; "Explore System →" loads it and switches to System View
+- **Cluster menu** — when multiple systems overlap at low zoom, clicking shows a popup listing all candidates
+- **Visual differentiation** — stars: gold/white dots; black holes: dark discs with orange glow; neutron stars: blue-white points; pulsing ring around selected system
+- **Body View and speed controls hidden** — declutters the header when the Galaxy tab is active
 
 ### Shared
-- **Celestial body navigator** — persistent left panel showing the body hierarchy across all tabs; collapsed by default (showing the star, planets, and belts); clicking a moon in the canvas auto-expands its parent and scrolls it into view; displays the active system name
+- **Celestial body navigator** — persistent left panel showing the body hierarchy when in System or Planet View; replaced by a star-system list when in Galaxy View
 - **Info panel** — physical properties, orbital data, atmosphere, a fun fact, and direct links to NASA and Wikipedia articles for every body
 - **Bidirectional highlighting** — hovering or selecting in the canvas syncs with the navigator, and vice versa
 
@@ -117,9 +121,11 @@ Output goes to `dist/`.
 |--------|--------|
 | Scroll | Zoom (0.1× – 100×) |
 | Drag | Pan |
-| Click system marker | Load that system and switch to System View |
-| Click "Beyond" sidebar item | Load that extragalactic system |
-| Hover | Highlight marker and show label |
+| Click system marker | Select system and show info panel |
+| Click overlapping markers | Show cluster menu to pick a system |
+| "Explore System →" button | Load the selected system and switch to System View |
+| Click row in left panel | Select system and highlight marker |
+| Hover row or marker | Sync highlight between list and canvas |
 
 ## Project Structure
 
@@ -162,9 +168,11 @@ src/
 └── components/
     ├── SolarSystemCanvas.tsx   # System view — animation loop, camera, hit-testing
     ├── PlanetViewCanvas.tsx    # Planet view — animation loop, camera, hit-testing
-    ├── GalaxyCanvas.tsx/css    # Galaxy view — spiral map, system markers, extragalactic sidebar
-    ├── BodyNavigator.tsx/css   # Left-panel body hierarchy tree (context-driven)
-    └── InfoPanel.tsx/css       # Selected body detail panel (context-driven)
+    ├── GalaxyCanvas.tsx/css    # Galaxy view — spiral map, system markers, cluster menu
+    ├── GalaxyNavigator.tsx/css # Galaxy left panel — all systems sorted by distance
+    ├── GalaxySystemPanel.tsx/css # Galaxy right panel — system info + Explore button
+    ├── BodyNavigator.tsx/css   # System/Planet View left panel — body hierarchy tree
+    └── InfoPanel.tsx/css       # System/Planet View right panel — body detail (context-driven)
 ```
 
 ## Adding a New Star System
@@ -184,4 +192,4 @@ src/
 - **Deterministic particles** — belt particle fields and the galaxy spiral background use a shared seeded RNG (`src/utils/mulberry32.ts`) so layouts are consistent across renders
 - **Distance formatting** — `src/utils/distance.ts` converts AU↔km↔ly; orbital distances default to AU (4 sig figs, km on hover); star info panels show system distance from Earth in light-years (AU on hover)
 - **Exotic objects** — `BodyType.BlackHole`, `BodyType.NeutronStar`, and `BodyType.Quasar` supported; black holes render as a dark disc with an accretion-disk glow; the `ROOT_BODY_TYPES` set replaces hardcoded star checks throughout
-- **Tooling** — Vite for dev and builds; Vitest for tests; 368 tests across 6 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
+- **Tooling** — Vite for dev and builds; Vitest for tests; 371 tests across 6 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style

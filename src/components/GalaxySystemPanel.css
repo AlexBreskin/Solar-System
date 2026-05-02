@@ -1,0 +1,137 @@
+.galaxy-system-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 14px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.galaxy-system-panel--empty {
+  align-items: center;
+  justify-content: center;
+}
+
+.galaxy-system-panel__placeholder {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+  padding: 24px 16px;
+  line-height: 1.6;
+}
+
+.gsp-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gsp-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--bg-panel-2);
+}
+
+.gsp-type-badge--star {
+  color: #ffc857;
+  border-color: rgba(255, 200, 87, 0.3);
+  background: rgba(255, 200, 87, 0.08);
+}
+
+.gsp-type-badge--black-hole {
+  color: #ff7b4b;
+  border-color: rgba(255, 123, 75, 0.3);
+  background: rgba(255, 123, 75, 0.08);
+}
+
+.gsp-type-badge--neutron-star {
+  color: #88ccff;
+  border-color: rgba(136, 204, 255, 0.3);
+  background: rgba(136, 204, 255, 0.08);
+}
+
+.gsp-type-badge--quasar {
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.3);
+  background: rgba(192, 132, 252, 0.08);
+}
+
+.gsp-type-icon {
+  font-size: 13px;
+}
+
+.gsp-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-bright, #fff);
+  line-height: 1.2;
+}
+
+.gsp-distance {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gsp-distance-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.gsp-distance-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  color: var(--text-primary, #cdd6f4);
+}
+
+.gsp-description {
+  font-size: 12px;
+  color: var(--text-secondary, #a6adc8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.gsp-note {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-dim);
+  margin: 0;
+  padding: 8px 10px;
+  border-left: 2px solid var(--border);
+  background: var(--bg-panel-2);
+  border-radius: 0 4px 4px 0;
+}
+
+.gsp-explore-btn {
+  margin-top: auto;
+  padding: 9px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: var(--accent, #4a90d9);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  text-align: center;
+}
+
+.gsp-explore-btn:hover {
+  background: var(--accent-hover, #5ba0e9);
+}
+
+.gsp-explore-btn:active {
+  opacity: 0.85;
+}
