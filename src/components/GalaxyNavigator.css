@@ -1,11 +1,11 @@
-.galaxy-navigator {
+.gnav {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
 }
 
-.galaxy-nav-header {
+.gnav-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14,7 +14,7 @@
   flex-shrink: 0;
 }
 
-.galaxy-nav-title {
+.gnav-title {
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -22,7 +22,7 @@
   color: var(--text-dim);
 }
 
-.galaxy-nav-count {
+.gnav-count {
   font-family: 'Space Mono', monospace;
   font-size: 11px;
   color: var(--text-dim);
@@ -32,75 +32,107 @@
   border: 1px solid var(--border);
 }
 
-.galaxy-nav-scroll {
+.gnav-scroll {
   overflow-y: auto;
   flex: 1;
 }
 
-.galaxy-nav-row {
+.gnav-section {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 8px 14px 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 2px;
+}
+
+.gnav-section:first-child {
+  border-top: none;
+  margin-top: 0;
+}
+
+.gnav-section--extra {
+  opacity: 0.7;
+}
+
+.gnav-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  height: 30px;
+  gap: 5px;
+  height: 28px;
   padding: 0 10px 0 14px;
   cursor: pointer;
   transition: background 0.1s;
   position: relative;
 }
 
-.galaxy-nav-row:hover,
-.galaxy-nav-row.hovered {
+.gnav-row:hover,
+.gnav-row.hovered {
   background: var(--bg-hover);
 }
 
-.galaxy-nav-row.selected {
-  background: var(--bg-selected, rgba(100, 160, 255, 0.12));
+.gnav-row.selected {
+  background: var(--bg-selected);
 }
 
-.galaxy-nav-row.selected .galaxy-nav-name {
-  color: var(--text-bright, #fff);
-  font-weight: 600;
-}
-
-.galaxy-nav-row.selected::before {
+.gnav-row.selected::before {
   content: '';
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--accent, #4a90d9);
+  background: var(--accent);
 }
 
-.galaxy-nav-row.extragalactic {
+.gnav-row.selected .gnav-name {
+  color: #ffffff;
+}
+
+.gnav-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gnav-row.selected .gnav-dot {
+  box-shadow: 0 0 6px currentColor;
+}
+
+.gnav-icon {
+  font-size: 10px;
+  color: var(--text-dim);
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.gnav-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gnav-badge {
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.gnav-section--extra ~ .gnav-row {
   opacity: 0.75;
 }
 
-.galaxy-nav-row.extragalactic .galaxy-nav-dist {
-  color: var(--text-dim);
-  font-size: 10px;
-}
-
-.galaxy-nav-icon {
-  font-size: 12px;
-  flex-shrink: 0;
-  width: 16px;
-  text-align: center;
-}
-
-.galaxy-nav-name {
-  flex: 1;
-  font-size: 12px;
-  color: var(--text-primary, #cdd6f4);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.galaxy-nav-dist {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  color: var(--text-dim);
-  white-space: nowrap;
-  flex-shrink: 0;
+.gnav-section--extra ~ .gnav-row.selected,
+.gnav-section--extra ~ .gnav-row:hover,
+.gnav-section--extra ~ .gnav-row.hovered {
+  opacity: 1;
 }

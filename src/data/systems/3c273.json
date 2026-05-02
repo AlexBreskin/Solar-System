@@ -5,7 +5,8 @@
     "description": "The first quasar ever optically identified and the brightest in the sky, 2.4 billion light-years away. It blazes with the luminosity of four trillion Suns as a supermassive black hole consumes surrounding gas at a ferocious rate.",
     "starColor": "#FFFFF0",
     "displayOrder": 14,
-    "distanceFromEarth": 2400000000
+    "distanceFromEarth": 2400000000,
+    "rootType": "quasar"
   },
   "bodies": {
     "3c273-bh": {

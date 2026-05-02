@@ -5,7 +5,8 @@
     "description": "One of the most massive known black holes in the universe, 10.4 billion light-years away. Its event horizon alone spans roughly 2,600 AU — wider than the entire outer solar system — and it radiates with the power of 140 trillion Suns.",
     "starColor": "#FFF8E0",
     "displayOrder": 15,
-    "distanceFromEarth": 10400000000
+    "distanceFromEarth": 10400000000,
+    "rootType": "quasar"
   },
   "bodies": {
     "ton618-bh": {

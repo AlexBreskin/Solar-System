@@ -68,6 +68,7 @@ export interface StarSystemMeta {
   starColor: string;
   displayOrder?: number;
   distanceFromEarth?: number;
+  rootType?: string;
 }
 
 export interface StarSystem {

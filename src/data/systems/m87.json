@@ -5,7 +5,8 @@
     "description": "The supermassive black hole at the heart of galaxy M87, 53.5 million light-years away. In April 2019 it became the first black hole ever directly imaged, its glowing accretion disk revealing a dark shadow the size of our entire solar system.",
     "starColor": "#FF8800",
     "displayOrder": 10,
-    "distanceFromEarth": 53500000
+    "distanceFromEarth": 53500000,
+    "rootType": "black-hole"
   },
   "bodies": {
     "m87bh": {

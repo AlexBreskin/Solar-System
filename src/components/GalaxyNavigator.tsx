@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { STAR_SYSTEMS } from '../data/systems';
 import { GALAXY_DATA, GALACTIC_IDS } from '../data/galaxy';
-import { formatLY } from '../utils/distance';
+import type { StarSystemMeta } from '../types';
 import './GalaxyNavigator.css';
 
 interface GalaxyNavigatorProps {
@@ -18,8 +18,43 @@ const ROOT_TYPE_ICONS: Record<string, string> = {
   quasar: '✵',
 };
 
-function rootTypeIcon(rootType: string): string {
-  return ROOT_TYPE_ICONS[rootType] ?? '☀';
+const ROOT_TYPE_LABELS: Record<string, string> = {
+  star: 'Star System',
+  'black-hole': 'Black Hole',
+  'neutron-star': 'Neutron Star',
+  quasar: 'Quasar',
+};
+
+function SystemRow({
+  s,
+  rootType,
+  isSelected,
+  isHovered,
+  onSelectSystem,
+  onHoverSystem,
+}: {
+  s: StarSystemMeta;
+  rootType: string;
+  isSelected: boolean;
+  isHovered: boolean;
+  onSelectSystem: (id: string) => void;
+  onHoverSystem: (id: string | null) => void;
+}): JSX.Element {
+  return (
+    <div
+      className={`gnav-row${isSelected ? ' selected' : ''}${isHovered ? ' hovered' : ''}`}
+      onClick={() => onSelectSystem(s.id)}
+      onMouseEnter={() => onHoverSystem(s.id)}
+      onMouseLeave={() => onHoverSystem(null)}
+    >
+      <span className="gnav-dot" style={{ background: s.starColor }} />
+      <span className="gnav-icon" title={ROOT_TYPE_LABELS[rootType] ?? 'Star System'}>
+        {ROOT_TYPE_ICONS[rootType] ?? '☀'}
+      </span>
+      <span className="gnav-name">{s.name}</span>
+      <span className="gnav-badge">{ROOT_TYPE_LABELS[rootType] ?? 'Star System'}</span>
+    </div>
+  );
 }
 
 export default function GalaxyNavigator({
@@ -30,47 +65,53 @@ export default function GalaxyNavigator({
 }: GalaxyNavigatorProps): JSX.Element {
   const rootTypeById = useMemo(() => {
     const map: Record<string, string> = {};
-    for (const entry of GALAXY_DATA.systems) {
-      map[entry.id] = entry.rootType;
-    }
+    for (const entry of GALAXY_DATA.systems) map[entry.id] = entry.rootType;
     for (const s of STAR_SYSTEMS) {
-      if (!map[s.id]) map[s.id] = 'quasar';
+      if (!map[s.id]) map[s.id] = s.rootType ?? 'star';
     }
     return map;
   }, []);
 
-  const sortedSystems = useMemo(() => {
-    return [...STAR_SYSTEMS].sort((a, b) => (a.distanceFromEarth ?? 0) - (b.distanceFromEarth ?? 0));
+  const { galactic, extragalactic } = useMemo(() => {
+    const byDist = (a: StarSystemMeta, b: StarSystemMeta) =>
+      (a.distanceFromEarth ?? 0) - (b.distanceFromEarth ?? 0);
+    return {
+      galactic: STAR_SYSTEMS.filter(s => GALACTIC_IDS.has(s.id)).sort(byDist),
+      extragalactic: STAR_SYSTEMS.filter(s => !GALACTIC_IDS.has(s.id)).sort(byDist),
+    };
   }, []);
 
   return (
-    <div className="galaxy-navigator">
-      <div className="galaxy-nav-header">
-        <span className="galaxy-nav-title">Star Systems</span>
-        <span className="galaxy-nav-count">{STAR_SYSTEMS.length}</span>
+    <div className="gnav">
+      <div className="gnav-header">
+        <span className="gnav-title">Star Systems</span>
+        <span className="gnav-count">{STAR_SYSTEMS.length}</span>
       </div>
-      <div className="galaxy-nav-scroll">
-        {sortedSystems.map(s => {
-          const isSelected = selectedSystem === s.id;
-          const isHovered = hoveredSystem === s.id;
-          const isExtragalactic = !GALACTIC_IDS.has(s.id);
-          const rootType = rootTypeById[s.id] ?? 'star';
-          return (
-            <div
-              key={s.id}
-              className={`galaxy-nav-row${isSelected ? ' selected' : ''}${isHovered ? ' hovered' : ''}${isExtragalactic ? ' extragalactic' : ''}`}
-              onClick={() => onSelectSystem(s.id)}
-              onMouseEnter={() => onHoverSystem(s.id)}
-              onMouseLeave={() => onHoverSystem(null)}
-            >
-              <span className="galaxy-nav-icon">{rootTypeIcon(rootType)}</span>
-              <span className="galaxy-nav-name">{s.name}</span>
-              <span className="galaxy-nav-dist">
-                {s.distanceFromEarth ? formatLY(s.distanceFromEarth) : '—'}
-              </span>
-            </div>
-          );
-        })}
+      <div className="gnav-scroll">
+        <div className="gnav-section">Milky Way</div>
+        {galactic.map(s => (
+          <SystemRow
+            key={s.id}
+            s={s}
+            rootType={rootTypeById[s.id] ?? 'star'}
+            isSelected={selectedSystem === s.id}
+            isHovered={hoveredSystem === s.id}
+            onSelectSystem={onSelectSystem}
+            onHoverSystem={onHoverSystem}
+          />
+        ))}
+        <div className="gnav-section gnav-section--extra">Beyond the Milky Way</div>
+        {extragalactic.map(s => (
+          <SystemRow
+            key={s.id}
+            s={s}
+            rootType={rootTypeById[s.id] ?? 'star'}
+            isSelected={selectedSystem === s.id}
+            isHovered={hoveredSystem === s.id}
+            onSelectSystem={onSelectSystem}
+            onHoverSystem={onHoverSystem}
+          />
+        ))}
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
       map[entry.id] = entry.rootType;
     }
     for (const s of STAR_SYSTEMS) {
-      if (!map[s.id]) map[s.id] = 'quasar';
+      if (!map[s.id]) map[s.id] = s.rootType ?? 'star';
     }
     return map;
   }, []);
