@@ -76,10 +76,27 @@
   line-height: 1.2;
 }
 
+.gsp-distance-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .gsp-distance {
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.gsp-projection-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.5;
+  padding: 6px 10px;
+  border-left: 2px solid var(--border);
+  background: var(--bg-panel-2);
+  border-radius: 0 4px 4px 0;
 }
 
 .gsp-distance-label {

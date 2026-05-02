@@ -57,6 +57,19 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
   const rootTypeIcon = ROOT_TYPE_ICONS[rootType] ?? '☀';
   const isExtragalactic = !GALACTIC_IDS.has(systemId);
 
+  const galacticEntry = !isExtragalactic
+    ? GALAXY_DATA.systems.find(s => s.id === systemId)
+    : null;
+  const mapDist = galacticEntry
+    ? Math.round(Math.sqrt(galacticEntry.galacticX ** 2 + galacticEntry.galacticY ** 2))
+    : null;
+  const dist3D = meta.distanceFromEarth;
+  const showProjection = mapDist !== null && dist3D !== undefined && dist3D > 0
+    && Math.abs(mapDist - dist3D) / dist3D > 0.1;
+  const heightAbovePlane = showProjection
+    ? Math.round(Math.sqrt(dist3D! ** 2 - mapDist! ** 2))
+    : null;
+
   return (
     <div className="galaxy-system-panel">
       <div className="gsp-header">
@@ -66,10 +79,24 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
         </span>
       </div>
       <div className="gsp-name">{meta.name}</div>
-      {meta.distanceFromEarth !== undefined && meta.distanceFromEarth > 0 && (
-        <div className="gsp-distance">
-          <span className="gsp-distance-label">Distance from Earth</span>
-          <span className="gsp-distance-value">{formatLY(meta.distanceFromEarth)}</span>
+      {dist3D !== undefined && dist3D > 0 && (
+        <div className="gsp-distance-block">
+          <div className="gsp-distance">
+            <span className="gsp-distance-label">Distance from Earth</span>
+            <span className="gsp-distance-value">{formatLY(dist3D)}</span>
+          </div>
+          {showProjection && (
+            <>
+              <div className="gsp-distance">
+                <span className="gsp-distance-label">On galaxy map</span>
+                <span className="gsp-distance-value">{formatLY(mapDist!)}</span>
+              </div>
+              <p className="gsp-projection-note">
+                {formatLY(heightAbovePlane!)} above the galactic plane — the map is a
+                top-down view, so this system appears closer to Sol than its true distance.
+              </p>
+            </>
+          )}
         </div>
       )}
       {meta.description && (
