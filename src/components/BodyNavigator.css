@@ -165,33 +165,38 @@
   font-style: italic;
 }
 
-/* ─── Parent context rows (Milky Way / Sol System) ─── */
+/* ─── Parent context rows ─── */
+
+/* Non-navigable parent (extragalactic host galaxy) */
 .pv-context-row {
   cursor: default;
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
-.pv-context-row .body-name {
-  color: var(--text-secondary);
-}
-
-.pv-system-row {
+/* Navigable galaxy row */
+.pv-galaxy-row {
   cursor: pointer;
-  opacity: 0.75;
+  opacity: 0.8;
   transition: opacity 0.15s, background 0.15s;
 }
 
-.pv-system-row:hover {
+.pv-galaxy-row:hover {
   background: var(--bg-hover);
   opacity: 1;
 }
 
-.pv-system-row:hover .body-name {
-  color: var(--gold);
+.pv-galaxy-row.pv-system-active {
+  opacity: 1;
 }
 
-.pv-system-active {
-  opacity: 0.75;
+/* Clickable system row (sits between Galaxy and star list) */
+.pv-system-hierarchy {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.pv-system-hierarchy:hover {
+  background: var(--bg-hover);
 }
 
 /* Currently-viewed planet (not selected) gets a gold left bar */

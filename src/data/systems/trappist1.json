@@ -5,7 +5,9 @@
     "description": "Seven Earth-sized rocky planets orbit an ultra-cool red dwarf 40.7 light-years away, three within the habitable zone.",
     "starColor": "#FF4500",
     "displayOrder": 1,
-    "distanceFromEarth": 40.7
+    "distanceFromEarth": 40.7,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/TRAPPIST-1",
+    "nasaUrl": "https://exoplanets.nasa.gov/trappist1/"
   },
   "bodies": {
     "trappist1-star": {
@@ -38,7 +40,7 @@
       "distanceFromParent": 0.01154,
       "orbitalPeriod": 1.511,
       "rotationPeriod": 1.511,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.65,
       "color": "#CC5500",
       "showOrbitRing": true,
@@ -55,10 +57,10 @@
       "parent": "trappist1-star",
       "diameter": 13962,
       "mass": "1.567 × 10²⁴ kg",
-      "distanceFromParent": 0.01580,
+      "distanceFromParent": 0.0158,
       "orbitalPeriod": 2.422,
       "rotationPeriod": 2.422,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.67,
       "color": "#B87333",
       "showOrbitRing": true,
@@ -76,9 +78,9 @@
       "diameter": 10031,
       "mass": "1.776 × 10²³ kg",
       "distanceFromParent": 0.02227,
-      "orbitalPeriod": 4.050,
-      "rotationPeriod": 4.050,
-      "eccentricity": 0.0,
+      "orbitalPeriod": 4.05,
+      "rotationPeriod": 4.05,
+      "eccentricity": 0,
       "inclination": 89.89,
       "color": "#8B7355",
       "showOrbitRing": true,
@@ -98,7 +100,7 @@
       "distanceFromParent": 0.02925,
       "orbitalPeriod": 6.101,
       "rotationPeriod": 6.101,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.86,
       "color": "#4A8FBD",
       "showOrbitRing": true,
@@ -118,7 +120,7 @@
       "distanceFromParent": 0.03849,
       "orbitalPeriod": 9.206,
       "rotationPeriod": 9.206,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.68,
       "color": "#5B9E99",
       "showOrbitRing": true,
@@ -138,7 +140,7 @@
       "distanceFromParent": 0.04683,
       "orbitalPeriod": 12.353,
       "rotationPeriod": 12.353,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.71,
       "color": "#4472A8",
       "showOrbitRing": true,
@@ -158,8 +160,8 @@
       "distanceFromParent": 0.06189,
       "orbitalPeriod": 18.767,
       "rotationPeriod": 18.767,
-      "eccentricity": 0.0,
-      "inclination": 89.80,
+      "eccentricity": 0,
+      "inclination": 89.8,
       "color": "#607080",
       "showOrbitRing": true,
       "description": "TRAPPIST-1 h is the outermost and coldest of the seven planets. It is small and likely icy, with equilibrium temperatures well below freezing. It completes the remarkable orbital resonance chain of the whole system.",
@@ -173,13 +175,34 @@
     {
       "id": "trappist1-star",
       "children": [
-        { "id": "trappist1-b", "children": [] },
-        { "id": "trappist1-c", "children": [] },
-        { "id": "trappist1-d", "children": [] },
-        { "id": "trappist1-e", "children": [] },
-        { "id": "trappist1-f", "children": [] },
-        { "id": "trappist1-g", "children": [] },
-        { "id": "trappist1-h", "children": [] }
+        {
+          "id": "trappist1-b",
+          "children": []
+        },
+        {
+          "id": "trappist1-c",
+          "children": []
+        },
+        {
+          "id": "trappist1-d",
+          "children": []
+        },
+        {
+          "id": "trappist1-e",
+          "children": []
+        },
+        {
+          "id": "trappist1-f",
+          "children": []
+        },
+        {
+          "id": "trappist1-g",
+          "children": []
+        },
+        {
+          "id": "trappist1-h",
+          "children": []
+        }
       ]
     }
   ],

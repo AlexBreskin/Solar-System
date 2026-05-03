@@ -40,6 +40,7 @@ export default function App(): JSX.Element {
   const [viewedPlanet, setViewedPlanet] = useState<BodyId>('earth');
   const [galaxySelectedSystem, setGalaxySelectedSystem] = useState<string | null>(defaultSystemData.id);
   const [galaxyHoveredSystem, setGalaxyHoveredSystem]   = useState<string | null>(null);
+  const [showSystemPanel, setShowSystemPanel]           = useState<boolean>(false);
 
   const handleSystemChange = useCallback((id: string) => {
     if (id === systemData.id) return;
@@ -59,6 +60,7 @@ export default function App(): JSX.Element {
 
   const handleSelectBody = useCallback((id: BodyId) => {
     setSelectedBody(id);
+    setShowSystemPanel(false);
     if (activeTab === 'solar-system') {
       if (systemData.bodies[id]?.type === BodyType.Belt) setTrackedBody(null);
       else setTrackedBody(id);
@@ -95,6 +97,11 @@ export default function App(): JSX.Element {
 
   const handleGoToGalaxy = useCallback(() => {
     setActiveTab('galaxy');
+  }, []);
+
+  const handleSelectSystem = useCallback(() => {
+    setShowSystemPanel(true);
+    setTrackedBody(null);
   }, []);
 
   const handleExploreSystem = useCallback((id: string) => {
@@ -240,11 +247,13 @@ export default function App(): JSX.Element {
                 selectedBody={selectedBody}
                 hoveredBody={hoveredBody}
                 viewedPlanet={viewedPlanet}
+                showingSystemPanel={showSystemPanel}
                 onSelectBody={handleSelectBody}
                 onHoverBody={handleHoverBody}
                 onViewPlanet={handleViewPlanet}
                 onGoToSolarSystem={handleGoToSolarSystem}
                 onGoToGalaxy={handleGoToGalaxy}
+                onSelectSystem={handleSelectSystem}
               />
             )}
           </aside>
@@ -289,9 +298,9 @@ export default function App(): JSX.Element {
           </div>
 
           <aside className="right-panel">
-            {isGalaxy ? (
+            {isGalaxy || showSystemPanel ? (
               <GalaxySystemPanel
-                systemId={galaxySelectedSystem}
+                systemId={isGalaxy ? galaxySelectedSystem : systemData.id}
                 onExplore={handleExploreSystem}
               />
             ) : (

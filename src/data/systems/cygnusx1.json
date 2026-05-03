@@ -5,7 +5,8 @@
     "description": "One of the first stellar black hole candidates ever identified, 7,240 light-years away. It feeds on mass stripped from its blue supergiant companion HDE 226868, shining brilliantly in X-rays as matter spirals into the accretion disk.",
     "starColor": "#80B0FF",
     "displayOrder": 11,
-    "distanceFromEarth": 7240
+    "distanceFromEarth": 7240,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Cygnus_X-1"
   },
   "bodies": {
     "cygnusx1-bh": {
@@ -55,7 +56,10 @@
     {
       "id": "cygnusx1-bh",
       "children": [
-        { "id": "hde226868", "children": [] }
+        {
+          "id": "hde226868",
+          "children": []
+        }
       ]
     }
   ],

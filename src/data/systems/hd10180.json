@@ -5,7 +5,8 @@
     "description": "A Sun-like star 127 light-years away with six confirmed Neptune-class worlds packed into a tightly ordered system.",
     "starColor": "#FFF5C0",
     "displayOrder": 4,
-    "distanceFromEarth": 127
+    "distanceFromEarth": 127,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/HD_10180"
   },
   "bodies": {
     "hd10180-star": {
@@ -17,7 +18,7 @@
       "mass": "2.10 × 10³⁰ kg",
       "distanceFromParent": 0,
       "orbitalPeriod": 0,
-      "rotationPeriod": 24.0,
+      "rotationPeriod": 24,
       "eccentricity": 0,
       "inclination": 0,
       "color": "#FFF5C0",
@@ -38,8 +39,8 @@
       "distanceFromParent": 0.0222,
       "orbitalPeriod": 1.178,
       "rotationPeriod": 1.178,
-      "eccentricity": 0.0,
-      "inclination": 88.0,
+      "eccentricity": 0,
+      "inclination": 88,
       "color": "#A07040",
       "showOrbitRing": true,
       "description": "HD 10180 b is the innermost planet in the system, completing an orbit in just over a day. It is a super-Earth class planet with a mass about 13 times that of Earth, subjected to intense stellar radiation at its very close orbital distance.",
@@ -56,9 +57,9 @@
       "diameter": 43000,
       "mass": "7.82 × 10²⁵ kg",
       "distanceFromParent": 0.0641,
-      "orbitalPeriod": 5.760,
-      "rotationPeriod": 5.760,
-      "eccentricity": 0.0,
+      "orbitalPeriod": 5.76,
+      "rotationPeriod": 5.76,
+      "eccentricity": 0,
       "inclination": 88.5,
       "color": "#4878B0",
       "showOrbitRing": true,
@@ -78,7 +79,7 @@
       "distanceFromParent": 0.1286,
       "orbitalPeriod": 16.358,
       "rotationPeriod": 16.358,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 88.8,
       "color": "#5A8AB5",
       "showOrbitRing": true,
@@ -98,8 +99,8 @@
       "distanceFromParent": 0.2699,
       "orbitalPeriod": 49.748,
       "rotationPeriod": 49.748,
-      "eccentricity": 0.0,
-      "inclination": 89.0,
+      "eccentricity": 0,
+      "inclination": 89,
       "color": "#4A8F90",
       "showOrbitRing": true,
       "description": "HD 10180 e is one of the most massive planets in the system with about 25 Earth masses. Orbiting at 0.27 AU, it receives roughly the same stellar flux as Venus does from the Sun.",
@@ -116,9 +117,9 @@
       "diameter": 44000,
       "mass": "1.43 × 10²⁶ kg",
       "distanceFromParent": 0.4929,
-      "orbitalPeriod": 122.720,
-      "rotationPeriod": 122.720,
-      "eccentricity": 0.0,
+      "orbitalPeriod": 122.72,
+      "rotationPeriod": 122.72,
+      "eccentricity": 0,
       "inclination": 89.2,
       "color": "#3868A0",
       "showOrbitRing": true,
@@ -136,9 +137,9 @@
       "diameter": 50000,
       "mass": "1.28 × 10²⁶ kg",
       "distanceFromParent": 1.422,
-      "orbitalPeriod": 604.670,
-      "rotationPeriod": 604.670,
-      "eccentricity": 0.0,
+      "orbitalPeriod": 604.67,
+      "rotationPeriod": 604.67,
+      "eccentricity": 0,
       "inclination": 89.4,
       "color": "#2C5485",
       "showOrbitRing": true,
@@ -153,12 +154,30 @@
     {
       "id": "hd10180-star",
       "children": [
-        { "id": "hd10180-b", "children": [] },
-        { "id": "hd10180-c", "children": [] },
-        { "id": "hd10180-d", "children": [] },
-        { "id": "hd10180-e", "children": [] },
-        { "id": "hd10180-f", "children": [] },
-        { "id": "hd10180-g", "children": [] }
+        {
+          "id": "hd10180-b",
+          "children": []
+        },
+        {
+          "id": "hd10180-c",
+          "children": []
+        },
+        {
+          "id": "hd10180-d",
+          "children": []
+        },
+        {
+          "id": "hd10180-e",
+          "children": []
+        },
+        {
+          "id": "hd10180-f",
+          "children": []
+        },
+        {
+          "id": "hd10180-g",
+          "children": []
+        }
       ]
     }
   ],

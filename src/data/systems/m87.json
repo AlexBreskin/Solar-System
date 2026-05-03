@@ -7,7 +7,8 @@
     "displayOrder": 10,
     "distanceFromEarth": 53500000,
     "rootType": "black-hole",
-    "hostGalaxy": "Messier 87"
+    "hostGalaxy": "Messier 87",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Messier_87"
   },
   "bodies": {
     "m87bh": {
@@ -44,8 +45,8 @@
       "m87bh": 26
     },
     "moonOrbitalRadii": {},
-    "speedMultiplier": 1.0,
-    "moonSpeedMultiplier": 1.0,
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
     "beltConfigs": {}
   }
 }

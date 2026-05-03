@@ -4,7 +4,9 @@
     "name": "Solar System",
     "description": "Our home system — 8 planets, 5 dwarf planets, and two asteroid belts orbiting the Sun.",
     "starColor": "#FDB813",
-    "displayOrder": 0
+    "displayOrder": 0,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Solar_System",
+    "nasaUrl": "https://solarsystem.nasa.gov/solar-system/our-solar-system/overview/"
   },
   "bodies": {
     "sun": {
@@ -424,9 +426,24 @@
       "color": "#E8D5A0",
       "glowColor": "#C0A860",
       "rings": [
-        { "innerFactor": 1.17, "outerFactor": 1.44, "color": "#C8B48C", "intensity": 0.5 },
-        { "innerFactor": 1.5,  "outerFactor": 1.78, "color": "#DCC8A0", "intensity": 0.4 },
-        { "innerFactor": 1.83, "outerFactor": 2.06, "color": "#B4A078", "intensity": 0.3 }
+        {
+          "innerFactor": 1.17,
+          "outerFactor": 1.44,
+          "color": "#C8B48C",
+          "intensity": 0.5
+        },
+        {
+          "innerFactor": 1.5,
+          "outerFactor": 1.78,
+          "color": "#DCC8A0",
+          "intensity": 0.4
+        },
+        {
+          "innerFactor": 1.83,
+          "outerFactor": 2.06,
+          "color": "#B4A078",
+          "intensity": 0.3
+        }
       ],
       "showOrbitRing": true,
       "description": "Saturn is the sixth planet from the Sun and the second-largest, known for its stunning ring system. Its rings are made mostly of ice particles, rocky debris, and dust.",
@@ -518,8 +535,18 @@
       "color": "#7DE8E8",
       "glowColor": "#40C0C0",
       "rings": [
-        { "innerFactor": 1.65, "outerFactor": 1.75, "color": "#5898A0", "intensity": 0.25 },
-        { "innerFactor": 1.95, "outerFactor": 2.05, "color": "#5898A0", "intensity": 0.3  }
+        {
+          "innerFactor": 1.65,
+          "outerFactor": 1.75,
+          "color": "#5898A0",
+          "intensity": 0.25
+        },
+        {
+          "innerFactor": 1.95,
+          "outerFactor": 2.05,
+          "color": "#5898A0",
+          "intensity": 0.3
+        }
       ],
       "showOrbitRing": true,
       "description": "Uranus is the seventh planet from the Sun. It has the coldest planetary atmosphere in the Solar System and rotates on its side, with its axis tilted 98° — almost perpendicular to its orbit.",
@@ -545,8 +572,18 @@
       "color": "#4060E8",
       "glowColor": "#2040C0",
       "rings": [
-        { "innerFactor": 1.85, "outerFactor": 1.95, "color": "#404870", "intensity": 0.18 },
-        { "innerFactor": 2.2,  "outerFactor": 2.3,  "color": "#404870", "intensity": 0.22 }
+        {
+          "innerFactor": 1.85,
+          "outerFactor": 1.95,
+          "color": "#404870",
+          "intensity": 0.18
+        },
+        {
+          "innerFactor": 2.2,
+          "outerFactor": 2.3,
+          "color": "#404870",
+          "intensity": 0.22
+        }
       ],
       "showOrbitRing": true,
       "description": "Neptune is the eighth and outermost planet from the Sun. It is the windiest planet, with winds reaching 2,100 km/h. Its largest moon, Triton, orbits in the opposite direction to Neptune's rotation.",
@@ -808,66 +845,148 @@
     {
       "id": "sun",
       "children": [
-        { "id": "mercury", "children": [] },
-        { "id": "venus", "children": [] },
+        {
+          "id": "mercury",
+          "children": []
+        },
+        {
+          "id": "venus",
+          "children": []
+        },
         {
           "id": "earth",
-          "children": [{ "id": "moon", "children": [] }]
+          "children": [
+            {
+              "id": "moon",
+              "children": []
+            }
+          ]
         },
         {
           "id": "mars",
           "children": [
-            { "id": "phobos", "children": [] },
-            { "id": "deimos", "children": [] }
+            {
+              "id": "phobos",
+              "children": []
+            },
+            {
+              "id": "deimos",
+              "children": []
+            }
           ]
         },
         {
           "id": "asteroid-belt",
           "children": [
-            { "id": "ceres", "children": [] },
-            { "id": "vesta", "children": [] },
-            { "id": "pallas", "children": [] },
-            { "id": "hygiea", "children": [] }
+            {
+              "id": "ceres",
+              "children": []
+            },
+            {
+              "id": "vesta",
+              "children": []
+            },
+            {
+              "id": "pallas",
+              "children": []
+            },
+            {
+              "id": "hygiea",
+              "children": []
+            }
           ]
         },
         {
           "id": "jupiter",
           "children": [
-            { "id": "io", "children": [] },
-            { "id": "europa", "children": [] },
-            { "id": "ganymede", "children": [] },
-            { "id": "callisto", "children": [] }
+            {
+              "id": "io",
+              "children": []
+            },
+            {
+              "id": "europa",
+              "children": []
+            },
+            {
+              "id": "ganymede",
+              "children": []
+            },
+            {
+              "id": "callisto",
+              "children": []
+            }
           ]
         },
         {
           "id": "saturn",
           "children": [
-            { "id": "titan", "children": [] },
-            { "id": "rhea", "children": [] },
-            { "id": "enceladus", "children": [] }
+            {
+              "id": "titan",
+              "children": []
+            },
+            {
+              "id": "rhea",
+              "children": []
+            },
+            {
+              "id": "enceladus",
+              "children": []
+            }
           ]
         },
-        { "id": "uranus", "children": [] },
+        {
+          "id": "uranus",
+          "children": []
+        },
         {
           "id": "neptune",
-          "children": [{ "id": "triton", "children": [] }]
+          "children": [
+            {
+              "id": "triton",
+              "children": []
+            }
+          ]
         },
         {
           "id": "pluto",
           "children": [
-            { "id": "charon", "children": [] },
-            { "id": "styx", "children": [] },
-            { "id": "nix", "children": [] },
-            { "id": "kerberos", "children": [] },
-            { "id": "hydra", "children": [] }
+            {
+              "id": "charon",
+              "children": []
+            },
+            {
+              "id": "styx",
+              "children": []
+            },
+            {
+              "id": "nix",
+              "children": []
+            },
+            {
+              "id": "kerberos",
+              "children": []
+            },
+            {
+              "id": "hydra",
+              "children": []
+            }
           ]
         },
         {
           "id": "kuiper-belt",
           "children": [
-            { "id": "eris", "children": [] },
-            { "id": "makemake", "children": [] },
-            { "id": "haumea", "children": [] }
+            {
+              "id": "eris",
+              "children": []
+            },
+            {
+              "id": "makemake",
+              "children": []
+            },
+            {
+              "id": "haumea",
+              "children": []
+            }
           ]
         }
       ]
@@ -945,7 +1064,7 @@
       "kerberos": 13,
       "hydra": 15
     },
-    "speedMultiplier": 1.0,
+    "speedMultiplier": 1,
     "moonSpeedMultiplier": 0.05,
     "beltConfigs": {
       "asteroid-belt": {

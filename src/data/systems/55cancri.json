@@ -5,7 +5,8 @@
     "description": "A nearby star 41 light-years away hosting five planets, from a scorching super-Earth to a distant outer giant.",
     "starColor": "#FFE080",
     "displayOrder": 3,
-    "distanceFromEarth": 41
+    "distanceFromEarth": 41,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/55_Cancri"
   },
   "bodies": {
     "55cancri-star": {
@@ -17,7 +18,7 @@
       "mass": "1.88 × 10³⁰ kg",
       "distanceFromParent": 0,
       "orbitalPeriod": 0,
-      "rotationPeriod": 42.0,
+      "rotationPeriod": 42,
       "eccentricity": 0,
       "inclination": 0,
       "color": "#FFE080",
@@ -35,10 +36,10 @@
       "parent": "55cancri-star",
       "diameter": 23892,
       "mass": "4.78 × 10²⁵ kg",
-      "distanceFromParent": 0.01560,
+      "distanceFromParent": 0.0156,
       "orbitalPeriod": 0.7365,
       "rotationPeriod": 0.7365,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 83.59,
       "color": "#E08040",
       "showOrbitRing": true,
@@ -58,8 +59,8 @@
       "distanceFromParent": 0.1134,
       "orbitalPeriod": 14.651,
       "rotationPeriod": 14.651,
-      "eccentricity": 0.0,
-      "inclination": 85.0,
+      "eccentricity": 0,
+      "inclination": 85,
       "color": "#CC7830",
       "showOrbitRing": true,
       "description": "55 Cancri b is a hot Jupiter that was the first of the system's planets to be discovered, found in 1996. Despite orbiting much closer than Jupiter does in our Solar System, it is a gas giant of comparable mass.",
@@ -78,8 +79,8 @@
       "distanceFromParent": 0.2403,
       "orbitalPeriod": 44.398,
       "rotationPeriod": 44.398,
-      "eccentricity": 0.0,
-      "inclination": 86.0,
+      "eccentricity": 0,
+      "inclination": 86,
       "color": "#D4B460",
       "showOrbitRing": true,
       "description": "55 Cancri c is a Saturn-class planet orbiting in the system's middle region. Its mass is about half that of Saturn, and it may be a gas planet with a solid or liquid core.",
@@ -96,10 +97,10 @@
       "diameter": 35000,
       "mass": "2.67 × 10²⁶ kg",
       "distanceFromParent": 0.781,
-      "orbitalPeriod": 259.0,
-      "rotationPeriod": 259.0,
-      "eccentricity": 0.0,
-      "inclination": 87.0,
+      "orbitalPeriod": 259,
+      "rotationPeriod": 259,
+      "eccentricity": 0,
+      "inclination": 87,
       "color": "#4A7AB5",
       "showOrbitRing": true,
       "description": "55 Cancri f is a Neptune-class planet that orbits near the habitable zone of its star. It was discovered by the radial velocity method and represents a class of intermediate-mass planets between Neptune and Saturn.",
@@ -116,10 +117,10 @@
       "diameter": 152904,
       "mass": "7.24 × 10²⁷ kg",
       "distanceFromParent": 5.74,
-      "orbitalPeriod": 5169.0,
-      "rotationPeriod": 5169.0,
+      "orbitalPeriod": 5169,
+      "rotationPeriod": 5169,
       "eccentricity": 0.025,
-      "inclination": 53.0,
+      "inclination": 53,
       "color": "#C4784A",
       "showOrbitRing": true,
       "description": "55 Cancri d is a super-Jupiter orbiting far from the star with a period of about 14 Earth years. It is the most massive planet in the system and was the first to be discovered around 55 Cancri, found alongside b in 1996.",
@@ -133,11 +134,26 @@
     {
       "id": "55cancri-star",
       "children": [
-        { "id": "55cancri-e", "children": [] },
-        { "id": "55cancri-b", "children": [] },
-        { "id": "55cancri-c", "children": [] },
-        { "id": "55cancri-f", "children": [] },
-        { "id": "55cancri-d", "children": [] }
+        {
+          "id": "55cancri-e",
+          "children": []
+        },
+        {
+          "id": "55cancri-b",
+          "children": []
+        },
+        {
+          "id": "55cancri-c",
+          "children": []
+        },
+        {
+          "id": "55cancri-f",
+          "children": []
+        },
+        {
+          "id": "55cancri-d",
+          "children": []
+        }
       ]
     }
   ],

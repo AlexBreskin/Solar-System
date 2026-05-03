@@ -105,6 +105,44 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
       {isExtragalactic && (
         <p className="gsp-note">Beyond the Milky Way — not visible on the galaxy map.</p>
       )}
+      <div className="gsp-section">
+        <div className="gsp-section-title">Learn More</div>
+        {!meta.nasaUrl && !meta.wikipediaUrl ? (
+          <div className="links-unavailable">No publicly available information</div>
+        ) : (
+          <div className="links-list">
+            {meta.nasaUrl ? (
+              <a className="ext-link ext-link-active" href={meta.nasaUrl} target="_blank" rel="noopener noreferrer">
+                <span className="ext-badge nasa-badge">NASA</span>
+                <span className="ext-link-label">NASA</span>
+                <svg className="ext-arrow" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            ) : (
+              <span className="ext-link ext-link-none">
+                <span className="ext-badge nasa-badge">NASA</span>
+                <span className="ext-link-label">Not available</span>
+              </span>
+            )}
+            {meta.wikipediaUrl ? (
+              <a className="ext-link ext-link-active" href={meta.wikipediaUrl} target="_blank" rel="noopener noreferrer">
+                <span className="ext-badge wiki-badge">W</span>
+                <span className="ext-link-label">Wikipedia</span>
+                <svg className="ext-arrow" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            ) : (
+              <span className="ext-link ext-link-none">
+                <span className="ext-badge wiki-badge">W</span>
+                <span className="ext-link-label">Not available</span>
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
       <button
         className="gsp-explore-btn"
         onClick={() => onExplore(systemId)}

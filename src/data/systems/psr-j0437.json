@@ -5,7 +5,8 @@
     "description": "The closest millisecond pulsar to Earth at just 510 light-years away, spinning 174 times per second. It orbits a white dwarf companion — the burnt-out remnant of the very star that once fed the pulsar and spun it up to its extreme rotation rate.",
     "starColor": "#A0BFFF",
     "displayOrder": 13,
-    "distanceFromEarth": 510
+    "distanceFromEarth": 510,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/PSR_J0437-4715"
   },
   "bodies": {
     "j0437-pulsar": {
@@ -17,7 +18,7 @@
       "mass": "3.50 × 10³⁰ kg",
       "distanceFromParent": 0,
       "orbitalPeriod": 0,
-      "rotationPeriod": 0.0000000666,
+      "rotationPeriod": 6.66e-8,
       "eccentricity": 0,
       "inclination": 0,
       "color": "#A0BFFF",
@@ -40,7 +41,7 @@
       "orbitalPeriod": 5.74,
       "rotationPeriod": 5.74,
       "eccentricity": 0.00002,
-      "inclination": 42.0,
+      "inclination": 42,
       "color": "#D0DCFF",
       "glowColor": "#E0E8FF",
       "binaryMassFraction": 0.126,
@@ -55,7 +56,10 @@
     {
       "id": "j0437-pulsar",
       "children": [
-        { "id": "j0437-wd", "children": [] }
+        {
+          "id": "j0437-wd",
+          "children": []
+        }
       ]
     }
   ],

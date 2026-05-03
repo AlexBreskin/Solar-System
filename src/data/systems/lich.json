@@ -5,7 +5,8 @@
     "description": "A millisecond pulsar 2,300 light-years away hosting the first confirmed exoplanets ever discovered. Three rocky worlds orbit a dead stellar remnant spinning 161 times per second — a system born from the wreckage of a supernova.",
     "starColor": "#B0D0FF",
     "displayOrder": 12,
-    "distanceFromEarth": 2300
+    "distanceFromEarth": 2300,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Lich_(star)"
   },
   "bodies": {
     "lich-pulsar": {
@@ -17,7 +18,7 @@
       "mass": "2.78 × 10³⁰ kg",
       "distanceFromParent": 0,
       "orbitalPeriod": 0,
-      "rotationPeriod": 0.0000000720,
+      "rotationPeriod": 7.2e-8,
       "eccentricity": 0,
       "inclination": 0,
       "color": "#C0DCFF",
@@ -38,7 +39,7 @@
       "distanceFromParent": 0.19,
       "orbitalPeriod": 25.26,
       "rotationPeriod": 25.26,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 0,
       "color": "#607060",
       "moons": 0,
@@ -90,9 +91,18 @@
     {
       "id": "lich-pulsar",
       "children": [
-        { "id": "draugr", "children": [] },
-        { "id": "poltergeist", "children": [] },
-        { "id": "phobetor", "children": [] }
+        {
+          "id": "draugr",
+          "children": []
+        },
+        {
+          "id": "poltergeist",
+          "children": []
+        },
+        {
+          "id": "phobetor",
+          "children": []
+        }
       ]
     }
   ],
@@ -110,7 +120,7 @@
     },
     "moonOrbitalRadii": {},
     "speedMultiplier": 0.347,
-    "moonSpeedMultiplier": 1.0,
+    "moonSpeedMultiplier": 1,
     "beltConfigs": {}
   }
 }

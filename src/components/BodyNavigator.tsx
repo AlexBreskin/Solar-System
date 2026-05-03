@@ -36,11 +36,13 @@ interface BodyNavigatorProps {
   selectedBody: string;
   hoveredBody: string | null;
   viewedPlanet: string;
+  showingSystemPanel: boolean;
   onSelectBody: (id: string) => void;
   onHoverBody: (id: string | null) => void;
   onViewPlanet: (id: string) => void;
   onGoToSolarSystem: () => void;
   onGoToGalaxy: () => void;
+  onSelectSystem: () => void;
 }
 
 interface NodeProps {
@@ -89,7 +91,7 @@ function NavigatorNode({
     <div className="nav-node">
       <div
         className={`nav-row${isSelected ? ' selected' : ''}${!isSelected && isViewed ? ' pv-viewed' : ''}${isHovered ? ' hovered' : ''}`}
-        style={{ paddingLeft: 12 + depth * 16 }}
+        style={{ paddingLeft: 28 + depth * 16 }}
         data-body-id={node.id}
         onClick={handleClick}
         onMouseEnter={() => onHoverBody(node.id)}
@@ -146,8 +148,8 @@ function NavigatorNode({
 }
 
 export default function BodyNavigator({
-  activeTab, selectedBody, hoveredBody, viewedPlanet,
-  onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onGoToGalaxy,
+  activeTab, selectedBody, hoveredBody, viewedPlanet, showingSystemPanel,
+  onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onGoToGalaxy, onSelectSystem,
 }: BodyNavigatorProps): JSX.Element {
   const { bodies, hierarchy, meta } = useStarSystem();
 
@@ -191,7 +193,7 @@ export default function BodyNavigator({
 
         {GALACTIC_IDS.has(meta.id) ? (
           <div
-            className={`nav-row pv-context-row${activeTab === 'galaxy' ? ' pv-system-active' : ' pv-system-row'}`}
+            className={`nav-row pv-galaxy-row${activeTab === 'galaxy' ? ' pv-system-active' : ''}`}
             style={{ paddingLeft: 12 }}
             onClick={onGoToGalaxy}
             title="Galaxy view"
@@ -214,26 +216,17 @@ export default function BodyNavigator({
           </div>
         )}
 
-        {activeTab === 'planet-view' ? (
-          <div
-            className="nav-row pv-context-row pv-system-row"
-            style={{ paddingLeft: 24 }}
-            onClick={onGoToSolarSystem}
-            title="Back to system view"
-          >
-            <button className="expand-btn open" style={{ pointerEvents: 'none' }}>›</button>
-            <span className="body-icon">⊙</span>
-            <span className="body-name">{meta.name}</span>
-            <span className="body-type-badge">System</span>
-          </div>
-        ) : (
-          <div className="nav-row pv-context-row pv-system-active" style={{ paddingLeft: 24 }}>
-            <button className="expand-btn open" style={{ pointerEvents: 'none' }}>›</button>
-            <span className="body-icon">⊙</span>
-            <span className="body-name">{meta.name}</span>
-            <span className="body-type-badge">System</span>
-          </div>
-        )}
+        <div
+          className={`nav-row pv-system-hierarchy${showingSystemPanel ? ' selected' : ''}`}
+          style={{ paddingLeft: 24 }}
+          onClick={onSelectSystem}
+          title="System information"
+        >
+          <span className="expand-spacer" />
+          <span className="body-icon">⊙</span>
+          <span className="body-name">{meta.name}</span>
+          <span className="body-type-badge">System</span>
+        </div>
 
         {hierarchy.map(node => (
           <NavigatorNode

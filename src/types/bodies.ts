@@ -70,6 +70,8 @@ export interface StarSystemMeta {
   distanceFromEarth?: number;
   rootType?: string;
   hostGalaxy?: string;
+  nasaUrl?: string;
+  wikipediaUrl?: string;
 }
 
 export interface StarSystem {

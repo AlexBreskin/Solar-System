@@ -5,7 +5,8 @@
     "description": "The first exosolar system confirmed with eight planets — matching our Solar System's count — 2,545 light-years from Earth.",
     "starColor": "#FFF0A0",
     "displayOrder": 2,
-    "distanceFromEarth": 2545
+    "distanceFromEarth": 2545,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Kepler-90"
   },
   "bodies": {
     "kepler90-star": {
@@ -17,7 +18,7 @@
       "mass": "2.12 × 10³⁰ kg",
       "distanceFromParent": 0,
       "orbitalPeriod": 0,
-      "rotationPeriod": 28.0,
+      "rotationPeriod": 28,
       "eccentricity": 0,
       "inclination": 0,
       "color": "#FFF0A0",
@@ -38,7 +39,7 @@
       "distanceFromParent": 0.0741,
       "orbitalPeriod": 7.008,
       "rotationPeriod": 7.008,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 88.7,
       "color": "#CC8850",
       "showOrbitRing": true,
@@ -56,9 +57,9 @@
       "diameter": 15059,
       "mass": "7.64 × 10²⁵ kg",
       "distanceFromParent": 0.0889,
-      "orbitalPeriod": 8.720,
-      "rotationPeriod": 8.720,
-      "eccentricity": 0.0,
+      "orbitalPeriod": 8.72,
+      "rotationPeriod": 8.72,
+      "eccentricity": 0,
       "inclination": 88.8,
       "color": "#C09860",
       "showOrbitRing": true,
@@ -78,8 +79,8 @@
       "distanceFromParent": 0.1344,
       "orbitalPeriod": 14.449,
       "rotationPeriod": 14.449,
-      "eccentricity": 0.0,
-      "inclination": 89.0,
+      "eccentricity": 0,
+      "inclination": 89,
       "color": "#B08848",
       "showOrbitRing": true,
       "description": "Kepler-90 i was the eighth planet discovered in the system and the one found by Google's AI. It occupies the third orbital slot and is roughly 1.32 times the size of Earth, receiving intense radiation from its nearby star.",
@@ -98,7 +99,7 @@
       "distanceFromParent": 0.3209,
       "orbitalPeriod": 59.732,
       "rotationPeriod": 59.732,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.6,
       "color": "#7098C0",
       "showOrbitRing": true,
@@ -118,7 +119,7 @@
       "distanceFromParent": 0.4244,
       "orbitalPeriod": 91.939,
       "rotationPeriod": 91.939,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.5,
       "color": "#609090",
       "showOrbitRing": true,
@@ -135,10 +136,10 @@
       "parent": "kepler90-star",
       "diameter": 36804,
       "mass": "1.91 × 10²⁶ kg",
-      "distanceFromParent": 0.5290,
+      "distanceFromParent": 0.529,
       "orbitalPeriod": 124.914,
       "rotationPeriod": 124.914,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.4,
       "color": "#8098B0",
       "showOrbitRing": true,
@@ -158,7 +159,7 @@
       "distanceFromParent": 0.7102,
       "orbitalPeriod": 210.607,
       "rotationPeriod": 210.607,
-      "eccentricity": 0.0,
+      "eccentricity": 0,
       "inclination": 89.2,
       "color": "#C4934A",
       "showOrbitRing": true,
@@ -175,10 +176,10 @@
       "parent": "kepler90-star",
       "diameter": 144200,
       "mass": "1.90 × 10²⁷ kg",
-      "distanceFromParent": 1.0100,
-      "orbitalPeriod": 331.600,
-      "rotationPeriod": 331.600,
-      "eccentricity": 0.0,
+      "distanceFromParent": 1.01,
+      "orbitalPeriod": 331.6,
+      "rotationPeriod": 331.6,
+      "eccentricity": 0,
       "inclination": 89.1,
       "color": "#D4B070",
       "showOrbitRing": true,
@@ -193,14 +194,38 @@
     {
       "id": "kepler90-star",
       "children": [
-        { "id": "kepler90-b", "children": [] },
-        { "id": "kepler90-c", "children": [] },
-        { "id": "kepler90-i", "children": [] },
-        { "id": "kepler90-d", "children": [] },
-        { "id": "kepler90-e", "children": [] },
-        { "id": "kepler90-f", "children": [] },
-        { "id": "kepler90-g", "children": [] },
-        { "id": "kepler90-h", "children": [] }
+        {
+          "id": "kepler90-b",
+          "children": []
+        },
+        {
+          "id": "kepler90-c",
+          "children": []
+        },
+        {
+          "id": "kepler90-i",
+          "children": []
+        },
+        {
+          "id": "kepler90-d",
+          "children": []
+        },
+        {
+          "id": "kepler90-e",
+          "children": []
+        },
+        {
+          "id": "kepler90-f",
+          "children": []
+        },
+        {
+          "id": "kepler90-g",
+          "children": []
+        },
+        {
+          "id": "kepler90-h",
+          "children": []
+        }
       ]
     }
   ],

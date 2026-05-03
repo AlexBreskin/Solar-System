@@ -7,7 +7,8 @@
     "displayOrder": 15,
     "distanceFromEarth": 10400000000,
     "rootType": "quasar",
-    "hostGalaxy": "TON 618 host galaxy"
+    "hostGalaxy": "TON 618 host galaxy",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/TON_618"
   },
   "bodies": {
     "ton618-bh": {
@@ -43,8 +44,8 @@
       "ton618-bh": 28
     },
     "moonOrbitalRadii": {},
-    "speedMultiplier": 1.0,
-    "moonSpeedMultiplier": 1.0,
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
     "beltConfigs": {}
   }
 }

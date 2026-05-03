@@ -5,7 +5,8 @@
     "description": "The supermassive black hole at the centre of the Milky Way, 26,000 light-years from Earth. Its gravity sculpts the motion of millions of stars — including S2, which races around it every 16 years at 2.7% the speed of light.",
     "starColor": "#FF6000",
     "displayOrder": 9,
-    "distanceFromEarth": 26000
+    "distanceFromEarth": 26000,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Sagittarius_A*"
   },
   "bodies": {
     "sgra": {
@@ -52,7 +53,10 @@
     {
       "id": "sgra",
       "children": [
-        { "id": "s2", "children": [] }
+        {
+          "id": "s2",
+          "children": []
+        }
       ]
     }
   ],
