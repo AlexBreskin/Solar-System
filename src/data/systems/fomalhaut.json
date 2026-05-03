@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "fomalhaut",
+    "name": "Fomalhaut",
+    "description": "A young A3V star 25 light-years away encircled by a stunning ring-shaped debris disk. The Hubble Space Telescope captured what appeared to be a planet within the ring, though its nature remains debated.",
+    "starColor": "#E8F0FF",
+    "distanceFromEarth": 25.13,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Fomalhaut"
+  }
+}

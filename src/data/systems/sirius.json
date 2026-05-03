@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "sirius",
+    "name": "Sirius",
+    "description": "The brightest star in Earth's night sky, Sirius is a blue-white main-sequence star (A1V) located 8.6 light-years away. It has a faint white-dwarf companion, Sirius B, orbiting it every 50 years.",
+    "starColor": "#FFFFFF",
+    "distanceFromEarth": 8.6,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Sirius"
+  }
+}

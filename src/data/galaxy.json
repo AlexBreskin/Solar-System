@@ -5,7 +5,7 @@
       "galacticX": 0,
       "galacticY": 0,
       "galacticArmHint": "orion",
-      "distanceFromCentreKly": 26.0,
+      "distanceFromCentreKly": 26,
       "rootType": "star"
     },
     {
@@ -13,7 +13,7 @@
       "galacticX": -3.1,
       "galacticY": -3.1,
       "galacticArmHint": "orion",
-      "distanceFromCentreKly": 26.0,
+      "distanceFromCentreKly": 26,
       "rootType": "star"
     },
     {
@@ -21,7 +21,7 @@
       "galacticX": 0.4,
       "galacticY": 3.4,
       "galacticArmHint": "orion",
-      "distanceFromCentreKly": 26.0,
+      "distanceFromCentreKly": 26,
       "rootType": "star"
     },
     {
@@ -74,24 +74,24 @@
     },
     {
       "id": "lich",
-      "galacticX": -503.0,
-      "galacticY": -386.0,
+      "galacticX": -503,
+      "galacticY": -386,
       "galacticArmHint": "orion",
       "distanceFromCentreKly": 25.6,
       "rootType": "neutron-star"
     },
     {
       "id": "kepler90",
-      "galacticX": 2348.0,
-      "galacticY": -763.0,
+      "galacticX": 2348,
+      "galacticY": -763,
       "galacticArmHint": "orion",
-      "distanceFromCentreKly": 27.0,
+      "distanceFromCentreKly": 27,
       "rootType": "star"
     },
     {
       "id": "cygnusx1",
-      "galacticX": 6849.0,
-      "galacticY": -2313.0,
+      "galacticX": 6849,
+      "galacticY": -2313,
       "galacticArmHint": "sagittarius",
       "distanceFromCentreKly": 24.7,
       "rootType": "black-hole"
@@ -103,6 +103,134 @@
       "galacticArmHint": "core",
       "distanceFromCentreKly": 0,
       "rootType": "black-hole"
+    },
+    {
+      "id": "40eridani",
+      "galacticX": -4.1,
+      "galacticY": 11.1,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.01,
+      "rootType": "star"
+    },
+    {
+      "id": "sirius",
+      "galacticX": -6.2,
+      "galacticY": 5.8,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.01,
+      "rootType": "star"
+    },
+    {
+      "id": "epsiloneridani",
+      "galacticX": -1.9,
+      "galacticY": 6.7,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.01,
+      "rootType": "star"
+    },
+    {
+      "id": "procyon",
+      "galacticX": -6.2,
+      "galacticY": 9.3,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.01,
+      "rootType": "star"
+    },
+    {
+      "id": "61cygni",
+      "galacticX": 11.2,
+      "galacticY": -1.6,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26,
+      "rootType": "star"
+    },
+    {
+      "id": "fomalhaut",
+      "galacticX": 3.7,
+      "galacticY": -9.9,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.99,
+      "rootType": "star"
+    },
+    {
+      "id": "vega",
+      "galacticX": 21.8,
+      "galacticY": -9.1,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.99,
+      "rootType": "star"
+    },
+    {
+      "id": "altair",
+      "galacticX": 12.2,
+      "galacticY": -11.1,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.99,
+      "rootType": "star"
+    },
+    {
+      "id": "arcturus",
+      "galacticX": 3.4,
+      "galacticY": -12.7,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.99,
+      "rootType": "star"
+    },
+    {
+      "id": "hr8799",
+      "galacticX": 102.4,
+      "galacticY": -4.8,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26,
+      "rootType": "star"
+    },
+    {
+      "id": "canopus",
+      "galacticX": -279.6,
+      "galacticY": 43.3,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.04,
+      "rootType": "star"
+    },
+    {
+      "id": "polaris",
+      "galacticX": 324.6,
+      "galacticY": 211.6,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.21,
+      "rootType": "star"
+    },
+    {
+      "id": "antares",
+      "galacticX": -75.4,
+      "galacticY": -529.5,
+      "galacticArmHint": "sagittarius",
+      "distanceFromCentreKly": 25.47,
+      "rootType": "star"
+    },
+    {
+      "id": "betelgeuse",
+      "galacticX": -234.8,
+      "galacticY": 652.2,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.65,
+      "rootType": "star"
+    },
+    {
+      "id": "rigel",
+      "galacticX": -384.4,
+      "galacticY": 676.6,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 26.68,
+      "rootType": "star"
+    },
+    {
+      "id": "deneb",
+      "galacticX": 2599.9,
+      "galacticY": -264.1,
+      "galacticArmHint": "orion",
+      "distanceFromCentreKly": 25.87,
+      "rootType": "star"
     }
   ]
 }

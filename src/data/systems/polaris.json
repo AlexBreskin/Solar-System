@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "polaris",
+    "name": "Polaris",
+    "description": "The North Star — the closest bright star to Earth's celestial north pole. Polaris is a yellow supergiant Cepheid variable about 433 light-years away, pulsing with a period of about 3.97 days.",
+    "starColor": "#FFFFF8",
+    "distanceFromEarth": 433,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Polaris"
+  }
+}

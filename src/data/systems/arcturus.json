@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "arcturus",
+    "name": "Arcturus",
+    "description": "The fourth brightest star in the night sky and the brightest in the northern celestial hemisphere. Arcturus is a K1.5 IIIpe orange giant 36.7 light-years away, thought to be a member of an ancient stellar stream passing through the Milky Way's disk.",
+    "starColor": "#FFB060",
+    "distanceFromEarth": 36.7,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Arcturus"
+  }
+}

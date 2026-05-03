@@ -143,12 +143,14 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
         )}
       </div>
 
-      <button
-        className="gsp-explore-btn"
-        onClick={() => onExplore(systemId)}
-      >
-        Explore System →
-      </button>
+      {meta.navigable !== false && (
+        <button
+          className="gsp-explore-btn"
+          onClick={() => onExplore(systemId)}
+        >
+          Explore System →
+        </button>
+      )}
     </div>
   );
 }

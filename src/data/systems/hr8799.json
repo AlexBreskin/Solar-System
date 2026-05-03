@@ -1,0 +1,13 @@
+{
+  "system": {
+    "id": "hr8799",
+    "name": "HR 8799",
+    "description": "A young A5 star 129 light-years away famous for hosting the first directly imaged multi-planet system. In 2008 astronomers photographed four giant planets in orbit, a milestone in exoplanet science.",
+    "starColor": "#F0F0FF",
+    "distanceFromEarth": 129,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799",
+    "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7023/hr-8799-b/"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "epsiloneridani",
+    "name": "Epsilon Eridani",
+    "description": "A young K2V orange dwarf 10.5 light-years away and one of the closest stars to the Sun. Its debris disk and suspected planetary system have made it one of the top targets in the search for extraterrestrial life.",
+    "starColor": "#FFCC70",
+    "distanceFromEarth": 10.47,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Epsilon_Eridani"
+  }
+}

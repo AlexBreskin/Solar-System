@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "vega",
+    "name": "Vega",
+    "description": "The fifth brightest star in the sky and a cornerstone of astronomical photometry. Vega is an A0 star 25 light-years away, nearly pole-on as seen from Earth, surrounded by a dusty debris disk suggesting planet formation.",
+    "starColor": "#E0F0FF",
+    "distanceFromEarth": 25.04,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Vega"
+  }
+}

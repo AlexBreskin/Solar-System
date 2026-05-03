@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "rigel",
+    "name": "Rigel",
+    "description": "The brightest star in Orion and seventh brightest in the night sky. Rigel is a blue supergiant approximately 860 light-years away, burning 120,000 times more brightly than the Sun and well on its way to becoming a supernova.",
+    "starColor": "#B0D0FF",
+    "distanceFromEarth": 860,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Rigel"
+  }
+}

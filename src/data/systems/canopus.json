@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "canopus",
+    "name": "Canopus",
+    "description": "The second brightest star in the night sky and a historic navigation reference. Canopus is a yellow-white supergiant (F0 Ib) about 313 light-years distant, so luminous it outshines the Sun by 10,700 times.",
+    "starColor": "#FFFFF0",
+    "distanceFromEarth": 313,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Canopus"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "betelgeuse",
+    "name": "Betelgeuse",
+    "description": "A massive M-type red supergiant marking Orion's right shoulder, roughly 700 light-years away. One of the largest known stars by radius, Betelgeuse is expected to end its life in a spectacular core-collapse supernova within the next ~100,000 years.",
+    "starColor": "#FF7040",
+    "distanceFromEarth": 700,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Betelgeuse"
+  }
+}

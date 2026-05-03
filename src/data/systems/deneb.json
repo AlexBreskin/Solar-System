@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "deneb",
+    "name": "Deneb",
+    "description": "The brightest star in Cygnus and one vertex of the Summer Triangle, Deneb is an A2Ia blue-white supergiant roughly 2,600 light-years away. Despite its great distance it ranks among the brightest stars in the sky, powered by an intrinsic luminosity ~200,000 times that of the Sun.",
+    "starColor": "#F0F8FF",
+    "distanceFromEarth": 2615,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Deneb"
+  }
+}

@@ -72,6 +72,7 @@ export interface StarSystemMeta {
   hostGalaxy?: string;
   nasaUrl?: string;
   wikipediaUrl?: string;
+  navigable?: boolean;
 }
 
 export interface StarSystem {

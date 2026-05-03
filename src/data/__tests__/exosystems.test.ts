@@ -20,6 +20,12 @@ const exosystems = Object.entries(allModules)
     data,
   }));
 
+// Navigable systems have full bodies/hierarchy/visualConfig data.
+// Non-navigable stubs only carry a "system" metadata block.
+const navigableExosystems = exosystems.filter(
+  ({ data }) => data.system?.navigable !== false,
+);
+
 describe('exosystems — at least 6 non-Sol systems are present', () => {
   it('discovers 6 or more exosystem files', () => {
     expect(exosystems.length).toBeGreaterThanOrEqual(6);
@@ -40,7 +46,7 @@ describe.each(exosystems)('$name — system metadata', ({ data }) => {
   });
 });
 
-describe.each(exosystems)('$name — bodies shape', ({ data }) => {
+describe.each(navigableExosystems)('$name — bodies shape', ({ data }) => {
   const bodies = Object.values(data.bodies);
 
   it('has at least one body', () => {
@@ -107,7 +113,7 @@ describe.each(exosystems)('$name — bodies shape', ({ data }) => {
   });
 });
 
-describe.each(exosystems)('$name — hierarchy', ({ data }) => {
+describe.each(navigableExosystems)('$name — hierarchy', ({ data }) => {
   it('is a non-empty array', () => {
     expect(data.hierarchy.length).toBeGreaterThan(0);
   });
@@ -125,7 +131,7 @@ describe.each(exosystems)('$name — hierarchy', ({ data }) => {
   });
 });
 
-describe.each(exosystems)('$name — visualConfig', ({ data }) => {
+describe.each(navigableExosystems)('$name — visualConfig', ({ data }) => {
   const { visualConfig, bodies } = data;
   const allBodies = Object.values(bodies);
 

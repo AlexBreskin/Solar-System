@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "altair",
+    "name": "Altair",
+    "description": "One of the vertices of the Summer Triangle, Altair is an A7V star just 16.7 light-years away. It spins so rapidly — once every 9 hours — that it is noticeably flattened at the poles, bulging at its equator.",
+    "starColor": "#F8F8FF",
+    "distanceFromEarth": 16.73,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Altair"
+  }
+}

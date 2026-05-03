@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "antares",
+    "name": "Antares",
+    "description": "The heart of the constellation Scorpius, Antares is a red supergiant about 554 light-years away so large that if placed at the Sun's position it would engulf Mars. It will eventually explode as a core-collapse supernova.",
+    "starColor": "#FF6030",
+    "distanceFromEarth": 554,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Antares"
+  }
+}

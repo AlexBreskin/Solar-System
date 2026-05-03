@@ -141,7 +141,7 @@ export default function App(): JSX.Element {
                 disabled={loadingSystem}
                 title="Switch star system"
               >
-                {STAR_SYSTEMS.map(s => (
+                {STAR_SYSTEMS.filter(s => s.navigable !== false).map(s => (
                   <option key={s.id} value={s.id}>{s.name}</option>
                 ))}
               </select>

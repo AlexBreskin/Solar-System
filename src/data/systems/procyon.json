@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "procyon",
+    "name": "Procyon",
+    "description": "The eighth brightest star in the sky, Procyon is a bright F5IV-V subgiant 11.5 light-years away with a white dwarf companion (Procyon B) completing one orbit every 40.8 years.",
+    "starColor": "#FFF0D0",
+    "distanceFromEarth": 11.46,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Procyon"
+  }
+}

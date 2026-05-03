@@ -1,0 +1,12 @@
+{
+  "system": {
+    "id": "61cygni",
+    "name": "61 Cygni",
+    "description": "A binary pair of K-type orange dwarfs 11.4 light-years away. In 1838 Friedrich Bessel measured its parallax, making it the first star (other than the Sun) to have its distance to Earth precisely determined.",
+    "starColor": "#FFAA50",
+    "distanceFromEarth": 11.41,
+    "rootType": "star",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/61_Cygni"
+  }
+}

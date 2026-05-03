@@ -1,0 +1,123 @@
+{
+  "system": {
+    "id": "40eridani",
+    "name": "40 Eridani",
+    "description": "A triple star system 16.3 light-years away, best known as the proposed location of Vulcan in Star Trek. The primary star 40 Eri A is an orange dwarf with a confirmed super-Earth; its companions include a white dwarf (B) and a red dwarf (C).",
+    "starColor": "#FFDD80",
+    "displayOrder": 16,
+    "distanceFromEarth": 16.3,
+    "rootType": "star",
+    "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7936/40-eri-a-b/",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/40_Eridani"
+  },
+  "bodies": {
+    "40eria": {
+      "id": "40eria",
+      "name": "40 Eridani A",
+      "type": "star",
+      "parent": null,
+      "diameter": 1148000,
+      "mass": "1.67 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 42,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFDD80",
+      "glowColor": "#FFE8A0",
+      "moons": 0,
+      "description": "A K0.5 Ve orange main-sequence star slightly smaller and cooler than our Sun. It is the most famous of the three, long speculated to host the planet Vulcan of Star Trek lore — a speculation endorsed by Gene Roddenberry himself.",
+      "surfaceTemp": "5,150 K",
+      "funFact": "In 1991, Gene Roddenberry officially endorsed 40 Eridani A as the location of Vulcan, Mr. Spock's home planet — and in 2018 a real super-Earth was confirmed in orbit around it.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/40_Eridani"
+    },
+    "40eriab": {
+      "id": "40eriab",
+      "name": "40 Eri A b",
+      "type": "planet",
+      "parent": "40eria",
+      "diameter": 25000,
+      "mass": "5.06 × 10²⁵ kg",
+      "distanceFromParent": 0.037,
+      "orbitalPeriod": 6.6,
+      "rotationPeriod": 6.6,
+      "eccentricity": 0.04,
+      "inclination": 0,
+      "color": "#A09080",
+      "moons": 0,
+      "description": "A super-Earth with 8.5 times Earth's mass orbiting extremely close to 40 Eri A. Its scorching proximity to the star places it far outside the habitable zone, but its discovery showed that the real 40 Eridani A system hosts planets.",
+      "surfaceTemp": "~1,400 °C (equilibrium estimate)",
+      "funFact": "40 Eri Ab orbits its star in just 6.6 days — close enough that its surface temperature exceeds the melting point of iron.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7936/40-eri-a-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/40_Eridani"
+    },
+    "40erib": {
+      "id": "40erib",
+      "name": "40 Eridani B",
+      "type": "companion",
+      "parent": "40eria",
+      "diameter": 8500,
+      "mass": "9.75 × 10²⁹ kg",
+      "distanceFromParent": 418,
+      "orbitalPeriod": 2556750,
+      "rotationPeriod": 1,
+      "eccentricity": 0.41,
+      "inclination": 65,
+      "color": "#CCDDF8",
+      "glowColor": "#DDEEFF",
+      "moons": 0,
+      "description": "A DA2 white dwarf and one of the first white dwarfs ever discovered. Despite being Earth-sized, it packs nearly half the Sun's mass into a sphere smaller than our planet, making it extraordinarily dense.",
+      "surfaceTemp": "16,500 K",
+      "funFact": "40 Eridani B was one of the three white dwarfs known to 19th-century astronomers, and its surprisingly high mass for its small size posed a major puzzle before white dwarf physics was understood.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/40_Eridani#40_Eridani_B"
+    },
+    "40eric": {
+      "id": "40eric",
+      "name": "40 Eridani C",
+      "type": "companion",
+      "parent": "40eria",
+      "diameter": 431000,
+      "mass": "3.98 × 10²⁹ kg",
+      "distanceFromParent": 452,
+      "orbitalPeriod": 2921000,
+      "rotationPeriod": 4.4,
+      "eccentricity": 0.41,
+      "inclination": 65,
+      "color": "#FF5828",
+      "glowColor": "#FF7040",
+      "moons": 0,
+      "description": "An M4.5e flare red dwarf that forms a close pair with 40 Eri B. Both orbit the primary star A at roughly 400 AU — a gravitationally bound triple system spanning a vast stretch of space.",
+      "surfaceTemp": "3,100 K",
+      "funFact": "40 Eridani C is a flare star, meaning it periodically erupts in sudden bursts of ultraviolet and X-ray radiation — a common hazard for any planets in the system.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/40_Eridani#40_Eridani_C"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "40eria",
+      "children": [
+        { "id": "40eriab", "children": [] },
+        { "id": "40erib", "children": [] },
+        { "id": "40eric", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "40eriab": 55
+    },
+    "planetSizes": {
+      "40eria": 24,
+      "40eriab": 5,
+      "40erib": 7,
+      "40eric": 9
+    },
+    "moonOrbitalRadii": {
+      "40erib": 195,
+      "40eric": 215
+    },
+    "speedMultiplier": 0.04,
+    "moonSpeedMultiplier": 600,
+    "beltConfigs": {}
+  }
+}
