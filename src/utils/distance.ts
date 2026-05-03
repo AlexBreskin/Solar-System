@@ -5,17 +5,17 @@ export function auToKm(au: number): number {
   return au * KM_PER_AU;
 }
 
-const SUPERSCRIPTS = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+const SUPERSCRIPTS = "⁰¹²³⁴⁵⁶⁷⁸⁹";
 
 function toSuperscript(n: number): string {
   return String(n)
-    .split('')
-    .map(c => (c === '-' ? '⁻' : SUPERSCRIPTS[+c]))
-    .join('');
+    .split("")
+    .map((c) => (c === "-" ? "⁻" : SUPERSCRIPTS[+c]))
+    .join("");
 }
 
 export function formatKm(km: number): string {
-  if (!km) return '—';
+  if (!km) return "—";
   if (km < 10_000) return `${Math.round(km).toLocaleString()} km`;
   const exp = Math.floor(Math.log10(km));
   const mantissa = km / Math.pow(10, exp);
@@ -23,7 +23,7 @@ export function formatKm(km: number): string {
 }
 
 export function formatAU(au: number): string {
-  if (!au) return '—';
+  if (!au) return "—";
   const exp = Math.floor(Math.log10(Math.abs(au)));
   const decimals = Math.max(0, 3 - exp);
   return `${au.toFixed(decimals)} AU`;
@@ -34,7 +34,7 @@ export function lyToAU(ly: number): number {
 }
 
 export function formatLY(ly: number): string {
-  if (!ly) return '—';
+  if (!ly) return "—";
   if (ly < 0.1) return `${ly.toFixed(4)} ly`;
   if (ly < 10) return `${ly.toFixed(2)} ly`;
   if (ly < 1_000) return `${ly.toFixed(1)} ly`;
