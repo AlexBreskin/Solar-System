@@ -1,6 +1,6 @@
-import { mulberry32 } from '../utils/mulberry32';
-import { BodyType, ROOT_BODY_TYPES } from '../types';
-import type { BodyId, CelestialBody, RingBand } from '../types';
+import { mulberry32 } from "../utils/mulberry32";
+import { BodyType, ROOT_BODY_TYPES } from "../types";
+import type { BodyId, CelestialBody, RingBand } from "../types";
 
 const TWO_PI = Math.PI * 2;
 
@@ -10,9 +10,15 @@ let cachedStars: StarTuple[] | null = null;
 function getStarField(): StarTuple[] {
   if (cachedStars) return cachedStars;
   const rng = mulberry32(99991);
-  cachedStars = Array.from({ length: 250 }, (): StarTuple => [
-    rng() * 2000, rng() * 1200, rng() * 1.0 + 0.2, rng() * 0.5 + 0.15,
-  ]);
+  cachedStars = Array.from(
+    { length: 250 },
+    (): StarTuple => [
+      rng() * 2000,
+      rng() * 1200,
+      rng() * 1.0 + 0.2,
+      rng() * 0.5 + 0.15,
+    ],
+  );
   return cachedStars;
 }
 
@@ -26,7 +32,7 @@ function lighten(hex: string, amount: number): string {
 export function drawStarField(ctx: CanvasRenderingContext2D): void {
   for (const [x, y, r, a] of getStarField()) {
     ctx.globalAlpha = a;
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fillStyle = "rgba(255,255,255,0.6)";
     ctx.beginPath();
     ctx.arc(x, y, r, 0, TWO_PI);
     ctx.fill();
@@ -37,7 +43,9 @@ export function drawStarField(ctx: CanvasRenderingContext2D): void {
 export function drawBody(
   ctx: CanvasRenderingContext2D,
   id: BodyId,
-  x: number, y: number, r: number,
+  x: number,
+  y: number,
+  r: number,
   isSelected: boolean,
   isHovered: boolean,
   showLabel: boolean,
@@ -49,8 +57,8 @@ export function drawBody(
   if (isSelected || isHovered) {
     const glowR = r * (isSelected ? 2.8 : 2.2);
     const grad = ctx.createRadialGradient(x, y, r * 0.5, x, y, glowR);
-    grad.addColorStop(0, (body.glowColor ?? body.color) + '55');
-    grad.addColorStop(1, (body.glowColor ?? body.color) + '00');
+    grad.addColorStop(0, (body.glowColor ?? body.color) + "55");
+    grad.addColorStop(1, (body.glowColor ?? body.color) + "00");
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.arc(x, y, glowR, 0, TWO_PI);
@@ -58,10 +66,13 @@ export function drawBody(
   }
 
   if (ROOT_BODY_TYPES.has(body.type) && body.type !== BodyType.BlackHole) {
-    const glowColor = body.type === BodyType.Star ? 'rgba(255,160,0,0.3)' : (body.glowColor ?? body.color) + '55';
+    const glowColor =
+      body.type === BodyType.Star
+        ? "rgba(255,160,0,0.3)"
+        : (body.glowColor ?? body.color) + "55";
     const corona = ctx.createRadialGradient(x, y, r, x, y, r * 2.8);
     corona.addColorStop(0, glowColor);
-    corona.addColorStop(1, (body.glowColor ?? body.color) + '00');
+    corona.addColorStop(1, (body.glowColor ?? body.color) + "00");
     ctx.fillStyle = corona;
     ctx.beginPath();
     ctx.arc(x, y, r * 2.8, 0, TWO_PI);
@@ -69,25 +80,32 @@ export function drawBody(
   }
 
   if (body.type === BodyType.BlackHole) {
-    const diskColor = body.glowColor ?? '#FF8800';
+    const diskColor = body.glowColor ?? "#FF8800";
     const disk = ctx.createRadialGradient(x, y, r, x, y, r * 3);
-    disk.addColorStop(0, diskColor + 'CC');
-    disk.addColorStop(0.5, diskColor + '50');
-    disk.addColorStop(1, diskColor + '00');
+    disk.addColorStop(0, diskColor + "CC");
+    disk.addColorStop(0.5, diskColor + "50");
+    disk.addColorStop(1, diskColor + "00");
     ctx.fillStyle = disk;
     ctx.beginPath();
     ctx.arc(x, y, r * 3, 0, TWO_PI);
     ctx.fill();
-    ctx.fillStyle = '#000000';
+    ctx.fillStyle = "#000000";
     ctx.beginPath();
     ctx.arc(x, y, r, 0, TWO_PI);
     ctx.fill();
   } else {
-    const grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    const grad = ctx.createRadialGradient(
+      x - r * 0.3,
+      y - r * 0.3,
+      r * 0.1,
+      x,
+      y,
+      r,
+    );
     if (body.type === BodyType.Star) {
-      grad.addColorStop(0, '#FFF5AA');
-      grad.addColorStop(0.4, '#FDB813');
-      grad.addColorStop(1, '#E07B00');
+      grad.addColorStop(0, "#FFF5AA");
+      grad.addColorStop(0.4, "#FDB813");
+      grad.addColorStop(1, "#E07B00");
     } else {
       grad.addColorStop(0, lighten(body.color, 40));
       grad.addColorStop(1, body.color);
@@ -107,20 +125,20 @@ export function drawBody(
   }
 
   if (isSelected) {
-    ctx.strokeStyle = '#ffffff';
+    ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, TWO_PI);
     ctx.stroke();
     ctx.beginPath();
     ctx.arc(x, y, r + Math.max(4, r * 0.15), 0, TWO_PI);
-    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.strokeStyle = "rgba(255,255,255,0.3)";
     ctx.lineWidth = 0.5;
     ctx.setLineDash([3, 4]);
     ctx.stroke();
     ctx.setLineDash([]);
   } else if (isHovered) {
-    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.strokeStyle = "rgba(255,255,255,0.6)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, TWO_PI);
@@ -130,8 +148,8 @@ export function drawBody(
   if (showLabel) {
     const fontSize = Math.max(10, Math.min(14, r * 0.7));
     ctx.font = `${isSelected ? 600 : 400} ${fontSize}px Syne, sans-serif`;
-    ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,210,230,0.85)';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,210,230,0.85)";
+    ctx.textAlign = "center";
     ctx.fillText(body.name, x, y - r - Math.max(5, r * 0.2));
   }
 }
@@ -139,19 +157,26 @@ export function drawBody(
 export function drawBodyRings(
   ctx: CanvasRenderingContext2D,
   rings: RingBand[],
-  cx: number, cy: number,
+  cx: number,
+  cy: number,
   r: number,
-  pass: 'back' | 'front',
+  pass: "back" | "front",
 ): void {
   for (const band of rings) {
     const inner = r * band.innerFactor;
     const outer = r * band.outerFactor;
-    const midR  = (inner + outer) / 2;
+    const midR = (inner + outer) / 2;
     ctx.globalAlpha = band.intensity;
     ctx.beginPath();
-    ctx.ellipse(cx, cy, midR, midR * 0.38, 0,
-      pass === 'back' ? Math.PI : 0,
-      pass === 'back' ? TWO_PI : Math.PI);
+    ctx.ellipse(
+      cx,
+      cy,
+      midR,
+      midR * 0.38,
+      0,
+      pass === "back" ? Math.PI : 0,
+      pass === "back" ? TWO_PI : Math.PI,
+    );
     ctx.strokeStyle = band.color;
     ctx.lineWidth = outer - inner;
     ctx.stroke();

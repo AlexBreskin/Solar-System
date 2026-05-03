@@ -1,19 +1,19 @@
-import { useMemo } from 'react';
-import { STAR_SYSTEMS } from '../data/systems';
-import { GALAXY_DATA, GALACTIC_IDS } from '../data/galaxy';
-import type { GalacticArmHint } from '../types/galaxy';
-import { formatLY } from '../utils/distance';
-import './GalaxySystemPanel.css';
+import { useMemo } from "react";
+import { STAR_SYSTEMS } from "../data/systems";
+import { GALAXY_DATA, GALACTIC_IDS } from "../data/galaxy";
+import type { GalacticArmHint } from "../types/galaxy";
+import { formatLY } from "../utils/distance";
+import "./GalaxySystemPanel.css";
 
 const ARM_DISPLAY_NAMES: Record<GalacticArmHint, string> = {
-  orion: 'Orion Spur',
-  sagittarius: 'Carina–Sagittarius Arm',
-  scutum: 'Scutum–Centaurus Arm',
-  norma: 'Norma Arm',
-  perseus: 'Perseus Arm',
-  outer: 'Outer Arm',
-  core: 'Galactic Centre',
-  halo: 'Galactic Halo',
+  orion: "Orion Spur",
+  sagittarius: "Carina–Sagittarius Arm",
+  scutum: "Scutum–Centaurus Arm",
+  norma: "Norma Arm",
+  perseus: "Perseus Arm",
+  outer: "Outer Arm",
+  core: "Galactic Centre",
+  halo: "Galactic Halo",
 };
 
 interface GalaxySystemPanelProps {
@@ -22,27 +22,30 @@ interface GalaxySystemPanelProps {
 }
 
 const ROOT_TYPE_LABELS: Record<string, string> = {
-  star: 'Star System',
-  'black-hole': 'Black Hole',
-  'neutron-star': 'Neutron Star',
-  quasar: 'Quasar',
+  star: "Star System",
+  "black-hole": "Black Hole",
+  "neutron-star": "Neutron Star",
+  quasar: "Quasar",
 };
 
 const ROOT_TYPE_ICONS: Record<string, string> = {
-  star: '☀',
-  'black-hole': '◉',
-  'neutron-star': '✶',
-  quasar: '✵',
+  star: "☀",
+  "black-hole": "◉",
+  "neutron-star": "✶",
+  quasar: "✵",
 };
 
-export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemPanelProps): JSX.Element {
+export default function GalaxySystemPanel({
+  systemId,
+  onExplore,
+}: GalaxySystemPanelProps): JSX.Element {
   const rootTypeById = useMemo(() => {
     const map: Record<string, string> = {};
     for (const entry of GALAXY_DATA.systems) {
       map[entry.id] = entry.rootType;
     }
     for (const s of STAR_SYSTEMS) {
-      if (!map[s.id]) map[s.id] = s.rootType ?? 'star';
+      if (!map[s.id]) map[s.id] = s.rootType ?? "star";
     }
     return map;
   }, []);
@@ -50,34 +53,43 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
   if (!systemId) {
     return (
       <div className="galaxy-system-panel galaxy-system-panel--empty">
-        <span className="galaxy-system-panel__placeholder">Select a system to see details</span>
+        <span className="galaxy-system-panel__placeholder">
+          Select a system to see details
+        </span>
       </div>
     );
   }
 
-  const meta = STAR_SYSTEMS.find(s => s.id === systemId);
+  const meta = STAR_SYSTEMS.find((s) => s.id === systemId);
   if (!meta) {
     return (
       <div className="galaxy-system-panel galaxy-system-panel--empty">
-        <span className="galaxy-system-panel__placeholder">System not found</span>
+        <span className="galaxy-system-panel__placeholder">
+          System not found
+        </span>
       </div>
     );
   }
 
-  const rootType = rootTypeById[systemId] ?? 'star';
-  const rootTypeLabel = ROOT_TYPE_LABELS[rootType] ?? 'Star System';
-  const rootTypeIcon = ROOT_TYPE_ICONS[rootType] ?? '☀';
+  const rootType = rootTypeById[systemId] ?? "star";
+  const rootTypeLabel = ROOT_TYPE_LABELS[rootType] ?? "Star System";
+  const rootTypeIcon = ROOT_TYPE_ICONS[rootType] ?? "☀";
   const isExtragalactic = !GALACTIC_IDS.has(systemId);
 
   const galacticEntry = !isExtragalactic
-    ? GALAXY_DATA.systems.find(s => s.id === systemId)
+    ? GALAXY_DATA.systems.find((s) => s.id === systemId)
     : null;
   const mapDist = galacticEntry
-    ? Math.round(Math.sqrt(galacticEntry.galacticX ** 2 + galacticEntry.galacticY ** 2))
+    ? Math.round(
+        Math.sqrt(galacticEntry.galacticX ** 2 + galacticEntry.galacticY ** 2),
+      )
     : null;
   const dist3D = meta.distanceFromEarth;
-  const showProjection = mapDist !== null && dist3D !== undefined && dist3D > 0
-    && Math.abs(mapDist - dist3D) / dist3D > 0.1;
+  const showProjection =
+    mapDist !== null &&
+    dist3D !== undefined &&
+    dist3D > 0 &&
+    Math.abs(mapDist - dist3D) / dist3D > 0.1;
   const heightAbovePlane = showProjection
     ? Math.round(Math.sqrt(dist3D! ** 2 - mapDist! ** 2))
     : null;
@@ -104,8 +116,9 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
                 <span className="gsp-distance-value">{formatLY(mapDist!)}</span>
               </div>
               <p className="gsp-projection-note">
-                {formatLY(heightAbovePlane!)} above the galactic plane — the map is a
-                top-down view, so this system appears closer to Sol than its true distance.
+                {formatLY(heightAbovePlane!)} above the galactic plane — the map
+                is a top-down view, so this system appears closer to Sol than
+                its true distance.
               </p>
             </>
           )}
@@ -120,20 +133,40 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
         </div>
       )}
       {isExtragalactic && (
-        <p className="gsp-note">Beyond the Milky Way — not visible on the galaxy map.</p>
+        <p className="gsp-note">
+          Beyond the Milky Way — not visible on the galaxy map.
+        </p>
       )}
       <div className="gsp-section">
         <div className="gsp-section-title">Learn More</div>
         {!meta.nasaUrl && !meta.wikipediaUrl ? (
-          <div className="links-unavailable">No publicly available information</div>
+          <div className="links-unavailable">
+            No publicly available information
+          </div>
         ) : (
           <div className="links-list">
             {meta.nasaUrl ? (
-              <a className="ext-link ext-link-active" href={meta.nasaUrl} target="_blank" rel="noopener noreferrer">
+              <a
+                className="ext-link ext-link-active"
+                href={meta.nasaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span className="ext-badge nasa-badge">NASA</span>
                 <span className="ext-link-label">NASA</span>
-                <svg className="ext-arrow" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  className="ext-arrow"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 8L8 2M8 2H4M8 2V6"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </a>
             ) : (
@@ -143,11 +176,27 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
               </span>
             )}
             {meta.wikipediaUrl ? (
-              <a className="ext-link ext-link-active" href={meta.wikipediaUrl} target="_blank" rel="noopener noreferrer">
+              <a
+                className="ext-link ext-link-active"
+                href={meta.wikipediaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span className="ext-badge wiki-badge">W</span>
                 <span className="ext-link-label">Wikipedia</span>
-                <svg className="ext-arrow" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  className="ext-arrow"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 8L8 2M8 2H4M8 2V6"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </a>
             ) : (
@@ -161,10 +210,7 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
       </div>
 
       {meta.navigable !== false && (
-        <button
-          className="gsp-explore-btn"
-          onClick={() => onExplore(systemId)}
-        >
+        <button className="gsp-explore-btn" onClick={() => onExplore(systemId)}>
           Explore System →
         </button>
       )}

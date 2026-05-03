@@ -1,12 +1,12 @@
 export type GalacticArmHint =
-  | 'orion'
-  | 'sagittarius'
-  | 'scutum'
-  | 'norma'
-  | 'perseus'
-  | 'outer'
-  | 'core'
-  | 'halo';
+  | "orion"
+  | "sagittarius"
+  | "scutum"
+  | "norma"
+  | "perseus"
+  | "outer"
+  | "core"
+  | "halo";
 
 export interface GalacticSystemEntry {
   id: string;
@@ -20,4 +20,3 @@ export interface GalacticSystemEntry {
 export interface GalaxyData {
   systems: GalacticSystemEntry[];
 }
-

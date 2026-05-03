@@ -1,34 +1,34 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useStarSystem } from '../contexts/StarSystemContext';
-import { BodyType, ROOT_BODY_TYPES } from '../types';
-import { GALACTIC_IDS } from '../data/galaxy';
-import type { TabId, HierarchyNode } from '../types';
-import './BodyNavigator.css';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useStarSystem } from "../contexts/StarSystemContext";
+import { BodyType, ROOT_BODY_TYPES } from "../types";
+import { GALACTIC_IDS } from "../data/galaxy";
+import type { TabId, HierarchyNode } from "../types";
+import "./BodyNavigator.css";
 
 const TYPE_ICONS: Record<BodyType, string> = {
-  [BodyType.Star]: '☀',
-  [BodyType.Planet]: '●',
-  [BodyType.DwarfPlanet]: '◎',
-  [BodyType.Moon]: '○',
-  [BodyType.Asteroid]: '·',
-  [BodyType.Belt]: '⌀',
-  [BodyType.Companion]: '✦',
-  [BodyType.BlackHole]: '◉',
-  [BodyType.NeutronStar]: '✶',
-  [BodyType.Quasar]: '✵',
+  [BodyType.Star]: "☀",
+  [BodyType.Planet]: "●",
+  [BodyType.DwarfPlanet]: "◎",
+  [BodyType.Moon]: "○",
+  [BodyType.Asteroid]: "·",
+  [BodyType.Belt]: "⌀",
+  [BodyType.Companion]: "✦",
+  [BodyType.BlackHole]: "◉",
+  [BodyType.NeutronStar]: "✶",
+  [BodyType.Quasar]: "✵",
 };
 
 const TYPE_LABELS: Record<BodyType, string> = {
-  [BodyType.Star]: 'Star',
-  [BodyType.Planet]: 'Planet',
-  [BodyType.DwarfPlanet]: 'Dwarf Planet',
-  [BodyType.Moon]: 'Moon',
-  [BodyType.Asteroid]: 'Asteroid',
-  [BodyType.Belt]: 'Region',
-  [BodyType.Companion]: 'Companion Star',
-  [BodyType.BlackHole]: 'Black Hole',
-  [BodyType.NeutronStar]: 'Neutron Star',
-  [BodyType.Quasar]: 'Quasar',
+  [BodyType.Star]: "Star",
+  [BodyType.Planet]: "Planet",
+  [BodyType.DwarfPlanet]: "Dwarf Planet",
+  [BodyType.Moon]: "Moon",
+  [BodyType.Asteroid]: "Asteroid",
+  [BodyType.Belt]: "Region",
+  [BodyType.Companion]: "Companion Star",
+  [BodyType.BlackHole]: "Black Hole",
+  [BodyType.NeutronStar]: "Neutron Star",
+  [BodyType.Quasar]: "Quasar",
 };
 
 interface BodyNavigatorProps {
@@ -53,7 +53,7 @@ interface NodeProps {
   hoveredBody: string | null;
   viewedPlanet: string;
   expandedIds: ReadonlySet<string>;
-  bodies: ReturnType<typeof useStarSystem>['bodies'];
+  bodies: ReturnType<typeof useStarSystem>["bodies"];
   onSelectBody: (id: string) => void;
   onHoverBody: (id: string | null) => void;
   onViewPlanet: (id: string) => void;
@@ -62,24 +62,38 @@ interface NodeProps {
 }
 
 function NavigatorNode({
-  node, depth, activeTab, selectedBody, hoveredBody, viewedPlanet,
-  expandedIds, bodies, onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onToggle,
+  node,
+  depth,
+  activeTab,
+  selectedBody,
+  hoveredBody,
+  viewedPlanet,
+  expandedIds,
+  bodies,
+  onSelectBody,
+  onHoverBody,
+  onViewPlanet,
+  onGoToSolarSystem,
+  onToggle,
 }: NodeProps): JSX.Element | null {
   const body = bodies[node.id];
   if (!body) return null;
 
-  const open       = expandedIds.has(node.id);
+  const open = expandedIds.has(node.id);
   const hasChildren = node.children.length > 0;
-  const isSelected  = selectedBody === node.id;
-  const isHovered   = hoveredBody === node.id;
-  const isViewed    = activeTab === 'planet-view' && node.id === viewedPlanet;
+  const isSelected = selectedBody === node.id;
+  const isHovered = hoveredBody === node.id;
+  const isViewed = activeTab === "planet-view" && node.id === viewedPlanet;
 
   const handleClick = () => {
     onSelectBody(node.id);
-    if (activeTab === 'planet-view') {
+    if (activeTab === "planet-view") {
       if (body.type === BodyType.Belt) {
         onGoToSolarSystem();
-      } else if ((body.type === BodyType.Moon || body.type === BodyType.Companion) && body.parent) {
+      } else if (
+        (body.type === BodyType.Moon || body.type === BodyType.Companion) &&
+        body.parent
+      ) {
         onViewPlanet(body.parent);
       } else if (!ROOT_BODY_TYPES.has(body.type)) {
         onViewPlanet(node.id);
@@ -90,7 +104,7 @@ function NavigatorNode({
   return (
     <div className="nav-node">
       <div
-        className={`nav-row${isSelected ? ' selected' : ''}${!isSelected && isViewed ? ' pv-viewed' : ''}${isHovered ? ' hovered' : ''}`}
+        className={`nav-row${isSelected ? " selected" : ""}${!isSelected && isViewed ? " pv-viewed" : ""}${isHovered ? " hovered" : ""}`}
         style={{ paddingLeft: 28 + depth * 16 }}
         data-body-id={node.id}
         onClick={handleClick}
@@ -99,31 +113,41 @@ function NavigatorNode({
       >
         {hasChildren ? (
           <button
-            className={`expand-btn${open ? ' open' : ''}`}
-            onClick={e => {
+            className={`expand-btn${open ? " open" : ""}`}
+            onClick={(e) => {
               e.stopPropagation();
               onToggle(node.id);
             }}
-            aria-label={open ? 'Collapse' : 'Expand'}
-          >›</button>
+            aria-label={open ? "Collapse" : "Expand"}
+          >
+            ›
+          </button>
         ) : (
           <span className="expand-spacer" />
         )}
-        <span className="body-dot" style={{
-          background: body.color,
-          boxShadow: (isSelected || isViewed) ? `0 0 6px ${body.color}` : 'none',
-        }} />
-        <span className="body-icon" title={TYPE_LABELS[body.type]}>{TYPE_ICONS[body.type]}</span>
+        <span
+          className="body-dot"
+          style={{
+            background: body.color,
+            boxShadow:
+              isSelected || isViewed ? `0 0 6px ${body.color}` : "none",
+          }}
+        />
+        <span className="body-icon" title={TYPE_LABELS[body.type]}>
+          {TYPE_ICONS[body.type]}
+        </span>
         <span className="body-name">{body.name}</span>
         <span className="body-type-badge">{TYPE_LABELS[body.type]}</span>
         {body.moons > 0 && (
-          <span className="moon-count" title={`${body.moons} known moons`}>{body.moons}↑</span>
+          <span className="moon-count" title={`${body.moons} known moons`}>
+            {body.moons}↑
+          </span>
         )}
       </div>
 
       {hasChildren && open && (
         <div className="nav-children">
-          {node.children.map(child => (
+          {node.children.map((child) => (
             <NavigatorNode
               key={child.id}
               node={child}
@@ -148,17 +172,30 @@ function NavigatorNode({
 }
 
 export default function BodyNavigator({
-  activeTab, selectedBody, hoveredBody, viewedPlanet, showingSystemPanel,
-  onSelectBody, onHoverBody, onViewPlanet, onGoToSolarSystem, onGoToGalaxy, onSelectSystem,
+  activeTab,
+  selectedBody,
+  hoveredBody,
+  viewedPlanet,
+  showingSystemPanel,
+  onSelectBody,
+  onHoverBody,
+  onViewPlanet,
+  onGoToSolarSystem,
+  onGoToGalaxy,
+  onSelectSystem,
 }: BodyNavigatorProps): JSX.Element {
   const { bodies, hierarchy, meta } = useStarSystem();
 
-  const starId = Object.values(bodies).find(b => ROOT_BODY_TYPES.has(b.type))?.id;
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set(starId ? [starId] : []));
+  const starId = Object.values(bodies).find((b) =>
+    ROOT_BODY_TYPES.has(b.type),
+  )?.id;
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(
+    () => new Set(starId ? [starId] : []),
+  );
   const navScrollRef = useRef<HTMLDivElement>(null);
 
   const toggleExpanded = useCallback((id: string) => {
-    setExpandedIds(prev => {
+    setExpandedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -169,7 +206,7 @@ export default function BodyNavigator({
   useEffect(() => {
     const body = bodies[selectedBody];
     if (body?.type === BodyType.Moon && body.parent) {
-      setExpandedIds(prev => {
+      setExpandedIds((prev) => {
         if (prev.has(body.parent!)) return prev;
         const next = new Set(prev);
         next.add(body.parent!);
@@ -177,8 +214,10 @@ export default function BodyNavigator({
       });
     }
     const raf = requestAnimationFrame(() => {
-      const el = navScrollRef.current?.querySelector(`[data-body-id="${selectedBody}"]`);
-      el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      const el = navScrollRef.current?.querySelector(
+        `[data-body-id="${selectedBody}"]`,
+      );
+      el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
     });
     return () => cancelAnimationFrame(raf);
   }, [selectedBody, bodies]);
@@ -190,10 +229,9 @@ export default function BodyNavigator({
         <span className="nav-count">{Object.keys(bodies).length}</span>
       </div>
       <div className="nav-scroll" ref={navScrollRef}>
-
         {GALACTIC_IDS.has(meta.id) ? (
           <div
-            className={`nav-row pv-galaxy-row${activeTab === 'galaxy' ? ' pv-system-active' : ''}`}
+            className={`nav-row pv-galaxy-row${activeTab === "galaxy" ? " pv-system-active" : ""}`}
             style={{ paddingLeft: 12 }}
             onClick={onGoToGalaxy}
             title="Galaxy view"
@@ -211,13 +249,15 @@ export default function BodyNavigator({
           >
             <span className="expand-spacer" />
             <span className="body-icon">⬡</span>
-            <span className="body-name">{meta.hostGalaxy ?? 'Unknown galaxy'}</span>
+            <span className="body-name">
+              {meta.hostGalaxy ?? "Unknown galaxy"}
+            </span>
             <span className="body-type-badge">Galaxy</span>
           </div>
         )}
 
         <div
-          className={`nav-row pv-system-hierarchy${showingSystemPanel ? ' selected' : ''}`}
+          className={`nav-row pv-system-hierarchy${showingSystemPanel ? " selected" : ""}`}
           style={{ paddingLeft: 24 }}
           onClick={onSelectSystem}
           title="System information"
@@ -228,7 +268,7 @@ export default function BodyNavigator({
           <span className="body-type-badge">System</span>
         </div>
 
-        {hierarchy.map(node => (
+        {hierarchy.map((node) => (
           <NavigatorNode
             key={node.id}
             node={node}

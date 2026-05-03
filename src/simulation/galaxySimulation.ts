@@ -1,4 +1,4 @@
-import type { GalaxyData, StarSystemMeta } from '../types';
+import type { GalaxyData, StarSystemMeta } from "../types";
 
 export interface GalaxyMarker {
   id: string;
@@ -51,7 +51,11 @@ export class GalaxySimulation {
     return best;
   }
 
-  getSystemsNear(worldX: number, worldY: number, lyThreshold: number): GalaxyMarker[] {
+  getSystemsNear(
+    worldX: number,
+    worldY: number,
+    lyThreshold: number,
+  ): GalaxyMarker[] {
     const result: GalaxyMarker[] = [];
     for (const m of this.markers) {
       const d = Math.hypot(worldX - m.worldX, worldY - m.worldY);

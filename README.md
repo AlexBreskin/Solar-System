@@ -5,11 +5,13 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 ## Features
 
 ### System Selector
-- **Multiple star systems** — switch between the Solar System and 15 confirmed exoplanetary/stellar systems, including black holes (Sgr A*, Cygnus X-1), neutron stars (Lich, PSR J0437), and quasars (3C 273, TON 618)
+
+- **Multiple star systems** — switch between the Solar System and 15 confirmed exoplanetary/stellar systems, including black holes (Sgr A\*, Cygnus X-1), neutron stars (Lich, PSR J0437), and quasars (3C 273, TON 618)
 - **Auto-discovery** — the app scans `src/data/systems/` at build time; adding a new JSON file with a `"system"` metadata block makes it appear in the selector automatically
 - **Seamless switching** — switching systems resets the camera and simulation while preserving all UI preferences
 
 ### Solar System View
+
 - **Orbital mechanics** — all bodies orbit at speeds derived from their real orbital periods
 - **Interactive canvas** — scroll to zoom, drag to pan, click to select and follow, double-click to untrack
 - **Tracking mode** — camera smoothly follows any selected body; dragging breaks free
@@ -18,11 +20,13 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 - **Speed control** — 0.1× to 10× with pause/resume
 
 ### Planet View
+
 - **Moon systems** — every planet's moons orbit with speeds proportional to their real periods, including retrograde (e.g. Triton)
 - **Physically scaled** — planet size derived from real diameter; moon sizes and orbital radii proportional to real values, auto-fitted to the canvas
 - **Binary systems** — bodies with a `binaryMassFraction` orbit their shared barycenter; Pluto/Charon demonstrates this for moons, and Kepler-16 / Alpha Centauri demonstrate it for stellar companions; a barycenter marker is shown in Planet View
 
 ### Galaxy View
+
 - **Milky Way map** — top-down spiral galaxy with 39 systems plotted at their real approximate galactic coordinates; Sol is the reference point at (0, 0)
 - **Zoom-dependent detail** — three rendering tiers: galaxy scale (≤0.5×, full spiral visible), neighbourhood scale (0.5–8×, spiral fades, star field grows), local scale (>8×, rich star field, distance labels, "Solar neighbourhood" hint)
 - **Improved spiral** — 2 major arms (2000 particles each) + 2 minor arms (800 each) with warm inner / cool outer colouring; dust lane arcs at 8 kly and 22 kly; feathered scatter (15% vs 10%)
@@ -34,6 +38,7 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 - **Body View and speed controls hidden** — declutters the header when the Galaxy tab is active
 
 ### Shared
+
 - **Celestial body navigator** — persistent left panel showing the body hierarchy when in System or Planet View; replaced by a star-system list when in Galaxy View
 - **Info panel** — physical properties, orbital data, atmosphere, a fun fact, and direct links to NASA and Wikipedia articles for every body
 - **Bidirectional highlighting** — hovering or selecting in the canvas syncs with the navigator, and vice versa
@@ -44,49 +49,49 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 
 **Exosystems** — each system includes star and planet data with orbital mechanics tuned for visual clarity:
 
-| System | Type | Planets | Highlight |
-|--------|------|---------|-----------|
-| TRAPPIST-1 | Ultra-cool red dwarf | 7 | Three planets in the habitable zone |
-| Kepler-90 | G-type (Solar twin) | 8 | First exosystem with 8 confirmed planets |
-| 55 Cancri | G8V binary primary | 5 | Lava-world super-Earth + super-Jupiter |
-| HD 10180 | G1V Sun-like | 6 | Densest known Neptune-class system |
-| Tau Ceti | G8.5V nearby | 4 | 11.9 light-years away; habitable-zone candidates |
-| Gliese 667C | M1.5V red dwarf | 3 | Triple star system; two habitable-zone worlds |
-| Kepler-16 | K+M binary ("Tatooine") | 1 | First confirmed circumbinary planet — two suns in the sky |
-| Alpha Centauri | G+K+M triple star | 1 | Nearest stellar system; hosts closest known exoplanet |
-| 40 Eridani | K+WD+M triple star | 1 | Home of Vulcan (Star Trek); real super-Earth confirmed 2018 |
-| Epsilon Eridani | K2V orange dwarf | 1 | Nearest single sun-like star; top SETI target since Project Ozma |
-| Sirius | A1V + white dwarf | — | Brightest star in the night sky; white dwarf companion |
-| Procyon | F5 subgiant + white dwarf | — | Eighth brightest star; white dwarf companion |
-| 61 Cygni | K5+K7 binary | — | First star to have its distance measured; nearly equal-mass pair |
-| Fomalhaut | A3V + debris ring | 1 | Stunning debris ring; first Hubble-imaged planetary candidate |
-| HR 8799 | A5V young star | 4 | First multi-planet system directly photographed |
-| Vega | A0Va rapid rotator | — | Future north pole star; photometric calibration standard |
-| Altair | A7V oblate rotator | — | One of the fastest-spinning stars known; directly resolved shape |
-| Arcturus | K1.5 III orange giant | — | Brightest northern star; ancient stellar stream traveller |
-| Canopus | F0 II supergiant | — | Second brightest star; NASA deep-space navigation reference |
-| Polaris | F6 Cepheid + 2 companions | — | North Star; triple system with close and wide F-type companions |
-| Antares | M1.5 red supergiant + B companion | — | Heart of Scorpius; red giant would engulf Mars if placed at the Sun |
-| Rigel | B8 blue supergiant + companion | — | Orion's foot; 120,000× the Sun's luminosity |
-| Betelgeuse | M2 red supergiant | — | Orion's shoulder; Great Dimming event 2019–2020 |
-| Deneb | A2 blue-white supergiant | — | One of the most luminous stars in the Milky Way |
-| Eta Carinae | LBV + companion | — | Great Eruption of 1843; one of the most massive stars known |
-| WR 104 | Wolf-Rayet + OB binary | — | Perfect pinwheel nebula; collimated jet may aim at Earth |
-| VY Canis Majoris | M5e red hypergiant | — | One of the largest known stars; would engulf Jupiter's orbit |
-| Mu Cephei | M2 Ia red supergiant | — | Herschel's Garnet Star; 1,000× the Sun's diameter |
-| NGC 3603 | Massive stellar cluster | — | Most massive young cluster in the Milky Way; home of NGC 3603-A1 |
-| Westerlund 1 | Compact stellar cluster | — | Densest known young cluster; hosts a magnetar |
-| Omega Centauri | Globular cluster (halo) | — | Largest globular cluster in the Milky Way; possible stripped dwarf galaxy |
-| 47 Tucanae | Globular cluster (halo) | — | Brightest globular cluster; 25+ millisecond pulsars |
-| Pistol Star | Blue hypergiant (LBV) | — | Among the most luminous stars known; hidden behind galactic dust |
-| SS 433 | Black hole + A supergiant | — | First relativistic-jet source found; jets at 26% the speed of light |
-| Sagittarius A* | Black hole + S2 star | — | Milky Way's central black hole; S2 orbits at 2.7% light speed |
-| M87* | Supermassive black hole | — | First ever imaged black hole; event horizon spans the solar system |
-| Cygnus X-1 | Black hole + blue supergiant | — | One of the first identified black hole candidates; Hawking's lost bet |
-| Lich (PSR B1257+12) | Millisecond pulsar | 3 | First confirmed exoplanets ever discovered, orbiting a stellar corpse |
-| PSR J0437-4715 | Millisecond pulsar + white dwarf | — | Nearest millisecond pulsar; used as a gravitational-wave detector |
-| 3C 273 | Quasar | — | Brightest quasar in the sky; 4 trillion solar luminosities |
-| TON 618 | Quasar | — | One of the most massive black holes known; event horizon spans 2,600 AU |
+| System              | Type                              | Planets | Highlight                                                                 |
+| ------------------- | --------------------------------- | ------- | ------------------------------------------------------------------------- |
+| TRAPPIST-1          | Ultra-cool red dwarf              | 7       | Three planets in the habitable zone                                       |
+| Kepler-90           | G-type (Solar twin)               | 8       | First exosystem with 8 confirmed planets                                  |
+| 55 Cancri           | G8V binary primary                | 5       | Lava-world super-Earth + super-Jupiter                                    |
+| HD 10180            | G1V Sun-like                      | 6       | Densest known Neptune-class system                                        |
+| Tau Ceti            | G8.5V nearby                      | 4       | 11.9 light-years away; habitable-zone candidates                          |
+| Gliese 667C         | M1.5V red dwarf                   | 3       | Triple star system; two habitable-zone worlds                             |
+| Kepler-16           | K+M binary ("Tatooine")           | 1       | First confirmed circumbinary planet — two suns in the sky                 |
+| Alpha Centauri      | G+K+M triple star                 | 1       | Nearest stellar system; hosts closest known exoplanet                     |
+| 40 Eridani          | K+WD+M triple star                | 1       | Home of Vulcan (Star Trek); real super-Earth confirmed 2018               |
+| Epsilon Eridani     | K2V orange dwarf                  | 1       | Nearest single sun-like star; top SETI target since Project Ozma          |
+| Sirius              | A1V + white dwarf                 | —       | Brightest star in the night sky; white dwarf companion                    |
+| Procyon             | F5 subgiant + white dwarf         | —       | Eighth brightest star; white dwarf companion                              |
+| 61 Cygni            | K5+K7 binary                      | —       | First star to have its distance measured; nearly equal-mass pair          |
+| Fomalhaut           | A3V + debris ring                 | 1       | Stunning debris ring; first Hubble-imaged planetary candidate             |
+| HR 8799             | A5V young star                    | 4       | First multi-planet system directly photographed                           |
+| Vega                | A0Va rapid rotator                | —       | Future north pole star; photometric calibration standard                  |
+| Altair              | A7V oblate rotator                | —       | One of the fastest-spinning stars known; directly resolved shape          |
+| Arcturus            | K1.5 III orange giant             | —       | Brightest northern star; ancient stellar stream traveller                 |
+| Canopus             | F0 II supergiant                  | —       | Second brightest star; NASA deep-space navigation reference               |
+| Polaris             | F6 Cepheid + 2 companions         | —       | North Star; triple system with close and wide F-type companions           |
+| Antares             | M1.5 red supergiant + B companion | —       | Heart of Scorpius; red giant would engulf Mars if placed at the Sun       |
+| Rigel               | B8 blue supergiant + companion    | —       | Orion's foot; 120,000× the Sun's luminosity                               |
+| Betelgeuse          | M2 red supergiant                 | —       | Orion's shoulder; Great Dimming event 2019–2020                           |
+| Deneb               | A2 blue-white supergiant          | —       | One of the most luminous stars in the Milky Way                           |
+| Eta Carinae         | LBV + companion                   | —       | Great Eruption of 1843; one of the most massive stars known               |
+| WR 104              | Wolf-Rayet + OB binary            | —       | Perfect pinwheel nebula; collimated jet may aim at Earth                  |
+| VY Canis Majoris    | M5e red hypergiant                | —       | One of the largest known stars; would engulf Jupiter's orbit              |
+| Mu Cephei           | M2 Ia red supergiant              | —       | Herschel's Garnet Star; 1,000× the Sun's diameter                         |
+| NGC 3603            | Massive stellar cluster           | —       | Most massive young cluster in the Milky Way; home of NGC 3603-A1          |
+| Westerlund 1        | Compact stellar cluster           | —       | Densest known young cluster; hosts a magnetar                             |
+| Omega Centauri      | Globular cluster (halo)           | —       | Largest globular cluster in the Milky Way; possible stripped dwarf galaxy |
+| 47 Tucanae          | Globular cluster (halo)           | —       | Brightest globular cluster; 25+ millisecond pulsars                       |
+| Pistol Star         | Blue hypergiant (LBV)             | —       | Among the most luminous stars known; hidden behind galactic dust          |
+| SS 433              | Black hole + A supergiant         | —       | First relativistic-jet source found; jets at 26% the speed of light       |
+| Sagittarius A\*     | Black hole + S2 star              | —       | Milky Way's central black hole; S2 orbits at 2.7% light speed             |
+| M87\*               | Supermassive black hole           | —       | First ever imaged black hole; event horizon spans the solar system        |
+| Cygnus X-1          | Black hole + blue supergiant      | —       | One of the first identified black hole candidates; Hawking's lost bet     |
+| Lich (PSR B1257+12) | Millisecond pulsar                | 3       | First confirmed exoplanets ever discovered, orbiting a stellar corpse     |
+| PSR J0437-4715      | Millisecond pulsar + white dwarf  | —       | Nearest millisecond pulsar; used as a gravitational-wave detector         |
+| 3C 273              | Quasar                            | —       | Brightest quasar in the sky; 4 trillion solar luminosities                |
+| TON 618             | Quasar                            | —       | One of the most massive black holes known; event horizon spans 2,600 AU   |
 
 ## Getting Started
 
@@ -121,38 +126,38 @@ Output goes to `dist/`.
 
 ### System View
 
-| Action | Effect |
-|--------|--------|
-| Scroll | Zoom toward cursor |
-| Drag | Pan the view |
-| Click body | Select, zoom in, and follow with camera |
-| Double-click body | Untrack (stop following) |
-| Drag while tracking | Break free from tracking |
-| Hover | Highlight in canvas and navigator |
-| Click in navigator | Select and track |
+| Action              | Effect                                  |
+| ------------------- | --------------------------------------- |
+| Scroll              | Zoom toward cursor                      |
+| Drag                | Pan the view                            |
+| Click body          | Select, zoom in, and follow with camera |
+| Double-click body   | Untrack (stop following)                |
+| Drag while tracking | Break free from tracking                |
+| Hover               | Highlight in canvas and navigator       |
+| Click in navigator  | Select and track                        |
 
 ### Planet View
 
-| Action | Effect |
-|--------|--------|
-| Scroll | Zoom |
-| Drag | Pan |
-| Click body | Select |
-| Hover | Highlight in canvas and navigator |
-| Click planet in navigator | Switch viewed planet |
-| Click moon in navigator | Switch to its parent planet and select the moon |
+| Action                    | Effect                                          |
+| ------------------------- | ----------------------------------------------- |
+| Scroll                    | Zoom                                            |
+| Drag                      | Pan                                             |
+| Click body                | Select                                          |
+| Hover                     | Highlight in canvas and navigator               |
+| Click planet in navigator | Switch viewed planet                            |
+| Click moon in navigator   | Switch to its parent planet and select the moon |
 
 ### Galaxy View
 
-| Action | Effect |
-|--------|--------|
-| Scroll | Zoom (0.1× – 100×) |
-| Drag | Pan |
-| Click system marker | Select system and show info panel |
-| Click overlapping markers | Show cluster menu to pick a system |
+| Action                    | Effect                                             |
+| ------------------------- | -------------------------------------------------- |
+| Scroll                    | Zoom (0.1× – 100×)                                 |
+| Drag                      | Pan                                                |
+| Click system marker       | Select system and show info panel                  |
+| Click overlapping markers | Show cluster menu to pick a system                 |
 | "Explore System →" button | Load the selected system and switch to System View |
-| Click row in left panel | Select system and highlight marker |
-| Hover row or marker | Sync highlight between list and canvas |
+| Click row in left panel   | Select system and highlight marker                 |
+| Hover row or marker       | Sync highlight between list and canvas             |
 
 ## Project Structure
 

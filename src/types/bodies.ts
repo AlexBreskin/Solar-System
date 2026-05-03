@@ -1,16 +1,16 @@
 export type BodyId = string;
 
 export enum BodyType {
-  Star = 'star',
-  Planet = 'planet',
-  DwarfPlanet = 'dwarf-planet',
-  Moon = 'moon',
-  Asteroid = 'asteroid',
-  Belt = 'belt',
-  Companion = 'companion',
-  BlackHole = 'black-hole',
-  NeutronStar = 'neutron-star',
-  Quasar = 'quasar',
+  Star = "star",
+  Planet = "planet",
+  DwarfPlanet = "dwarf-planet",
+  Moon = "moon",
+  Asteroid = "asteroid",
+  Belt = "belt",
+  Companion = "companion",
+  BlackHole = "black-hole",
+  NeutronStar = "neutron-star",
+  Quasar = "quasar",
 }
 
 export const ROOT_BODY_TYPES = new Set<BodyType>([
@@ -59,7 +59,7 @@ export interface HierarchyNode {
   children: HierarchyNode[];
 }
 
-import type { VisualConfig } from './visual';
+import type { VisualConfig } from "./visual";
 
 export interface StarSystemMeta {
   id: string;

@@ -1,5 +1,5 @@
-import { mulberry32 } from '../utils/mulberry32';
-import type { GalaxyMarker } from '../simulation/galaxySimulation';
+import { mulberry32 } from "../utils/mulberry32";
+import type { GalaxyMarker } from "../simulation/galaxySimulation";
 
 const TWO_PI = Math.PI * 2;
 
@@ -13,21 +13,21 @@ function gaussianRng(rng: () => number): number {
 }
 
 function armParticleColor(r: number): string {
-  if (r < 4000) return '#FFF4C0';
-  if (r < 12000) return '#FFE8A0';
-  if (r < 22000) return '#D8E8FF';
-  return '#A8C4FF';
+  if (r < 4000) return "#FFF4C0";
+  if (r < 12000) return "#FFE8A0";
+  if (r < 22000) return "#D8E8FF";
+  return "#A8C4FF";
 }
 
 // Bar geometry — angles match SVG reference (rotate(-55) for Galactic Bar, rotate(-45) for Long Bar).
 // Negative rotation = CCW in canvas = upper-right → lower-left orientation on screen.
-const GALACTIC_BAR_ANGLE = Math.PI * 55 / 180;
+const GALACTIC_BAR_ANGLE = (Math.PI * 55) / 180;
 const GALACTIC_BAR_COS = Math.cos(GALACTIC_BAR_ANGLE);
 const GALACTIC_BAR_SIN = Math.sin(GALACTIC_BAR_ANGLE);
-const GALACTIC_BAR_MINOR_RATIO = 0.40;  // ry/rx = 40/100 from SVG, 2.5:1 aspect
+const GALACTIC_BAR_MINOR_RATIO = 0.4; // ry/rx = 40/100 from SVG, 2.5:1 aspect
 
 const LONG_BAR_ANGLE = Math.PI / 4;
-const LONG_BAR_MINOR_RATIO = 1 / 6;  // ry/rx = 20/120 from SVG, 6:1 aspect
+const LONG_BAR_MINOR_RATIO = 1 / 6; // ry/rx = 20/120 from SVG, 6:1 aspect
 
 // Returns an (x, y) position sampled from a bar-elongated elliptical shell at major radius rMajor.
 // Negative rotation matrix: upper-right → lower-left, matching SVG rotate(-55) for the Galactic Bar.
@@ -35,7 +35,10 @@ function barEllipsePoint(rng: () => number, rMajor: number): [number, number] {
   const theta = rng() * TWO_PI;
   const ex = rMajor * Math.cos(theta);
   const ey = rMajor * GALACTIC_BAR_MINOR_RATIO * Math.sin(theta);
-  return [ex * GALACTIC_BAR_COS + ey * GALACTIC_BAR_SIN, -ex * GALACTIC_BAR_SIN + ey * GALACTIC_BAR_COS];
+  return [
+    ex * GALACTIC_BAR_COS + ey * GALACTIC_BAR_SIN,
+    -ex * GALACTIC_BAR_SIN + ey * GALACTIC_BAR_COS,
+  ];
 }
 
 // --- LOD 0: full galaxy ±56 Kly, 1024×1024. Best at zoom < 1.5. ---
@@ -59,16 +62,26 @@ function getLOD0Particles(): GalParticle[] {
   for (let i = 0; i < 22000; i++) {
     const r = 2000 + Math.pow(rng(), 0.6) * 48000;
     const theta = rng() * TWO_PI;
-    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.07 + 0.02, armParticleColor(r)]);
+    p.push([
+      r * Math.cos(theta),
+      r * Math.sin(theta),
+      rng() * 0.07 + 0.02,
+      armParticleColor(r),
+    ]);
   }
   // Outer disk scatter (dim, beyond arms)
   for (let i = 0; i < 4000; i++) {
     const r = 18000 + rng() * 34000;
     const theta = rng() * TWO_PI;
-    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.04 + 0.01, '#A8C4FF']);
+    p.push([
+      r * Math.cos(theta),
+      r * Math.sin(theta),
+      rng() * 0.04 + 0.01,
+      "#A8C4FF",
+    ]);
   }
   // 4 major arms — negative sin gives CW winding on screen
-  for (const off of [0, Math.PI / 2, Math.PI, Math.PI * 3 / 2]) {
+  for (const off of [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2]) {
     for (let i = 0; i < 8000; i++) {
       const t = (i / 8000) * Math.PI * 4.5 + 0.4;
       const r = 2000 * Math.exp(0.22 * t);
@@ -81,7 +94,7 @@ function getLOD0Particles(): GalParticle[] {
       const df = Math.abs(scatter) / (r * 0.12);
       const aScale = Math.max(0.1, 1 - df * df);
       const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
-      p.push([px, py, (rng() * 0.40 + 0.15) * aScale * dv, armParticleColor(r)]);
+      p.push([px, py, (rng() * 0.4 + 0.15) * aScale * dv, armParticleColor(r)]);
     }
   }
   // 2 minor arms
@@ -97,11 +110,11 @@ function getLOD0Particles(): GalParticle[] {
       const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.12);
       const aScale = Math.max(0.1, 1 - df * df);
-      p.push([px, py, (rng() * 0.28 + 0.10) * aScale, armParticleColor(r)]);
+      p.push([px, py, (rng() * 0.28 + 0.1) * aScale, armParticleColor(r)]);
     }
   }
   // 2 spur arms
-  for (const off of [Math.PI * 3 / 8, Math.PI + Math.PI * 3 / 8]) {
+  for (const off of [(Math.PI * 3) / 8, Math.PI + (Math.PI * 3) / 8]) {
     for (let i = 0; i < 2000; i++) {
       const t = (i / 2000) * Math.PI * 2.8 + 0.8;
       const r = 2000 * Math.exp(0.22 * t);
@@ -113,7 +126,7 @@ function getLOD0Particles(): GalParticle[] {
       const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.11);
       const aScale = Math.max(0.1, 1 - df * df);
-      p.push([px, py, (rng() * 0.20 + 0.08) * aScale, armParticleColor(r)]);
+      p.push([px, py, (rng() * 0.2 + 0.08) * aScale, armParticleColor(r)]);
     }
   }
 
@@ -142,12 +155,20 @@ function getLOD1Particles(): GalParticle[] {
   // Continuous inner disk — the background field that fills all inter-arm space
   for (let i = 0; i < 32000; i++) {
     const r = 800 + Math.pow(rng(), 0.65) * 20000;
-    if (r > LOD1_MAX_R) { rng(); continue; }
+    if (r > LOD1_MAX_R) {
+      rng();
+      continue;
+    }
     const theta = rng() * TWO_PI;
-    p.push([r * Math.cos(theta), r * Math.sin(theta), rng() * 0.08 + 0.025, armParticleColor(r)]);
+    p.push([
+      r * Math.cos(theta),
+      r * Math.sin(theta),
+      rng() * 0.08 + 0.025,
+      armParticleColor(r),
+    ]);
   }
   // 4 major arms — dense, with Gaussian cross-section
-  for (const off of [0, Math.PI / 2, Math.PI, Math.PI * 3 / 2]) {
+  for (const off of [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2]) {
     for (let i = 0; i < 10000; i++) {
       const t = (i / 10000) * Math.PI * 4.5 + 0.4;
       const r = 2000 * Math.exp(0.22 * t);
@@ -160,7 +181,12 @@ function getLOD1Particles(): GalParticle[] {
       const df = Math.abs(scatter) / (r * 0.14);
       const aScale = Math.max(0.1, 1 - df * df);
       const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
-      p.push([px, py, (rng() * 0.42 + 0.16) * aScale * dv, armParticleColor(r)]);
+      p.push([
+        px,
+        py,
+        (rng() * 0.42 + 0.16) * aScale * dv,
+        armParticleColor(r),
+      ]);
     }
   }
   // 2 minor arms
@@ -176,7 +202,7 @@ function getLOD1Particles(): GalParticle[] {
       const py = -(r + scatter) * Math.sin(theta);
       const df = Math.abs(scatter) / (r * 0.14);
       const aScale = Math.max(0.1, 1 - df * df);
-      p.push([px, py, (rng() * 0.30 + 0.10) * aScale, armParticleColor(r)]);
+      p.push([px, py, (rng() * 0.3 + 0.1) * aScale, armParticleColor(r)]);
     }
   }
 
@@ -210,7 +236,7 @@ function getLOD2Particles(): GalParticle[] {
     const taper = Math.exp(-2.5 * Math.pow(rMajor / LOD2_MAX_R, 2));
     p.push([bx, by, (rng() * 0.06 + 0.01) * taper, armParticleColor(r)]);
   }
-  for (const off of [0, Math.PI / 2, Math.PI, Math.PI * 3 / 2]) {
+  for (const off of [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2]) {
     for (let i = 0; i < 6000; i++) {
       const t = (i / 6000) * Math.PI * 4.5 + 0.4;
       const r = 2000 * Math.exp(0.22 * t);
@@ -223,7 +249,12 @@ function getLOD2Particles(): GalParticle[] {
       const df = Math.abs(scatter) / (r * 0.16);
       const aScale = Math.max(0.1, 1 - df * df);
       const dv = 0.7 + 0.3 * Math.sin(t * 5 + off * 1.3);
-      p.push([px, py, (rng() * 0.32 + 0.12) * aScale * dv, armParticleColor(r)]);
+      p.push([
+        px,
+        py,
+        (rng() * 0.32 + 0.12) * aScale * dv,
+        armParticleColor(r),
+      ]);
     }
   }
   for (const off of [Math.PI / 4, Math.PI + Math.PI / 4]) {
@@ -257,14 +288,19 @@ const LOD2_HALF_LY = 9000;
 
 // brightPixelSize: particles with alpha > 0.09 render at this size (px).
 // Use 2 for LOD 0 so arm stars survive the downscale at full-galaxy zoom.
-function buildOffscreen(size: number, halfLY: number, particles: GalParticle[], brightPixelSize = 1): HTMLCanvasElement {
-  const canvas = document.createElement('canvas');
+function buildOffscreen(
+  size: number,
+  halfLY: number,
+  particles: GalParticle[],
+  brightPixelSize = 1,
+): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas.getContext("2d")!;
   const s = size / (2 * halfLY);
   const c = size / 2;
-  let currentColor = '';
+  let currentColor = "";
   for (const [galX, galY, alpha, color] of particles) {
     const px = c + galX * s;
     const py = c + galY * s;
@@ -286,13 +322,26 @@ let lod1Offscreen: HTMLCanvasElement | null = null;
 let lod2Offscreen: HTMLCanvasElement | null = null;
 
 function getLOD0Offscreen(): HTMLCanvasElement {
-  return lod0Offscreen ??= buildOffscreen(LOD0_SIZE, LOD0_HALF_LY, getLOD0Particles(), 2);
+  return (lod0Offscreen ??= buildOffscreen(
+    LOD0_SIZE,
+    LOD0_HALF_LY,
+    getLOD0Particles(),
+    2,
+  ));
 }
 function getLOD1Offscreen(): HTMLCanvasElement {
-  return lod1Offscreen ??= buildOffscreen(LOD1_SIZE, LOD1_HALF_LY, getLOD1Particles());
+  return (lod1Offscreen ??= buildOffscreen(
+    LOD1_SIZE,
+    LOD1_HALF_LY,
+    getLOD1Particles(),
+  ));
 }
 function getLOD2Offscreen(): HTMLCanvasElement {
-  return lod2Offscreen ??= buildOffscreen(LOD2_SIZE, LOD2_HALF_LY, getLOD2Particles());
+  return (lod2Offscreen ??= buildOffscreen(
+    LOD2_SIZE,
+    LOD2_HALF_LY,
+    getLOD2Particles(),
+  ));
 }
 
 // Arm guide configs at module level so world points can be pre-computed alongside them
@@ -300,11 +349,11 @@ const armGuideConfigs = [
   { offset: 0, opacity: 0.07 },
   { offset: Math.PI / 2, opacity: 0.07 },
   { offset: Math.PI, opacity: 0.07 },
-  { offset: Math.PI * 3 / 2, opacity: 0.07 },
+  { offset: (Math.PI * 3) / 2, opacity: 0.07 },
   { offset: Math.PI / 4, opacity: 0.04 },
   { offset: Math.PI + Math.PI / 4, opacity: 0.04 },
-  { offset: Math.PI * 3 / 8, opacity: 0.025 },
-  { offset: Math.PI + Math.PI * 3 / 8, opacity: 0.025 },
+  { offset: (Math.PI * 3) / 8, opacity: 0.025 },
+  { offset: Math.PI + (Math.PI * 3) / 8, opacity: 0.025 },
 ];
 
 let armGuideWorldPoints: Array<Array<[number, number]>> | null = null;
@@ -330,43 +379,53 @@ const MARKER_SIZE = 64;
 const MARKER_BASE_R = 12;
 const markerBitmapCache = new Map<string, HTMLCanvasElement>();
 
-function getMarkerBitmap(rootType: string, starColor: string): HTMLCanvasElement {
+function getMarkerBitmap(
+  rootType: string,
+  starColor: string,
+): HTMLCanvasElement {
   const key = `${rootType}:${starColor}`;
   const cached = markerBitmapCache.get(key);
   if (cached) return cached;
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = MARKER_SIZE;
   canvas.height = MARKER_SIZE;
-  const bctx = canvas.getContext('2d')!;
+  const bctx = canvas.getContext("2d")!;
   const cx = MARKER_SIZE / 2;
   const cy = MARKER_SIZE / 2;
   const r = MARKER_BASE_R;
-  if (rootType === 'black-hole') {
+  if (rootType === "black-hole") {
     const ring = bctx.createRadialGradient(cx, cy, r * 0.4, cx, cy, r * 2.2);
-    ring.addColorStop(0, 'rgba(220,110,30,0.75)');
-    ring.addColorStop(1, 'rgba(180,70,10,0)');
+    ring.addColorStop(0, "rgba(220,110,30,0.75)");
+    ring.addColorStop(1, "rgba(180,70,10,0)");
     bctx.fillStyle = ring;
     bctx.beginPath();
     bctx.arc(cx, cy, r * 2.2, 0, TWO_PI);
     bctx.fill();
-    bctx.fillStyle = '#050202';
+    bctx.fillStyle = "#050202";
     bctx.beginPath();
     bctx.arc(cx, cy, r, 0, TWO_PI);
     bctx.fill();
-  } else if (rootType === 'neutron-star') {
+  } else if (rootType === "neutron-star") {
     const grad = bctx.createRadialGradient(cx, cy, 0, cx, cy, r * 1.6);
-    grad.addColorStop(0, '#FFFFFF');
-    grad.addColorStop(0.3, '#B8D8FF');
-    grad.addColorStop(1, 'rgba(80,140,255,0)');
+    grad.addColorStop(0, "#FFFFFF");
+    grad.addColorStop(0.3, "#B8D8FF");
+    grad.addColorStop(1, "rgba(80,140,255,0)");
     bctx.fillStyle = grad;
     bctx.beginPath();
     bctx.arc(cx, cy, r * 1.6, 0, TWO_PI);
     bctx.fill();
   } else {
-    const grad = bctx.createRadialGradient(cx - r * 0.25, cy - r * 0.25, 0, cx, cy, r);
-    grad.addColorStop(0, '#FFFFFF');
+    const grad = bctx.createRadialGradient(
+      cx - r * 0.25,
+      cy - r * 0.25,
+      0,
+      cx,
+      cy,
+      r,
+    );
+    grad.addColorStop(0, "#FFFFFF");
     grad.addColorStop(0.45, starColor);
-    grad.addColorStop(1, starColor + 'AA');
+    grad.addColorStop(1, starColor + "AA");
     bctx.fillStyle = grad;
     bctx.beginPath();
     bctx.arc(cx, cy, r, 0, TWO_PI);
@@ -377,8 +436,8 @@ function getMarkerBitmap(rootType: string, starColor: string): HTMLCanvasElement
 }
 
 function hashTile(tx: number, ty: number): number {
-  const a = (Math.imul(tx, 0x6D2B79F5) ^ Math.imul(ty, 0x4A0D6E3F)) | 0;
-  return ((a ^ (a >>> 15)) * 0x735A2D97) >>> 0;
+  const a = (Math.imul(tx, 0x6d2b79f5) ^ Math.imul(ty, 0x4a0d6e3f)) | 0;
+  return ((a ^ (a >>> 15)) * 0x735a2d97) >>> 0;
 }
 
 function drawViewportStars(
@@ -410,7 +469,7 @@ function drawViewportStars(
 
   if ((txMax - txMin + 1) * (tyMax - tyMin + 1) > MAX_TILES) return;
 
-  ctx.fillStyle = '#D8EEFF';
+  ctx.fillStyle = "#D8EEFF";
   for (let tx = txMin; tx <= txMax; tx++) {
     for (let ty = tyMin; ty <= tyMax; ty++) {
       const seed = hashTile(tx, ty);
@@ -426,7 +485,13 @@ function drawViewportStars(
         const galR = Math.sqrt(wx * wx + wy * wy);
         const distFade = Math.max(0, Math.min(1, 1 - (galR - 30000) / 22000));
         if (distFade <= 0) continue;
-        const size = largeStars ? (sizeRaw < 0.65 ? 1 : sizeRaw < 0.90 ? 1.5 : 2) : 1;
+        const size = largeStars
+          ? sizeRaw < 0.65
+            ? 1
+            : sizeRaw < 0.9
+              ? 1.5
+              : 2
+          : 1;
         ctx.globalAlpha = alpha * globalFade * distFade;
         ctx.fillRect(px, py, size, size);
       }
@@ -458,7 +523,7 @@ export function drawGalaxyBackground(
   scale: number,
   zoom: number,
 ): void {
-  ctx.fillStyle = '#020509';
+  ctx.fillStyle = "#020509";
   ctx.fillRect(0, 0, w, h);
 
   const isLocal = zoom > 8;
@@ -468,10 +533,10 @@ export function drawGalaxyBackground(
   drawViewportStars(ctx, w, h, gcx, gcy, scale, isLocal, starFade);
 
   if (isLocal) {
-    ctx.font = '11px Syne, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.18)';
-    ctx.textAlign = 'center';
-    ctx.fillText('You are viewing the Solar neighbourhood', w / 2, h - 32);
+    ctx.font = "11px Syne, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,0.18)";
+    ctx.textAlign = "center";
+    ctx.fillText("You are viewing the Solar neighbourhood", w / 2, h - 32);
     return;
   }
 
@@ -486,7 +551,7 @@ export function drawGalaxyBackground(
     disk.addColorStop(0, `rgba(150,160,255,${(0.22 * diskFade).toFixed(3)})`);
     disk.addColorStop(0.3, `rgba(100,120,220,${(0.13 * diskFade).toFixed(3)})`);
     disk.addColorStop(0.65, `rgba(60,80,170,${(0.06 * diskFade).toFixed(3)})`);
-    disk.addColorStop(1, 'rgba(20,30,80,0)');
+    disk.addColorStop(1, "rgba(20,30,80,0)");
     ctx.fillStyle = disk;
     ctx.beginPath();
     ctx.arc(gcx, gcy, diskR, 0, TWO_PI);
@@ -521,15 +586,19 @@ export function drawGalaxyBackground(
 
   // LOD 0: full galaxy — fades out above zoom 2 as inner LODs take over
   const lod0Alpha = neighbourFade * Math.max(0, Math.min(1, 2 - zoom));
-  if (lod0Alpha > 0) drawLOD(ctx, getLOD0Offscreen(), LOD0_HALF_LY, gcx, gcy, scale, lod0Alpha);
+  if (lod0Alpha > 0)
+    drawLOD(ctx, getLOD0Offscreen(), LOD0_HALF_LY, gcx, gcy, scale, lod0Alpha);
 
   // LOD 1: inner ±22 Kly — fades in at zoom 0.7, always crisp at this zoom range
-  const lod1Alpha = neighbourFade * Math.max(0, Math.min(1, (zoom - 0.7) / 0.8));
-  if (lod1Alpha > 0) drawLOD(ctx, getLOD1Offscreen(), LOD1_HALF_LY, gcx, gcy, scale, lod1Alpha);
+  const lod1Alpha =
+    neighbourFade * Math.max(0, Math.min(1, (zoom - 0.7) / 0.8));
+  if (lod1Alpha > 0)
+    drawLOD(ctx, getLOD1Offscreen(), LOD1_HALF_LY, gcx, gcy, scale, lod1Alpha);
 
   // LOD 2: core ±9 Kly — fades in at zoom 2.5, crisp 1px particles at zoom 3+
   const lod2Alpha = neighbourFade * Math.max(0, Math.min(1, (zoom - 2.5) / 1));
-  if (lod2Alpha > 0) drawLOD(ctx, getLOD2Offscreen(), LOD2_HALF_LY, gcx, gcy, scale, lod2Alpha);
+  if (lod2Alpha > 0)
+    drawLOD(ctx, getLOD2Offscreen(), LOD2_HALF_LY, gcx, gcy, scale, lod2Alpha);
 
   ctx.globalAlpha = 1;
 
@@ -543,10 +612,16 @@ export function drawGalaxyBackground(
     ctx.rotate(-LONG_BAR_ANGLE);
     ctx.scale(1, LONG_BAR_MINOR_RATIO);
     const longBar = ctx.createRadialGradient(0, 0, 0, 0, 0, longBarSemiMajor);
-    longBar.addColorStop(0,    `rgba(255,250,215,${(0.18 * barFade).toFixed(3)})`);
-    longBar.addColorStop(0.30, `rgba(255,235,165,${(0.08 * barFade).toFixed(3)})`);
-    longBar.addColorStop(0.65, `rgba(235,195,100,${(0.03 * barFade).toFixed(3)})`);
-    longBar.addColorStop(1,    'rgba(175,125,50,0)');
+    longBar.addColorStop(0, `rgba(255,250,215,${(0.18 * barFade).toFixed(3)})`);
+    longBar.addColorStop(
+      0.3,
+      `rgba(255,235,165,${(0.08 * barFade).toFixed(3)})`,
+    );
+    longBar.addColorStop(
+      0.65,
+      `rgba(235,195,100,${(0.03 * barFade).toFixed(3)})`,
+    );
+    longBar.addColorStop(1, "rgba(175,125,50,0)");
     ctx.fillStyle = longBar;
     ctx.beginPath();
     ctx.arc(0, 0, longBarSemiMajor, 0, TWO_PI);
@@ -560,10 +635,16 @@ export function drawGalaxyBackground(
     ctx.rotate(-GALACTIC_BAR_ANGLE);
     ctx.scale(1, GALACTIC_BAR_MINOR_RATIO);
     const galBar = ctx.createRadialGradient(0, 0, 0, 0, 0, barSemiMajor);
-    galBar.addColorStop(0,    `rgba(255,250,215,${(0.30 * barFade).toFixed(3)})`);
-    galBar.addColorStop(0.30, `rgba(255,235,165,${(0.14 * barFade).toFixed(3)})`);
-    galBar.addColorStop(0.65, `rgba(235,195,100,${(0.05 * barFade).toFixed(3)})`);
-    galBar.addColorStop(1,    'rgba(175,125,50,0)');
+    galBar.addColorStop(0, `rgba(255,250,215,${(0.3 * barFade).toFixed(3)})`);
+    galBar.addColorStop(
+      0.3,
+      `rgba(255,235,165,${(0.14 * barFade).toFixed(3)})`,
+    );
+    galBar.addColorStop(
+      0.65,
+      `rgba(235,195,100,${(0.05 * barFade).toFixed(3)})`,
+    );
+    galBar.addColorStop(1, "rgba(175,125,50,0)");
     ctx.fillStyle = galBar;
     ctx.beginPath();
     ctx.arc(0, 0, barSemiMajor, 0, TWO_PI);
@@ -573,10 +654,16 @@ export function drawGalaxyBackground(
     // Compact bright nucleus centred on galactic centre (unscaled coordinates)
     const nucleusR = Math.max(3, 1800 * scale);
     const nucleus = ctx.createRadialGradient(gcx, gcy, 0, gcx, gcy, nucleusR);
-    nucleus.addColorStop(0,   `rgba(255,255,235,${(0.98 * barFade).toFixed(3)})`);
-    nucleus.addColorStop(0.3, `rgba(255,245,185,${(0.75 * barFade).toFixed(3)})`);
-    nucleus.addColorStop(0.7, `rgba(240,205,120,${(0.32 * barFade).toFixed(3)})`);
-    nucleus.addColorStop(1,   'rgba(200,155,75,0)');
+    nucleus.addColorStop(0, `rgba(255,255,235,${(0.98 * barFade).toFixed(3)})`);
+    nucleus.addColorStop(
+      0.3,
+      `rgba(255,245,185,${(0.75 * barFade).toFixed(3)})`,
+    );
+    nucleus.addColorStop(
+      0.7,
+      `rgba(240,205,120,${(0.32 * barFade).toFixed(3)})`,
+    );
+    nucleus.addColorStop(1, "rgba(200,155,75,0)");
     ctx.fillStyle = nucleus;
     ctx.beginPath();
     ctx.arc(gcx, gcy, nucleusR, 0, TWO_PI);
@@ -613,24 +700,38 @@ export function drawSystemMarkers(
   const isGalaxyScale = zoom <= 0.5;
 
   for (const m of markers) {
-    const [mx, my] = markerCanvasPos(m.worldX, m.worldY, cx, cy, panX, panY, scale);
+    const [mx, my] = markerCanvasPos(
+      m.worldX,
+      m.worldY,
+      cx,
+      cy,
+      panX,
+      panY,
+      scale,
+    );
     const isHovered = m.id === hoveredId;
     const isSelected = m.id === selectedId;
-    const isSol = m.id === 'sol';
+    const isSol = m.id === "sol";
 
     const baseR = isLocal
-      ? (isSol ? 7 : 5)
+      ? isSol
+        ? 7
+        : 5
       : isGalaxyScale
-        ? (isSol ? 4 : 2.5)
-        : (isSol ? 5 : 3.5);
+        ? isSol
+          ? 4
+          : 2.5
+        : isSol
+          ? 5
+          : 3.5;
     const r = baseR * (isHovered ? 1.4 : 1);
 
     if (isSelected) {
       const pulseScale = 1 + 0.3 * Math.sin(ts * 0.003);
       const glowR = r * 3.5 * pulseScale;
       const glow = ctx.createRadialGradient(mx, my, r, mx, my, glowR);
-      glow.addColorStop(0, m.starColor + '55');
-      glow.addColorStop(1, m.starColor + '00');
+      glow.addColorStop(0, m.starColor + "55");
+      glow.addColorStop(1, m.starColor + "00");
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(mx, my, glowR, 0, TWO_PI);
@@ -638,8 +739,8 @@ export function drawSystemMarkers(
     } else if (isHovered) {
       const glowR = r * 2.8;
       const glow = ctx.createRadialGradient(mx, my, r * 0.5, mx, my, glowR);
-      glow.addColorStop(0, m.starColor + '40');
-      glow.addColorStop(1, m.starColor + '00');
+      glow.addColorStop(0, m.starColor + "40");
+      glow.addColorStop(1, m.starColor + "00");
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(mx, my, glowR, 0, TWO_PI);
@@ -648,10 +749,16 @@ export function drawSystemMarkers(
 
     const bitmap = getMarkerBitmap(m.rootType, m.starColor);
     const drawHalf = (MARKER_SIZE / 2) * (r / MARKER_BASE_R);
-    ctx.drawImage(bitmap, mx - drawHalf, my - drawHalf, drawHalf * 2, drawHalf * 2);
+    ctx.drawImage(
+      bitmap,
+      mx - drawHalf,
+      my - drawHalf,
+      drawHalf * 2,
+      drawHalf * 2,
+    );
 
     if (isSelected) {
-      ctx.strokeStyle = m.starColor + 'CC';
+      ctx.strokeStyle = m.starColor + "CC";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(mx, my, r + 3, 0, TWO_PI);
@@ -661,18 +768,22 @@ export function drawSystemMarkers(
     const showLabel = isSol || isHovered || isSelected;
     if (!showLabel) continue;
 
-    if (isLocal && m.distanceFromEarth !== undefined && m.distanceFromEarth > 0) {
+    if (
+      isLocal &&
+      m.distanceFromEarth !== undefined &&
+      m.distanceFromEarth > 0
+    ) {
       ctx.font = `${isSelected ? 600 : 400} ${isSelected ? 12 : 11}px Syne, sans-serif`;
-      ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,215,240,0.9)';
-      ctx.textAlign = 'center';
+      ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,215,240,0.9)";
+      ctx.textAlign = "center";
       ctx.fillText(m.name, mx, my - r - 18);
-      ctx.font = '400 10px Syne, sans-serif';
-      ctx.fillStyle = 'rgba(160,190,230,0.75)';
+      ctx.font = "400 10px Syne, sans-serif";
+      ctx.fillStyle = "rgba(160,190,230,0.75)";
       ctx.fillText(`${m.distanceFromEarth.toFixed(1)} ly`, mx, my - r - 6);
     } else {
       ctx.font = `${isSelected ? 600 : 400} ${isSelected ? 12 : 11}px Syne, sans-serif`;
-      ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(200,215,240,0.9)';
-      ctx.textAlign = 'center';
+      ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,215,240,0.9)";
+      ctx.textAlign = "center";
       ctx.fillText(m.name, mx, my - r - 6);
     }
   }
