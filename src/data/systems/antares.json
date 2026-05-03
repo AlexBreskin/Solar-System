@@ -4,9 +4,72 @@
     "name": "Antares",
     "description": "The heart of the constellation Scorpius, Antares is a red supergiant about 554 light-years away so large that if placed at the Sun's position it would engulf Mars. It will eventually explode as a core-collapse supernova.",
     "starColor": "#FF6030",
+    "displayOrder": 20,
     "distanceFromEarth": 554,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Antares"
+  },
+  "bodies": {
+    "antaresa": {
+      "id": "antaresa",
+      "name": "Antares A",
+      "type": "star",
+      "parent": null,
+      "diameter": 1182000000,
+      "mass": "2.39 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 1708,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FF5020",
+      "glowColor": "#FF6E40",
+      "moons": 0,
+      "description": "An M1.5 Iab-Ib red supergiant so enormous — roughly 850 times the Sun's diameter — that if placed at the centre of our Solar System it would extend past the orbit of Mars. Antares is nearing the end of its life and is expected to detonate as a core-collapse supernova within the next few hundred thousand years.",
+      "surfaceTemp": "3,660 K",
+      "funFact": "Antares means 'rival of Mars' in Greek — its deep reddish colour and position near the ecliptic made ancient astronomers compare it to the red planet. On some nights, Antares and Mars can be seen near each other in the sky.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Antares"
+    },
+    "antaresb": {
+      "id": "antaresb",
+      "name": "Antares B",
+      "type": "companion",
+      "parent": "antaresa",
+      "diameter": 6260000,
+      "mass": "1.43 × 10³¹ kg",
+      "distanceFromParent": 550,
+      "orbitalPeriod": 437940,
+      "rotationPeriod": 5,
+      "eccentricity": 0.5,
+      "inclination": 60,
+      "color": "#88AAFF",
+      "glowColor": "#AABBFF",
+      "moons": 0,
+      "description": "A B2.5 V hot blue main-sequence star orbiting Antares A at roughly 550 AU. Despite being quite hot and luminous in its own right, Antares B is completely overwhelmed by its supergiant companion and is normally visible only during lunar occultations or with adaptive optics.",
+      "surfaceTemp": "18,500 K",
+      "funFact": "Antares B is a hot blue star that would be impressively bright if seen on its own — but next to the massive red supergiant it orbits, it is almost completely invisible without specialized equipment.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Antares#Companion_star"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "antaresa",
+      "children": [
+        { "id": "antaresb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "antaresa": 40,
+      "antaresb": 8
+    },
+    "moonOrbitalRadii": {
+      "antaresb": 200
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 250,
+    "beltConfigs": {}
   }
 }

@@ -4,9 +4,74 @@
     "name": "Fomalhaut",
     "description": "A young A3V star 25 light-years away encircled by a stunning ring-shaped debris disk. The Hubble Space Telescope captured what appeared to be a planet within the ring, though its nature remains debated.",
     "starColor": "#E8F0FF",
+    "displayOrder": 30,
     "distanceFromEarth": 25.13,
     "rootType": "star",
-    "navigable": false,
+    "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7091/fomalhaut-b/",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Fomalhaut"
+  },
+  "bodies": {
+    "fomalhaut": {
+      "id": "fomalhaut",
+      "name": "Fomalhaut",
+      "type": "star",
+      "parent": null,
+      "diameter": 2562000,
+      "mass": "3.82 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 1.16,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#D8ECFF",
+      "glowColor": "#E4F2FF",
+      "moons": 0,
+      "description": "An A3V blue-white main-sequence star surrounded by a bright, asymmetric ring of dust and debris at roughly 140 AU. The ring is offset from the star and has a sharp inner edge — suggesting a planet is shepherding material along a gravitational boundary.",
+      "surfaceTemp": "8,590 K",
+      "funFact": "Fomalhaut is one of only a few stars whose circumstellar disk was photographed directly by Hubble. The ring's sharp inner edge, pointing to a shepherding planet, made this one of the most compelling pre-directly-imaged exoplanet cases.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7091/fomalhaut-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Fomalhaut"
+    },
+    "fomalhautb": {
+      "id": "fomalhautb",
+      "name": "Fomalhaut b (Dagon)",
+      "type": "planet",
+      "parent": "fomalhaut",
+      "diameter": 143000,
+      "mass": "1.90 × 10²⁷ kg",
+      "distanceFromParent": 115,
+      "orbitalPeriod": 318430,
+      "rotationPeriod": 1,
+      "eccentricity": 0.10,
+      "inclination": 66,
+      "color": "#A09080",
+      "moons": 0,
+      "description": "A controversial object discovered by Hubble in visible light — originally hailed as the first directly imaged exoplanet. Later observations showed it expanding rather than remaining point-like, leading to the alternative hypothesis that it may be a cloud of dust ejected by an asteroid collision. Its planetary nature remains unresolved.",
+      "surfaceTemp": "Unknown",
+      "funFact": "Fomalhaut b was officially named 'Dagon' by the IAU in 2015, after a Semitic deity associated with the sea — but its very existence as a planet is still disputed, making it one of the most enigmatic objects in exoplanet science.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7091/fomalhaut-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Fomalhaut_b"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "fomalhaut",
+      "children": [
+        { "id": "fomalhautb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "fomalhautb": 180
+    },
+    "planetSizes": {
+      "fomalhaut": 26,
+      "fomalhautb": 7
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 700,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

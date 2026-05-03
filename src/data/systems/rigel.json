@@ -4,9 +4,72 @@
     "name": "Rigel",
     "description": "The brightest star in Orion and seventh brightest in the night sky. Rigel is a blue supergiant approximately 860 light-years away, burning 120,000 times more brightly than the Sun and well on its way to becoming a supernova.",
     "starColor": "#B0D0FF",
+    "displayOrder": 21,
     "distanceFromEarth": 860,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Rigel"
+  },
+  "bodies": {
+    "rigela": {
+      "id": "rigela",
+      "name": "Rigel A",
+      "type": "star",
+      "parent": null,
+      "diameter": 109700000,
+      "mass": "4.18 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 25,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#AACCFF",
+      "glowColor": "#BDDCFF",
+      "moons": 0,
+      "description": "A B8 Ia blue supergiant roughly 79 times the Sun's diameter and one of the most intrinsically luminous stars visible to the naked eye, with a luminosity approximately 120,000 times that of the Sun. It pulsates slightly and is expected to eventually collapse into a neutron star or black hole.",
+      "surfaceTemp": "12,100 K",
+      "funFact": "Rigel is so luminous that if it were as close as Sirius, it would cast shadows on Earth at night and appear as bright as a crescent Moon.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Rigel"
+    },
+    "rigelb": {
+      "id": "rigelb",
+      "name": "Rigel B",
+      "type": "companion",
+      "parent": "rigela",
+      "diameter": 2782000,
+      "mass": "4.97 × 10³⁰ kg",
+      "distanceFromParent": 2200,
+      "orbitalPeriod": 9131250,
+      "rotationPeriod": 3,
+      "eccentricity": 0.5,
+      "inclination": 40,
+      "color": "#DDEEFF",
+      "glowColor": "#E8F4FF",
+      "moons": 0,
+      "description": "A distant B-type companion to Rigel A, itself a close binary (Rigel Ba and Bb) separated by only a fraction of an arcsecond. The combined Rigel B system orbits Rigel A at approximately 2,200 AU — a separation so vast that their mutual orbit takes an estimated 25,000 years.",
+      "surfaceTemp": "11,000 K",
+      "funFact": "The Rigel system is actually a triple star: Rigel A is one component, while 'Rigel B' is itself two stars (Ba and Bb) so close together they can only be separated with interferometry.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Rigel#Companion_stars"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "rigela",
+      "children": [
+        { "id": "rigelb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "rigela": 38,
+      "rigelb": 8
+    },
+    "moonOrbitalRadii": {
+      "rigelb": 220
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 2500,
+    "beltConfigs": {}
   }
 }

@@ -4,9 +4,73 @@
     "name": "61 Cygni",
     "description": "A binary pair of K-type orange dwarfs 11.4 light-years away. In 1838 Friedrich Bessel measured its parallax, making it the first star (other than the Sun) to have its distance to Earth precisely determined.",
     "starColor": "#FFAA50",
+    "displayOrder": 19,
     "distanceFromEarth": 11.41,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/61_Cygni"
+  },
+  "bodies": {
+    "61cygnia": {
+      "id": "61cygnia",
+      "name": "61 Cygni A",
+      "type": "star",
+      "parent": null,
+      "diameter": 860000,
+      "mass": "1.41 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 35.37,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFAA50",
+      "glowColor": "#FFC070",
+      "moons": 0,
+      "description": "A K5 Ve orange dwarf slightly smaller and cooler than the Sun. It is one of the nearest star systems visible to the naked eye and is famous as the first star to have its distance measured via parallax — a milestone in measuring the scale of the universe.",
+      "surfaceTemp": "4,526 K",
+      "funFact": "When Friedrich Bessel measured the parallax of 61 Cygni in 1838, it was the first direct measurement of a star's distance from Earth — proving for the first time that stars were at enormous but finite distances.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/61_Cygni_A"
+    },
+    "61cygnib": {
+      "id": "61cygnib",
+      "name": "61 Cygni B",
+      "type": "companion",
+      "parent": "61cygnia",
+      "diameter": 826000,
+      "mass": "1.39 × 10³⁰ kg",
+      "distanceFromParent": 84.1,
+      "orbitalPeriod": 240757,
+      "rotationPeriod": 37.84,
+      "eccentricity": 0.40,
+      "inclination": 56,
+      "color": "#FF9830",
+      "glowColor": "#FFAD50",
+      "binaryMassFraction": 0.497,
+      "moons": 0,
+      "description": "A K7 Ve orange dwarf marginally smaller and cooler than its companion 61 Cygni A. The two stars are so nearly equal in mass that their common barycenter sits almost exactly halfway between them. They take about 659 years to complete one mutual orbit at a separation of roughly 84 AU.",
+      "surfaceTemp": "4,074 K",
+      "funFact": "61 Cygni's high proper motion — it sweeps across a distance equal to the Moon's diameter in under 500 years — is what helped Bessel select it as a candidate for the first stellar parallax measurement.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/61_Cygni_B"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "61cygnia",
+      "children": [
+        { "id": "61cygnib", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "61cygnia": 16,
+      "61cygnib": 15
+    },
+    "moonOrbitalRadii": {
+      "61cygnib": 180
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 140,
+    "beltConfigs": {}
   }
 }

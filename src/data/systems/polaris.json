@@ -4,9 +4,96 @@
     "name": "Polaris",
     "description": "The North Star — the closest bright star to Earth's celestial north pole. Polaris is a yellow supergiant Cepheid variable about 433 light-years away, pulsing with a period of about 3.97 days.",
     "starColor": "#FFFFF8",
+    "displayOrder": 22,
     "distanceFromEarth": 433,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Polaris"
+  },
+  "bodies": {
+    "polarisa": {
+      "id": "polarisa",
+      "name": "Polaris A",
+      "type": "star",
+      "parent": null,
+      "diameter": 69500000,
+      "mass": "1.07 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 119,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFFAE0",
+      "glowColor": "#FFFCEC",
+      "moons": 0,
+      "description": "An F6 Ib Cepheid variable supergiant pulsating in radius and luminosity with a period of 3.97 days. Due to the slow precession of Earth's axis, Polaris has been near the celestial north pole for only the past few centuries and will gradually move away over the next several thousand years.",
+      "surfaceTemp": "6,015 K",
+      "funFact": "Polaris isn't perfectly stationary — it traces a tiny circle around the true north pole with a radius of less than 1°. In the year 2100 it will be at its closest approach to the pole, then slowly drift away.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Polaris"
+    },
+    "polarisab": {
+      "id": "polarisab",
+      "name": "Polaris Ab",
+      "type": "companion",
+      "parent": "polarisa",
+      "diameter": 1447000,
+      "mass": "2.51 × 10³⁰ kg",
+      "distanceFromParent": 18.5,
+      "orbitalPeriod": 10806,
+      "rotationPeriod": 3,
+      "eccentricity": 0.608,
+      "inclination": 50,
+      "color": "#FFFAE0",
+      "glowColor": "#FFFCEC",
+      "binaryMassFraction": 0.189,
+      "moons": 0,
+      "description": "An F6 V dwarf companion orbiting Polaris A in a highly eccentric 29.6-year orbit at an average separation of 18.5 AU. It was resolved directly from Polaris A by the Hubble Space Telescope in 2006.",
+      "surfaceTemp": "6,500 K",
+      "funFact": "Polaris Ab was thought to be an unresolvable companion for many years until Hubble separated the two stars for the first time, revealing a close F-type dwarf hiding in the supergiant's glare.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Polaris#Companions"
+    },
+    "polarisb": {
+      "id": "polarisb",
+      "name": "Polaris B",
+      "type": "companion",
+      "parent": "polarisa",
+      "diameter": 1920000,
+      "mass": "2.76 × 10³⁰ kg",
+      "distanceFromParent": 2400,
+      "orbitalPeriod": 36524000,
+      "rotationPeriod": 5,
+      "eccentricity": 0.4,
+      "inclination": 30,
+      "color": "#FFFCE4",
+      "glowColor": "#FFFDF0",
+      "moons": 0,
+      "description": "An F3 V dwarf companion orbiting at roughly 2,400 AU from Polaris A — so distant that its orbital period is estimated at around 100,000 years. It is easily visible through a small telescope and was the first companion of Polaris to be discovered, in 1780 by William Herschel.",
+      "surfaceTemp": "7,150 K",
+      "funFact": "Polaris B was discovered by William Herschel in 1780 — over two centuries before its close sibling Polaris Ab was separated by Hubble Space Telescope.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Polaris#Companions"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "polarisa",
+      "children": [
+        { "id": "polarisab", "children": [] },
+        { "id": "polarisb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "polarisa": 36,
+      "polarisab": 8,
+      "polarisb": 9
+    },
+    "moonOrbitalRadii": {
+      "polarisab": 100,
+      "polarisb": 250
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 25,
+    "beltConfigs": {}
   }
 }

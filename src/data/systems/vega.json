@@ -4,9 +4,42 @@
     "name": "Vega",
     "description": "The fifth brightest star in the sky and a cornerstone of astronomical photometry. Vega is an A0 star 25 light-years away, nearly pole-on as seen from Earth, surrounded by a dusty debris disk suggesting planet formation.",
     "starColor": "#E0F0FF",
+    "displayOrder": 24,
     "distanceFromEarth": 25.04,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Vega"
+  },
+  "bodies": {
+    "vega": {
+      "id": "vega",
+      "name": "Vega",
+      "type": "star",
+      "parent": null,
+      "diameter": 3283000,
+      "mass": "4.25 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0.521,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#C8DCFF",
+      "glowColor": "#DDEEFF",
+      "moons": 0,
+      "description": "An A0Va blue-white star spinning so rapidly — once every 12.5 hours — that its equator bulges outward, making it visibly oblate. It is surrounded by a large debris disk seen nearly face-on from Earth, which may hint at an unseen planetary system.",
+      "surfaceTemp": "9,602 K (pole) — 7,600 K (equator)",
+      "funFact": "Vega served as the photometric calibration standard for over a century — when astronomers assign a star magnitude 0, they mean it looks as bright as Vega. It will also become Earth's pole star around the year 13,700 CE.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Vega"
+    }
+  },
+  "hierarchy": [
+    { "id": "vega", "children": [] }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": { "vega": 28 },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

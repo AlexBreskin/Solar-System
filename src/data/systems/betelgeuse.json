@@ -4,9 +4,42 @@
     "name": "Betelgeuse",
     "description": "A massive M-type red supergiant marking Orion's right shoulder, roughly 700 light-years away. One of the largest known stars by radius, Betelgeuse is expected to end its life in a spectacular core-collapse supernova within the next ~100,000 years.",
     "starColor": "#FF7040",
+    "displayOrder": 28,
     "distanceFromEarth": 700,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Betelgeuse"
+  },
+  "bodies": {
+    "betelgeuse": {
+      "id": "betelgeuse",
+      "name": "Betelgeuse",
+      "type": "star",
+      "parent": null,
+      "diameter": 1320000000,
+      "mass": "2.31 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 390,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FF6030",
+      "glowColor": "#FF7840",
+      "moons": 0,
+      "description": "An M2 Iab-0 red supergiant so enormous that if placed at the Sun's location it would engulf all the inner planets out to Jupiter. Betelgeuse dramatically dimmed in 2019–2020 — the so-called 'Great Dimming' — caused by a massive surface mass ejection that temporarily obscured part of its disc.",
+      "surfaceTemp": "3,590 K",
+      "funFact": "Betelgeuse is so large that light takes about 4.5 hours to travel across its diameter — longer than it takes light from the Sun to reach Neptune.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Betelgeuse"
+    }
+  },
+  "hierarchy": [
+    { "id": "betelgeuse", "children": [] }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": { "betelgeuse": 40 },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

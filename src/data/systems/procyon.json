@@ -4,9 +4,73 @@
     "name": "Procyon",
     "description": "The eighth brightest star in the sky, Procyon is a bright F5IV-V subgiant 11.5 light-years away with a white dwarf companion (Procyon B) completing one orbit every 40.8 years.",
     "starColor": "#FFF0D0",
+    "displayOrder": 18,
     "distanceFromEarth": 11.46,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Procyon"
+  },
+  "bodies": {
+    "procyona": {
+      "id": "procyona",
+      "name": "Procyon A",
+      "type": "star",
+      "parent": null,
+      "diameter": 2849000,
+      "mass": "2.98 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 23,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFF0C0",
+      "glowColor": "#FFF8D8",
+      "moons": 0,
+      "description": "An F5 IV-V subgiant slightly hotter and more luminous than the Sun, beginning the transition off the main sequence as it exhausts the hydrogen in its core. It is one of the few stars close enough for its angular diameter to be measured directly from Earth.",
+      "surfaceTemp": "6,530 K",
+      "funFact": "Procyon's name means 'before the dog' in Greek — it rises just before Sirius (the Dog Star) in the northern sky, giving ancient astronomers an early warning of Sirius's arrival.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Procyon_A"
+    },
+    "procyonb": {
+      "id": "procyonb",
+      "name": "Procyon B",
+      "type": "companion",
+      "parent": "procyona",
+      "diameter": 17100,
+      "mass": "1.20 × 10³⁰ kg",
+      "distanceFromParent": 15,
+      "orbitalPeriod": 14909,
+      "rotationPeriod": 1,
+      "eccentricity": 0.407,
+      "inclination": 31.1,
+      "color": "#CCDDF8",
+      "glowColor": "#DDEEFF",
+      "binaryMassFraction": 0.287,
+      "moons": 0,
+      "description": "A DQZ type white dwarf — the burned-out remnant of a once massive star. Procyon B was the second white dwarf ever discovered, found in 1896 through its wobbling effect on Procyon A. It is slightly warmer than Sirius B, suggesting it formed more recently from a hotter progenitor star.",
+      "surfaceTemp": "7,740 K",
+      "funFact": "Before Procyon B was seen directly, its existence was deduced by the wobble it caused in Procyon A's proper motion — a wobble that had puzzled astronomers for decades.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Procyon_B"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "procyona",
+      "children": [
+        { "id": "procyonb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "procyona": 26,
+      "procyonb": 6
+    },
+    "moonOrbitalRadii": {
+      "procyonb": 150
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 15,
+    "beltConfigs": {}
   }
 }

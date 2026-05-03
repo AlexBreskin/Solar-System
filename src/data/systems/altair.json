@@ -4,9 +4,42 @@
     "name": "Altair",
     "description": "One of the vertices of the Summer Triangle, Altair is an A7V star just 16.7 light-years away. It spins so rapidly — once every 9 hours — that it is noticeably flattened at the poles, bulging at its equator.",
     "starColor": "#F8F8FF",
+    "displayOrder": 25,
     "distanceFromEarth": 16.73,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Altair"
+  },
+  "bodies": {
+    "altair": {
+      "id": "altair",
+      "name": "Altair",
+      "type": "star",
+      "parent": null,
+      "diameter": 2824000,
+      "mass": "3.70 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0.371,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#EEF4FF",
+      "glowColor": "#F5F8FF",
+      "moons": 0,
+      "description": "An A7V white star and one of the fastest-rotating stars known, completing a full rotation in just under 9 hours. Its equator is flung outward by centrifugal force, making Altair about 20% wider at the equator than at the poles — a shape confirmed by interferometric imaging.",
+      "surfaceTemp": "7,550 K",
+      "funFact": "In 2006, Altair became one of the first stars ever to be directly imaged in sufficient resolution to reveal its disc shape — showing the bulging equator predicted by its rapid spin.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Altair"
+    }
+  },
+  "hierarchy": [
+    { "id": "altair", "children": [] }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": { "altair": 26 },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

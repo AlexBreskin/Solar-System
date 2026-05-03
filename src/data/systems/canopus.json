@@ -4,9 +4,42 @@
     "name": "Canopus",
     "description": "The second brightest star in the night sky and a historic navigation reference. Canopus is a yellow-white supergiant (F0 Ib) about 313 light-years distant, so luminous it outshines the Sun by 10,700 times.",
     "starColor": "#FFFFF0",
+    "displayOrder": 27,
     "distanceFromEarth": 313,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Canopus"
+  },
+  "bodies": {
+    "canopus": {
+      "id": "canopus",
+      "name": "Canopus",
+      "type": "star",
+      "parent": null,
+      "diameter": 99300000,
+      "mass": "1.62 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 70,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFF8DC",
+      "glowColor": "#FFFCE8",
+      "moons": 0,
+      "description": "An F0 II bright giant or supergiant about 71 times the Sun's diameter. Canopus is so luminous that NASA uses it as a stable reference point for spacecraft navigation — many deep-space probes carry dedicated star trackers pointed at Canopus to determine their orientation.",
+      "surfaceTemp": "7,350 K",
+      "funFact": "Canopus is so bright that NASA has used it for over 50 years as a navigation star for deep-space probes — from the Mariner and Voyager missions to the New Horizons spacecraft that visited Pluto.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Canopus"
+    }
+  },
+  "hierarchy": [
+    { "id": "canopus", "children": [] }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": { "canopus": 36 },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

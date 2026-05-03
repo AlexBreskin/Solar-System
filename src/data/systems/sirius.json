@@ -4,9 +4,73 @@
     "name": "Sirius",
     "description": "The brightest star in Earth's night sky, Sirius is a blue-white main-sequence star (A1V) located 8.6 light-years away. It has a faint white-dwarf companion, Sirius B, orbiting it every 50 years.",
     "starColor": "#FFFFFF",
+    "displayOrder": 17,
     "distanceFromEarth": 8.6,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Sirius"
+  },
+  "bodies": {
+    "siriusa": {
+      "id": "siriusa",
+      "name": "Sirius A",
+      "type": "star",
+      "parent": null,
+      "diameter": 2380000,
+      "mass": "4.10 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 16.4,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#CCE8FF",
+      "glowColor": "#DDEFFF",
+      "moons": 0,
+      "description": "An A1V blue-white main-sequence star about twice the Sun's mass and 1.7 times its diameter, making it the most luminous star in Earth's night sky at just 8.6 light-years away. Its name derives from the ancient Greek word for 'glowing' or 'scorching'.",
+      "surfaceTemp": "9,940 K",
+      "funFact": "Ancient Egyptians tracked the annual first rising of Sirius at dawn to predict the Nile flood — the event was so important that they built their calendar around it, marking the beginning of the year.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Sirius_A"
+    },
+    "siriusb": {
+      "id": "siriusb",
+      "name": "Sirius B",
+      "type": "companion",
+      "parent": "siriusa",
+      "diameter": 11700,
+      "mass": "1.94 × 10³⁰ kg",
+      "distanceFromParent": 20,
+      "orbitalPeriod": 18308,
+      "rotationPeriod": 0.54,
+      "eccentricity": 0.592,
+      "inclination": 136.5,
+      "color": "#CCDDF8",
+      "glowColor": "#DDEEFF",
+      "binaryMassFraction": 0.322,
+      "moons": 0,
+      "description": "A DA2 white dwarf — the remnant core of a star that once outshone Sirius A. Despite being barely larger than Earth, Sirius B packs nearly the full mass of our Sun, giving it an extraordinary density. It was predicted to exist before being directly observed, a triumph of 19th-century astronomy.",
+      "surfaceTemp": "25,200 K",
+      "funFact": "Sirius B was detected by its gravitational pull on Sirius A before it was ever seen directly — making it one of the first objects discovered through its influence on another star rather than its own light.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Sirius_B"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "siriusa",
+      "children": [
+        { "id": "siriusb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "siriusa": 26,
+      "siriusb": 6
+    },
+    "moonOrbitalRadii": {
+      "siriusb": 150
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 20,
+    "beltConfigs": {}
   }
 }

@@ -53,6 +53,22 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 | Gliese 667C | M1.5V red dwarf | 3 | Triple star system; two habitable-zone worlds |
 | Kepler-16 | K+M binary ("Tatooine") | 1 | First confirmed circumbinary planet — two suns in the sky |
 | Alpha Centauri | G+K+M triple star | 1 | Nearest stellar system; hosts closest known exoplanet |
+| 40 Eridani | K+WD+M triple star | 1 | Home of Vulcan (Star Trek); real super-Earth confirmed 2018 |
+| Epsilon Eridani | K2V orange dwarf | 1 | Nearest single sun-like star; top SETI target since Project Ozma |
+| Sirius | A1V + white dwarf | — | Brightest star in the night sky; white dwarf companion |
+| Procyon | F5 subgiant + white dwarf | — | Eighth brightest star; white dwarf companion |
+| 61 Cygni | K5+K7 binary | — | First star to have its distance measured; nearly equal-mass pair |
+| Fomalhaut | A3V + debris ring | 1 | Stunning debris ring; first Hubble-imaged planetary candidate |
+| HR 8799 | A5V young star | 4 | First multi-planet system directly photographed |
+| Vega | A0Va rapid rotator | — | Future north pole star; photometric calibration standard |
+| Altair | A7V oblate rotator | — | One of the fastest-spinning stars known; directly resolved shape |
+| Arcturus | K1.5 III orange giant | — | Brightest northern star; ancient stellar stream traveller |
+| Canopus | F0 II supergiant | — | Second brightest star; NASA deep-space navigation reference |
+| Polaris | F6 Cepheid + 2 companions | — | North Star; triple system with close and wide F-type companions |
+| Antares | M1.5 red supergiant + B companion | — | Heart of Scorpius; red giant would engulf Mars if placed at the Sun |
+| Rigel | B8 blue supergiant + companion | — | Orion's foot; 120,000× the Sun's luminosity |
+| Betelgeuse | M2 red supergiant | — | Orion's shoulder; Great Dimming event 2019–2020 |
+| Deneb | A2 blue-white supergiant | — | One of the most luminous stars in the Milky Way |
 | Sagittarius A* | Black hole + S2 star | — | Milky Way's central black hole; S2 orbits at 2.7% light speed |
 | M87* | Supermassive black hole | — | First ever imaged black hole; event horizon spans the solar system |
 | Cygnus X-1 | Black hole + blue supergiant | — | One of the first identified black hole candidates; Hawking's lost bet |
@@ -192,4 +208,4 @@ src/
 - **Deterministic particles** — belt particle fields and the galaxy spiral background use a shared seeded RNG (`src/utils/mulberry32.ts`) so layouts are consistent across renders
 - **Distance formatting** — `src/utils/distance.ts` converts AU↔km↔ly; orbital distances default to AU (4 sig figs, km on hover); star info panels show system distance from Earth in light-years (AU on hover)
 - **Exotic objects** — `BodyType.BlackHole`, `BodyType.NeutronStar`, and `BodyType.Quasar` supported; black holes render as a dark disc with an accretion-disk glow; the `ROOT_BODY_TYPES` set replaces hardcoded star checks throughout
-- **Tooling** — Vite for dev and builds; Vitest for tests; 371 tests across 6 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
+- **Tooling** — Vite for dev and builds; Vitest for tests; 627 tests across 6 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style

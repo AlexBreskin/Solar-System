@@ -4,9 +4,42 @@
     "name": "Arcturus",
     "description": "The fourth brightest star in the night sky and the brightest in the northern celestial hemisphere. Arcturus is a K1.5 IIIpe orange giant 36.7 light-years away, thought to be a member of an ancient stellar stream passing through the Milky Way's disk.",
     "starColor": "#FFB060",
+    "displayOrder": 26,
     "distanceFromEarth": 36.7,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Arcturus"
+  },
+  "bodies": {
+    "arcturus": {
+      "id": "arcturus",
+      "name": "Arcturus",
+      "type": "star",
+      "parent": null,
+      "diameter": 35300000,
+      "mass": "2.15 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 2.4,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFB060",
+      "glowColor": "#FFC880",
+      "moons": 0,
+      "description": "A K1.5 III orange giant roughly 25 times the Sun's diameter, making it one of the largest stars visible to the naked eye. Arcturus moves unusually fast across the sky and belongs to the Arcturus Stream — an ancient population of stars thought to have been captured from a merged dwarf galaxy billions of years ago.",
+      "surfaceTemp": "4,286 K",
+      "funFact": "In 1933, light from Arcturus was used to switch on the floodlights at the Chicago World's Fair — chosen because it was thought the light had left the star when the previous World's Fair was held in 1893 (though the distance estimate was slightly off).",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Arcturus"
+    }
+  },
+  "hierarchy": [
+    { "id": "arcturus", "children": [] }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": { "arcturus": 36 },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

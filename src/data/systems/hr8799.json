@@ -4,10 +4,143 @@
     "name": "HR 8799",
     "description": "A young A5 star 129 light-years away famous for hosting the first directly imaged multi-planet system. In 2008 astronomers photographed four giant planets in orbit, a milestone in exoplanet science.",
     "starColor": "#F0F0FF",
+    "displayOrder": 31,
     "distanceFromEarth": 129,
     "rootType": "star",
-    "navigable": false,
-    "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799",
-    "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7023/hr-8799-b/"
+    "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7023/hr-8799-b/",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799"
+  },
+  "bodies": {
+    "hr8799": {
+      "id": "hr8799",
+      "name": "HR 8799",
+      "type": "star",
+      "parent": null,
+      "diameter": 1947000,
+      "mass": "3.01 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0.515,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#E8EEFF",
+      "glowColor": "#F0F4FF",
+      "moons": 0,
+      "description": "An A5 VkA5mA5 γ Doradus-type variable star about 30 million years old — young enough that its giant planets have not yet cooled from formation and can be imaged directly in infrared light. It has a large outer debris disk extending to several hundred AU.",
+      "surfaceTemp": "7,430 K",
+      "funFact": "HR 8799 was the first star system for which multiple planets were photographed simultaneously — four gas giants captured in a single Keck Observatory image in 2008, instantly transforming how we think about exoplanet detection.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7023/hr-8799-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799"
+    },
+    "hr8799e": {
+      "id": "hr8799e",
+      "name": "HR 8799 e",
+      "type": "planet",
+      "parent": "hr8799",
+      "diameter": 170000,
+      "mass": "1.33 × 10²⁸ kg",
+      "distanceFromParent": 14.5,
+      "orbitalPeriod": 17900,
+      "rotationPeriod": 1,
+      "eccentricity": 0.05,
+      "inclination": 26,
+      "color": "#C08050",
+      "moons": 0,
+      "description": "The innermost of the four directly imaged planets, orbiting at 14.5 AU with a mass of about 7 Jupiter masses. Like its siblings it is still glowing warmly from the heat of formation, making it bright enough to image directly in infrared despite being 129 light-years away.",
+      "surfaceTemp": "~1,100 °C (self-luminous from residual heat)",
+      "funFact": "HR 8799 e was the last of the four planets to be discovered, found by re-analysing archival Keck data taken years before — the planet had been hiding in plain sight in old observations.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7021/hr-8799-e/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799_e"
+    },
+    "hr8799d": {
+      "id": "hr8799d",
+      "name": "HR 8799 d",
+      "type": "planet",
+      "parent": "hr8799",
+      "diameter": 170000,
+      "mass": "1.33 × 10²⁸ kg",
+      "distanceFromParent": 24,
+      "orbitalPeriod": 36500,
+      "rotationPeriod": 1,
+      "eccentricity": 0.05,
+      "inclination": 26,
+      "color": "#B87040",
+      "moons": 0,
+      "description": "The second planet from the star, orbiting at 24 AU — roughly the distance of Uranus from our Sun. At approximately 7 Jupiter masses it is still hot from formation, emitting enough infrared radiation to be directly detected by ground-based telescopes.",
+      "surfaceTemp": "~900 °C (self-luminous from residual heat)",
+      "funFact": "HR 8799 d was one of three planets simultaneously photographed in the 2008 Keck discovery image — a moment that marked the dawn of direct imaging as a practical exoplanet detection technique.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7022/hr-8799-d/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799_d"
+    },
+    "hr8799c": {
+      "id": "hr8799c",
+      "name": "HR 8799 c",
+      "type": "planet",
+      "parent": "hr8799",
+      "diameter": 170000,
+      "mass": "1.33 × 10²⁸ kg",
+      "distanceFromParent": 38,
+      "orbitalPeriod": 73050,
+      "rotationPeriod": 1,
+      "eccentricity": 0.05,
+      "inclination": 26,
+      "color": "#A06030",
+      "moons": 0,
+      "description": "Orbiting at 38 AU — comparable to Pluto's distance from the Sun — HR 8799 c is the third planet and still self-luminous from residual formation heat. Spectroscopic analysis has detected water vapour and carbon monoxide in its atmosphere.",
+      "surfaceTemp": "~800 °C (self-luminous from residual heat)",
+      "funFact": "Spectral analysis of HR 8799 c has revealed water vapour and carbon monoxide in its atmosphere — making it one of the first exoplanets to have its atmospheric composition directly measured.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7020/hr-8799-c/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799_c"
+    },
+    "hr8799b": {
+      "id": "hr8799b",
+      "name": "HR 8799 b",
+      "type": "planet",
+      "parent": "hr8799",
+      "diameter": 170000,
+      "mass": "1.33 × 10²⁸ kg",
+      "distanceFromParent": 68,
+      "orbitalPeriod": 167000,
+      "rotationPeriod": 1,
+      "eccentricity": 0.05,
+      "inclination": 26,
+      "color": "#906030",
+      "moons": 0,
+      "description": "The outermost of the four confirmed planets, orbiting at 68 AU in a path that takes roughly 460 years to complete. It was one of the first exoplanets discovered by direct imaging, unveiled in the landmark 2008 Keck and Gemini observations along with planets c and d.",
+      "surfaceTemp": "~700 °C (self-luminous from residual heat)",
+      "funFact": "HR 8799 b was among the first exoplanets to have its orbit observed directly over time, as astronomers tracked its slow arc across the sky through repeated observations spanning more than a decade.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7023/hr-8799-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/HR_8799_b"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "hr8799",
+      "children": [
+        { "id": "hr8799e", "children": [] },
+        { "id": "hr8799d", "children": [] },
+        { "id": "hr8799c", "children": [] },
+        { "id": "hr8799b", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "hr8799e": 80,
+      "hr8799d": 120,
+      "hr8799c": 165,
+      "hr8799b": 230
+    },
+    "planetSizes": {
+      "hr8799": 22,
+      "hr8799e": 9,
+      "hr8799d": 9,
+      "hr8799c": 9,
+      "hr8799b": 9
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 80,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

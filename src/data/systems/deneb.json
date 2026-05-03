@@ -4,9 +4,42 @@
     "name": "Deneb",
     "description": "The brightest star in Cygnus and one vertex of the Summer Triangle, Deneb is an A2Ia blue-white supergiant roughly 2,600 light-years away. Despite its great distance it ranks among the brightest stars in the sky, powered by an intrinsic luminosity ~200,000 times that of the Sun.",
     "starColor": "#F0F8FF",
+    "displayOrder": 29,
     "distanceFromEarth": 2615,
     "rootType": "star",
-    "navigable": false,
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Deneb"
+  },
+  "bodies": {
+    "deneb": {
+      "id": "deneb",
+      "name": "Deneb",
+      "type": "star",
+      "parent": null,
+      "diameter": 282000000,
+      "mass": "3.78 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 200,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#D8EEFF",
+      "glowColor": "#E4F2FF",
+      "moons": 0,
+      "description": "An A2 Ia blue-white supergiant and one of the most luminous stars in the Milky Way, radiating about 200,000 times the Sun's energy. Its distance is uncertain — estimates range from about 1,400 to 3,200 light-years — making Deneb one of the most intrinsically luminous stars visible to the naked eye.",
+      "surfaceTemp": "8,515 K",
+      "funFact": "If Deneb were as close to Earth as Sirius (8.6 ly), it would appear as bright as a crescent Moon and cast visible shadows at night.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Deneb"
+    }
+  },
+  "hierarchy": [
+    { "id": "deneb", "children": [] }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": { "deneb": 36 },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }

@@ -4,9 +4,74 @@
     "name": "Epsilon Eridani",
     "description": "A young K2V orange dwarf 10.5 light-years away and one of the closest stars to the Sun. Its debris disk and suspected planetary system have made it one of the top targets in the search for extraterrestrial life.",
     "starColor": "#FFCC70",
+    "displayOrder": 23,
     "distanceFromEarth": 10.47,
     "rootType": "star",
-    "navigable": false,
+    "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/2477/epsilon-eridani-b/",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Epsilon_Eridani"
+  },
+  "bodies": {
+    "epseri": {
+      "id": "epseri",
+      "name": "Epsilon Eridani",
+      "type": "star",
+      "parent": null,
+      "diameter": 1022000,
+      "mass": "1.63 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 11.2,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFCC70",
+      "glowColor": "#FFDA90",
+      "moons": 0,
+      "description": "A K2V orange dwarf slightly smaller, cooler, and less massive than the Sun, making it one of the nearest and brightest K-type stars in the sky. It is a relatively young star — only about 440 million years old — and surrounded by two broad debris belts reminiscent of our asteroid belt and Kuiper belt.",
+      "surfaceTemp": "5,084 K",
+      "funFact": "Epsilon Eridani was one of the two target stars in Project Ozma in 1960 — the first scientific search for radio signals from extraterrestrial intelligence. No signals were detected, but it remains a prime SETI candidate.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/2477/epsilon-eridani-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Epsilon_Eridani"
+    },
+    "epserianb": {
+      "id": "epserianb",
+      "name": "Epsilon Eridani b",
+      "type": "planet",
+      "parent": "epseri",
+      "diameter": 143000,
+      "mass": "1.48 × 10²⁷ kg",
+      "distanceFromParent": 3.39,
+      "orbitalPeriod": 2502,
+      "rotationPeriod": 3,
+      "eccentricity": 0.3,
+      "inclination": 30,
+      "color": "#A08060",
+      "moons": 0,
+      "description": "A giant planet orbiting Epsilon Eridani at 3.39 AU — similar to Jupiter's distance from our Sun. Its existence has been contested since its initial announcement in 2000 due to the star's high stellar activity masking the planet's radial velocity signal, but it is now broadly accepted as real.",
+      "surfaceTemp": "~−80 °C (equilibrium estimate)",
+      "funFact": "Epsilon Eridani b is often cited in science fiction as a promising location for habitable moons, since its distance from the star places it near or just outside the habitable zone.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/2477/epsilon-eridani-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Epsilon_Eridani_b"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "epseri",
+      "children": [
+        { "id": "epserianb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {
+      "epserianb": 120
+    },
+    "planetSizes": {
+      "epseri": 20,
+      "epserianb": 7
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 9,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
   }
 }
