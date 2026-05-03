@@ -148,14 +148,20 @@ export function drawOrbits(
   showOrbits: boolean,
   bodies: Record<string, CelestialBody>,
   visualConfig: VisualConfig,
+  positions: Record<string, Vec2>,
 ): void {
-  const { orbitalRadii } = visualConfig;
+  const { orbitalRadii, moonOrbitalRadii } = visualConfig;
   for (const [id, body] of Object.entries(bodies)) {
     if (!body.showOrbitRing) continue;
     const isHighlighted = id === selectedBody || id === hoveredBody;
     if (!showOrbits && !isHighlighted) continue;
+    const parentPos =
+      body.parent && positions[body.parent]
+        ? positions[body.parent]
+        : { x: cx, y: cy };
+    const radius = orbitalRadii[id] ?? moonOrbitalRadii[id] ?? 0;
     ctx.beginPath();
-    ctx.arc(cx, cy, orbitalRadii[id] ?? 0, 0, TWO_PI);
+    ctx.arc(parentPos.x, parentPos.y, radius, 0, TWO_PI);
     if (isHighlighted) {
       ctx.strokeStyle = "rgba(255,255,255,0.35)";
       ctx.lineWidth = 1;

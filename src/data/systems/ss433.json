@@ -45,6 +45,7 @@
       "color": "#A8C0FF",
       "glowColor": "#B8D0FF",
       "binaryMassFraction": 0.505,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "An evolved A-type supergiant overflowing its Roche lobe and dumping material onto the black hole at several times the Eddington limit. This supercritical accretion rate is what drives the relativistic jet outflows — material that cannot fall onto the black hole fast enough is instead launched as collimated plasma streams at 0.26c.",
       "surfaceTemp": "~9,000 K",

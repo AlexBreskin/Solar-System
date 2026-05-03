@@ -170,6 +170,7 @@ export default function SolarSystemCanvas({
         showOrbits,
         bodies,
         visualConfig,
+        sim.positions,
       );
       for (const beltId of beltIds) {
         drawBelt(

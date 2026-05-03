@@ -84,17 +84,16 @@ export class SolarSystemSimulation {
 
   updatePositions(cx: number, cy: number): void {
     const pos: Record<string, Vec2> = {};
+    const fixedSet = new Set(this.fixedIds);
+
+    // 1. Root bodies start at the system barycentre
     for (const id of this.fixedIds) pos[id] = { x: cx, y: cy };
-    for (const id of this.planetIds) {
-      const r = this.orbitalRadii[id] ?? 0;
-      pos[id] = {
-        x: cx + r * Math.cos(this.angles[id]),
-        y: cy + r * Math.sin(this.angles[id]),
-      };
-    }
+
+    // 2. Non-binary companions whose parent is a root body (e.g. Proxima Centauri)
     for (const id of this.moonIds) {
       if (this.bodies[id]?.binaryMassFraction !== undefined) continue;
       const parentId = this.moonParentMap[id];
+      if (!parentId || !fixedSet.has(parentId)) continue;
       const pr = this.moonOrbitalRadii[id] ?? 0;
       const { x: px, y: py } = pos[parentId] ?? { x: cx, y: cy };
       pos[id] = {
@@ -102,14 +101,16 @@ export class SolarSystemSimulation {
         y: py + pr * Math.sin(this.angles[id]),
       };
     }
+
+    // 3. Binary companions whose parent is a root body — displace both from barycentre
     for (const id of this.moonIds) {
       const μ = this.bodies[id]?.binaryMassFraction;
       if (μ === undefined) continue;
       const parentId = this.moonParentMap[id];
-      if (!parentId) continue;
+      if (!parentId || !fixedSet.has(parentId)) continue;
       const sep = this.moonOrbitalRadii[id] ?? 0;
       const angle = this.angles[id];
-      const bary = pos[parentId];
+      const bary = pos[parentId] ?? { x: cx, y: cy };
       pos[parentId] = {
         x: bary.x - sep * μ * Math.cos(angle),
         y: bary.y - sep * μ * Math.sin(angle),
@@ -119,6 +120,57 @@ export class SolarSystemSimulation {
         y: bary.y + sep * (1 - μ) * Math.sin(angle),
       };
     }
+
+    // 4. Planets: orbit barycentre for root-type parents,
+    //    or the companion's actual position when orbiting a companion star.
+    for (const id of this.planetIds) {
+      const body = this.bodies[id];
+      const r = this.orbitalRadii[id] ?? 0;
+      const parentId = body?.parent;
+      const parentBody = parentId ? this.bodies[parentId] : undefined;
+      const centre =
+        parentBody && !ROOT_BODY_TYPES.has(parentBody.type) && pos[parentId!]
+          ? pos[parentId!]
+          : { x: cx, y: cy };
+      pos[id] = {
+        x: centre.x + r * Math.cos(this.angles[id]),
+        y: centre.y + r * Math.sin(this.angles[id]),
+      };
+    }
+
+    // 5. Non-binary moons of planets (parent is not a root body)
+    for (const id of this.moonIds) {
+      if (this.bodies[id]?.binaryMassFraction !== undefined) continue;
+      if (pos[id] !== undefined) continue; // already placed in step 2
+      const parentId = this.moonParentMap[id];
+      const pr = this.moonOrbitalRadii[id] ?? 0;
+      const { x: px, y: py } = pos[parentId] ?? { x: cx, y: cy };
+      pos[id] = {
+        x: px + pr * Math.cos(this.angles[id]),
+        y: py + pr * Math.sin(this.angles[id]),
+      };
+    }
+
+    // 6. Binary moons of planets (e.g. Pluto–Charon) — parent now positioned in step 4
+    for (const id of this.moonIds) {
+      const μ = this.bodies[id]?.binaryMassFraction;
+      if (μ === undefined) continue;
+      if (pos[id] !== undefined) continue; // already placed in step 3
+      const parentId = this.moonParentMap[id];
+      if (!parentId) continue;
+      const sep = this.moonOrbitalRadii[id] ?? 0;
+      const angle = this.angles[id];
+      const bary = pos[parentId] ?? { x: cx, y: cy };
+      pos[parentId] = {
+        x: bary.x - sep * μ * Math.cos(angle),
+        y: bary.y - sep * μ * Math.sin(angle),
+      };
+      pos[id] = {
+        x: bary.x + sep * (1 - μ) * Math.cos(angle),
+        y: bary.y + sep * (1 - μ) * Math.sin(angle),
+      };
+    }
+
     this.positions = pos;
   }
 }

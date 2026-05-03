@@ -45,6 +45,7 @@
       "color": "#D0DCFF",
       "glowColor": "#E0E8FF",
       "binaryMassFraction": 0.126,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A low-mass helium white dwarf — the burned-out core of the star that once donated material to the pulsar. Over billions of years, accretion from this companion spun the neutron star up from a slow rotator to the millisecond pulsar we observe today. The white dwarf is now cold and inert, an orbital relic of a long relationship.",
       "surfaceTemp": "~4,000 K",

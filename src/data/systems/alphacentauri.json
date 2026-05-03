@@ -34,6 +34,7 @@
       "name": "Alpha Centauri B",
       "type": "companion",
       "parent": "alphacena",
+      "showOrbitRing": true,
       "diameter": 1202200,
       "mass": "1.79 × 10³⁰ kg",
       "distanceFromParent": 23.4,
@@ -64,7 +65,6 @@
       "inclination": 107.6,
       "color": "#FF5030",
       "glowColor": "#FF7050",
-      "binaryMassFraction": 0.058,
       "moons": 0,
       "description": "A dim M5Ve red dwarf and the closest known star to the Sun at 4.24 light-years. It orbits the Alpha Centauri A+B pair at an enormous distance of ~13,400 AU — so remote that it may barely be gravitationally bound.",
       "surfaceTemp": "3,042 K",
@@ -75,7 +75,8 @@
       "id": "proxima-b",
       "name": "Proxima Centauri b",
       "type": "planet",
-      "parent": "alphacena",
+      "parent": "proxima",
+      "showOrbitRing": true,
       "diameter": 14400,
       "mass": "7.20 × 10²⁴ kg",
       "distanceFromParent": 0.0485,
@@ -102,11 +103,12 @@
         },
         {
           "id": "proxima",
-          "children": []
-        },
-        {
-          "id": "proxima-b",
-          "children": []
+          "children": [
+            {
+              "id": "proxima-b",
+              "children": []
+            }
+          ]
         }
       ]
     }

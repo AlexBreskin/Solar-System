@@ -45,6 +45,7 @@
       "color": "#FF9830",
       "glowColor": "#FFAD50",
       "binaryMassFraction": 0.497,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A K7 Ve orange dwarf marginally smaller and cooler than its companion 61 Cygni A. The two stars are so nearly equal in mass that their common barycenter sits almost exactly halfway between them. They take about 659 years to complete one mutual orbit at a separation of roughly 84 AU.",
       "surfaceTemp": "4,074 K",

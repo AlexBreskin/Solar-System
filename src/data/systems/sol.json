@@ -645,6 +645,7 @@
       "type": "moon",
       "parent": "pluto",
       "binaryMassFraction": 0.1085,
+      "showOrbitRing": true,
       "diameter": 1212,
       "mass": "1.586 × 10²¹ kg",
       "distanceFromParent": 0.0001269,

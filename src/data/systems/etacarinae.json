@@ -45,6 +45,7 @@
       "color": "#B0C8FF",
       "glowColor": "#C0D8FF",
       "binaryMassFraction": 0.167,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A massive companion star — likely an O supergiant or Wolf-Rayet star of roughly 30 solar masses — on a highly eccentric 5.54-year orbit. At closest approach it plunges through Eta Carinae A's dense stellar wind, producing dramatic X-ray flares observable from Earth.",
       "surfaceTemp": "~37,000 K",

@@ -45,6 +45,7 @@
       "color": "#CCDDF8",
       "glowColor": "#DDEEFF",
       "binaryMassFraction": 0.287,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A DQZ type white dwarf — the burned-out remnant of a once massive star. Procyon B was the second white dwarf ever discovered, found in 1896 through its wobbling effect on Procyon A. It is slightly warmer than Sirius B, suggesting it formed more recently from a hotter progenitor star.",
       "surfaceTemp": "7,740 K",

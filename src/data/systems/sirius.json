@@ -45,6 +45,7 @@
       "color": "#CCDDF8",
       "glowColor": "#DDEEFF",
       "binaryMassFraction": 0.322,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A DA2 white dwarf — the remnant core of a star that once outshone Sirius A. Despite being barely larger than Earth, Sirius B packs nearly the full mass of our Sun, giving it an extraordinary density. It was predicted to exist before being directly observed, a triumph of 19th-century astronomy.",
       "surfaceTemp": "25,200 K",

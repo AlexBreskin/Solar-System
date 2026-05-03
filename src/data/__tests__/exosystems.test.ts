@@ -85,11 +85,17 @@ describe.each(navigableExosystems)('$name — bodies shape', ({ data }) => {
     expect(roots[0].parent).toBeNull();
   });
 
-  it('all planets are direct children of the root body', () => {
-    const rootId = bodies.find(b => ROOT_BODY_TYPES.has(b.type))!.id;
+  it('all planets orbit the root body or a companion', () => {
+    const bodyMap = Object.fromEntries(bodies.map(b => [b.id, b]));
     for (const body of bodies) {
       if (body.type === BodyType.Planet) {
-        expect(body.parent).toBe(rootId);
+        expect(body.parent).not.toBeNull();
+        const parentBody = bodyMap[body.parent!];
+        expect(parentBody).toBeDefined();
+        const parentIsValid =
+          ROOT_BODY_TYPES.has(parentBody.type) ||
+          parentBody.type === BodyType.Companion;
+        expect(parentIsValid).toBe(true);
       }
     }
   });

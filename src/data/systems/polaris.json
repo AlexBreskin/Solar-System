@@ -45,6 +45,7 @@
       "color": "#FFFAE0",
       "glowColor": "#FFFCEC",
       "binaryMassFraction": 0.189,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "An F6 V dwarf companion orbiting Polaris A in a highly eccentric 29.6-year orbit at an average separation of 18.5 AU. It was resolved directly from Polaris A by the Hubble Space Telescope in 2006.",
       "surfaceTemp": "6,500 K",

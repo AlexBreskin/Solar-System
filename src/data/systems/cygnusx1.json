@@ -45,6 +45,7 @@
       "color": "#80B0FF",
       "glowColor": "#A0C8FF",
       "binaryMassFraction": 0.653,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A luminous O9.7 Iab blue supergiant and one of the brightest stars in the sky. Its powerful stellar wind feeds a constant stream of gas onto the Cygnus X-1 black hole. Despite being roughly twice as massive as the black hole, the star is slowly being cannibalized by its dark companion.",
       "surfaceTemp": "~30,000 K",

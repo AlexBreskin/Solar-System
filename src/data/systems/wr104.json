@@ -45,6 +45,7 @@
       "color": "#B8D0FF",
       "glowColor": "#C8E0FF",
       "binaryMassFraction": 0.714,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A massive OB companion of roughly 25 solar masses whose powerful stellar wind collides with that of the Wolf-Rayet primary, compressing material into a spiral dust plume that rotates once every 241.5 days. Its greater mass means the barycenter sits closer to it than to the WR star.",
       "surfaceTemp": "~25,000 K",

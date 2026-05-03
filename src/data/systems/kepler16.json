@@ -45,6 +45,7 @@
       "color": "#FF7040",
       "glowColor": "#FF9060",
       "binaryMassFraction": 0.227,
+      "showOrbitRing": true,
       "moons": 0,
       "description": "A small M-type red dwarf star that orbits Kepler-16A every 41 days at a separation of about 0.22 AU. Its much lower mass shifts the binary barycenter noticeably toward Kepler-16A.",
       "surfaceTemp": "3,311 K",
