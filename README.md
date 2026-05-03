@@ -1,5 +1,7 @@
 # Star Systems
 
+**[Live app → alexbreskin.github.io/Solar-System](https://alexbreskin.github.io/Solar-System/)**
+
 An interactive multi-system space simulator built with React, TypeScript, and HTML Canvas. Explore the Solar System and 15 exoplanetary/stellar systems — including black holes, neutron stars, and quasars — with real orbital mechanics, a galaxy map, a planet view with physically-scaled moon layouts, and detailed information for every body.
 
 ## Features
