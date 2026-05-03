@@ -205,7 +205,7 @@ export default function BodyNavigator({
 
   useEffect(() => {
     const body = bodies[selectedBody];
-    if (body?.type === BodyType.Moon && body.parent) {
+    if (body?.parent) {
       setExpandedIds((prev) => {
         if (prev.has(body.parent!)) return prev;
         const next = new Set(prev);
