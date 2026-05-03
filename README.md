@@ -23,11 +23,12 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 - **Binary systems** — bodies with a `binaryMassFraction` orbit their shared barycenter; Pluto/Charon demonstrates this for moons, and Kepler-16 / Alpha Centauri demonstrate it for stellar companions; a barycenter marker is shown in Planet View
 
 ### Galaxy View
-- **Milky Way map** — top-down spiral galaxy with 13 systems plotted at their real approximate galactic coordinates; Sol is the reference point at (0, 0)
+- **Milky Way map** — top-down spiral galaxy with 39 systems plotted at their real approximate galactic coordinates; Sol is the reference point at (0, 0)
 - **Zoom-dependent detail** — three rendering tiers: galaxy scale (≤0.5×, full spiral visible), neighbourhood scale (0.5–8×, spiral fades, star field grows), local scale (>8×, rich star field, distance labels, "Solar neighbourhood" hint)
 - **Improved spiral** — 2 major arms (2000 particles each) + 2 minor arms (800 each) with warm inner / cool outer colouring; dust lane arcs at 8 kly and 22 kly; feathered scatter (15% vs 10%)
-- **System list** — left panel shows all 16 systems sorted by distance from Earth; hover a row to highlight its map marker; click to select and show details
-- **System info panel** — clicking a marker or list row selects the system and shows its name, type badge, distance, and description; "Explore System →" loads it and switches to System View
+- **System list** — left panel shows all systems sorted by distance from Earth; hover a row to highlight its map marker; click to select and show details
+- **System info panel** — clicking a marker or list row selects the system and shows its name, type badge, galactic arm, distance, and description; "Explore System →" loads it and switches to System View
+- **Galactic arm labels** — each system's info panel shows which spiral arm or region it occupies (Orion Spur, Carina–Sagittarius, Perseus, Scutum–Centaurus, Norma, Outer, Galactic Centre, or Halo)
 - **Cluster menu** — when multiple systems overlap at low zoom, clicking shows a popup listing all candidates
 - **Visual differentiation** — stars: gold/white dots; black holes: dark discs with orange glow; neutron stars: blue-white points; pulsing ring around selected system
 - **Body View and speed controls hidden** — declutters the header when the Galaxy tab is active
@@ -69,6 +70,16 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 | Rigel | B8 blue supergiant + companion | — | Orion's foot; 120,000× the Sun's luminosity |
 | Betelgeuse | M2 red supergiant | — | Orion's shoulder; Great Dimming event 2019–2020 |
 | Deneb | A2 blue-white supergiant | — | One of the most luminous stars in the Milky Way |
+| Eta Carinae | LBV + companion | — | Great Eruption of 1843; one of the most massive stars known |
+| WR 104 | Wolf-Rayet + OB binary | — | Perfect pinwheel nebula; collimated jet may aim at Earth |
+| VY Canis Majoris | M5e red hypergiant | — | One of the largest known stars; would engulf Jupiter's orbit |
+| Mu Cephei | M2 Ia red supergiant | — | Herschel's Garnet Star; 1,000× the Sun's diameter |
+| NGC 3603 | Massive stellar cluster | — | Most massive young cluster in the Milky Way; home of NGC 3603-A1 |
+| Westerlund 1 | Compact stellar cluster | — | Densest known young cluster; hosts a magnetar |
+| Omega Centauri | Globular cluster (halo) | — | Largest globular cluster in the Milky Way; possible stripped dwarf galaxy |
+| 47 Tucanae | Globular cluster (halo) | — | Brightest globular cluster; 25+ millisecond pulsars |
+| Pistol Star | Blue hypergiant (LBV) | — | Among the most luminous stars known; hidden behind galactic dust |
+| SS 433 | Black hole + A supergiant | — | First relativistic-jet source found; jets at 26% the speed of light |
 | Sagittarius A* | Black hole + S2 star | — | Milky Way's central black hole; S2 orbits at 2.7% light speed |
 | M87* | Supermassive black hole | — | First ever imaged black hole; event horizon spans the solar system |
 | Cygnus X-1 | Black hole + blue supergiant | — | One of the first identified black hole candidates; Hawking's lost bet |
@@ -208,4 +219,4 @@ src/
 - **Deterministic particles** — belt particle fields and the galaxy spiral background use a shared seeded RNG (`src/utils/mulberry32.ts`) so layouts are consistent across renders
 - **Distance formatting** — `src/utils/distance.ts` converts AU↔km↔ly; orbital distances default to AU (4 sig figs, km on hover); star info panels show system distance from Earth in light-years (AU on hover)
 - **Exotic objects** — `BodyType.BlackHole`, `BodyType.NeutronStar`, and `BodyType.Quasar` supported; black holes render as a dark disc with an accretion-disk glow; the `ROOT_BODY_TYPES` set replaces hardcoded star checks throughout
-- **Tooling** — Vite for dev and builds; Vitest for tests; 627 tests across 6 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
+- **Tooling** — Vite for dev and builds; Vitest for tests; 787 tests across 6 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style

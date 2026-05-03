@@ -1,0 +1,50 @@
+{
+  "system": {
+    "id": "ngc104",
+    "name": "47 Tucanae",
+    "description": "The second largest globular cluster in the Milky Way and the brightest in the sky, 16,700 light-years away near the Small Magellanic Cloud. It packs millions of ancient stars into a sphere just 120 light-years across and is a prime site for millisecond pulsar discovery and exotic stellar encounters.",
+    "starColor": "#FFE090",
+    "displayOrder": 39,
+    "distanceFromEarth": 16700,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/47_Tucanae"
+  },
+  "bodies": {
+    "ngc104": {
+      "id": "ngc104",
+      "name": "47 Tucanae (NGC 104)",
+      "type": "star",
+      "parent": null,
+      "diameter": 20000000,
+      "mass": "7.16 × 10³⁶ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFE090",
+      "glowColor": "#FFE8A0",
+      "moons": 0,
+      "description": "A massive globular cluster of several million stars, highly compressed at the centre where stellar densities are thousands of times greater than in the solar neighbourhood. The cluster contains at least 25 known millisecond pulsars — old neutron stars spun up by accretion from a companion — making it one of the richest pulsar fields known.",
+      "surfaceTemp": "~5,200 K (mean stellar temperature)",
+      "funFact": "A Hubble Space Telescope search for planets in 47 Tucanae found none despite looking at 34,000 stars — suggesting that the metal-poor environment of ancient globular clusters is hostile to planet formation, helping explain why the galaxy's oldest stars may be largely planet-free.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/47_Tucanae"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "ngc104",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "ngc104": 24
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "system": {
+    "id": "vycma",
+    "name": "VY Canis Majoris",
+    "description": "One of the largest and most luminous red hypergiants in the Milky Way, located 3,900 light-years away in Canis Major. If placed at the centre of the Solar System it would engulf Jupiter's orbit. It is surrounded by a complex nebula of ejected material and is expected to explode as a hypernova.",
+    "starColor": "#FF3300",
+    "displayOrder": 34,
+    "distanceFromEarth": 3900,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/VY_Canis_Majoris"
+  },
+  "bodies": {
+    "vycma": {
+      "id": "vycma",
+      "name": "VY Canis Majoris",
+      "type": "star",
+      "parent": null,
+      "diameter": 1973000000,
+      "mass": "3.38 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FF3300",
+      "glowColor": "#FF5522",
+      "moons": 0,
+      "description": "An extreme M5e red hypergiant with a diameter roughly 1,420 times the Sun's — one of the largest stars known. Its surface pulsates irregularly, and it loses mass at catastrophic rates through asymmetric eruptions that have built up a complex surrounding nebula. It will end its life in a hypernova or direct collapse.",
+      "surfaceTemp": "3,490 K",
+      "funFact": "VY Canis Majoris is so large that light takes over six hours to travel from one side to the other — yet it fits inside a single pixel at the scale of the Solar System diagram.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/VY_Canis_Majoris"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "vycma",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "vycma": 38
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
+  }
+}

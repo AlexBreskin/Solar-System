@@ -1,0 +1,50 @@
+{
+  "system": {
+    "id": "mucephei",
+    "name": "Mu Cephei",
+    "description": "Known as Herschel's Garnet Star for its intense ruby-red colour, Mu Cephei is one of the largest and most luminous red supergiants in the Milky Way, about 2,800 light-years away in Cepheus. It lies within the Cepheus OB2 stellar association and is in the late stages of stellar evolution.",
+    "starColor": "#FF4400",
+    "displayOrder": 35,
+    "distanceFromEarth": 2800,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Mu_Cephei"
+  },
+  "bodies": {
+    "mucephei": {
+      "id": "mucephei",
+      "name": "Mu Cephei",
+      "type": "star",
+      "parent": null,
+      "diameter": 1440000000,
+      "mass": "3.82 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FF4400",
+      "glowColor": "#FF6633",
+      "moons": 0,
+      "description": "An M2 Ia red supergiant about 1,035 times the diameter of the Sun, so luminous that it radiates roughly 340,000 times the Sun's total power. Its dramatic red-garnet colour is caused by titanium oxide absorption in its cool, extended atmosphere. It is a semi-regular variable and is approaching the end of its life.",
+      "surfaceTemp": "3,690 K",
+      "funFact": "Sir William Herschel described Mu Cephei as 'a very fine deep garnet-coloured star' in 1783 — giving it the nickname Herschel's Garnet Star that astronomers still use today.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Mu_Cephei"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "mucephei",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "mucephei": 36
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
+  }
+}

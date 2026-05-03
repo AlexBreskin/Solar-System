@@ -1,0 +1,76 @@
+{
+  "system": {
+    "id": "wr104",
+    "name": "WR 104",
+    "description": "A Wolf-Rayet binary system 5,200 light-years away in Sagittarius, famous for its perfect pinwheel nebula. The system's orbital plane may point almost directly at Earth, raising speculation about gamma-ray burst exposure — though most researchers consider the risk negligible.",
+    "starColor": "#FF8040",
+    "displayOrder": 33,
+    "distanceFromEarth": 5200,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/WR_104"
+  },
+  "bodies": {
+    "wr104": {
+      "id": "wr104",
+      "name": "WR 104 (Ve 2-45)",
+      "type": "star",
+      "parent": null,
+      "diameter": 5600000,
+      "mass": "1.99 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FF8040",
+      "glowColor": "#FFAA60",
+      "moons": 0,
+      "description": "A WC9d Wolf-Rayet star — the exposed carbon-oxygen core of a massive star that has shed its outer layers through intense stellar winds. Its interaction with the OB companion creates a spiral dust plume as the two winds collide and cool, producing a spectacular rotating pinwheel nebula.",
+      "surfaceTemp": "~45,000 K",
+      "funFact": "WR 104's dust pinwheel is so geometrically perfect that it was used to determine the orbital period with millimetre-precision interferometry — measuring a rotating spiral 200 AU across from 5,200 light-years away.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/WR_104"
+    },
+    "wr104b": {
+      "id": "wr104b",
+      "name": "WR 104 B",
+      "type": "companion",
+      "parent": "wr104",
+      "diameter": 20900000,
+      "mass": "4.97 × 10³¹ kg",
+      "distanceFromParent": 1.4,
+      "orbitalPeriod": 241.5,
+      "rotationPeriod": 0,
+      "eccentricity": 0.06,
+      "inclination": 0,
+      "color": "#B8D0FF",
+      "glowColor": "#C8E0FF",
+      "binaryMassFraction": 0.714,
+      "moons": 0,
+      "description": "A massive OB companion of roughly 25 solar masses whose powerful stellar wind collides with that of the Wolf-Rayet primary, compressing material into a spiral dust plume that rotates once every 241.5 days. Its greater mass means the barycenter sits closer to it than to the WR star.",
+      "surfaceTemp": "~25,000 K",
+      "funFact": "The WR 104 pinwheel was one of the first stellar wind-collision spirals ever imaged directly — the Keck telescope resolved it as a spinning dust corkscrew that expands at roughly 1,000 km/s.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/WR_104"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "wr104",
+      "children": [
+        { "id": "wr104b", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "wr104": 14,
+      "wr104b": 20
+    },
+    "moonOrbitalRadii": {
+      "wr104b": 160
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 0.25,
+    "beltConfigs": {}
+  }
+}

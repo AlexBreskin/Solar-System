@@ -1,0 +1,50 @@
+{
+  "system": {
+    "id": "westerlund1",
+    "name": "Westerlund 1",
+    "description": "The most massive and compact young stellar cluster in the Milky Way, 15,000 light-years away in Ara near the Scutum-Centaurus arm. It contains an extraordinary concentration of evolved massive stars — Wolf-Rayet stars, yellow and red hypergiants — and hosts a magnetar, the remnant of a former supernova.",
+    "starColor": "#FFCC50",
+    "displayOrder": 37,
+    "distanceFromEarth": 15000,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Westerlund_1"
+  },
+  "bodies": {
+    "westerlund1": {
+      "id": "westerlund1",
+      "name": "Wd1-W4",
+      "type": "star",
+      "parent": null,
+      "diameter": 973000000,
+      "mass": "6.96 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFCC50",
+      "glowColor": "#FFD870",
+      "moons": 0,
+      "description": "A yellow hypergiant variable star in the Westerlund 1 cluster — one of roughly a dozen yellow and red hypergiants packed into this extraordinary 1-million-solar-mass cluster. The cluster also hosts the magnetar CXO J164710.2-455216, a strongly magnetised neutron star formed in a recent supernova.",
+      "surfaceTemp": "~7,400 K",
+      "funFact": "Westerlund 1 is so massive it may have formed 100,000 stars in a single burst less than 5 million years ago — and yet it all fits within a region smaller than 10 light-years across, making it the densest known young star cluster in the Milky Way.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Westerlund_1"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "westerlund1",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "westerlund1": 30
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
+  }
+}

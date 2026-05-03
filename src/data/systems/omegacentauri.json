@@ -1,0 +1,50 @@
+{
+  "system": {
+    "id": "omegacentauri",
+    "name": "Omega Centauri",
+    "description": "The largest and most massive globular cluster in the Milky Way, 17,000 light-years away in Centaurus. It contains roughly 10 million stars spanning 150 light-years, and may be the stripped nucleus of a dwarf galaxy absorbed long ago. It is thought to harbour an intermediate-mass black hole at its centre.",
+    "starColor": "#FFE890",
+    "displayOrder": 38,
+    "distanceFromEarth": 17000,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Omega_Centauri"
+  },
+  "bodies": {
+    "omegacentauri": {
+      "id": "omegacentauri",
+      "name": "Omega Centauri",
+      "type": "star",
+      "parent": null,
+      "diameter": 20000000,
+      "mass": "7.94 × 10³⁶ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFE890",
+      "glowColor": "#FFF0A0",
+      "moons": 0,
+      "description": "A globular cluster of roughly 10 million stars, visible to the naked eye as a blurry star in the southern sky. Unlike most globular clusters it contains multiple stellar populations of different ages and metallicities, strongly suggesting it is the remnant core of a dwarf galaxy stripped by the Milky Way's gravity over billions of years.",
+      "surfaceTemp": "~5,500 K (mean stellar temperature)",
+      "funFact": "Omega Centauri may harbour an intermediate-mass black hole of ~40,000 solar masses at its centre — a class of black holes so rare that this would be only the second ever confirmed, bridging the gap between stellar and supermassive black holes.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Omega_Centauri"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "omegacentauri",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "omegacentauri": 24
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
+  }
+}

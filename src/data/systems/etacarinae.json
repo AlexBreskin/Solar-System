@@ -1,0 +1,76 @@
+{
+  "system": {
+    "id": "etacarinae",
+    "name": "Eta Carinae",
+    "description": "A colossal luminous blue variable 7,500 light-years away in the Carina Nebula. The primary star is one of the most massive and luminous known, and the system famously produced the Great Eruption of 1843 — temporarily making it the second-brightest star in the sky.",
+    "starColor": "#FFD890",
+    "displayOrder": 32,
+    "distanceFromEarth": 7500,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Eta_Carinae"
+  },
+  "bodies": {
+    "etacarinae": {
+      "id": "etacarinae",
+      "name": "Eta Carinae A",
+      "type": "star",
+      "parent": null,
+      "diameter": 140000000,
+      "mass": "2.98 × 10³² kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFD880",
+      "glowColor": "#FFE890",
+      "moons": 0,
+      "description": "A luminous blue variable of roughly 150 solar masses — one of the most massive and luminous stars known. It is surrounded by the Homunculus Nebula, a bipolar cloud of gas ejected during the Great Eruption of 1843, when the star temporarily became the second-brightest in the sky without exploding.",
+      "surfaceTemp": "~10,000–40,000 K (highly variable)",
+      "funFact": "During the Great Eruption of 1843, Eta Carinae released as much energy in 10 years as the Sun emits in 10 million years — yet it survived. It is one of the best candidates for the next hypernova in our galaxy.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Eta_Carinae"
+    },
+    "etacarinaeb": {
+      "id": "etacarinaeb",
+      "name": "Eta Carinae B",
+      "type": "companion",
+      "parent": "etacarinae",
+      "diameter": 42000000,
+      "mass": "5.97 × 10³¹ kg",
+      "distanceFromParent": 16.64,
+      "orbitalPeriod": 2023.7,
+      "rotationPeriod": 0,
+      "eccentricity": 0.9,
+      "inclination": 130,
+      "color": "#B0C8FF",
+      "glowColor": "#C0D8FF",
+      "binaryMassFraction": 0.167,
+      "moons": 0,
+      "description": "A massive companion star — likely an O supergiant or Wolf-Rayet star of roughly 30 solar masses — on a highly eccentric 5.54-year orbit. At closest approach it plunges through Eta Carinae A's dense stellar wind, producing dramatic X-ray flares observable from Earth.",
+      "surfaceTemp": "~37,000 K",
+      "funFact": "At periastron Eta Carinae B dives so deep into the primary's wind that it triggers a predictable X-ray minimum visible from Earth every 5.54 years — a clockwork heartbeat from 7,500 light-years away.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Eta_Carinae#Stellar_companion"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "etacarinae",
+      "children": [
+        { "id": "etacarinaeb", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "etacarinae": 26,
+      "etacarinaeb": 12
+    },
+    "moonOrbitalRadii": {
+      "etacarinaeb": 200
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1.5,
+    "beltConfigs": {}
+  }
+}

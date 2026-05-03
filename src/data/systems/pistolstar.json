@@ -1,0 +1,50 @@
+{
+  "system": {
+    "id": "pistolstar",
+    "name": "Pistol Star",
+    "description": "One of the most luminous stars in the Milky Way, located about 25,000 light-years away near the galactic centre in the Quintuplet Cluster. It radiates roughly 1.6 million times the Sun's luminosity and has shed enormous shells of gas that form the Pistol Nebula around it.",
+    "starColor": "#FFE880",
+    "displayOrder": 40,
+    "distanceFromEarth": 25000,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Pistol_Star"
+  },
+  "bodies": {
+    "pistolstar": {
+      "id": "pistolstar",
+      "name": "Pistol Star",
+      "type": "star",
+      "parent": null,
+      "diameter": 417000000,
+      "mass": "5.97 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#FFE880",
+      "glowColor": "#FFF098",
+      "moons": 0,
+      "description": "A blue hypergiant / luminous blue variable in the Quintuplet Cluster near the Galactic Centre, with a luminosity estimated at 1.6 million Suns. Dense interstellar dust hides it from optical telescopes; it was discovered only in infrared by HST in 1997. It has ejected vast shells of gas now forming the Pistol Nebula.",
+      "surfaceTemp": "~11,800 K",
+      "funFact": "The Pistol Star was once thought to be the most luminous star in the galaxy at up to 10 million Suns — later revisions reduced the estimate, but it remains among the top contenders, outshining everything else visible from Earth from behind 25,000 light-years of dust.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Pistol_Star"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "pistolstar",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "pistolstar": 22
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
+  }
+}

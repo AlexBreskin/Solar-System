@@ -1,0 +1,50 @@
+{
+  "system": {
+    "id": "ngc3603",
+    "name": "NGC 3603",
+    "description": "One of the most massive young stellar clusters in the Milky Way, 22,000 light-years away in the Carina arm. Its dense core contains some of the most massive stars known, including the WN6h giant NGC 3603-A1 — one of the heaviest stars ever measured at over 100 solar masses.",
+    "starColor": "#A0B8FF",
+    "displayOrder": 36,
+    "distanceFromEarth": 22000,
+    "rootType": "star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/NGC_3603"
+  },
+  "bodies": {
+    "ngc3603": {
+      "id": "ngc3603",
+      "name": "NGC 3603-A1",
+      "type": "star",
+      "parent": null,
+      "diameter": 50000000,
+      "mass": "2.31 × 10³² kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#90A8FF",
+      "glowColor": "#A0B8FF",
+      "moons": 0,
+      "description": "A WN6h Wolf-Rayet supergiant of roughly 116 solar masses — one of the most massive stars ever measured. It sits at the heart of the densely packed NGC 3603 star cluster, which formed in a single burst of star formation and contains the highest concentration of massive stars in the Milky Way.",
+      "surfaceTemp": "~42,000 K",
+      "funFact": "The NGC 3603 cluster forms new stars so rapidly that its core luminosity rivals that of 30 Doradus in the Large Magellanic Cloud — Hubble images revealed hundreds of massive stars crammed into a region just a few light-years across.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/NGC_3603"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "ngc3603",
+      "children": []
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "ngc3603": 20
+    },
+    "moonOrbitalRadii": {},
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 1,
+    "beltConfigs": {}
+  }
+}

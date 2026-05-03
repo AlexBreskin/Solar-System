@@ -1,0 +1,76 @@
+{
+  "system": {
+    "id": "ss433",
+    "name": "SS 433",
+    "description": "A spectacular microquasar 17,900 light-years away in Aquila — a black hole devouring a companion supergiant and firing twin jets of plasma at a quarter of the speed of light in opposite directions. It was the first object discovered to have relativistic jets, making it a landmark in high-energy astrophysics.",
+    "starColor": "#FF6030",
+    "displayOrder": 41,
+    "distanceFromEarth": 17900,
+    "rootType": "black-hole",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/SS_433"
+  },
+  "bodies": {
+    "ss433": {
+      "id": "ss433",
+      "name": "SS 433 (Black Hole)",
+      "type": "black-hole",
+      "parent": null,
+      "diameter": 60,
+      "mass": "2.15 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#111111",
+      "glowColor": "#FF6020",
+      "moons": 0,
+      "description": "A stellar-mass black hole of roughly 10.8 solar masses at the heart of the SS 433 X-ray binary. It accretes material from its companion at a supercritical rate, launching two narrow jets of plasma in opposite directions at 0.26 times the speed of light — tilted 20° from the orbital axis and precessing like a spinning top on a 162.5-day cycle.",
+      "surfaceTemp": "N/A (event horizon)",
+      "funFact": "SS 433's precessing jets drew double-helix patterns of X-ray-emitting plasma across 300 light-years inside the supernova remnant W50 — making it look like a cosmic corkscrew when viewed in radio and X-ray light.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/SS_433"
+    },
+    "ss433companion": {
+      "id": "ss433companion",
+      "name": "SS 433 Companion",
+      "type": "companion",
+      "parent": "ss433",
+      "diameter": 15300000,
+      "mass": "2.19 × 10³¹ kg",
+      "distanceFromParent": 0.3,
+      "orbitalPeriod": 13.08,
+      "rotationPeriod": 13.08,
+      "eccentricity": 0.05,
+      "inclination": 79,
+      "color": "#A8C0FF",
+      "glowColor": "#B8D0FF",
+      "binaryMassFraction": 0.505,
+      "moons": 0,
+      "description": "An evolved A-type supergiant overflowing its Roche lobe and dumping material onto the black hole at several times the Eddington limit. This supercritical accretion rate is what drives the relativistic jet outflows — material that cannot fall onto the black hole fast enough is instead launched as collimated plasma streams at 0.26c.",
+      "surfaceTemp": "~9,000 K",
+      "funFact": "The companion's orbital motion causes the jet emission lines to Doppler shift on a 13-day cycle — allowing astronomers to map the binary orbit entirely from spectroscopy, even though the system is hidden behind tens of thousands of light-years of dust.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/SS_433"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "ss433",
+      "children": [
+        { "id": "ss433companion", "children": [] }
+      ]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "ss433": 10,
+      "ss433companion": 18
+    },
+    "moonOrbitalRadii": {
+      "ss433companion": 150
+    },
+    "speedMultiplier": 1,
+    "moonSpeedMultiplier": 0.025,
+    "beltConfigs": {}
+  }
+}

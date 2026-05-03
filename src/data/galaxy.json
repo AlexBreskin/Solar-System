@@ -231,6 +231,86 @@
       "galacticArmHint": "orion",
       "distanceFromCentreKly": 25.87,
       "rootType": "star"
+    },
+    {
+      "id": "etacarinae",
+      "galacticX": -7152,
+      "galacticY": -2253,
+      "galacticArmHint": "sagittarius",
+      "distanceFromCentreKly": 24.8,
+      "rootType": "star"
+    },
+    {
+      "id": "wr104",
+      "galacticX": 182,
+      "galacticY": -5197,
+      "galacticArmHint": "sagittarius",
+      "distanceFromCentreKly": 20.8,
+      "rootType": "star"
+    },
+    {
+      "id": "vycma",
+      "galacticX": -3351,
+      "galacticY": 1974,
+      "galacticArmHint": "perseus",
+      "distanceFromCentreKly": 28.2,
+      "rootType": "star"
+    },
+    {
+      "id": "mucephei",
+      "galacticX": 2773,
+      "galacticY": 385,
+      "galacticArmHint": "perseus",
+      "distanceFromCentreKly": 26.5,
+      "rootType": "star"
+    },
+    {
+      "id": "ngc3603",
+      "galacticX": -20459,
+      "galacticY": -8087,
+      "galacticArmHint": "sagittarius",
+      "distanceFromCentreKly": 27.2,
+      "rootType": "star"
+    },
+    {
+      "id": "westerlund1",
+      "galacticX": -5242,
+      "galacticY": -14053,
+      "galacticArmHint": "scutum",
+      "distanceFromCentreKly": 13.0,
+      "rootType": "star"
+    },
+    {
+      "id": "omegacentauri",
+      "galacticX": -12761,
+      "galacticY": -10330,
+      "galacticArmHint": "halo",
+      "distanceFromCentreKly": 20.2,
+      "rootType": "star"
+    },
+    {
+      "id": "ngc104",
+      "galacticX": -9585,
+      "galacticY": -6922,
+      "galacticArmHint": "halo",
+      "distanceFromCentreKly": 21.4,
+      "rootType": "star"
+    },
+    {
+      "id": "pistolstar",
+      "galacticX": 66,
+      "galacticY": -24999,
+      "galacticArmHint": "core",
+      "distanceFromCentreKly": 1.0,
+      "rootType": "star"
+    },
+    {
+      "id": "ss433",
+      "galacticX": 11416,
+      "galacticY": -13784,
+      "galacticArmHint": "sagittarius",
+      "distanceFromCentreKly": 16.7,
+      "rootType": "black-hole"
     }
   ]
 }

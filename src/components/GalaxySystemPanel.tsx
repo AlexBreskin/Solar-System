@@ -1,8 +1,20 @@
 import { useMemo } from 'react';
 import { STAR_SYSTEMS } from '../data/systems';
 import { GALAXY_DATA, GALACTIC_IDS } from '../data/galaxy';
+import type { GalacticArmHint } from '../types/galaxy';
 import { formatLY } from '../utils/distance';
 import './GalaxySystemPanel.css';
+
+const ARM_DISPLAY_NAMES: Record<GalacticArmHint, string> = {
+  orion: 'Orion Spur',
+  sagittarius: 'Carina–Sagittarius Arm',
+  scutum: 'Scutum–Centaurus Arm',
+  norma: 'Norma Arm',
+  perseus: 'Perseus Arm',
+  outer: 'Outer Arm',
+  core: 'Galactic Centre',
+  halo: 'Galactic Halo',
+};
 
 interface GalaxySystemPanelProps {
   systemId: string | null;
@@ -101,6 +113,11 @@ export default function GalaxySystemPanel({ systemId, onExplore }: GalaxySystemP
       )}
       {meta.description && (
         <p className="gsp-description">{meta.description}</p>
+      )}
+      {galacticEntry?.galacticArmHint && (
+        <div className="gsp-arm-hint">
+          {ARM_DISPLAY_NAMES[galacticEntry.galacticArmHint as GalacticArmHint]}
+        </div>
       )}
       {isExtragalactic && (
         <p className="gsp-note">Beyond the Milky Way — not visible on the galaxy map.</p>
