@@ -42,7 +42,7 @@
       "distanceFromParent": 115,
       "orbitalPeriod": 318430,
       "rotationPeriod": 1,
-      "eccentricity": 0.10,
+      "eccentricity": 0.1,
       "inclination": 66,
       "color": "#A09080",
       "moons": 0,
@@ -51,13 +51,34 @@
       "funFact": "Fomalhaut b was officially named 'Dagon' by the IAU in 2015, after a Semitic deity associated with the sea — but its very existence as a planet is still disputed, making it one of the most enigmatic objects in exoplanet science.",
       "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7091/fomalhaut-b/",
       "wikipediaUrl": "https://en.wikipedia.org/wiki/Fomalhaut_b"
+    },
+    "fomalhaut-ring": {
+      "id": "fomalhaut-ring",
+      "name": "Fomalhaut Debris Ring",
+      "type": "belt",
+      "parent": "fomalhaut",
+      "diameter": 0,
+      "mass": "Unknown",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 66,
+      "moons": 0,
+      "color": "#A8B8CC",
+      "glowColor": "#B8C8DC",
+      "description": "A narrow, bright ring of dust and debris encircling Fomalhaut at 133–158 AU — one of the first circumstellar disks ever photographed in visible light by the Hubble Space Telescope. The ring's sharp inner edge and slight offset from the star suggest that at least one planet is gravitationally shepherding the material, sweeping the interior clear.",
+      "funFact": "The Fomalhaut ring is so narrow and geometrically perfect that it more closely resembles Saturn's rings than a typical debris disk. Its inner boundary is razor-sharp — a hallmark of an unseen planet carving a gravitational boundary.",
+      "nasaUrl": "https://exoplanets.nasa.gov/exoplanet-catalog/7091/fomalhaut-b/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Fomalhaut#Debris_disk"
     }
   },
   "hierarchy": [
     {
       "id": "fomalhaut",
       "children": [
-        { "id": "fomalhautb", "children": [] }
+        { "id": "fomalhautb", "children": [] },
+        { "id": "fomalhaut-ring", "children": [] }
       ]
     }
   ],
@@ -72,6 +93,14 @@
     "moonOrbitalRadii": {},
     "speedMultiplier": 700,
     "moonSpeedMultiplier": 1,
-    "beltConfigs": {}
+    "beltConfigs": {
+      "fomalhaut-ring": {
+        "innerRadius": 208,
+        "outerRadius": 248,
+        "particleCount": 320,
+        "seed": 61843,
+        "color": "#A8B8CC"
+      }
+    }
   }
 }

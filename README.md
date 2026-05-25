@@ -132,6 +132,7 @@ Output goes to `dist/`.
 | Action              | Effect                                  |
 | ------------------- | --------------------------------------- |
 | Scroll              | Zoom toward cursor                      |
+| +/− buttons         | Zoom in / zoom out (0.3× – 8×)          |
 | Drag                | Pan the view                            |
 | Click body          | Select, zoom in, and follow with camera |
 | Double-click body   | Untrack (stop following)                |
@@ -144,6 +145,7 @@ Output goes to `dist/`.
 | Action                    | Effect                                          |
 | ------------------------- | ----------------------------------------------- |
 | Scroll                    | Zoom                                            |
+| +/− buttons               | Zoom in / zoom out (0.2× – 8×)                  |
 | Drag                      | Pan                                             |
 | Click body                | Select                                          |
 | Hover                     | Highlight in canvas and navigator               |
@@ -155,6 +157,7 @@ Output goes to `dist/`.
 | Action                    | Effect                                             |
 | ------------------------- | -------------------------------------------------- |
 | Scroll                    | Zoom (0.1× – 100×)                                 |
+| +/− buttons               | Zoom in / zoom out (0.1× – 100×)                   |
 | Drag                      | Pan                                                |
 | Click system marker       | Select system and show info panel                  |
 | Click overlapping markers | Show cluster menu to pick a system                 |
@@ -227,4 +230,4 @@ src/
 - **Deterministic particles** — belt particle fields and the galaxy spiral background use a shared seeded RNG (`src/utils/mulberry32.ts`) so layouts are consistent across renders
 - **Distance formatting** — `src/utils/distance.ts` converts AU↔km↔ly; orbital distances default to AU (4 sig figs, km on hover); star info panels show system distance from Earth in light-years (AU on hover)
 - **Exotic objects** — `BodyType.BlackHole`, `BodyType.NeutronStar`, and `BodyType.Quasar` supported; black holes render as a dark disc with an accretion-disk glow; the `ROOT_BODY_TYPES` set replaces hardcoded star checks throughout
-- **Tooling** — Vite for dev and builds; Vitest for tests; 787 tests across 6 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
+- **Tooling** — Vite for dev and builds; Vitest for tests; 794 tests across 7 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
