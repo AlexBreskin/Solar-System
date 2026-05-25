@@ -29,16 +29,8 @@ jobs:
 
       - run: npm test
 
-      - name: Start dev server
-        run: npm start &
-        env:
-          CI: true
-
-      - name: Wait for server
-        run: npx wait-on http://localhost:5173/Solar-System --timeout 30000
-
       - name: Run Cypress
-        run: npm run cypress:run
+        run: npx start-server-and-test 'npm start' http://localhost:5173/Solar-System/ 'npm run cypress:run'
 
       - run: npm run build
 
