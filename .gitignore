@@ -31,5 +31,12 @@ Thumbs.db
 vite.config.js
 vite.config.d.ts
 
+# Cypress generated artifacts
+cypress/screenshots/
+cypress/videos/
+
+# Test coverage output
+coverage/
+
 # Other files
 Todos/
