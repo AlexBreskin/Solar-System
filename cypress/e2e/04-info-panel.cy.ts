@@ -10,7 +10,9 @@ describe("Info Panel", () => {
   });
 
   it("shows NASA link for the Sun", () => {
-    cy.get(".ext-link-active .nasa-badge").should("be.visible");
+    cy.get(".ext-link-active .nasa-badge")
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("shows Wikipedia link for the Sun", () => {
