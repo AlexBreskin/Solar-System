@@ -17,6 +17,18 @@ export interface GalacticSystemEntry {
   rootType: string;
 }
 
+export interface GalaxyRegion {
+  id: string;
+  name: string;
+  labelX: number;
+  labelY: number;
+  color: string;
+  description: string;
+  funFact: string;
+  wikipediaUrl?: string;
+}
+
 export interface GalaxyData {
   systems: GalacticSystemEntry[];
+  regions: GalaxyRegion[];
 }

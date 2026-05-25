@@ -36,6 +36,7 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 - **System list** — left panel shows all systems sorted by distance from Earth; hover a row to highlight its map marker; click to select and show details
 - **System info panel** — clicking a marker or list row selects the system and shows its name, type badge, galactic arm, distance, and description; "Explore System →" loads it and switches to System View
 - **Galactic arm labels** — each system's info panel shows which spiral arm or region it occupies (Orion Spur, Carina–Sagittarius, Perseus, Scutum–Centaurus, Norma, Outer, Galactic Centre, or Halo)
+- **Clickable region labels** — 8 galactic regions are rendered as pill labels on the galaxy map (visible at zoom ≤ 6×); clicking one shows a description, fun fact, and Wikipedia link for that region; selecting a region clears the system selection and vice versa
 - **Cluster menu** — when multiple systems overlap at low zoom, clicking shows a popup listing all candidates
 - **Visual differentiation** — stars: gold/white dots; black holes: dark discs with orange glow; neutron stars: blue-white points; pulsing ring around selected system
 - **Body View and speed controls hidden** — declutters the header when the Galaxy tab is active
@@ -160,6 +161,7 @@ Output goes to `dist/`.
 | +/− buttons               | Zoom in / zoom out (0.1× – 100×)                   |
 | Drag                      | Pan                                                |
 | Click system marker       | Select system and show info panel                  |
+| Click region label        | Select galactic region and show info panel         |
 | Click overlapping markers | Show cluster menu to pick a system                 |
 | "Explore System →" button | Load the selected system and switch to System View |
 | Click row in left panel   | Select system and highlight marker                 |

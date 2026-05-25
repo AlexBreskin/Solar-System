@@ -4,9 +4,10 @@ import type { GalaxyMarker } from "../simulation/galaxySimulation";
 import {
   drawGalaxyBackground,
   drawSystemMarkers,
+  drawRegionLabels,
 } from "../renderers/galaxyRenderer";
 import { STAR_SYSTEMS } from "../data/systems";
-import { GALAXY_DATA } from "../data/galaxy";
+import { GALAXY_DATA, GALAXY_REGIONS } from "../data/galaxy";
 import { useZoomControls } from "../hooks/useZoomControls";
 import ZoomControls from "./ZoomControls";
 import "./GalaxyCanvas.css";
@@ -19,8 +20,10 @@ const INITIAL_PAN_Y = (26000 / 2) * GALAXY_SCALE * INITIAL_ZOOM;
 interface GalaxyCanvasProps {
   selectedSystem: string | null;
   hoveredSystem: string | null;
+  selectedRegion: string | null;
   onSelectSystem: (id: string) => void;
   onHoverSystem: (id: string | null) => void;
+  onSelectRegion: (id: string | null) => void;
 }
 
 interface PanState {
@@ -69,8 +72,10 @@ function rootTypeIcon(rootType: string): string {
 export default function GalaxyCanvas({
   selectedSystem,
   hoveredSystem,
+  selectedRegion,
   onSelectSystem,
   onHoverSystem,
+  onSelectRegion,
 }: GalaxyCanvasProps): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -83,6 +88,11 @@ export default function GalaxyCanvas({
   const sim = simRef.current;
 
   const [clusterMenu, setClusterMenu] = useState<ClusterMenu | null>(null);
+  const [showRegions, setShowRegions] = useState(false);
+  const hoveredRegionRef = useRef<string | null>(null);
+  const selectedSystemRef = useRef(selectedSystem);
+  const selectedRegionRef = useRef(selectedRegion);
+  const showRegionsRef = useRef(showRegions);
 
   const animRef = useRef<number | null>(null);
   const sizeRef = useRef({ w: 0, h: 0 });
@@ -143,6 +153,14 @@ export default function GalaxyCanvas({
   }, [sim, hoveredSystem]);
 
   useEffect(() => {
+    selectedSystemRef.current = selectedSystem;
+  }, [selectedSystem]);
+
+  useEffect(() => {
+    selectedRegionRef.current = selectedRegion;
+  }, [selectedRegion]);
+
+  useEffect(() => {
     const bgCanvas = bgCanvasRef.current!;
     const topCanvas = topCanvasRef.current!;
     const bgCtx = bgCanvas.getContext("2d")!;
@@ -191,11 +209,25 @@ export default function GalaxyCanvas({
       topCtx.save();
       topCtx.scale(dpr, dpr);
       topCtx.clearRect(0, 0, w, h);
+      if (showRegionsRef.current) {
+        drawRegionLabels(
+          topCtx,
+          GALAXY_REGIONS,
+          hoveredRegionRef.current,
+          selectedRegionRef.current,
+          cx,
+          cy,
+          pan.panX,
+          pan.panY,
+          scale,
+          pan.zoom,
+        );
+      }
       drawSystemMarkers(
         topCtx,
         sim.markers,
         sim.hoveredId,
-        selectedSystem,
+        selectedSystemRef.current,
         cx,
         cy,
         pan.panX,
@@ -211,7 +243,7 @@ export default function GalaxyCanvas({
     return () => {
       if (animRef.current !== null) cancelAnimationFrame(animRef.current);
     };
-  }, [sim, selectedSystem]);
+  }, [sim]);
 
   const getWorldCoords = useCallback((canvasX: number, canvasY: number) => {
     const { w, h } = sizeRef.current;
@@ -229,6 +261,14 @@ export default function GalaxyCanvas({
       const { worldX, worldY, scale } = getWorldCoords(canvasX, canvasY);
       const hitRadiusLy = 24 / scale;
       return sim.hitTest(worldX, worldY, hitRadiusLy);
+    },
+    [sim, getWorldCoords],
+  );
+
+  const hitTestRegion = useCallback(
+    (canvasX: number, canvasY: number) => {
+      const { worldX, worldY, scale } = getWorldCoords(canvasX, canvasY);
+      return sim.hitTestRegion(worldX, worldY, 48 / scale);
     },
     [sim, getWorldCoords],
   );
@@ -253,10 +293,17 @@ export default function GalaxyCanvas({
         const hit = hitTest(x, y);
         sim.setHovered(hit);
         onHoverSystem(hit);
-        canvas.style.cursor = hit ? "pointer" : "grab";
+        if (!hit) {
+          const region = showRegionsRef.current ? hitTestRegion(x, y) : null;
+          hoveredRegionRef.current = region?.id ?? null;
+          canvas.style.cursor = region ? "pointer" : "grab";
+        } else {
+          hoveredRegionRef.current = null;
+          canvas.style.cursor = "pointer";
+        }
       }
     },
-    [hitTest, sim, onHoverSystem],
+    [hitTest, hitTestRegion, sim, onHoverSystem],
   );
 
   const handleMouseDown = useCallback(
@@ -291,20 +338,34 @@ export default function GalaxyCanvas({
         return;
 
       const hit = hitTest(x, y);
-      if (!hit) return;
+      if (hit) {
+        const { worldX, worldY, scale } = getWorldCoords(x, y);
+        const hitRadiusLy = 24 / scale;
+        const nearby = sim.getSystemsNear(worldX, worldY, hitRadiusLy);
+        if (nearby.length >= 2) {
+          setClusterMenu({ x, y, systems: nearby });
+        } else {
+          onSelectSystem(hit);
+          if (selectedRegionRef.current !== null) onSelectRegion(null);
+          setClusterMenu(null);
+        }
+        return;
+      }
 
-      const { worldX, worldY, scale } = getWorldCoords(x, y);
-      const hitRadiusLy = 24 / scale;
-      const nearby = sim.getSystemsNear(worldX, worldY, hitRadiusLy);
-
-      if (nearby.length >= 2) {
-        setClusterMenu({ x, y, systems: nearby });
-      } else {
-        onSelectSystem(hit);
+      const region = showRegionsRef.current ? hitTestRegion(x, y) : null;
+      if (region) {
+        onSelectRegion(region.id);
         setClusterMenu(null);
       }
     },
-    [hitTest, getWorldCoords, sim, onSelectSystem],
+    [
+      hitTest,
+      hitTestRegion,
+      getWorldCoords,
+      sim,
+      onSelectSystem,
+      onSelectRegion,
+    ],
   );
 
   const handleWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
@@ -330,6 +391,7 @@ export default function GalaxyCanvas({
   const handleMouseLeave = useCallback(() => {
     sim.setHovered(null);
     onHoverSystem(null);
+    hoveredRegionRef.current = null;
     dragRef.current.dragging = false;
   }, [sim, onHoverSystem]);
 
@@ -379,6 +441,17 @@ export default function GalaxyCanvas({
           ))}
         </div>
       )}
+      <button
+        className={`galaxy-regions-toggle${showRegions ? " active" : ""}`}
+        onClick={() => {
+          const next = !showRegionsRef.current;
+          showRegionsRef.current = next;
+          setShowRegions(next);
+        }}
+        title="Toggle galactic region labels"
+      >
+        ✦ Regions
+      </button>
       <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
       <div className="galaxy-hint">
         Scroll to zoom · Drag to pan · Click to select

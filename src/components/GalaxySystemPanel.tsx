@@ -1,9 +1,76 @@
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { STAR_SYSTEMS } from "../data/systems";
-import { GALAXY_DATA, GALACTIC_IDS } from "../data/galaxy";
+import { GALAXY_DATA, GALACTIC_IDS, GALAXY_REGIONS } from "../data/galaxy";
 import type { GalacticArmHint } from "../types/galaxy";
 import { formatLY } from "../utils/distance";
 import "./GalaxySystemPanel.css";
+
+const ARROW_SVG = (
+  <svg
+    className="ext-arrow"
+    viewBox="0 0 10 10"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M2 8L8 2M8 2H4M8 2V6"
+      stroke="currentColor"
+      strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+function ExternalLink({
+  href,
+  badge,
+  label,
+}: {
+  href: string | undefined;
+  badge: ReactNode;
+  label: string;
+}): JSX.Element {
+  if (href) {
+    return (
+      <a
+        className="ext-link ext-link-active"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {badge}
+        <span className="ext-link-label">{label}</span>
+        {ARROW_SVG}
+      </a>
+    );
+  }
+  return (
+    <span className="ext-link ext-link-none">
+      {badge}
+      <span className="ext-link-label">Not available</span>
+    </span>
+  );
+}
+
+function renderArmHint(
+  hint: GalacticArmHint,
+  onSelectRegion: ((id: string) => void) | undefined,
+): JSX.Element {
+  const name = ARM_DISPLAY_NAMES[hint];
+  if (onSelectRegion) {
+    return (
+      <button
+        className="gsp-arm-hint gsp-arm-hint--clickable"
+        onClick={() => onSelectRegion(hint)}
+        title={`View ${name} region details`}
+      >
+        {name} ›
+      </button>
+    );
+  }
+  return <div className="gsp-arm-hint">{name}</div>;
+}
 
 const ARM_DISPLAY_NAMES: Record<GalacticArmHint, string> = {
   orion: "Orion Spur",
@@ -18,7 +85,9 @@ const ARM_DISPLAY_NAMES: Record<GalacticArmHint, string> = {
 
 interface GalaxySystemPanelProps {
   systemId: string | null;
+  regionId: string | null;
   onExplore: (id: string) => void;
+  onSelectRegion?: (id: string) => void;
 }
 
 const ROOT_TYPE_LABELS: Record<string, string> = {
@@ -37,7 +106,9 @@ const ROOT_TYPE_ICONS: Record<string, string> = {
 
 export default function GalaxySystemPanel({
   systemId,
+  regionId,
   onExplore,
+  onSelectRegion,
 }: GalaxySystemPanelProps): JSX.Element {
   const rootTypeById = useMemo(() => {
     const map: Record<string, string> = {};
@@ -50,11 +121,45 @@ export default function GalaxySystemPanel({
     return map;
   }, []);
 
+  if (regionId) {
+    const region = GALAXY_REGIONS.find((r) => r.id === regionId);
+    if (region) {
+      return (
+        <div className="galaxy-system-panel">
+          <div className="gsp-header">
+            <span className="gsp-type-badge gsp-type-badge--region">
+              <span className="gsp-type-icon">✦</span>
+              Galactic Region
+            </span>
+          </div>
+          <div className="gsp-name">{region.name}</div>
+          <p className="gsp-description">{region.description}</p>
+          <div className="gsp-section">
+            <div className="gsp-section-title">Fun Fact</div>
+            <p className="gsp-fun-fact">{region.funFact}</p>
+          </div>
+          {region.wikipediaUrl && (
+            <div className="gsp-section">
+              <div className="gsp-section-title">Learn More</div>
+              <div className="links-list">
+                <ExternalLink
+                  href={region.wikipediaUrl}
+                  badge={<span className="ext-badge wiki-badge">W</span>}
+                  label="Wikipedia"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+  }
+
   if (!systemId) {
     return (
       <div className="galaxy-system-panel galaxy-system-panel--empty">
         <span className="galaxy-system-panel__placeholder">
-          Select a system to see details
+          Select a system or region to see details
         </span>
       </div>
     );
@@ -127,11 +232,11 @@ export default function GalaxySystemPanel({
       {meta.description && (
         <p className="gsp-description">{meta.description}</p>
       )}
-      {galacticEntry?.galacticArmHint && (
-        <div className="gsp-arm-hint">
-          {ARM_DISPLAY_NAMES[galacticEntry.galacticArmHint as GalacticArmHint]}
-        </div>
-      )}
+      {galacticEntry?.galacticArmHint &&
+        renderArmHint(
+          galacticEntry.galacticArmHint as GalacticArmHint,
+          onSelectRegion,
+        )}
       {isExtragalactic && (
         <p className="gsp-note">
           Beyond the Milky Way — not visible on the galaxy map.
@@ -145,66 +250,16 @@ export default function GalaxySystemPanel({
           </div>
         ) : (
           <div className="links-list">
-            {meta.nasaUrl ? (
-              <a
-                className="ext-link ext-link-active"
-                href={meta.nasaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="ext-badge nasa-badge">NASA</span>
-                <span className="ext-link-label">NASA</span>
-                <svg
-                  className="ext-arrow"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 8L8 2M8 2H4M8 2V6"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-            ) : (
-              <span className="ext-link ext-link-none">
-                <span className="ext-badge nasa-badge">NASA</span>
-                <span className="ext-link-label">Not available</span>
-              </span>
-            )}
-            {meta.wikipediaUrl ? (
-              <a
-                className="ext-link ext-link-active"
-                href={meta.wikipediaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="ext-badge wiki-badge">W</span>
-                <span className="ext-link-label">Wikipedia</span>
-                <svg
-                  className="ext-arrow"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 8L8 2M8 2H4M8 2V6"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-            ) : (
-              <span className="ext-link ext-link-none">
-                <span className="ext-badge wiki-badge">W</span>
-                <span className="ext-link-label">Not available</span>
-              </span>
-            )}
+            <ExternalLink
+              href={meta.nasaUrl}
+              badge={<span className="ext-badge nasa-badge">NASA</span>}
+              label="NASA"
+            />
+            <ExternalLink
+              href={meta.wikipediaUrl}
+              badge={<span className="ext-badge wiki-badge">W</span>}
+              label="Wikipedia"
+            />
           </div>
         )}
       </div>

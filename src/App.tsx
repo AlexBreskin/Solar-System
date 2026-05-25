@@ -57,6 +57,9 @@ export default function App(): JSX.Element {
   const [galaxyHoveredSystem, setGalaxyHoveredSystem] = useState<string | null>(
     null,
   );
+  const [galaxySelectedRegion, setGalaxySelectedRegion] = useState<
+    string | null
+  >(null);
   const [showSystemPanel, setShowSystemPanel] = useState<boolean>(false);
 
   const handleSystemChange = useCallback(
@@ -155,10 +158,16 @@ export default function App(): JSX.Element {
 
   const handleGalaxySelectSystem = useCallback((id: string) => {
     setGalaxySelectedSystem(id);
+    setGalaxySelectedRegion(null);
   }, []);
 
   const handleGalaxyHoverSystem = useCallback((id: string | null) => {
     setGalaxyHoveredSystem(id);
+  }, []);
+
+  const handleGalaxySelectRegion = useCallback((id: string | null) => {
+    setGalaxySelectedRegion(id);
+    setGalaxySelectedSystem(null);
   }, []);
 
   const isGalaxy = activeTab === "galaxy";
@@ -329,8 +338,10 @@ export default function App(): JSX.Element {
               <GalaxyCanvas
                 selectedSystem={galaxySelectedSystem}
                 hoveredSystem={galaxyHoveredSystem}
+                selectedRegion={galaxySelectedRegion}
                 onSelectSystem={handleGalaxySelectSystem}
                 onHoverSystem={handleGalaxyHoverSystem}
+                onSelectRegion={handleGalaxySelectRegion}
               />
             )}
             {activeTab === "planet-view" && (
@@ -352,7 +363,9 @@ export default function App(): JSX.Element {
             {isGalaxy || showSystemPanel ? (
               <GalaxySystemPanel
                 systemId={isGalaxy ? galaxySelectedSystem : systemData.id}
+                regionId={isGalaxy ? galaxySelectedRegion : null}
                 onExplore={handleExploreSystem}
+                onSelectRegion={isGalaxy ? handleGalaxySelectRegion : undefined}
               />
             ) : (
               <InfoPanel selectedBody={selectedBody} />

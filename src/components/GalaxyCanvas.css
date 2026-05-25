@@ -1,3 +1,43 @@
+.galaxy-regions-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 5px 12px;
+  background: rgba(8, 14, 32, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  color: rgba(200, 215, 240, 0.7);
+  font-family: "Syne", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.12s,
+    color 0.12s,
+    border-color 0.12s;
+  user-select: none;
+  z-index: 10;
+}
+
+.galaxy-regions-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+.galaxy-regions-toggle.active {
+  background: rgba(160, 184, 216, 0.15);
+  border-color: rgba(160, 184, 216, 0.45);
+  color: #a0b8d8;
+}
+
+.galaxy-regions-toggle.active:hover {
+  background: rgba(160, 184, 216, 0.22);
+  border-color: rgba(160, 184, 216, 0.6);
+  color: #c0d0e8;
+}
 
 .galaxy-hint {
   position: absolute;
@@ -5,7 +45,7 @@
   left: 16px;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.22);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   pointer-events: none;
   line-height: 1.8;
 }
@@ -32,12 +72,14 @@
   background: transparent;
   border: none;
   color: rgba(195, 210, 240, 0.9);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   font-size: 12px;
   padding: 7px 10px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
   text-align: left;
 }
 

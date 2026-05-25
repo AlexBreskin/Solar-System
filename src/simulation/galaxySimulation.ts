@@ -1,4 +1,4 @@
-import type { GalaxyData, StarSystemMeta } from "../types";
+import type { GalaxyData, GalaxyRegion, StarSystemMeta } from "../types";
 
 export interface GalaxyMarker {
   id: string;
@@ -12,6 +12,7 @@ export interface GalaxyMarker {
 
 export class GalaxySimulation {
   readonly markers: GalaxyMarker[];
+  readonly regions: GalaxyRegion[];
   hoveredId: string | null;
   selectedId: string | null;
 
@@ -34,8 +35,26 @@ export class GalaxySimulation {
         distanceFromEarth: meta.distanceFromEarth,
       });
     }
+    this.regions = galaxyData.regions ?? [];
     this.hoveredId = null;
     this.selectedId = null;
+  }
+
+  hitTestRegion(
+    worldX: number,
+    worldY: number,
+    lyThreshold: number,
+  ): GalaxyRegion | null {
+    let best: GalaxyRegion | null = null;
+    let bestDist = Infinity;
+    for (const region of this.regions) {
+      const d = Math.hypot(worldX - region.labelX, worldY - region.labelY);
+      if (d < lyThreshold && d < bestDist) {
+        best = region;
+        bestDist = d;
+      }
+    }
+    return best;
   }
 
   hitTest(worldX: number, worldY: number, lyThreshold: number): string | null {
