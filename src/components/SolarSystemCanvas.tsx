@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
+import { useZoomControls } from "../hooks/useZoomControls";
+import ZoomControls from "./ZoomControls";
 import { SolarSystemSimulation } from "../simulation/solarSystemSimulation";
 import {
   drawStarField,
@@ -381,6 +383,8 @@ export default function SolarSystemCanvas({
     dragRef.current.userDragging = false;
   }, [onHoverBody]);
 
+  const { handleZoomIn, handleZoomOut } = useZoomControls(panRef, 0.3, 8);
+
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <canvas
@@ -398,6 +402,7 @@ export default function SolarSystemCanvas({
         onWheel={handleWheel}
         onDoubleClick={handleDoubleClick}
       />
+      <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
       <div
         style={{
           position: "absolute",

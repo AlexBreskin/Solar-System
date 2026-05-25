@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
+import { useZoomControls } from "../hooks/useZoomControls";
+import ZoomControls from "./ZoomControls";
 import {
   PlanetViewSimulation,
   getMoonsOf,
@@ -343,6 +345,8 @@ export default function PlanetViewCanvas({
     dragRef.current.dragging = false;
   }, [onHoverBody]);
 
+  const { handleZoomIn, handleZoomOut } = useZoomControls(panRef, 0.2, 8);
+
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <canvas
@@ -376,6 +380,7 @@ export default function PlanetViewCanvas({
           {planet?.name} has no moons in this simulation
         </div>
       )}
+      <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
       <div
         style={{
           position: "absolute",

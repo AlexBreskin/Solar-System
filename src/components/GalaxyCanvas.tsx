@@ -7,6 +7,8 @@ import {
 } from "../renderers/galaxyRenderer";
 import { STAR_SYSTEMS } from "../data/systems";
 import { GALAXY_DATA } from "../data/galaxy";
+import { useZoomControls } from "../hooks/useZoomControls";
+import ZoomControls from "./ZoomControls";
 import "./GalaxyCanvas.css";
 
 const GALAXY_SCALE = 0.01;
@@ -331,6 +333,8 @@ export default function GalaxyCanvas({
     dragRef.current.dragging = false;
   }, [sim, onHoverSystem]);
 
+  const { handleZoomIn, handleZoomOut } = useZoomControls(panRef, 0.1, 100);
+
   return (
     <div
       ref={containerRef}
@@ -375,6 +379,7 @@ export default function GalaxyCanvas({
           ))}
         </div>
       )}
+      <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
       <div className="galaxy-hint">
         Scroll to zoom · Drag to pan · Click to select
       </div>
