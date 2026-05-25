@@ -118,6 +118,27 @@ Opens at `http://localhost:5173`.
 npm test
 ```
 
+**Unit tests with coverage report** (HTML report written to `coverage/`):
+
+```bash
+npm test -- --coverage
+```
+
+**E2E tests** (Cypress — requires the dev server to be running):
+
+```bash
+# Terminal 1
+npm start
+
+# Terminal 2
+npm run cypress:run      # headless
+npm run cypress:open     # interactive UI
+```
+
+The Cypress suite covers 7 feature areas: system selector, tab switching, body navigator, info panel, speed controls, galaxy view, and zoom controls. Screenshots of failures are saved to `cypress/screenshots/` automatically.
+
+CI runs unit tests then Cypress headlessly before every build — the badge above reflects the combined status.
+
 ### Build for production
 
 ```bash
@@ -232,4 +253,4 @@ src/
 - **Deterministic particles** — belt particle fields and the galaxy spiral background use a shared seeded RNG (`src/utils/mulberry32.ts`) so layouts are consistent across renders
 - **Distance formatting** — `src/utils/distance.ts` converts AU↔km↔ly; orbital distances default to AU (4 sig figs, km on hover); star info panels show system distance from Earth in light-years (AU on hover)
 - **Exotic objects** — `BodyType.BlackHole`, `BodyType.NeutronStar`, and `BodyType.Quasar` supported; black holes render as a dark disc with an accretion-disk glow; the `ROOT_BODY_TYPES` set replaces hardcoded star checks throughout
-- **Tooling** — Vite for dev and builds; Vitest for tests; 794 tests across 7 suites; ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style
+- **Tooling** — Vite for dev and builds; Vitest (794 unit tests across 7 suites) + Cypress E2E (7 spec files); ESLint with `max-statements-per-line` and `one-var` rules enforcing consistent style; V8 coverage via `@vitest/coverage-v8`
