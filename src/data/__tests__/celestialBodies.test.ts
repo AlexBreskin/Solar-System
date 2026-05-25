@@ -1,6 +1,16 @@
-import { CELESTIAL_BODIES, BODY_HIERARCHY, VISUAL_CONFIG } from '../celestialBodies';
-import { BodyType } from '../../types';
-import type { CelestialBody, HierarchyNode, RingBand, BeltConfig } from '../../types';
+import {
+  CELESTIAL_BODIES,
+  BODY_HIERARCHY,
+  VISUAL_CONFIG,
+  loadStarSystem,
+} from "../celestialBodies";
+import { BodyType } from "../../types";
+import type {
+  CelestialBody,
+  HierarchyNode,
+  RingBand,
+  BeltConfig,
+} from "../../types";
 
 // ─── Reusable helpers ────────────────────────────────────────────────────────
 
@@ -13,12 +23,12 @@ export function validateMassFormat(mass: string): void {
 }
 
 export function validateBodyShape(body: CelestialBody): void {
-  expect(typeof body.id).toBe('string');
+  expect(typeof body.id).toBe("string");
   expect(body.id.length).toBeGreaterThan(0);
-  expect(typeof body.name).toBe('string');
+  expect(typeof body.name).toBe("string");
   expect(body.name.length).toBeGreaterThan(0);
   expect(VALID_TYPES.has(body.type)).toBe(true);
-  expect(typeof body.color).toBe('string');
+  expect(typeof body.color).toBe("string");
   expect(body.color.length).toBeGreaterThan(0);
 
   expect(Number.isFinite(body.diameter)).toBe(true);
@@ -34,9 +44,9 @@ export function validateBodyShape(body: CelestialBody): void {
   expect(Number.isInteger(body.moons)).toBe(true);
   expect(body.moons).toBeGreaterThanOrEqual(0);
 
-  expect(typeof body.description).toBe('string');
+  expect(typeof body.description).toBe("string");
   expect(body.description.length).toBeGreaterThan(0);
-  expect(typeof body.funFact).toBe('string');
+  expect(typeof body.funFact).toBe("string");
   expect(body.funFact.length).toBeGreaterThan(0);
   validateMassFormat(body.mass);
 }
@@ -47,7 +57,7 @@ export function validateRingBand(band: RingBand): void {
   expect(band.outerFactor).toBeGreaterThan(band.innerFactor);
   expect(band.intensity).toBeGreaterThan(0);
   expect(band.intensity).toBeLessThanOrEqual(1);
-  expect(typeof band.color).toBe('string');
+  expect(typeof band.color).toBe("string");
   expect(band.color.length).toBeGreaterThan(0);
 }
 
@@ -71,26 +81,26 @@ export function flattenHierarchy(nodes: HierarchyNode[]): string[] {
 
 // ─── Bodies — shape and required fields ──────────────────────────────────────
 
-describe('CELESTIAL_BODIES — shape and required fields', () => {
+describe("CELESTIAL_BODIES — shape and required fields", () => {
   const bodies = Object.values(CELESTIAL_BODIES);
 
-  it('has at least one body', () => {
+  it("has at least one body", () => {
     expect(bodies.length).toBeGreaterThan(0);
   });
 
-  it('every body passes shape validation', () => {
+  it("every body passes shape validation", () => {
     for (const body of bodies) {
       validateBodyShape(body);
     }
   });
 
-  it('every body id matches its map key', () => {
+  it("every body id matches its map key", () => {
     for (const [key, body] of Object.entries(CELESTIAL_BODIES)) {
       expect(body.id).toBe(key);
     }
   });
 
-  it('every body with a parent references an existing id', () => {
+  it("every body with a parent references an existing id", () => {
     for (const body of bodies) {
       if (body.parent !== null) {
         expect(CELESTIAL_BODIES).toHaveProperty(body.parent);
@@ -98,7 +108,7 @@ describe('CELESTIAL_BODIES — shape and required fields', () => {
     }
   });
 
-  it('no body references itself as its parent', () => {
+  it("no body references itself as its parent", () => {
     for (const body of bodies) {
       expect(body.parent).not.toBe(body.id);
     }
@@ -107,24 +117,29 @@ describe('CELESTIAL_BODIES — shape and required fields', () => {
 
 // ─── Bodies — type-specific rules ────────────────────────────────────────────
 
-describe('CELESTIAL_BODIES — type-specific rules', () => {
+describe("CELESTIAL_BODIES — type-specific rules", () => {
   const bodies = Object.values(CELESTIAL_BODIES);
 
-  it('at least one body of each core type is present', () => {
-    const coreTypes = [BodyType.Star, BodyType.Planet, BodyType.Moon, BodyType.Belt];
+  it("at least one body of each core type is present", () => {
+    const coreTypes = [
+      BodyType.Star,
+      BodyType.Planet,
+      BodyType.Moon,
+      BodyType.Belt,
+    ];
     for (const type of coreTypes) {
-      expect(bodies.some(b => b.type === type)).toBe(true);
+      expect(bodies.some((b) => b.type === type)).toBe(true);
     }
   });
 
-  it('exactly one star exists and it has no parent', () => {
-    const stars = bodies.filter(b => b.type === BodyType.Star);
+  it("exactly one star exists and it has no parent", () => {
+    const stars = bodies.filter((b) => b.type === BodyType.Star);
     expect(stars).toHaveLength(1);
     expect(stars[0].parent).toBeNull();
   });
 
-  it('all planets are direct children of the star', () => {
-    const starId = bodies.find(b => b.type === BodyType.Star)!.id;
+  it("all planets are direct children of the star", () => {
+    const starId = bodies.find((b) => b.type === BodyType.Star)!.id;
     for (const body of bodies) {
       if (body.type === BodyType.Planet) {
         expect(body.parent).toBe(starId);
@@ -132,19 +147,24 @@ describe('CELESTIAL_BODIES — type-specific rules', () => {
     }
   });
 
-  it('all dwarf-planets are children of the star or a belt', () => {
-    const starId = bodies.find(b => b.type === BodyType.Star)!.id;
+  it("all dwarf-planets are children of the star or a belt", () => {
+    const starId = bodies.find((b) => b.type === BodyType.Star)!.id;
     for (const body of bodies) {
       if (body.type === BodyType.DwarfPlanet) {
         const parentBody = body.parent ? CELESTIAL_BODIES[body.parent] : null;
-        const isValidParent = body.parent === starId || parentBody?.type === BodyType.Belt;
+        const isValidParent =
+          body.parent === starId || parentBody?.type === BodyType.Belt;
         expect(isValidParent).toBe(true);
       }
     }
   });
 
-  it('all moons have a parent of type planet, dwarf-planet, or asteroid', () => {
-    const validParentTypes = new Set([BodyType.Planet, BodyType.DwarfPlanet, BodyType.Asteroid]);
+  it("all moons have a parent of type planet, dwarf-planet, or asteroid", () => {
+    const validParentTypes = new Set([
+      BodyType.Planet,
+      BodyType.DwarfPlanet,
+      BodyType.Asteroid,
+    ]);
     for (const body of bodies) {
       if (body.type === BodyType.Moon) {
         expect(body.parent).not.toBeNull();
@@ -155,7 +175,7 @@ describe('CELESTIAL_BODIES — type-specific rules', () => {
     }
   });
 
-  it('all belt bodies have orbitalPeriod === 0', () => {
+  it("all belt bodies have orbitalPeriod === 0", () => {
     for (const body of bodies) {
       if (body.type === BodyType.Belt) {
         expect(body.orbitalPeriod).toBe(0);
@@ -166,10 +186,10 @@ describe('CELESTIAL_BODIES — type-specific rules', () => {
 
 // ─── Bodies — optional fields ─────────────────────────────────────────────────
 
-describe('CELESTIAL_BODIES — optional fields', () => {
+describe("CELESTIAL_BODIES — optional fields", () => {
   const bodies = Object.values(CELESTIAL_BODIES);
 
-  it('nasaUrl, when present, starts with https://', () => {
+  it("nasaUrl, when present, starts with https://", () => {
     for (const body of bodies) {
       if (body.nasaUrl !== undefined) {
         expect(body.nasaUrl).toMatch(/^https:\/\//);
@@ -177,7 +197,7 @@ describe('CELESTIAL_BODIES — optional fields', () => {
     }
   });
 
-  it('wikipediaUrl, when present, starts with https://', () => {
+  it("wikipediaUrl, when present, starts with https://", () => {
     for (const body of bodies) {
       if (body.wikipediaUrl !== undefined) {
         expect(body.wikipediaUrl).toMatch(/^https:\/\//);
@@ -185,7 +205,7 @@ describe('CELESTIAL_BODIES — optional fields', () => {
     }
   });
 
-  it('rings, when present, is a non-empty array of valid RingBands', () => {
+  it("rings, when present, is a non-empty array of valid RingBands", () => {
     for (const body of bodies) {
       if (body.rings !== undefined) {
         expect(body.rings.length).toBeGreaterThan(0);
@@ -196,7 +216,7 @@ describe('CELESTIAL_BODIES — optional fields', () => {
     }
   });
 
-  it('binaryMassFraction, when present, is in range (0, 1)', () => {
+  it("binaryMassFraction, when present, is in range (0, 1)", () => {
     for (const body of bodies) {
       if (body.binaryMassFraction !== undefined) {
         expect(body.binaryMassFraction).toBeGreaterThan(0);
@@ -208,18 +228,18 @@ describe('CELESTIAL_BODIES — optional fields', () => {
 
 // ─── Hierarchy ────────────────────────────────────────────────────────────────
 
-describe('BODY_HIERARCHY', () => {
-  it('is a non-empty array', () => {
+describe("BODY_HIERARCHY", () => {
+  it("is a non-empty array", () => {
     expect(BODY_HIERARCHY.length).toBeGreaterThan(0);
   });
 
-  it('every id in the tree exists in CELESTIAL_BODIES', () => {
+  it("every id in the tree exists in CELESTIAL_BODIES", () => {
     for (const id of flattenHierarchy(BODY_HIERARCHY)) {
       expect(CELESTIAL_BODIES).toHaveProperty(id);
     }
   });
 
-  it('every body in CELESTIAL_BODIES appears exactly once in the tree', () => {
+  it("every body in CELESTIAL_BODIES appears exactly once in the tree", () => {
     const flattened = flattenHierarchy(BODY_HIERARCHY);
     const bodyIds = Object.keys(CELESTIAL_BODIES);
     expect(flattened.sort()).toEqual(bodyIds.sort());
@@ -230,7 +250,7 @@ describe('BODY_HIERARCHY', () => {
     }
   });
 
-  it('root nodes are not moons', () => {
+  it("root nodes are not moons", () => {
     for (const node of BODY_HIERARCHY) {
       const body = CELESTIAL_BODIES[node.id];
       expect(body.type).not.toBe(BodyType.Moon);
@@ -240,15 +260,15 @@ describe('BODY_HIERARCHY', () => {
 
 // ─── VisualConfig ─────────────────────────────────────────────────────────────
 
-describe('VISUAL_CONFIG', () => {
+describe("VISUAL_CONFIG", () => {
   const bodies = Object.values(CELESTIAL_BODIES);
 
-  it('speedMultiplier and moonSpeedMultiplier are positive numbers', () => {
+  it("speedMultiplier and moonSpeedMultiplier are positive numbers", () => {
     expect(VISUAL_CONFIG.speedMultiplier).toBeGreaterThan(0);
     expect(VISUAL_CONFIG.moonSpeedMultiplier).toBeGreaterThan(0);
   });
 
-  it('orbitalRadii has an entry for every planet and dwarf-planet, all positive', () => {
+  it("orbitalRadii has an entry for every planet and dwarf-planet, all positive", () => {
     for (const body of bodies) {
       if (body.type === BodyType.Planet || body.type === BodyType.DwarfPlanet) {
         expect(VISUAL_CONFIG.orbitalRadii).toHaveProperty(body.id);
@@ -257,7 +277,7 @@ describe('VISUAL_CONFIG', () => {
     }
   });
 
-  it('planetSizes has an entry for every non-belt body, all positive', () => {
+  it("planetSizes has an entry for every non-belt body, all positive", () => {
     for (const body of bodies) {
       if (body.type !== BodyType.Belt) {
         expect(VISUAL_CONFIG.planetSizes).toHaveProperty(body.id);
@@ -266,7 +286,7 @@ describe('VISUAL_CONFIG', () => {
     }
   });
 
-  it('moonOrbitalRadii has an entry for every moon, all positive', () => {
+  it("moonOrbitalRadii has an entry for every moon, all positive", () => {
     for (const body of bodies) {
       if (body.type === BodyType.Moon) {
         expect(VISUAL_CONFIG.moonOrbitalRadii).toHaveProperty(body.id);
@@ -275,7 +295,7 @@ describe('VISUAL_CONFIG', () => {
     }
   });
 
-  it('beltConfigs has an entry for every belt body with a valid config', () => {
+  it("beltConfigs has an entry for every belt body with a valid config", () => {
     for (const body of bodies) {
       if (body.type === BodyType.Belt) {
         expect(VISUAL_CONFIG.beltConfigs).toHaveProperty(body.id);
@@ -287,22 +307,42 @@ describe('VISUAL_CONFIG', () => {
 
 // ─── Cross-consistency ────────────────────────────────────────────────────────
 
-describe('cross-consistency: VisualConfig keys vs CELESTIAL_BODIES', () => {
-  it('every orbitalRadii key is a known body id', () => {
+describe("cross-consistency: VisualConfig keys vs CELESTIAL_BODIES", () => {
+  it("every orbitalRadii key is a known body id", () => {
     for (const id of Object.keys(VISUAL_CONFIG.orbitalRadii)) {
       expect(CELESTIAL_BODIES).toHaveProperty(id);
     }
   });
 
-  it('every moonOrbitalRadii key is a known body id', () => {
+  it("every moonOrbitalRadii key is a known body id", () => {
     for (const id of Object.keys(VISUAL_CONFIG.moonOrbitalRadii)) {
       expect(CELESTIAL_BODIES).toHaveProperty(id);
     }
   });
 
-  it('every beltConfigs key is a known body id', () => {
+  it("every beltConfigs key is a known body id", () => {
     for (const id of Object.keys(VISUAL_CONFIG.beltConfigs)) {
       expect(CELESTIAL_BODIES).toHaveProperty(id);
     }
+  });
+});
+
+// ─── loadStarSystem ───────────────────────────────────────────────────────────
+
+describe("loadStarSystem", () => {
+  it("loads the Sol system with correct shape", async () => {
+    const system = await loadStarSystem("sol");
+    expect(system.id).toBe("sol");
+    expect(system.meta.name).toBe("Solar System");
+    expect(typeof system.bodies).toBe("object");
+    expect(Object.keys(system.bodies).length).toBeGreaterThan(0);
+    expect(Array.isArray(system.hierarchy)).toBe(true);
+    expect(system.hierarchy.length).toBeGreaterThan(0);
+  });
+
+  it("throws for an unknown system id", async () => {
+    await expect(loadStarSystem("no-such-system")).rejects.toThrow(
+      "Unknown system: no-such-system",
+    );
   });
 });

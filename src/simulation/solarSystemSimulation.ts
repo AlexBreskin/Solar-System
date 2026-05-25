@@ -41,14 +41,14 @@ export class SolarSystemSimulation {
     this.moonParentMap = {};
     for (const id of this.moonIds) {
       const parent = bodies[id]?.parent;
-      if (parent) this.moonParentMap[id] = parent;
+      if (parent) this.moonParentMap[id] = parent; // null parent = orphan moon, skip
     }
 
     this.orbitalSpeeds = {};
     for (const id of this.fixedIds) this.orbitalSpeeds[id] = 0;
     for (const id of this.planetIds) {
       const body = bodies[id];
-      this.orbitalSpeeds[id] = body?.orbitalPeriod
+      this.orbitalSpeeds[id] = body.orbitalPeriod
         ? (365.25 / body.orbitalPeriod) * speedMultiplier
         : 0;
     }
@@ -61,7 +61,7 @@ export class SolarSystemSimulation {
       const naturalSpeed =
         (365.25 / Math.abs(body.orbitalPeriod)) * moonSpeedMultiplier;
       const parentSpeed = this.moonParentMap[id]
-        ? (this.orbitalSpeeds[this.moonParentMap[id]] ?? 0)
+        ? this.orbitalSpeeds[this.moonParentMap[id]]
         : 0;
       this.orbitalSpeeds[id] =
         Math.max(naturalSpeed, parentSpeed * 2) * Math.sign(body.orbitalPeriod);
@@ -94,8 +94,8 @@ export class SolarSystemSimulation {
       if (this.bodies[id]?.binaryMassFraction !== undefined) continue;
       const parentId = this.moonParentMap[id];
       if (!parentId || !fixedSet.has(parentId)) continue;
-      const pr = this.moonOrbitalRadii[id] ?? 0;
-      const { x: px, y: py } = pos[parentId] ?? { x: cx, y: cy };
+      const pr = this.moonOrbitalRadii[id];
+      const { x: px, y: py } = pos[parentId];
       pos[id] = {
         x: px + pr * Math.cos(this.angles[id]),
         y: py + pr * Math.sin(this.angles[id]),
@@ -108,9 +108,9 @@ export class SolarSystemSimulation {
       if (μ === undefined) continue;
       const parentId = this.moonParentMap[id];
       if (!parentId || !fixedSet.has(parentId)) continue;
-      const sep = this.moonOrbitalRadii[id] ?? 0;
+      const sep = this.moonOrbitalRadii[id];
       const angle = this.angles[id];
-      const bary = pos[parentId] ?? { x: cx, y: cy };
+      const bary = pos[parentId];
       pos[parentId] = {
         x: bary.x - sep * μ * Math.cos(angle),
         y: bary.y - sep * μ * Math.sin(angle),
@@ -125,8 +125,8 @@ export class SolarSystemSimulation {
     //    or the companion's actual position when orbiting a companion star.
     for (const id of this.planetIds) {
       const body = this.bodies[id];
-      const r = this.orbitalRadii[id] ?? 0;
-      const parentId = body?.parent;
+      const r = this.orbitalRadii[id];
+      const parentId = body.parent;
       const parentBody = parentId ? this.bodies[parentId] : undefined;
       const centre =
         parentBody && !ROOT_BODY_TYPES.has(parentBody.type) && pos[parentId!]
@@ -143,8 +143,8 @@ export class SolarSystemSimulation {
       if (this.bodies[id]?.binaryMassFraction !== undefined) continue;
       if (pos[id] !== undefined) continue; // already placed in step 2
       const parentId = this.moonParentMap[id];
-      const pr = this.moonOrbitalRadii[id] ?? 0;
-      const { x: px, y: py } = pos[parentId] ?? { x: cx, y: cy };
+      const pr = this.moonOrbitalRadii[id];
+      const { x: px, y: py } = pos[parentId];
       pos[id] = {
         x: px + pr * Math.cos(this.angles[id]),
         y: py + pr * Math.sin(this.angles[id]),
@@ -158,9 +158,9 @@ export class SolarSystemSimulation {
       if (pos[id] !== undefined) continue; // already placed in step 3
       const parentId = this.moonParentMap[id];
       if (!parentId) continue;
-      const sep = this.moonOrbitalRadii[id] ?? 0;
+      const sep = this.moonOrbitalRadii[id];
       const angle = this.angles[id];
-      const bary = pos[parentId] ?? { x: cx, y: cy };
+      const bary = pos[parentId];
       pos[parentId] = {
         x: bary.x - sep * μ * Math.cos(angle),
         y: bary.y - sep * μ * Math.sin(angle),

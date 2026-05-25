@@ -10,7 +10,7 @@ const SUPERSCRIPTS = "⁰¹²³⁴⁵⁶⁷⁸⁹";
 function toSuperscript(n: number): string {
   return String(n)
     .split("")
-    .map((c) => (c === "-" ? "⁻" : SUPERSCRIPTS[+c]))
+    .map((c) => SUPERSCRIPTS[+c])
     .join("");
 }
 

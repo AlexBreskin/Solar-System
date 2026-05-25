@@ -35,7 +35,7 @@ export class GalaxySimulation {
         distanceFromEarth: meta.distanceFromEarth,
       });
     }
-    this.regions = galaxyData.regions ?? [];
+    this.regions = galaxyData.regions;
     this.hoveredId = null;
     this.selectedId = null;
   }

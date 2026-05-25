@@ -6,6 +6,19 @@ function makeSim(): GalaxySimulation {
   return new GalaxySimulation(GALAXY_DATA, STAR_SYSTEMS);
 }
 
+describe("GalaxySimulation — missing meta", () => {
+  it("skips galaxy entries with no matching STAR_SYSTEMS entry", () => {
+    const galaxyData = {
+      systems: [
+        { id: "unknown", galacticX: 0, galacticY: 0, rootType: "star" },
+      ],
+      regions: [],
+    };
+    const sim = new GalaxySimulation(galaxyData as any, []);
+    expect(sim.markers).toHaveLength(0);
+  });
+});
+
 describe("GalaxySimulation — construction", () => {
   it("creates at least one marker", () => {
     const sim = makeSim();
@@ -135,6 +148,38 @@ describe("GalaxySimulation — getSystemsNear", () => {
     const result = sim.getSystemsNear(0, 0, 100_000);
     const ids = result.map((m) => m.id);
     expect(ids).toContain("sol");
+  });
+});
+
+describe("GalaxySimulation — hitTestRegion", () => {
+  it("returns null when no region is within threshold", () => {
+    const sim = makeSim();
+    expect(sim.hitTestRegion(999_999, 999_999, 1)).toBeNull();
+  });
+
+  it("returns null with a zero threshold at a region's position", () => {
+    const sim = makeSim();
+    const region = sim.regions[0];
+    expect(region).toBeDefined();
+    expect(sim.hitTestRegion(region.labelX, region.labelY, 0)).toBeNull();
+  });
+
+  it("returns the nearest region when within threshold", () => {
+    const sim = makeSim();
+    const region = sim.regions[0];
+    expect(region).toBeDefined();
+    expect(sim.hitTestRegion(region.labelX, region.labelY, 1000)?.id).toBe(
+      region.id,
+    );
+  });
+
+  it("returns the closest region when multiple are within a large threshold", () => {
+    const sim = makeSim();
+    expect(sim.regions.length).toBeGreaterThanOrEqual(2);
+    const region = sim.regions[0];
+    const result = sim.hitTestRegion(region.labelX, region.labelY, 999_999);
+    expect(result).toBeDefined();
+    expect(result!.id).toBe(region.id);
   });
 });
 

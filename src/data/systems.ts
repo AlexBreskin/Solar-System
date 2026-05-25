@@ -10,4 +10,4 @@ const modules = import.meta.glob("./systems/*.json", { eager: true }) as Record<
 export const STAR_SYSTEMS: StarSystemMeta[] = Object.values(modules)
   .filter((m): m is { system: StarSystemMeta } => !!m.system?.id)
   .map((m) => m.system)
-  .sort((a, b) => (a.displayOrder ?? 99) - (b.displayOrder ?? 99));
+  .sort((a, b) => a.displayOrder! - b.displayOrder!);

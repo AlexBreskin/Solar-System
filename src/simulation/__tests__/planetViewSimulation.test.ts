@@ -119,6 +119,30 @@ describe("PlanetViewSimulation", () => {
     expect(sim.positions["earth"]).toEqual({ x: 400, y: 300 });
   });
 
+  it("updatePositions reuses cached layout on second call", () => {
+    const sim = new PlanetViewSimulation(CELESTIAL_BODIES);
+    sim.initMoons(["moon"]);
+    const layout1 = sim.updatePositions("earth", ["moon"], 400, 300, 800, 600);
+    const layout2 = sim.updatePositions("earth", ["moon"], 400, 300, 800, 600);
+    expect(layout1).toBe(layout2);
+  });
+
+  it("advanceAngles skips moons with orbitalPeriod 0", () => {
+    const bodies = {
+      ...CELESTIAL_BODIES,
+      frozen: {
+        ...CELESTIAL_BODIES["moon"],
+        id: "frozen",
+        orbitalPeriod: 0,
+      },
+    };
+    const sim = new PlanetViewSimulation(bodies);
+    sim.initMoons(["frozen"]);
+    const before = sim.angles["frozen"];
+    sim.advanceAngles(1, 1, ["frozen"]);
+    expect(sim.angles["frozen"]).toBe(before);
+  });
+
   it("updatePositions sets a position for each moon", () => {
     const sim = new PlanetViewSimulation(CELESTIAL_BODIES);
     const moons = getMoonsOf("jupiter", CELESTIAL_BODIES);
@@ -127,6 +151,11 @@ describe("PlanetViewSimulation", () => {
     for (const m of moons) {
       expect(sim.positions[m]).toBeDefined();
     }
+  });
+
+  it("advanceAngles with no moons uses default fastest period and does not throw", () => {
+    const sim = new PlanetViewSimulation(CELESTIAL_BODIES);
+    sim.advanceAngles(1, 1, []);
   });
 
   it("advanceAngles does nothing when speed is 0", () => {
@@ -157,5 +186,39 @@ describe("PlanetViewSimulation", () => {
     expect(sim.layout).not.toBeNull();
     sim.resetLayout();
     expect(sim.layout).toBeNull();
+  });
+
+  it("updatePositions handles a binary moon (binaryMassFraction)", () => {
+    const binaryBody = Object.values(CELESTIAL_BODIES).find(
+      (b) => b.binaryMassFraction !== undefined && b.parent !== null,
+    );
+    expect(binaryBody).toBeDefined();
+    const parentId = binaryBody!.parent!;
+    const sim = new PlanetViewSimulation(CELESTIAL_BODIES);
+    sim.initMoons([binaryBody!.id]);
+    sim.updatePositions(parentId, [binaryBody!.id], 400, 300, 800, 600);
+    expect(sim.positions[binaryBody!.id]).toBeDefined();
+    expect(sim.positions[parentId]).toBeDefined();
+    // Parent is displaced from centre in a binary system
+    const pos = sim.positions[parentId];
+    const dist = Math.hypot(pos.x - 400, pos.y - 300);
+    expect(dist).toBeGreaterThan(0);
+  });
+});
+
+describe("computeScaledLayout — FIT_RADIUS scale-down", () => {
+  it("scales orbits down to fit the canvas when moons are widely spaced", () => {
+    // Tiny canvas forces FIT_RADIUS to be very small, triggering the scale-down path
+    const W = 50;
+    const H = 50;
+    const FIT_RADIUS = (Math.min(W, H) / 2) * 0.88;
+    const moons = getMoonsOf("saturn", CELESTIAL_BODIES);
+    expect(moons.length).toBeGreaterThan(1);
+    const layout = computeScaledLayout("saturn", moons, W, H, CELESTIAL_BODIES);
+    for (const m of moons) {
+      expect(layout.moonOrbitalRadii[m] ?? 0).toBeLessThanOrEqual(
+        FIT_RADIUS + 0.01,
+      );
+    }
   });
 });
