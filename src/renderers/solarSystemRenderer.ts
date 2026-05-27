@@ -1,4 +1,5 @@
 import { mulberry32 } from "../utils/mulberry32";
+import { lighten } from "../utils/color";
 import { BodyType } from "../types";
 import type { CelestialBody, Vec2, VisualConfig } from "../types";
 
@@ -49,13 +50,6 @@ function getBeltParticles(
   return particles;
 }
 
-function lighten(hex: string, amount: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgb(${Math.min(255, r + amount)},${Math.min(255, g + amount)},${Math.min(255, b + amount)})`;
-}
-
 export function drawStarField(ctx: CanvasRenderingContext2D): void {
   // Batch into 4 alpha buckets: 300 fill calls → 4
   const buckets: StarTuple[][] = [[], [], [], []];
@@ -74,6 +68,69 @@ export function drawStarField(ctx: CanvasRenderingContext2D): void {
     ctx.fill();
   }
   ctx.globalAlpha = 1;
+}
+
+function drawBeltHighlight(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  midRadius: number,
+  ringWidth: number,
+  body: CelestialBody,
+  color: string,
+  isSelected: boolean,
+): void {
+  ctx.beginPath();
+  ctx.arc(cx, cy, midRadius, 0, TWO_PI);
+  ctx.strokeStyle = isSelected
+    ? (body.glowColor ?? color) + "60"
+    : (body.glowColor ?? color) + "30";
+  ctx.lineWidth = ringWidth;
+  ctx.stroke();
+}
+
+function drawBeltParticles(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  beltId: string,
+  color: string,
+  isSelected: boolean,
+  isHovered: boolean,
+  visualConfig: VisualConfig,
+): void {
+  for (const [angle, radius, size, opacity] of getBeltParticles(
+    beltId,
+    visualConfig,
+  )) {
+    const x = cx + Math.cos(angle) * radius;
+    const y = cy + Math.sin(angle) * radius;
+    ctx.globalAlpha =
+      isSelected || isHovered ? Math.min(1, opacity * 1.8) : opacity;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, TWO_PI);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawBeltLabel(
+  ctx: CanvasRenderingContext2D,
+  body: CelestialBody,
+  cx: number,
+  cy: number,
+  outerRadius: number,
+  isSelected: boolean,
+  isHovered: boolean,
+  showLabels: boolean,
+): void {
+  if (!showLabels && !isSelected && !isHovered) return;
+  ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
+  ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,210,230,0.7)";
+  ctx.textAlign = "left";
+  ctx.fillText(body.name, cx + outerRadius + 6, cy + 4);
+  ctx.textAlign = "center";
 }
 
 export function drawBelt(
@@ -97,13 +154,16 @@ export function drawBelt(
   const ringWidth = outerRadius - innerRadius;
 
   if (isSelected || isHovered) {
-    ctx.beginPath();
-    ctx.arc(cx, cy, midRadius, 0, TWO_PI);
-    ctx.strokeStyle = isSelected
-      ? (body.glowColor ?? color) + "60"
-      : (body.glowColor ?? color) + "30";
-    ctx.lineWidth = ringWidth;
-    ctx.stroke();
+    drawBeltHighlight(
+      ctx,
+      cx,
+      cy,
+      midRadius,
+      ringWidth,
+      body,
+      color,
+      isSelected,
+    );
   }
 
   if (zoom < 0.7) {
@@ -114,29 +174,28 @@ export function drawBelt(
     ctx.lineWidth = ringWidth;
     ctx.stroke();
   } else {
-    for (const [angle, radius, size, opacity] of getBeltParticles(
+    drawBeltParticles(
+      ctx,
+      cx,
+      cy,
       beltId,
+      color,
+      isSelected,
+      isHovered,
       visualConfig,
-    )) {
-      const x = cx + Math.cos(angle) * radius;
-      const y = cy + Math.sin(angle) * radius;
-      ctx.globalAlpha =
-        isSelected || isHovered ? Math.min(1, opacity * 1.8) : opacity;
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(x, y, size, 0, TWO_PI);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
+    );
   }
 
-  if (showLabels || isSelected || isHovered) {
-    ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
-    ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,210,230,0.7)";
-    ctx.textAlign = "left";
-    ctx.fillText(body.name, cx + outerRadius + 6, cy + 4);
-    ctx.textAlign = "center";
-  }
+  drawBeltLabel(
+    ctx,
+    body,
+    cx,
+    cy,
+    outerRadius,
+    isSelected,
+    isHovered,
+    showLabels,
+  );
 }
 
 export function drawOrbits(
@@ -151,6 +210,7 @@ export function drawOrbits(
   positions: Record<string, Vec2>,
 ): void {
   const { orbitalRadii, moonOrbitalRadii } = visualConfig;
+  const allOrbitalRadii = { ...moonOrbitalRadii, ...orbitalRadii };
   for (const [id, body] of Object.entries(bodies)) {
     if (!body.showOrbitRing) continue;
     const isHighlighted = id === selectedBody || id === hoveredBody;
@@ -159,7 +219,7 @@ export function drawOrbits(
       body.parent && positions[body.parent]
         ? positions[body.parent]
         : { x: cx, y: cy };
-    const radius = orbitalRadii[id] ?? moonOrbitalRadii[id] ?? 0;
+    const radius = allOrbitalRadii[id] ?? 0;
     ctx.beginPath();
     ctx.arc(parentPos.x, parentPos.y, radius, 0, TWO_PI);
     if (isHighlighted) {
@@ -281,21 +341,15 @@ export function drawBodyRings(
   }
 }
 
-export function drawBodies(
+function drawBodyGlows(
   ctx: CanvasRenderingContext2D,
+  bodies: Record<string, CelestialBody>,
   positions: Record<string, Vec2>,
   selectedBody: string,
   hoveredBody: string | null,
-  showLabels: boolean,
-  showOrbits: boolean,
-  bodies: Record<string, CelestialBody>,
-  visualConfig: VisualConfig,
+  planetSizes: Record<string, number>,
 ): void {
-  const { planetSizes, moonOrbitalRadii } = visualConfig;
-  const allBodies = Object.entries(bodies);
-
-  // Glows
-  for (const [id, body] of allBodies) {
+  for (const [id, body] of Object.entries(bodies)) {
     if (body.type === BodyType.Belt) continue;
     const pos = positions[id];
     if (!pos) continue;
@@ -320,10 +374,17 @@ export function drawBodies(
       ctx.fill();
     }
   }
+}
 
-  // Moon orbit rings
-  for (const [id, body] of allBodies) {
-    if (!showOrbits) break;
+function drawMoonOrbitRings(
+  ctx: CanvasRenderingContext2D,
+  bodies: Record<string, CelestialBody>,
+  positions: Record<string, Vec2>,
+  moonOrbitalRadii: Record<string, number>,
+  showOrbits: boolean,
+): void {
+  if (!showOrbits) return;
+  for (const [id, body] of Object.entries(bodies)) {
     if (body.type !== BodyType.Moon && body.type !== BodyType.Companion)
       continue;
     const parent = body.parent;
@@ -335,75 +396,124 @@ export function drawBodies(
     ctx.lineWidth = 0.5;
     ctx.stroke();
   }
+}
 
-  // Bodies
-  for (const [id, body] of allBodies) {
+function drawGenericBody(
+  ctx: CanvasRenderingContext2D,
+  body: CelestialBody,
+  pos: Vec2,
+  r: number,
+  isSelected: boolean,
+  isHovered: boolean,
+): void {
+  const grad = ctx.createRadialGradient(
+    pos.x - r * 0.3,
+    pos.y - r * 0.3,
+    r * 0.1,
+    pos.x,
+    pos.y,
+    r,
+  );
+  grad.addColorStop(0, lighten(body.color, 40));
+  grad.addColorStop(1, body.color);
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
+  ctx.fill();
+
+  if (isSelected) {
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, r + 5, 0, TWO_PI);
+    ctx.strokeStyle = "rgba(255,255,255,0.3)";
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([3, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  } else if (isHovered) {
+    ctx.strokeStyle = "rgba(255,255,255,0.6)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  if (body.atmosphereColor) {
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
+    ctx.strokeStyle = body.atmosphereColor;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+}
+
+function drawBodyLabel(
+  ctx: CanvasRenderingContext2D,
+  body: CelestialBody,
+  pos: Vec2,
+  r: number,
+  isSelected: boolean,
+  isHovered: boolean,
+  showLabels: boolean,
+): void {
+  if (!showLabels && !isSelected && !isHovered) return;
+  ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
+  ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,210,230,0.7)";
+  ctx.textAlign = "center";
+  const labelOffset = body.rings?.length ? r + 14 : r + 5;
+  ctx.fillText(body.name, pos.x, pos.y - labelOffset);
+}
+
+function drawBodyShapes(
+  ctx: CanvasRenderingContext2D,
+  bodies: Record<string, CelestialBody>,
+  positions: Record<string, Vec2>,
+  selectedBody: string,
+  hoveredBody: string | null,
+  showLabels: boolean,
+  planetSizes: Record<string, number>,
+): void {
+  for (const [id, body] of Object.entries(bodies)) {
     if (body.type === BodyType.Belt) continue;
     const pos = positions[id];
     if (!pos) continue;
     const r = planetSizes[id] ?? 4;
     const isSelected = id === selectedBody;
     const isHovered = id === hoveredBody;
+    const active = isSelected || isHovered;
 
     if (body.type === BodyType.Star) {
-      drawSun(ctx, pos.x, pos.y, r, isSelected || isHovered);
+      drawSun(ctx, pos.x, pos.y, r, active);
     } else if (body.type === BodyType.BlackHole) {
-      drawBlackHole(
-        ctx,
-        pos.x,
-        pos.y,
-        r,
-        body.glowColor ?? "#FF8800",
-        isSelected || isHovered,
-      );
+      drawBlackHole(ctx, pos.x, pos.y, r, body.glowColor ?? "#FF8800", active);
     } else {
-      const grad = ctx.createRadialGradient(
-        pos.x - r * 0.3,
-        pos.y - r * 0.3,
-        r * 0.1,
-        pos.x,
-        pos.y,
-        r,
-      );
-      grad.addColorStop(0, lighten(body.color, 40));
-      grad.addColorStop(1, body.color);
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
-      ctx.fill();
-
-      if (isSelected) {
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, r + 5, 0, TWO_PI);
-        ctx.strokeStyle = "rgba(255,255,255,0.3)";
-        ctx.lineWidth = 0.5;
-        ctx.setLineDash([3, 4]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      } else if (isHovered) {
-        ctx.strokeStyle = "rgba(255,255,255,0.6)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-
-      if (body.atmosphereColor) {
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, r, 0, TWO_PI);
-        ctx.strokeStyle = body.atmosphereColor;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
+      drawGenericBody(ctx, body, pos, r, isSelected, isHovered);
     }
 
-    if (showLabels || isSelected || isHovered) {
-      ctx.font = `${isSelected ? 500 : 400} ${isSelected ? 11 : 10}px Syne, sans-serif`;
-      ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,210,230,0.7)";
-      ctx.textAlign = "center";
-      const labelOffset = body.rings?.length ? r + 14 : r + 5;
-      ctx.fillText(body.name, pos.x, pos.y - labelOffset);
-    }
+    drawBodyLabel(ctx, body, pos, r, isSelected, isHovered, showLabels);
   }
+}
+
+export function drawBodies(
+  ctx: CanvasRenderingContext2D,
+  positions: Record<string, Vec2>,
+  selectedBody: string,
+  hoveredBody: string | null,
+  showLabels: boolean,
+  showOrbits: boolean,
+  bodies: Record<string, CelestialBody>,
+  visualConfig: VisualConfig,
+): void {
+  const { planetSizes, moonOrbitalRadii } = visualConfig;
+  drawBodyGlows(ctx, bodies, positions, selectedBody, hoveredBody, planetSizes);
+  drawMoonOrbitRings(ctx, bodies, positions, moonOrbitalRadii, showOrbits);
+  drawBodyShapes(
+    ctx,
+    bodies,
+    positions,
+    selectedBody,
+    hoveredBody,
+    showLabels,
+    planetSizes,
+  );
 }

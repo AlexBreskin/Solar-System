@@ -42,6 +42,115 @@ function barEllipsePoint(rng: () => number, rMajor: number): [number, number] {
   ];
 }
 
+function pushBulgeParticles(
+  p: GalParticle[],
+  rng: () => number,
+  count: number,
+  power: number,
+  semiMajor: number,
+  taperRef: number,
+  alphaMin: number,
+  alphaRange: number,
+  minR = 0,
+): void {
+  for (let i = 0; i < count; i++) {
+    const rMajor = minR + Math.pow(rng(), power) * semiMajor;
+    const [bx, by] = barEllipsePoint(rng, rMajor);
+    const r = Math.sqrt(bx * bx + by * by);
+    const taper = Math.exp(-2.5 * Math.pow(rMajor / taperRef, 2));
+    p.push([
+      bx,
+      by,
+      (rng() * alphaRange + alphaMin) * taper,
+      armParticleColor(r),
+    ]);
+  }
+}
+
+function pushDiskParticles(
+  p: GalParticle[],
+  rng: () => number,
+  count: number,
+  minR: number,
+  power: number,
+  spread: number,
+  maxR: number,
+  alphaRange: number,
+  alphaMin: number,
+): void {
+  for (let i = 0; i < count; i++) {
+    const r = minR + Math.pow(rng(), power) * spread;
+    if (r > maxR) {
+      rng();
+      continue;
+    }
+    const theta = rng() * TWO_PI;
+    p.push([
+      r * Math.cos(theta),
+      r * Math.sin(theta),
+      rng() * alphaRange + alphaMin,
+      armParticleColor(r),
+    ]);
+  }
+}
+
+interface ArmParams {
+  offsets: number[];
+  count: number;
+  maxR: number;
+  scatterFactor: number;
+  tjFactor: number;
+  dfDenom: number;
+  alphaMin: number;
+  alphaRange: number;
+  dvBase: number;
+  dvScale: number;
+  tRange?: number;
+  tStart?: number;
+}
+
+function pushArmParticles(
+  p: GalParticle[],
+  rng: () => number,
+  params: ArmParams,
+): void {
+  const {
+    offsets,
+    count,
+    maxR,
+    scatterFactor,
+    tjFactor,
+    dfDenom,
+    alphaMin,
+    alphaRange,
+    dvBase,
+    dvScale,
+    tRange = Math.PI * 4.5,
+    tStart = 0.4,
+  } = params;
+  for (const off of offsets) {
+    for (let i = 0; i < count; i++) {
+      const t = (i / count) * tRange + tStart;
+      const r = 2000 * Math.exp(0.22 * t);
+      if (r > maxR) break;
+      const scatter = gaussianRng(rng) * r * scatterFactor;
+      const tj = gaussianRng(rng) * tjFactor;
+      const theta = t + off + tj;
+      const px = (r + scatter) * Math.cos(theta);
+      const py = -(r + scatter) * Math.sin(theta);
+      const df = Math.abs(scatter) / (r * dfDenom);
+      const aScale = Math.max(0.1, 1 - df * df);
+      const dv = dvBase + dvScale * Math.sin(t * 5 + off * 1.3);
+      p.push([
+        px,
+        py,
+        (rng() * alphaRange + alphaMin) * aScale * dv,
+        armParticleColor(r),
+      ]);
+    }
+  }
+}
+
 // --- LOD 0: full galaxy ±56 Kly, 1024×1024. Best at zoom < 1.5. ---
 
 let lod0Particles: GalParticle[] | null = null;
@@ -51,26 +160,8 @@ function getLOD0Particles(): GalParticle[] {
   const rng = mulberry32(77777);
   const p: GalParticle[] = [];
 
-  // Dense central bulge — bar-shaped, Gaussian taper toward tips
-  for (let i = 0; i < 7000; i++) {
-    const rMajor = Math.pow(rng(), 0.45) * 10000;
-    const [bx, by] = barEllipsePoint(rng, rMajor);
-    const r = Math.sqrt(bx * bx + by * by);
-    const taper = Math.exp(-2.5 * Math.pow(rMajor / 10000, 2));
-    p.push([bx, by, (rng() * 0.35 + 0.08) * taper, armParticleColor(r)]);
-  }
-  // Continuous stellar disk — this is what makes it look like a galaxy, not isolated arms
-  for (let i = 0; i < 22000; i++) {
-    const r = 2000 + Math.pow(rng(), 0.6) * 48000;
-    const theta = rng() * TWO_PI;
-    p.push([
-      r * Math.cos(theta),
-      r * Math.sin(theta),
-      rng() * 0.07 + 0.02,
-      armParticleColor(r),
-    ]);
-  }
-  // Outer disk scatter (dim, beyond arms)
+  pushBulgeParticles(p, rng, 7000, 0.45, 10000, 10000, 0.08, 0.35);
+  pushDiskParticles(p, rng, 22000, 2000, 0.6, 48000, Infinity, 0.07, 0.02);
   for (let i = 0; i < 4000; i++) {
     const r = 18000 + rng() * 34000;
     const theta = rng() * TWO_PI;
@@ -81,55 +172,44 @@ function getLOD0Particles(): GalParticle[] {
       "#A8C4FF",
     ]);
   }
-  // 4 major arms — negative sin gives CW winding on screen
-  for (const off of [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2]) {
-    for (let i = 0; i < 8000; i++) {
-      const t = (i / 8000) * Math.PI * 4.5 + 0.4;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > 52000) continue;
-      const scatter = gaussianRng(rng) * r * 0.06;
-      const tj = gaussianRng(rng) * 0.035;
-      const theta = t + off + tj;
-      const px = (r + scatter) * Math.cos(theta);
-      const py = -(r + scatter) * Math.sin(theta);
-      const df = Math.abs(scatter) / (r * 0.12);
-      const aScale = Math.max(0.1, 1 - df * df);
-      const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
-      p.push([px, py, (rng() * 0.4 + 0.15) * aScale * dv, armParticleColor(r)]);
-    }
-  }
-  // 2 minor arms
-  for (const off of [Math.PI / 4, Math.PI + Math.PI / 4]) {
-    for (let i = 0; i < 4000; i++) {
-      const t = (i / 4000) * Math.PI * 4.5 + 0.4;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > 52000) continue;
-      const scatter = gaussianRng(rng) * r * 0.06;
-      const tj = gaussianRng(rng) * 0.035;
-      const theta = t + off + tj;
-      const px = (r + scatter) * Math.cos(theta);
-      const py = -(r + scatter) * Math.sin(theta);
-      const df = Math.abs(scatter) / (r * 0.12);
-      const aScale = Math.max(0.1, 1 - df * df);
-      p.push([px, py, (rng() * 0.28 + 0.1) * aScale, armParticleColor(r)]);
-    }
-  }
-  // 2 spur arms
-  for (const off of [(Math.PI * 3) / 8, Math.PI + (Math.PI * 3) / 8]) {
-    for (let i = 0; i < 2000; i++) {
-      const t = (i / 2000) * Math.PI * 2.8 + 0.8;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > 38000) continue;
-      const scatter = gaussianRng(rng) * r * 0.055;
-      const tj = gaussianRng(rng) * 0.03;
-      const theta = t + off + tj;
-      const px = (r + scatter) * Math.cos(theta);
-      const py = -(r + scatter) * Math.sin(theta);
-      const df = Math.abs(scatter) / (r * 0.11);
-      const aScale = Math.max(0.1, 1 - df * df);
-      p.push([px, py, (rng() * 0.2 + 0.08) * aScale, armParticleColor(r)]);
-    }
-  }
+  pushArmParticles(p, rng, {
+    offsets: [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2],
+    count: 8000,
+    maxR: 52000,
+    scatterFactor: 0.06,
+    tjFactor: 0.035,
+    dfDenom: 0.12,
+    alphaMin: 0.15,
+    alphaRange: 0.4,
+    dvBase: 0.65,
+    dvScale: 0.35,
+  });
+  pushArmParticles(p, rng, {
+    offsets: [Math.PI / 4, Math.PI + Math.PI / 4],
+    count: 4000,
+    maxR: 52000,
+    scatterFactor: 0.06,
+    tjFactor: 0.035,
+    dfDenom: 0.12,
+    alphaMin: 0.1,
+    alphaRange: 0.28,
+    dvBase: 1,
+    dvScale: 0,
+  });
+  pushArmParticles(p, rng, {
+    offsets: [(Math.PI * 3) / 8, Math.PI + (Math.PI * 3) / 8],
+    count: 2000,
+    maxR: 38000,
+    scatterFactor: 0.055,
+    tjFactor: 0.03,
+    dfDenom: 0.11,
+    alphaMin: 0.08,
+    alphaRange: 0.2,
+    dvBase: 1,
+    dvScale: 0,
+    tRange: Math.PI * 2.8,
+    tStart: 0.8,
+  });
 
   lod0Particles = p;
   return p;
@@ -145,67 +225,32 @@ function getLOD1Particles(): GalParticle[] {
   const rng = mulberry32(88888);
   const p: GalParticle[] = [];
 
-  // Dense central bulge — bar-shaped, Gaussian taper toward tips
-  for (let i = 0; i < 9000; i++) {
-    const rMajor = Math.pow(rng(), 0.5) * 9000;
-    const [bx, by] = barEllipsePoint(rng, rMajor);
-    const r = Math.sqrt(bx * bx + by * by);
-    const taper = Math.exp(-2.5 * Math.pow(rMajor / 9000, 2));
-    p.push([bx, by, (rng() * 0.35 + 0.08) * taper, armParticleColor(r)]);
-  }
-  // Continuous inner disk — the background field that fills all inter-arm space
-  for (let i = 0; i < 32000; i++) {
-    const r = 800 + Math.pow(rng(), 0.65) * 20000;
-    if (r > LOD1_MAX_R) {
-      rng();
-      continue;
-    }
-    const theta = rng() * TWO_PI;
-    p.push([
-      r * Math.cos(theta),
-      r * Math.sin(theta),
-      rng() * 0.08 + 0.025,
-      armParticleColor(r),
-    ]);
-  }
-  // 4 major arms — dense, with Gaussian cross-section
-  for (const off of [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2]) {
-    for (let i = 0; i < 10000; i++) {
-      const t = (i / 10000) * Math.PI * 4.5 + 0.4;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > LOD1_MAX_R) break;
-      const scatter = gaussianRng(rng) * r * 0.07;
-      const tj = gaussianRng(rng) * 0.04;
-      const theta = t + off + tj;
-      const px = (r + scatter) * Math.cos(theta);
-      const py = -(r + scatter) * Math.sin(theta);
-      const df = Math.abs(scatter) / (r * 0.14);
-      const aScale = Math.max(0.1, 1 - df * df);
-      const dv = 0.65 + 0.35 * Math.sin(t * 5 + off * 1.3);
-      p.push([
-        px,
-        py,
-        (rng() * 0.42 + 0.16) * aScale * dv,
-        armParticleColor(r),
-      ]);
-    }
-  }
-  // 2 minor arms
-  for (const off of [Math.PI / 4, Math.PI + Math.PI / 4]) {
-    for (let i = 0; i < 7000; i++) {
-      const t = (i / 7000) * Math.PI * 4.5 + 0.4;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > LOD1_MAX_R) break;
-      const scatter = gaussianRng(rng) * r * 0.07;
-      const tj = gaussianRng(rng) * 0.04;
-      const theta = t + off + tj;
-      const px = (r + scatter) * Math.cos(theta);
-      const py = -(r + scatter) * Math.sin(theta);
-      const df = Math.abs(scatter) / (r * 0.14);
-      const aScale = Math.max(0.1, 1 - df * df);
-      p.push([px, py, (rng() * 0.3 + 0.1) * aScale, armParticleColor(r)]);
-    }
-  }
+  pushBulgeParticles(p, rng, 9000, 0.5, 9000, 9000, 0.08, 0.35);
+  pushDiskParticles(p, rng, 32000, 800, 0.65, 20000, LOD1_MAX_R, 0.08, 0.025);
+  pushArmParticles(p, rng, {
+    offsets: [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2],
+    count: 10000,
+    maxR: LOD1_MAX_R,
+    scatterFactor: 0.07,
+    tjFactor: 0.04,
+    dfDenom: 0.14,
+    alphaMin: 0.16,
+    alphaRange: 0.42,
+    dvBase: 0.65,
+    dvScale: 0.35,
+  });
+  pushArmParticles(p, rng, {
+    offsets: [Math.PI / 4, Math.PI + Math.PI / 4],
+    count: 7000,
+    maxR: LOD1_MAX_R,
+    scatterFactor: 0.07,
+    tjFactor: 0.04,
+    dfDenom: 0.14,
+    alphaMin: 0.1,
+    alphaRange: 0.3,
+    dvBase: 1,
+    dvScale: 0,
+  });
 
   lod1Particles = p;
   return p;
@@ -221,58 +266,32 @@ function getLOD2Particles(): GalParticle[] {
   const rng = mulberry32(99999);
   const p: GalParticle[] = [];
 
-  // Central disk — bar-shaped, Gaussian taper toward tips
-  for (let i = 0; i < 7000; i++) {
-    const rMajor = Math.pow(rng(), 0.7) * LOD2_MAX_R;
-    const [bx, by] = barEllipsePoint(rng, rMajor);
-    const r = Math.sqrt(bx * bx + by * by);
-    const taper = Math.exp(-2.5 * Math.pow(rMajor / LOD2_MAX_R, 2));
-    p.push([bx, by, (rng() * 0.35 + 0.08) * taper, armParticleColor(r)]);
-  }
-  // Core diffuse — also bar-shaped with taper
-  for (let i = 0; i < 4500; i++) {
-    const rMajor = 500 + Math.pow(rng(), 0.8) * 8000;
-    const [bx, by] = barEllipsePoint(rng, rMajor);
-    const r = Math.sqrt(bx * bx + by * by);
-    const taper = Math.exp(-2.5 * Math.pow(rMajor / LOD2_MAX_R, 2));
-    p.push([bx, by, (rng() * 0.06 + 0.01) * taper, armParticleColor(r)]);
-  }
-  for (const off of [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2]) {
-    for (let i = 0; i < 6000; i++) {
-      const t = (i / 6000) * Math.PI * 4.5 + 0.4;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > LOD2_MAX_R) break;
-      const scatter = gaussianRng(rng) * r * 0.08;
-      const tj = gaussianRng(rng) * 0.045;
-      const theta = t + off + tj;
-      const px = (r + scatter) * Math.cos(theta);
-      const py = -(r + scatter) * Math.sin(theta);
-      const df = Math.abs(scatter) / (r * 0.16);
-      const aScale = Math.max(0.1, 1 - df * df);
-      const dv = 0.7 + 0.3 * Math.sin(t * 5 + off * 1.3);
-      p.push([
-        px,
-        py,
-        (rng() * 0.32 + 0.12) * aScale * dv,
-        armParticleColor(r),
-      ]);
-    }
-  }
-  for (const off of [Math.PI / 4, Math.PI + Math.PI / 4]) {
-    for (let i = 0; i < 4000; i++) {
-      const t = (i / 4000) * Math.PI * 4.5 + 0.4;
-      const r = 2000 * Math.exp(0.22 * t);
-      if (r > LOD2_MAX_R) break;
-      const scatter = gaussianRng(rng) * r * 0.08;
-      const tj = gaussianRng(rng) * 0.045;
-      const theta = t + off + tj;
-      const px = (r + scatter) * Math.cos(theta);
-      const py = -(r + scatter) * Math.sin(theta);
-      const df = Math.abs(scatter) / (r * 0.16);
-      const aScale = Math.max(0.1, 1 - df * df);
-      p.push([px, py, (rng() * 0.22 + 0.08) * aScale, armParticleColor(r)]);
-    }
-  }
+  pushBulgeParticles(p, rng, 7000, 0.7, LOD2_MAX_R, LOD2_MAX_R, 0.08, 0.35);
+  pushBulgeParticles(p, rng, 4500, 0.8, 8000, LOD2_MAX_R, 0.01, 0.06, 500);
+  pushArmParticles(p, rng, {
+    offsets: [0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2],
+    count: 6000,
+    maxR: LOD2_MAX_R,
+    scatterFactor: 0.08,
+    tjFactor: 0.045,
+    dfDenom: 0.16,
+    alphaMin: 0.12,
+    alphaRange: 0.32,
+    dvBase: 0.7,
+    dvScale: 0.3,
+  });
+  pushArmParticles(p, rng, {
+    offsets: [Math.PI / 4, Math.PI + Math.PI / 4],
+    count: 4000,
+    maxR: LOD2_MAX_R,
+    scatterFactor: 0.08,
+    tjFactor: 0.045,
+    dfDenom: 0.16,
+    alphaMin: 0.08,
+    alphaRange: 0.22,
+    dvBase: 1,
+    dvScale: 0,
+  });
 
   lod2Particles = p;
   return p;
@@ -441,6 +460,17 @@ function hashTile(tx: number, ty: number): number {
   return ((a ^ (a >>> 15)) * 0x735a2d97) >>> 0;
 }
 
+function isOnScreen(px: number, py: number, w: number, h: number): boolean {
+  return px >= 0 && px <= w && py >= 0 && py <= h;
+}
+
+function starPixelSize(largeStars: boolean, sizeRaw: number): number {
+  if (!largeStars) return 1;
+  if (sizeRaw < 0.65) return 1;
+  if (sizeRaw < 0.9) return 1.5;
+  return 2;
+}
+
 function drawViewportStars(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -482,19 +512,13 @@ function drawViewportStars(
         const sizeRaw = rng();
         const px = gcx + wx * scale;
         const py = gcy + wy * scale;
-        if (px < 0 || px > w || py < 0 || py > h) continue;
+        if (!isOnScreen(px, py, w, h)) continue;
         const galR = Math.sqrt(wx * wx + wy * wy);
         const distFade = Math.max(0, Math.min(1, 1 - (galR - 30000) / 22000));
         if (distFade <= 0) continue;
-        const size = largeStars
-          ? sizeRaw < 0.65
-            ? 1
-            : sizeRaw < 0.9
-              ? 1.5
-              : 2
-          : 1;
         ctx.globalAlpha = alpha * globalFade * distFade;
-        ctx.fillRect(px, py, size, size);
+        const sz = starPixelSize(largeStars, sizeRaw);
+        ctx.fillRect(px, py, sz, sz);
       }
     }
   }
@@ -515,6 +539,36 @@ function drawLOD(
   ctx.drawImage(offscreen, gcx - gp, gcy - gp, gp * 2, gp * 2);
 }
 
+function computeNeighbourFade(zoom: number, isLocal: boolean): number {
+  if (zoom <= 0.5) return 1;
+  if (isLocal) return 0;
+  return 1 - (zoom - 0.5) / 7.5;
+}
+
+function drawArmGuides(
+  ctx: CanvasRenderingContext2D,
+  gcx: number,
+  gcy: number,
+  scale: number,
+  neighbourFade: number,
+): void {
+  const armPoints = getArmGuidePoints();
+  ctx.lineWidth = 1;
+  for (let ai = 0; ai < armGuideConfigs.length; ai++) {
+    const { opacity } = armGuideConfigs[ai];
+    const points = armPoints[ai];
+    ctx.beginPath();
+    const [wx0, wy0] = points[0];
+    ctx.moveTo(gcx + wx0 * scale, gcy + wy0 * scale);
+    for (let pi = 1; pi < points.length; pi++) {
+      const [wx, wy] = points[pi];
+      ctx.lineTo(gcx + wx * scale, gcy + wy * scale);
+    }
+    ctx.strokeStyle = `rgba(160,190,255,${(opacity * neighbourFade).toFixed(3)})`;
+    ctx.stroke();
+  }
+}
+
 export function drawGalaxyBackground(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -528,7 +582,7 @@ export function drawGalaxyBackground(
   ctx.fillRect(0, 0, w, h);
 
   const isLocal = zoom > 8;
-  const neighbourFade = zoom <= 0.5 ? 1 : isLocal ? 0 : 1 - (zoom - 0.5) / 7.5;
+  const neighbourFade = computeNeighbourFade(zoom, isLocal);
 
   const starFade = isLocal ? 1 : Math.max(0, Math.min(1, (zoom - 1) / 1.5));
   drawViewportStars(ctx, w, h, gcx, gcy, scale, isLocal, starFade);
@@ -568,35 +622,17 @@ export function drawGalaxyBackground(
     ctx.stroke();
   }
 
-  // Arm guide lines — only screen-space linear transform per repaint, no trig
-  const armPoints = getArmGuidePoints();
-  ctx.lineWidth = 1;
-  for (let ai = 0; ai < armGuideConfigs.length; ai++) {
-    const { opacity } = armGuideConfigs[ai];
-    const points = armPoints[ai];
-    ctx.beginPath();
-    const [wx0, wy0] = points[0];
-    ctx.moveTo(gcx + wx0 * scale, gcy + wy0 * scale);
-    for (let pi = 1; pi < points.length; pi++) {
-      const [wx, wy] = points[pi];
-      ctx.lineTo(gcx + wx * scale, gcy + wy * scale);
-    }
-    ctx.strokeStyle = `rgba(160,190,255,${(opacity * neighbourFade).toFixed(3)})`;
-    ctx.stroke();
-  }
+  drawArmGuides(ctx, gcx, gcy, scale, neighbourFade);
 
-  // LOD 0: full galaxy — fades out above zoom 2 as inner LODs take over
   const lod0Alpha = neighbourFade * Math.max(0, Math.min(1, 2 - zoom));
   if (lod0Alpha > 0)
     drawLOD(ctx, getLOD0Offscreen(), LOD0_HALF_LY, gcx, gcy, scale, lod0Alpha);
 
-  // LOD 1: inner ±22 Kly — fades in at zoom 0.7, always crisp at this zoom range
   const lod1Alpha =
     neighbourFade * Math.max(0, Math.min(1, (zoom - 0.7) / 0.8));
   if (lod1Alpha > 0)
     drawLOD(ctx, getLOD1Offscreen(), LOD1_HALF_LY, gcx, gcy, scale, lod1Alpha);
 
-  // LOD 2: core ±9 Kly — fades in at zoom 2.5, crisp 1px particles at zoom 3+
   const lod2Alpha = neighbourFade * Math.max(0, Math.min(1, (zoom - 2.5) / 1));
   if (lod2Alpha > 0)
     drawLOD(ctx, getLOD2Offscreen(), LOD2_HALF_LY, gcx, gcy, scale, lod2Alpha);
@@ -605,71 +641,84 @@ export function drawGalaxyBackground(
 
   // Galactic bar and nucleus drawn AFTER particle LODs so the bar shape is never hidden by
   // the circular particle distribution in the offscreen canvases
-  if (barFade > 0) {
-    // Long Bar: 45° CCW (SVG rotate(-45)), 6:1 aspect, dimmer than Galactic Bar
-    const longBarSemiMajor = Math.max(5, 15000 * scale);
-    ctx.save();
-    ctx.translate(gcx, gcy);
-    ctx.rotate(-LONG_BAR_ANGLE);
-    ctx.scale(1, LONG_BAR_MINOR_RATIO);
-    const longBar = ctx.createRadialGradient(0, 0, 0, 0, 0, longBarSemiMajor);
-    longBar.addColorStop(0, `rgba(255,250,215,${(0.18 * barFade).toFixed(3)})`);
-    longBar.addColorStop(
-      0.3,
-      `rgba(255,235,165,${(0.08 * barFade).toFixed(3)})`,
-    );
-    longBar.addColorStop(
-      0.65,
-      `rgba(235,195,100,${(0.03 * barFade).toFixed(3)})`,
-    );
-    longBar.addColorStop(1, "rgba(175,125,50,0)");
-    ctx.fillStyle = longBar;
-    ctx.beginPath();
-    ctx.arc(0, 0, longBarSemiMajor, 0, TWO_PI);
-    ctx.fill();
-    ctx.restore();
+  if (barFade > 0) drawGalacticBar(ctx, gcx, gcy, scale, barFade);
+}
 
-    // Galactic Bar: 55° CCW (SVG rotate(-55)), 2.5:1 aspect
-    const barSemiMajor = Math.max(5, 12000 * scale);
-    ctx.save();
-    ctx.translate(gcx, gcy);
-    ctx.rotate(-GALACTIC_BAR_ANGLE);
-    ctx.scale(1, GALACTIC_BAR_MINOR_RATIO);
-    const galBar = ctx.createRadialGradient(0, 0, 0, 0, 0, barSemiMajor);
-    galBar.addColorStop(0, `rgba(255,250,215,${(0.3 * barFade).toFixed(3)})`);
-    galBar.addColorStop(
-      0.3,
-      `rgba(255,235,165,${(0.14 * barFade).toFixed(3)})`,
-    );
-    galBar.addColorStop(
-      0.65,
-      `rgba(235,195,100,${(0.05 * barFade).toFixed(3)})`,
-    );
-    galBar.addColorStop(1, "rgba(175,125,50,0)");
-    ctx.fillStyle = galBar;
-    ctx.beginPath();
-    ctx.arc(0, 0, barSemiMajor, 0, TWO_PI);
-    ctx.fill();
-    ctx.restore();
+function drawBarEllipse(
+  ctx: CanvasRenderingContext2D,
+  gcx: number,
+  gcy: number,
+  scale: number,
+  barFade: number,
+  angle: number,
+  minorRatio: number,
+  semiMajorLY: number,
+  opacities: [number, number, number],
+): void {
+  const semiMajor = Math.max(5, semiMajorLY * scale);
+  ctx.save();
+  ctx.translate(gcx, gcy);
+  ctx.rotate(-angle);
+  ctx.scale(1, minorRatio);
+  const g = ctx.createRadialGradient(0, 0, 0, 0, 0, semiMajor);
+  g.addColorStop(0, `rgba(255,250,215,${(opacities[0] * barFade).toFixed(3)})`);
+  g.addColorStop(
+    0.3,
+    `rgba(255,235,165,${(opacities[1] * barFade).toFixed(3)})`,
+  );
+  g.addColorStop(
+    0.65,
+    `rgba(235,195,100,${(opacities[2] * barFade).toFixed(3)})`,
+  );
+  g.addColorStop(1, "rgba(175,125,50,0)");
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(0, 0, semiMajor, 0, TWO_PI);
+  ctx.fill();
+  ctx.restore();
+}
 
-    // Compact bright nucleus centred on galactic centre (unscaled coordinates)
-    const nucleusR = Math.max(3, 1800 * scale);
-    const nucleus = ctx.createRadialGradient(gcx, gcy, 0, gcx, gcy, nucleusR);
-    nucleus.addColorStop(0, `rgba(255,255,235,${(0.98 * barFade).toFixed(3)})`);
-    nucleus.addColorStop(
-      0.3,
-      `rgba(255,245,185,${(0.75 * barFade).toFixed(3)})`,
-    );
-    nucleus.addColorStop(
-      0.7,
-      `rgba(240,205,120,${(0.32 * barFade).toFixed(3)})`,
-    );
-    nucleus.addColorStop(1, "rgba(200,155,75,0)");
-    ctx.fillStyle = nucleus;
-    ctx.beginPath();
-    ctx.arc(gcx, gcy, nucleusR, 0, TWO_PI);
-    ctx.fill();
-  }
+function drawGalacticBar(
+  ctx: CanvasRenderingContext2D,
+  gcx: number,
+  gcy: number,
+  scale: number,
+  barFade: number,
+): void {
+  drawBarEllipse(
+    ctx,
+    gcx,
+    gcy,
+    scale,
+    barFade,
+    LONG_BAR_ANGLE,
+    LONG_BAR_MINOR_RATIO,
+    15000,
+    [0.18, 0.08, 0.03],
+  );
+  drawBarEllipse(
+    ctx,
+    gcx,
+    gcy,
+    scale,
+    barFade,
+    GALACTIC_BAR_ANGLE,
+    GALACTIC_BAR_MINOR_RATIO,
+    12000,
+    [0.3, 0.14, 0.05],
+  );
+
+  // Compact bright nucleus centred on galactic centre (unscaled coordinates)
+  const nucleusR = Math.max(3, 1800 * scale);
+  const nucleus = ctx.createRadialGradient(gcx, gcy, 0, gcx, gcy, nucleusR);
+  nucleus.addColorStop(0, `rgba(255,255,235,${(0.98 * barFade).toFixed(3)})`);
+  nucleus.addColorStop(0.3, `rgba(255,245,185,${(0.75 * barFade).toFixed(3)})`);
+  nucleus.addColorStop(0.7, `rgba(240,205,120,${(0.32 * barFade).toFixed(3)})`);
+  nucleus.addColorStop(1, "rgba(200,155,75,0)");
+  ctx.fillStyle = nucleus;
+  ctx.beginPath();
+  ctx.arc(gcx, gcy, nucleusR, 0, TWO_PI);
+  ctx.fill();
 }
 
 function markerCanvasPos(
@@ -705,6 +754,41 @@ function getRegionLabelMetrics(
   return entry;
 }
 
+function drawSingleRegionLabel(
+  ctx: CanvasRenderingContext2D,
+  region: GalaxyRegion,
+  sx: number,
+  sy: number,
+  isHovered: boolean,
+  isSelected: boolean,
+  a: number,
+): void {
+  const { upperName, w600, w700 } = getRegionLabelMetrics(ctx, region);
+  const tw = isSelected ? w700 : w600;
+  ctx.font = `${isSelected ? "700" : "600"} 9px Syne, sans-serif`;
+  const pillW = tw + 12;
+  const pillH = 16;
+
+  ctx.globalAlpha = a * 0.65;
+  ctx.fillStyle = "#020509";
+  ctx.beginPath();
+  ctx.roundRect(sx - pillW / 2, sy - pillH / 2, pillW, pillH, 3);
+  ctx.fill();
+
+  if (isSelected || isHovered) {
+    ctx.globalAlpha = a * (isSelected ? 0.7 : 0.4);
+    ctx.strokeStyle = region.color;
+    ctx.lineWidth = isSelected ? 1.5 : 1;
+    ctx.beginPath();
+    ctx.roundRect(sx - pillW / 2, sy - pillH / 2, pillW, pillH, 3);
+    ctx.stroke();
+  }
+
+  ctx.globalAlpha = a;
+  ctx.fillStyle = isSelected || isHovered ? "#ffffff" : region.color;
+  ctx.fillText(upperName, sx, sy + 1);
+}
+
 export function drawRegionLabels(
   ctx: CanvasRenderingContext2D,
   regions: GalaxyRegion[],
@@ -736,39 +820,86 @@ export function drawRegionLabels(
     );
     const isHovered = region.id === hoveredId;
     const isSelected = region.id === selectedId;
-
-    const { upperName, w600, w700 } = getRegionLabelMetrics(ctx, region);
-    const tw = isSelected ? w700 : w600;
-    ctx.font = `${isSelected ? "700" : "600"} 9px Syne, sans-serif`;
-    const pH = 6;
-    const pillW = tw + pH * 2;
-    const pillH = 16;
-
     const baseAlpha = isHovered || isSelected ? 1 : 0.65;
-    const a = fade * baseAlpha;
-
-    ctx.globalAlpha = a * 0.65;
-    ctx.fillStyle = "#020509";
-    ctx.beginPath();
-    ctx.roundRect(sx - pillW / 2, sy - pillH / 2, pillW, pillH, 3);
-    ctx.fill();
-
-    if (isSelected || isHovered) {
-      ctx.globalAlpha = a * (isSelected ? 0.7 : 0.4);
-      ctx.strokeStyle = region.color;
-      ctx.lineWidth = isSelected ? 1.5 : 1;
-      ctx.beginPath();
-      ctx.roundRect(sx - pillW / 2, sy - pillH / 2, pillW, pillH, 3);
-      ctx.stroke();
-    }
-
-    ctx.globalAlpha = a;
-    ctx.fillStyle = isSelected || isHovered ? "#ffffff" : region.color;
-    ctx.fillText(upperName, sx, sy + 1);
+    drawSingleRegionLabel(
+      ctx,
+      region,
+      sx,
+      sy,
+      isHovered,
+      isSelected,
+      fade * baseAlpha,
+    );
   }
 
   ctx.globalAlpha = 1;
   ctx.textBaseline = "alphabetic";
+}
+
+function markerRadius(
+  isLocal: boolean,
+  isGalaxyScale: boolean,
+  isSol: boolean,
+): number {
+  if (isLocal) return isSol ? 7 : 5;
+  if (isGalaxyScale) return isSol ? 4 : 2.5;
+  return isSol ? 5 : 3.5;
+}
+
+function drawMarkerGlow(
+  ctx: CanvasRenderingContext2D,
+  mx: number,
+  my: number,
+  r: number,
+  m: GalaxyMarker,
+  ts: number,
+  isSelected: boolean,
+  isHovered: boolean,
+): void {
+  if (isSelected) {
+    const pulseScale = 1 + 0.3 * Math.sin(ts * 0.003);
+    const glowR = r * 3.5 * pulseScale;
+    const glow = ctx.createRadialGradient(mx, my, r, mx, my, glowR);
+    glow.addColorStop(0, m.starColor + "55");
+    glow.addColorStop(1, m.starColor + "00");
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(mx, my, glowR, 0, TWO_PI);
+    ctx.fill();
+  } else if (isHovered) {
+    const glowR = r * 2.8;
+    const glow = ctx.createRadialGradient(mx, my, r * 0.5, mx, my, glowR);
+    glow.addColorStop(0, m.starColor + "40");
+    glow.addColorStop(1, m.starColor + "00");
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(mx, my, glowR, 0, TWO_PI);
+    ctx.fill();
+  }
+}
+
+function drawMarkerLabel(
+  ctx: CanvasRenderingContext2D,
+  m: GalaxyMarker,
+  mx: number,
+  my: number,
+  r: number,
+  isLocal: boolean,
+  isSelected: boolean,
+): void {
+  const weight = isSelected ? 600 : 400;
+  const size = isSelected ? 12 : 11;
+  ctx.font = `${weight} ${size}px Syne, sans-serif`;
+  ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,215,240,0.9)";
+  ctx.textAlign = "center";
+  if (isLocal && m.distanceFromEarth !== undefined && m.distanceFromEarth > 0) {
+    ctx.fillText(m.name, mx, my - r - 18);
+    ctx.font = "400 10px Syne, sans-serif";
+    ctx.fillStyle = "rgba(160,190,230,0.75)";
+    ctx.fillText(`${m.distanceFromEarth.toFixed(1)} ly`, mx, my - r - 6);
+  } else {
+    ctx.fillText(m.name, mx, my - r - 6);
+  }
 }
 
 export function drawSystemMarkers(
@@ -801,39 +932,10 @@ export function drawSystemMarkers(
     const isSelected = m.id === selectedId;
     const isSol = m.id === "sol";
 
-    const baseR = isLocal
-      ? isSol
-        ? 7
-        : 5
-      : isGalaxyScale
-        ? isSol
-          ? 4
-          : 2.5
-        : isSol
-          ? 5
-          : 3.5;
+    const baseR = markerRadius(isLocal, isGalaxyScale, isSol);
     const r = baseR * (isHovered ? 1.4 : 1);
 
-    if (isSelected) {
-      const pulseScale = 1 + 0.3 * Math.sin(ts * 0.003);
-      const glowR = r * 3.5 * pulseScale;
-      const glow = ctx.createRadialGradient(mx, my, r, mx, my, glowR);
-      glow.addColorStop(0, m.starColor + "55");
-      glow.addColorStop(1, m.starColor + "00");
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(mx, my, glowR, 0, TWO_PI);
-      ctx.fill();
-    } else if (isHovered) {
-      const glowR = r * 2.8;
-      const glow = ctx.createRadialGradient(mx, my, r * 0.5, mx, my, glowR);
-      glow.addColorStop(0, m.starColor + "40");
-      glow.addColorStop(1, m.starColor + "00");
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(mx, my, glowR, 0, TWO_PI);
-      ctx.fill();
-    }
+    drawMarkerGlow(ctx, mx, my, r, m, ts, isSelected, isHovered);
 
     const bitmap = getMarkerBitmap(m.rootType, m.starColor);
     const drawHalf = (MARKER_SIZE / 2) * (r / MARKER_BASE_R);
@@ -853,26 +955,7 @@ export function drawSystemMarkers(
       ctx.stroke();
     }
 
-    const showLabel = isSol || isHovered || isSelected;
-    if (!showLabel) continue;
-
-    if (
-      isLocal &&
-      m.distanceFromEarth !== undefined &&
-      m.distanceFromEarth > 0
-    ) {
-      ctx.font = `${isSelected ? 600 : 400} ${isSelected ? 12 : 11}px Syne, sans-serif`;
-      ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,215,240,0.9)";
-      ctx.textAlign = "center";
-      ctx.fillText(m.name, mx, my - r - 18);
-      ctx.font = "400 10px Syne, sans-serif";
-      ctx.fillStyle = "rgba(160,190,230,0.75)";
-      ctx.fillText(`${m.distanceFromEarth.toFixed(1)} ly`, mx, my - r - 6);
-    } else {
-      ctx.font = `${isSelected ? 600 : 400} ${isSelected ? 12 : 11}px Syne, sans-serif`;
-      ctx.fillStyle = isSelected ? "#ffffff" : "rgba(200,215,240,0.9)";
-      ctx.textAlign = "center";
-      ctx.fillText(m.name, mx, my - r - 6);
-    }
+    if (!isSol && !isHovered && !isSelected) continue;
+    drawMarkerLabel(ctx, m, mx, my, r, isLocal, isSelected);
   }
 }

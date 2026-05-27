@@ -1,4 +1,5 @@
 import { mulberry32 } from "../utils/mulberry32";
+import { lighten } from "../utils/color";
 import { BodyType, ROOT_BODY_TYPES } from "../types";
 import type { BodyId, CelestialBody, RingBand } from "../types";
 
@@ -22,13 +23,6 @@ function getStarField(): StarTuple[] {
   return cachedStars;
 }
 
-function lighten(hex: string, amount: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgb(${Math.min(255, r + amount)},${Math.min(255, g + amount)},${Math.min(255, b + amount)})`;
-}
-
 export function drawStarField(ctx: CanvasRenderingContext2D): void {
   for (const [x, y, r, a] of getStarField()) {
     ctx.globalAlpha = a;
@@ -40,25 +34,22 @@ export function drawStarField(ctx: CanvasRenderingContext2D): void {
   ctx.globalAlpha = 1;
 }
 
-export function drawBody(
+function drawBodyAura(
   ctx: CanvasRenderingContext2D,
-  id: BodyId,
+  body: CelestialBody,
   x: number,
   y: number,
   r: number,
   isSelected: boolean,
   isHovered: boolean,
-  showLabel: boolean,
-  bodies: Record<string, CelestialBody>,
 ): void {
-  const body = bodies[id];
-  if (!body) return;
+  const effectiveColor = body.glowColor ?? body.color;
 
   if (isSelected || isHovered) {
     const glowR = r * (isSelected ? 2.8 : 2.2);
     const grad = ctx.createRadialGradient(x, y, r * 0.5, x, y, glowR);
-    grad.addColorStop(0, (body.glowColor ?? body.color) + "55");
-    grad.addColorStop(1, (body.glowColor ?? body.color) + "00");
+    grad.addColorStop(0, effectiveColor + "55");
+    grad.addColorStop(1, effectiveColor + "00");
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.arc(x, y, glowR, 0, TWO_PI);
@@ -69,16 +60,24 @@ export function drawBody(
     const glowColor =
       body.type === BodyType.Star
         ? "rgba(255,160,0,0.3)"
-        : (body.glowColor ?? body.color) + "55";
+        : effectiveColor + "55";
     const corona = ctx.createRadialGradient(x, y, r, x, y, r * 2.8);
     corona.addColorStop(0, glowColor);
-    corona.addColorStop(1, (body.glowColor ?? body.color) + "00");
+    corona.addColorStop(1, effectiveColor + "00");
     ctx.fillStyle = corona;
     ctx.beginPath();
     ctx.arc(x, y, r * 2.8, 0, TWO_PI);
     ctx.fill();
   }
+}
 
+function drawBodyShape(
+  ctx: CanvasRenderingContext2D,
+  body: CelestialBody,
+  x: number,
+  y: number,
+  r: number,
+): void {
   if (body.type === BodyType.BlackHole) {
     const diskColor = body.glowColor ?? "#FF8800";
     const disk = ctx.createRadialGradient(x, y, r, x, y, r * 3);
@@ -115,7 +114,17 @@ export function drawBody(
     ctx.arc(x, y, r, 0, TWO_PI);
     ctx.fill();
   }
+}
 
+function drawBodyOverlays(
+  ctx: CanvasRenderingContext2D,
+  body: CelestialBody,
+  x: number,
+  y: number,
+  r: number,
+  isSelected: boolean,
+  isHovered: boolean,
+): void {
   if (body.atmosphereColor) {
     ctx.beginPath();
     ctx.arc(x, y, r, 0, TWO_PI);
@@ -144,6 +153,25 @@ export function drawBody(
     ctx.arc(x, y, r, 0, TWO_PI);
     ctx.stroke();
   }
+}
+
+export function drawBody(
+  ctx: CanvasRenderingContext2D,
+  id: BodyId,
+  x: number,
+  y: number,
+  r: number,
+  isSelected: boolean,
+  isHovered: boolean,
+  showLabel: boolean,
+  bodies: Record<string, CelestialBody>,
+): void {
+  const body = bodies[id];
+  if (!body) return;
+
+  drawBodyAura(ctx, body, x, y, r, isSelected, isHovered);
+  drawBodyShape(ctx, body, x, y, r);
+  drawBodyOverlays(ctx, body, x, y, r, isSelected, isHovered);
 
   if (showLabel) {
     const fontSize = Math.max(10, Math.min(14, r * 0.7));
