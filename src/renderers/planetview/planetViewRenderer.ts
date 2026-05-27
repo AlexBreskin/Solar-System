@@ -1,7 +1,7 @@
-import { mulberry32 } from "../utils/mulberry32";
-import { lighten } from "../utils/color";
-import { BodyType, ROOT_BODY_TYPES } from "../types";
-import type { BodyId, CelestialBody, RingBand } from "../types";
+import { mulberry32 } from "../../utils/mulberry32";
+import { lighten } from "../../utils/color";
+import { BodyType, ROOT_BODY_TYPES } from "../../types";
+import type { BodyId, CelestialBody, RingBand } from "../../types";
 
 const TWO_PI = Math.PI * 2;
 

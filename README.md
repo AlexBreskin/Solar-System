@@ -220,11 +220,23 @@ src/
 │   ├── galaxySimulation.ts         # Galaxy marker positions, hover/select state, hit-testing
 │   └── __tests__/
 ├── renderers/
-│   ├── solarSystemRenderer.ts  # Canvas drawing — orbits, bodies, belts, rings
-│   ├── planetViewRenderer.ts   # Canvas drawing — planet, moons, rings
-│   └── galaxyRenderer.ts       # Canvas drawing — spiral background, system markers
+│   ├── galaxyview/
+│   │   ├── galaxyParticles.ts  # LOD particle generation + offscreen canvas caches
+│   │   ├── galaxyMarkers.ts    # System marker bitmaps and drawSystemMarkers
+│   │   ├── galaxyRegions.ts    # Galactic region pill labels
+│   │   ├── galaxyRenderer.ts   # Background, galactic bar, arm guides, viewport stars
+│   │   └── index.ts            # Public API re-exports
+│   ├── planetview/
+│   │   ├── planetViewRenderer.ts  # Planet, moons, rings
+│   │   └── index.ts
+│   └── systemview/
+│       ├── systemRenderer.ts   # Star field, orbits, ring drawing
+│       ├── systemBelts.ts      # Belt particle fields and drawing
+│       ├── systemBodies.ts     # Bodies, sun, black hole, selection glows
+│       └── index.ts            # Public API re-exports
 ├── utils/
-│   ├── mulberry32.ts           # Shared seeded RNG (extracted from renderers)
+│   ├── mulberry32.ts           # Shared seeded RNG
+│   ├── color.ts                # lighten() hex colour utility
 │   └── distance.ts             # AU ↔ km ↔ ly conversion and formatting
 └── components/
     ├── SolarSystemCanvas.tsx   # System view — animation loop, camera, hit-testing

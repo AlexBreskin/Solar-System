@@ -5,7 +5,7 @@ import {
   drawGalaxyBackground,
   drawSystemMarkers,
   drawRegionLabels,
-} from "../renderers/galaxyRenderer";
+} from "../renderers/galaxyview";
 import { STAR_SYSTEMS } from "../data/systems";
 import { GALAXY_DATA, GALAXY_REGIONS } from "../data/galaxy";
 import { useZoomControls } from "../hooks/useZoomControls";

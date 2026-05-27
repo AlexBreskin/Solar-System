@@ -9,7 +9,7 @@ import {
   drawStarField,
   drawBody,
   drawBodyRings,
-} from "../renderers/planetViewRenderer";
+} from "../renderers/planetview";
 import { useStarSystem } from "../contexts/StarSystemContext";
 import type { BodyId, CanvasSize, PlanetViewCanvasProps } from "../types";
 

@@ -8,7 +8,7 @@ import {
   drawBelt,
   drawBodies,
   drawBodyRings,
-} from "../renderers/solarSystemRenderer";
+} from "../renderers/systemview";
 import { useStarSystem } from "../contexts/StarSystemContext";
 import { BodyType, ROOT_BODY_TYPES } from "../types";
 import type { CanvasSize, SolarSystemCanvasProps } from "../types";
