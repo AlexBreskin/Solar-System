@@ -21,6 +21,7 @@ export default [
     rules: {
       "max-statements-per-line": ["error", { max: 1 }],
       "one-var": ["error", "never"],
+      complexity: ["warn", { max: 10 }],
     },
   },
 ];
