@@ -50,7 +50,7 @@ export default function SolarSystemCanvas({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const simRef = useRef<SolarSystemSimulation | null>(null);
   if (!simRef.current) {
-    simRef.current = new SolarSystemSimulation(bodies, visualConfig);
+    simRef.current = SolarSystemSimulation.create(bodies, visualConfig);
   }
   const animRef = useRef<number | null>(null);
   const sizeRef = useRef<CanvasSize>({ w: 0, h: 0 });

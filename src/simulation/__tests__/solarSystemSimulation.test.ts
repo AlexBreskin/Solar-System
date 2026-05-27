@@ -42,7 +42,7 @@ function makeVisualConfig(overrides: Partial<VisualConfig> = {}): VisualConfig {
 
 describe("SolarSystemSimulation", () => {
   function makeSim() {
-    return new SolarSystemSimulation(CELESTIAL_BODIES, VISUAL_CONFIG);
+    return SolarSystemSimulation.create(CELESTIAL_BODIES, VISUAL_CONFIG);
   }
 
   it("initialises angles for every body", () => {
@@ -130,7 +130,7 @@ describe("SolarSystemSimulation — edge case bodies", () => {
       orbitalRadii: { frozen: 100 },
       planetSizes: { star: 20, frozen: 10 },
     });
-    const sim = new SolarSystemSimulation(bodies, vc);
+    const sim = SolarSystemSimulation.create(bodies, vc);
     expect(sim.orbitalSpeeds["frozen"]).toBe(0);
   });
 
@@ -146,7 +146,7 @@ describe("SolarSystemSimulation — edge case bodies", () => {
       moonOrbitalRadii: { stray: 40 },
       planetSizes: { star: 20, stray: 5 },
     });
-    const sim = new SolarSystemSimulation(bodies, vc);
+    const sim = SolarSystemSimulation.create(bodies, vc);
     expect(sim.orbitalSpeeds["stray"]).toBeGreaterThan(0);
   });
 
@@ -163,10 +163,28 @@ describe("SolarSystemSimulation — edge case bodies", () => {
       moonOrbitalRadii: { orphanbinary: 40 },
       planetSizes: { star: 20, orphanbinary: 5 },
     });
-    const sim = new SolarSystemSimulation(bodies, vc);
+    const sim = SolarSystemSimulation.create(bodies, vc);
     sim.updatePositions(400, 300);
     // No crash; binary orphan moon is skipped in step 6
     expect(sim.positions["star"]).toBeDefined();
+  });
+
+  it("skips placement for a non-binary orphan moon and does not crash", () => {
+    const bodies = {
+      star: makeBody("star", BodyType.Star, { orbitalPeriod: 0 }),
+      orphan: makeBody("orphan", BodyType.Moon, {
+        parent: null,
+        orbitalPeriod: 30,
+      }),
+    };
+    const vc = makeVisualConfig({
+      moonOrbitalRadii: { orphan: 40 },
+      planetSizes: { star: 20, orphan: 5 },
+    });
+    const sim = SolarSystemSimulation.create(bodies, vc);
+    sim.updatePositions(400, 300);
+    expect(sim.positions["star"]).toBeDefined();
+    expect(sim.positions["orphan"]).toBeUndefined();
   });
 
   it("places a parentless planet at the barycentre", () => {
@@ -181,7 +199,7 @@ describe("SolarSystemSimulation — edge case bodies", () => {
       orbitalRadii: { rogue: 100 },
       planetSizes: { star: 20, rogue: 10 },
     });
-    const sim = new SolarSystemSimulation(bodies, vc);
+    const sim = SolarSystemSimulation.create(bodies, vc);
     sim.updatePositions(400, 300);
     expect(sim.positions["rogue"]).toBeDefined();
   });
@@ -205,7 +223,7 @@ describe("SolarSystemSimulation — zero-period moon", () => {
       moonOrbitalRadii: { zeromoon: 40 },
       planetSizes: { star: 20, planet: 10, zeromoon: 5 },
     });
-    const sim = new SolarSystemSimulation(bodies, vc);
+    const sim = SolarSystemSimulation.create(bodies, vc);
     expect(sim.orbitalSpeeds["zeromoon"]).toBe(0);
   });
 });
@@ -224,7 +242,7 @@ describe("SolarSystemSimulation — companion star positions", () => {
       moonOrbitalRadii: { companion: 200 },
       planetSizes: { star: 20, companion: 10 },
     });
-    const sim = new SolarSystemSimulation(bodies, vc);
+    const sim = SolarSystemSimulation.create(bodies, vc);
     sim.updatePositions(400, 300);
     expect(sim.positions["companion"]).toBeDefined();
     const dist = Math.hypot(
@@ -248,7 +266,7 @@ describe("SolarSystemSimulation — companion star positions", () => {
       moonOrbitalRadii: { companion: 200 },
       planetSizes: { star: 20, companion: 10 },
     });
-    const sim = new SolarSystemSimulation(bodies, vc);
+    const sim = SolarSystemSimulation.create(bodies, vc);
     sim.updatePositions(400, 300);
     expect(sim.positions["companion"]).toBeDefined();
     expect(sim.positions["star"]).toBeDefined();

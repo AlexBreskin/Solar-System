@@ -26,19 +26,18 @@ export function getMoonsOf(
     .map(([id]) => id);
 }
 
-export function computeScaledLayout(
+function computeBodySizes(
   planetId: string,
   moons: string[],
   canvasW: number,
   canvasH: number,
   bodies: Record<string, CelestialBody>,
-): PlanetViewLayout {
+): { planetR: number; moonSizes: Record<string, number> } {
   const planet = bodies[planetId];
   const halfMin = Math.min(canvasW, canvasH) / 2;
   const MIN_PLANET_R = 28;
   const MAX_PLANET_R = halfMin * 0.22;
   const MIN_MOON_R = 3;
-  const FIT_RADIUS = halfMin * 0.88;
   const SUN_DIAMETER = 1391016;
   const rawPlanetR = (planet.diameter / SUN_DIAMETER) * MAX_PLANET_R * 18;
   const planetR = Math.max(MIN_PLANET_R, Math.min(MAX_PLANET_R, rawPlanetR));
@@ -53,9 +52,17 @@ export function computeScaledLayout(
       (moon.diameter / largestMoonDiam) * MAX_MOON_R,
     );
   }
-  const localMoonOrbitalRadii: Record<string, number> = {};
-  if (moons.length === 0)
-    return { planetR, moonSizes, moonOrbitalRadii: localMoonOrbitalRadii };
+  return { planetR, moonSizes };
+}
+
+function computeOrbitalRadii(
+  moons: string[],
+  bodies: Record<string, CelestialBody>,
+  planetR: number,
+  moonSizes: Record<string, number>,
+  FIT_RADIUS: number,
+): Record<string, number> {
+  if (moons.length === 0) return {};
   const sortedMoons = [...moons].sort(
     (a, b) => bodies[a].distanceFromParent - bodies[b].distanceFromParent,
   );
@@ -64,6 +71,7 @@ export function computeScaledLayout(
   const minRealDist = realDistances[0];
   const distRange = maxRealDist - minRealDist || 1;
   const BASE_INNER = planetR + Math.max(planetR * 0.45, 20);
+  const localMoonOrbitalRadii: Record<string, number> = {};
   for (const moonId of sortedMoons) {
     const d = bodies[moonId].distanceFromParent;
     const t = moons.length === 1 ? 0.5 : (d - minRealDist) / distRange;
@@ -85,7 +93,32 @@ export function computeScaledLayout(
       localMoonOrbitalRadii[moonId] *= scale;
     }
   }
-  return { planetR, moonSizes, moonOrbitalRadii: localMoonOrbitalRadii };
+  return localMoonOrbitalRadii;
+}
+
+export function computeScaledLayout(
+  planetId: string,
+  moons: string[],
+  canvasW: number,
+  canvasH: number,
+  bodies: Record<string, CelestialBody>,
+): PlanetViewLayout {
+  const FIT_RADIUS = (Math.min(canvasW, canvasH) / 2) * 0.88;
+  const { planetR, moonSizes } = computeBodySizes(
+    planetId,
+    moons,
+    canvasW,
+    canvasH,
+    bodies,
+  );
+  const moonOrbitalRadii = computeOrbitalRadii(
+    moons,
+    bodies,
+    planetR,
+    moonSizes,
+    FIT_RADIUS,
+  );
+  return { planetR, moonSizes, moonOrbitalRadii };
 }
 
 export class PlanetViewSimulation {
