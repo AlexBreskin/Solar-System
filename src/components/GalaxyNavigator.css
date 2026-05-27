@@ -23,7 +23,7 @@
 }
 
 .gnav-count {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 11px;
   color: var(--text-dim);
   background: var(--bg-panel-2);
@@ -78,7 +78,7 @@
 }
 
 .gnav-row.selected::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -135,4 +135,67 @@
 .gnav-section--extra ~ .gnav-row:hover,
 .gnav-section--extra ~ .gnav-row.hovered {
   opacity: 1;
+}
+
+.gnav-search-wrap {
+  padding: 8px 10px 4px;
+}
+
+.gnav-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: #d8e8ff;
+  font-family: Syne, sans-serif;
+  font-size: 12px;
+  outline: none;
+}
+
+.gnav-search::placeholder {
+  color: rgba(200, 215, 255, 0.35);
+}
+
+.gnav-search:focus {
+  border-color: rgba(180, 210, 255, 0.3);
+}
+
+.gnav-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.gnav-tab {
+  flex: 1;
+  padding: 7px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.gnav-tab.active {
+  color: var(--accent, #4a90d9);
+  border-bottom-color: var(--accent, #4a90d9);
+}
+
+.gnav-tab:hover:not(.active) {
+  color: var(--text-primary);
+}
+
+.gnav-icon--constellation {
+  color: rgba(200, 215, 255, 0.6);
 }

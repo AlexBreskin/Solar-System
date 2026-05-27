@@ -37,6 +37,9 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 - **System info panel** — clicking a marker or list row selects the system and shows its name, type badge, galactic arm, distance, and description; "Explore System →" loads it and switches to System View
 - **Galactic arm labels** — each system's info panel shows which spiral arm or region it occupies (Orion Spur, Carina–Sagittarius, Perseus, Scutum–Centaurus, Norma, Outer, Galactic Centre, or Halo)
 - **Clickable region labels** — 8 galactic regions are rendered as pill labels on the galaxy map (visible at zoom ≤ 6×); clicking one shows a description, fun fact, and Wikipedia link for that region; selecting a region clears the system selection and vice versa
+- **Constellation browser** — the left navigator has two tabs (Systems / Constellations); the Constellations tab lists 9 groupings (Orion, Cygnus, Canis Major, Scorpius, Eridanus, Carina, Lyra, Aquila, Boötes); selecting one highlights all member systems on the map and shows the constellation's description, a fun fact, a star-chart diagram, member-system buttons, and a Wikipedia link; hovering a star in the diagram shows its name; clicking a member star selects that system; double-clicking zooms the map to it
+- **Search filter** — a search box at the top of each navigator tab filters by name as you type; the Systems tab filters both Milky Way and extragalactic systems, the Constellations tab searches constellation names and their member stars
+- **Double-click to zoom** — double-clicking any system row in the left navigator or any member-system button in the right panel smoothly pans and zooms the galaxy map to centre on that system (zooms in to at least 5× if not already further in)
 - **Cluster menu** — when multiple systems overlap at low zoom, clicking shows a popup listing all candidates
 - **Visual differentiation** — stars: gold/white dots; black holes: dark discs with orange glow; neutron stars: blue-white points; pulsing ring around selected system
 - **Body View and speed controls hidden** — declutters the header when the Galaxy tab is active
@@ -176,17 +179,19 @@ Output goes to `dist/`.
 
 ### Galaxy View
 
-| Action                    | Effect                                             |
-| ------------------------- | -------------------------------------------------- |
-| Scroll                    | Zoom (0.1× – 100×)                                 |
-| +/− buttons               | Zoom in / zoom out (0.1× – 100×)                   |
-| Drag                      | Pan                                                |
-| Click system marker       | Select system and show info panel                  |
-| Click region label        | Select galactic region and show info panel         |
-| Click overlapping markers | Show cluster menu to pick a system                 |
-| "Explore System →" button | Load the selected system and switch to System View |
-| Click row in left panel   | Select system and highlight marker                 |
-| Hover row or marker       | Sync highlight between list and canvas             |
+| Action                            | Effect                                             |
+| --------------------------------- | -------------------------------------------------- |
+| Scroll                            | Zoom (0.1× – 100×)                                 |
+| +/− buttons                       | Zoom in / zoom out (0.1× – 100×)                   |
+| Drag                              | Pan                                                |
+| Click system marker               | Select system and show info panel                  |
+| Click region label                | Select galactic region and show info panel         |
+| Click overlapping markers         | Show cluster menu to pick a system                 |
+| "Explore System →" button         | Load the selected system and switch to System View |
+| Click row in left panel           | Select system and highlight marker                 |
+| Double-click row in left panel    | Zoom and pan map to centre on that system          |
+| Double-click member-system button | Zoom and pan map to centre on that system          |
+| Hover row or marker               | Sync highlight between list and canvas             |
 
 ## Project Structure
 

@@ -32,3 +32,26 @@ export interface GalaxyData {
   systems: GalacticSystemEntry[];
   regions: GalaxyRegion[];
 }
+
+export interface ConstellationStar {
+  name: string;
+  x: number;
+  y: number;
+  mag?: number;
+  systemId?: string;
+}
+
+export interface ConstellationOutline {
+  stars: ConstellationStar[];
+  lines: number[][];
+}
+
+export interface Constellation {
+  id: string;
+  name: string;
+  description: string;
+  funFact: string;
+  systems: string[];
+  wikipediaUrl?: string;
+  outline?: ConstellationOutline;
+}

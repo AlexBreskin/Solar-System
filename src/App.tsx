@@ -1,13 +1,16 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import SolarSystemCanvas from "./components/SolarSystemCanvas";
 import PlanetViewCanvas from "./components/PlanetViewCanvas";
-import GalaxyCanvas from "./components/GalaxyCanvas";
+import GalaxyCanvas, {
+  type GalaxyCanvasHandle,
+} from "./components/GalaxyCanvas";
 import BodyNavigator from "./components/BodyNavigator";
 import GalaxyNavigator from "./components/GalaxyNavigator";
 import InfoPanel from "./components/InfoPanel";
 import GalaxySystemPanel from "./components/GalaxySystemPanel";
 import { loadStarSystem } from "./data/celestialBodies";
 import { STAR_SYSTEMS } from "./data/systems";
+import { CONSTELLATIONS } from "./data/constellations";
 import {
   StarSystemContext,
   type StarSystemData,
@@ -60,7 +63,16 @@ export default function App(): JSX.Element {
   const [galaxySelectedRegion, setGalaxySelectedRegion] = useState<
     string | null
   >(null);
+  const [galaxySelectedConstellation, setGalaxySelectedConstellation] =
+    useState<string | null>(null);
   const [showSystemPanel, setShowSystemPanel] = useState<boolean>(false);
+  const galaxyCanvasRef = useRef<GalaxyCanvasHandle>(null);
+
+  const constellationSystemIds = useMemo(() => {
+    if (!galaxySelectedConstellation) return new Set<string>();
+    const c = CONSTELLATIONS.find((c) => c.id === galaxySelectedConstellation);
+    return new Set(c?.systems ?? []);
+  }, [galaxySelectedConstellation]);
 
   const handleSystemChange = useCallback(
     (id: string) => {
@@ -159,6 +171,7 @@ export default function App(): JSX.Element {
   const handleGalaxySelectSystem = useCallback((id: string) => {
     setGalaxySelectedSystem(id);
     setGalaxySelectedRegion(null);
+    setGalaxySelectedConstellation(null);
   }, []);
 
   const handleGalaxyHoverSystem = useCallback((id: string | null) => {
@@ -168,6 +181,19 @@ export default function App(): JSX.Element {
   const handleGalaxySelectRegion = useCallback((id: string | null) => {
     setGalaxySelectedRegion(id);
     setGalaxySelectedSystem(null);
+  }, []);
+
+  const handleGalaxySelectConstellation = useCallback((id: string | null) => {
+    setGalaxySelectedConstellation(id);
+    setGalaxySelectedSystem(null);
+    setGalaxySelectedRegion(null);
+  }, []);
+
+  const handleZoomToSystem = useCallback((id: string) => {
+    setGalaxySelectedSystem(id);
+    setGalaxySelectedRegion(null);
+    setGalaxySelectedConstellation(null);
+    galaxyCanvasRef.current?.zoomToSystem(id);
   }, []);
 
   const isGalaxy = activeTab === "galaxy";
@@ -299,6 +325,9 @@ export default function App(): JSX.Element {
                 hoveredSystem={galaxyHoveredSystem}
                 onSelectSystem={handleGalaxySelectSystem}
                 onHoverSystem={handleGalaxyHoverSystem}
+                onZoomToSystem={handleZoomToSystem}
+                selectedConstellation={galaxySelectedConstellation}
+                onSelectConstellation={handleGalaxySelectConstellation}
               />
             ) : (
               <BodyNavigator
@@ -336,12 +365,14 @@ export default function App(): JSX.Element {
             )}
             {activeTab === "galaxy" && (
               <GalaxyCanvas
+                ref={galaxyCanvasRef}
                 selectedSystem={galaxySelectedSystem}
                 hoveredSystem={galaxyHoveredSystem}
                 selectedRegion={galaxySelectedRegion}
                 onSelectSystem={handleGalaxySelectSystem}
                 onHoverSystem={handleGalaxyHoverSystem}
                 onSelectRegion={handleGalaxySelectRegion}
+                constellationSystemIds={constellationSystemIds}
               />
             )}
             {activeTab === "planet-view" && (
@@ -364,8 +395,11 @@ export default function App(): JSX.Element {
               <GalaxySystemPanel
                 systemId={isGalaxy ? galaxySelectedSystem : systemData.id}
                 regionId={isGalaxy ? galaxySelectedRegion : null}
+                constellationId={isGalaxy ? galaxySelectedConstellation : null}
                 onExplore={handleExploreSystem}
                 onSelectRegion={isGalaxy ? handleGalaxySelectRegion : undefined}
+                onSelectSystem={isGalaxy ? handleGalaxySelectSystem : undefined}
+                onZoomToSystem={isGalaxy ? handleZoomToSystem : undefined}
               />
             ) : (
               <InfoPanel selectedBody={selectedBody} />

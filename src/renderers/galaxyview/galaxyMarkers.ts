@@ -140,6 +140,7 @@ export function drawSystemMarkers(
   scale: number,
   ts: number,
   zoom: number,
+  constellationIds?: Set<string>,
 ): void {
   const isLocal = zoom > 8;
   const isGalaxyScale = zoom <= 0.5;
@@ -153,6 +154,14 @@ export function drawSystemMarkers(
 
     const baseR = markerRadius(isLocal, isGalaxyScale, isSol);
     const r = baseR * (isHovered ? 1.4 : 1);
+
+    if (constellationIds?.has(m.id)) {
+      ctx.beginPath();
+      ctx.arc(mx, my, r + 5, 0, TWO_PI);
+      ctx.strokeStyle = m.starColor + "55";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
 
     drawMarkerGlow(ctx, mx, my, r, m, ts, isSelected, isHovered);
 

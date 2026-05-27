@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { STAR_SYSTEMS } from "../data/systems";
 import { GALAXY_DATA, GALACTIC_IDS } from "../data/galaxy";
-import type { StarSystemMeta } from "../types";
+import { CONSTELLATIONS } from "../data/constellations";
+import type { Constellation, StarSystemMeta } from "../types";
 import "./GalaxyNavigator.css";
 
 interface GalaxyNavigatorProps {
@@ -9,6 +10,9 @@ interface GalaxyNavigatorProps {
   hoveredSystem: string | null;
   onSelectSystem: (id: string) => void;
   onHoverSystem: (id: string | null) => void;
+  onZoomToSystem?: (id: string) => void;
+  selectedConstellation: string | null;
+  onSelectConstellation: (id: string | null) => void;
 }
 
 const ROOT_TYPE_ICONS: Record<string, string> = {
@@ -32,6 +36,7 @@ function SystemRow({
   isHovered,
   onSelectSystem,
   onHoverSystem,
+  onZoomToSystem,
 }: {
   s: StarSystemMeta;
   rootType: string;
@@ -39,11 +44,13 @@ function SystemRow({
   isHovered: boolean;
   onSelectSystem: (id: string) => void;
   onHoverSystem: (id: string | null) => void;
+  onZoomToSystem?: (id: string) => void;
 }): JSX.Element {
   return (
     <div
       className={`gnav-row${isSelected ? " selected" : ""}${isHovered ? " hovered" : ""}`}
       onClick={() => onSelectSystem(s.id)}
+      onDoubleClick={() => onZoomToSystem?.(s.id)}
       onMouseEnter={() => onHoverSystem(s.id)}
       onMouseLeave={() => onHoverSystem(null)}
     >
@@ -62,18 +69,53 @@ function SystemRow({
   );
 }
 
+function ConstellationRow({
+  c,
+  isSelected,
+  onSelect,
+}: {
+  c: Constellation;
+  isSelected: boolean;
+  onSelect: (id: string | null) => void;
+}): JSX.Element {
+  return (
+    <div
+      className={`gnav-row gnav-row--constellation${isSelected ? " selected" : ""}`}
+      onClick={() => onSelect(isSelected ? null : c.id)}
+    >
+      <span className="gnav-icon gnav-icon--constellation">✦</span>
+      <span className="gnav-name">{c.name}</span>
+      <span className="gnav-badge">{c.systems.length} systems</span>
+    </div>
+  );
+}
+
 export default function GalaxyNavigator({
   selectedSystem,
   hoveredSystem,
   onSelectSystem,
   onHoverSystem,
+  onZoomToSystem,
+  selectedConstellation,
+  onSelectConstellation,
 }: GalaxyNavigatorProps): JSX.Element {
+  const [activeTab, setActiveTab] = useState<"systems" | "constellations">(
+    "systems",
+  );
+  const [query, setQuery] = useState("");
+
   const rootTypeById = useMemo(() => {
     const map: Record<string, string> = {};
     for (const entry of GALAXY_DATA.systems) map[entry.id] = entry.rootType;
     for (const s of STAR_SYSTEMS) {
       if (!map[s.id]) map[s.id] = s.rootType ?? "star";
     }
+    return map;
+  }, []);
+
+  const systemNameById = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const s of STAR_SYSTEMS) map[s.id] = s.name.toLowerCase();
     return map;
   }, []);
 
@@ -88,39 +130,108 @@ export default function GalaxyNavigator({
     };
   }, []);
 
+  const q = query.toLowerCase();
+
+  const filteredGalactic = q
+    ? galactic.filter((s) => s.name.toLowerCase().includes(q))
+    : galactic;
+  const filteredExtragalactic = q
+    ? extragalactic.filter((s) => s.name.toLowerCase().includes(q))
+    : extragalactic;
+  const filteredConstellations = q
+    ? CONSTELLATIONS.filter(
+        (c) =>
+          c.name.toLowerCase().includes(q) ||
+          c.systems.some((id) => systemNameById[id]?.includes(q)),
+      )
+    : CONSTELLATIONS;
+
+  const handleTabChange = (tab: "systems" | "constellations") => {
+    setActiveTab(tab);
+    setQuery("");
+  };
+
   return (
     <div className="gnav">
       <div className="gnav-header">
-        <span className="gnav-title">Star Systems</span>
-        <span className="gnav-count">{STAR_SYSTEMS.length}</span>
+        <span className="gnav-title">
+          {activeTab === "systems" ? "Star Systems" : "Constellations"}
+        </span>
+        <span className="gnav-count">
+          {activeTab === "systems"
+            ? STAR_SYSTEMS.length
+            : CONSTELLATIONS.length}
+        </span>
+      </div>
+      <div className="gnav-tabs">
+        <button
+          className={`gnav-tab${activeTab === "systems" ? " active" : ""}`}
+          onClick={() => handleTabChange("systems")}
+        >
+          Systems
+        </button>
+        <button
+          className={`gnav-tab${activeTab === "constellations" ? " active" : ""}`}
+          onClick={() => handleTabChange("constellations")}
+        >
+          Constellations
+        </button>
       </div>
       <div className="gnav-scroll">
-        <div className="gnav-section">Milky Way</div>
-        {galactic.map((s) => (
-          <SystemRow
-            key={s.id}
-            s={s}
-            rootType={rootTypeById[s.id] ?? "star"}
-            isSelected={selectedSystem === s.id}
-            isHovered={hoveredSystem === s.id}
-            onSelectSystem={onSelectSystem}
-            onHoverSystem={onHoverSystem}
+        <div className="gnav-search-wrap">
+          <input
+            className="gnav-search"
+            type="search"
+            placeholder={
+              activeTab === "systems"
+                ? "Filter systems…"
+                : "Filter constellations…"
+            }
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
-        ))}
-        <div className="gnav-section gnav-section--extra">
-          Beyond the Milky Way
         </div>
-        {extragalactic.map((s) => (
-          <SystemRow
-            key={s.id}
-            s={s}
-            rootType={rootTypeById[s.id] ?? "star"}
-            isSelected={selectedSystem === s.id}
-            isHovered={hoveredSystem === s.id}
-            onSelectSystem={onSelectSystem}
-            onHoverSystem={onHoverSystem}
-          />
-        ))}
+        {activeTab === "systems" && (
+          <>
+            <div className="gnav-section">Milky Way</div>
+            {filteredGalactic.map((s) => (
+              <SystemRow
+                key={s.id}
+                s={s}
+                rootType={rootTypeById[s.id] ?? "star"}
+                isSelected={selectedSystem === s.id}
+                isHovered={hoveredSystem === s.id}
+                onSelectSystem={onSelectSystem}
+                onHoverSystem={onHoverSystem}
+                onZoomToSystem={onZoomToSystem}
+              />
+            ))}
+            <div className="gnav-section gnav-section--extra">
+              Beyond the Milky Way
+            </div>
+            {filteredExtragalactic.map((s) => (
+              <SystemRow
+                key={s.id}
+                s={s}
+                rootType={rootTypeById[s.id] ?? "star"}
+                isSelected={selectedSystem === s.id}
+                isHovered={hoveredSystem === s.id}
+                onSelectSystem={onSelectSystem}
+                onHoverSystem={onHoverSystem}
+                onZoomToSystem={onZoomToSystem}
+              />
+            ))}
+          </>
+        )}
+        {activeTab === "constellations" &&
+          filteredConstellations.map((c) => (
+            <ConstellationRow
+              key={c.id}
+              c={c}
+              isSelected={selectedConstellation === c.id}
+              onSelect={onSelectConstellation}
+            />
+          ))}
       </div>
     </div>
   );
