@@ -1,0 +1,25 @@
+{
+  "id": "cassiopeia",
+  "name": "Cassiopeia",
+  "description": "The Queen of Ethiopia is one of the most recognisable northern constellations, tracing a distinctive W or M shape that never sets for observers above 20° north. It lies in the heart of the Milky Way opposite the Great Bear, and is notable for containing the direction toward which our Solar System appears from the nearest stars.",
+  "funFact": "From Alpha Centauri, our nearest stellar neighbour, the Sun appears as a magnitude 0.5 star near the border of Cassiopeia and Perseus — almost exactly opposite Alpha Centauri's own position in Centaurus. Any alien astronomers in the Alpha Centauri system looking for our Sun would find it in this patch of sky.",
+  "systems": [],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Cassiopeia_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [28.5988, 63.6701],
+        [21.454, 60.2353],
+        [14.177, 60.717],
+        [10.1268, 56.5372],
+        [2.2943, 59.1499]
+      ]
+    ],
+    "stars": [
+      { "name": "Schedar", "ra": 10.1268, "dec": 56.5372, "mag": 2.23 },
+      { "name": "Caph", "ra": 2.2943, "dec": 59.1499, "mag": 2.27 },
+      { "name": "Ruchbah", "ra": 21.454, "dec": 60.2353, "mag": 2.68 },
+      { "name": "Segin", "ra": 28.5988, "dec": 63.6701, "mag": 3.38 }
+    ]
+  }
+}

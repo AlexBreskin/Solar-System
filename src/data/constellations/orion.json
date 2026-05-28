@@ -1,0 +1,69 @@
+{
+  "id": "orion",
+  "name": "Orion",
+  "description": "One of the most recognisable constellations in the night sky, Orion the Hunter straddles the celestial equator and is visible worldwide. Its most famous feature is the three-star Orion's Belt asterism, flanked by the red supergiant Betelgeuse and the blue supergiant Rigel.",
+  "funFact": "Orion's Belt (Alnitak, Alnilam, and Mintaka) is so well-known that it appears in cultures from the ancient Egyptians to the Aztecs — the three Giza pyramids are often said to mirror its layout.",
+  "systems": ["betelgeuse", "rigel"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Orion_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [91.893, 14.7685],
+        [88.5958, 20.2762],
+        [90.9799, 20.1385],
+        [92.985, 14.2088],
+        [90.5958, 9.6473],
+        [88.7929, 7.4071],
+        [81.2828, 6.3497],
+        [73.7239, 10.1508]
+      ],
+      [
+        [74.6371, 1.714],
+        [73.5629, 2.4407],
+        [72.8015, 5.6051],
+        [72.46, 6.9613],
+        [72.653, 8.9002],
+        [73.7239, 10.1508],
+        [74.0928, 13.5145],
+        [76.1423, 15.4041],
+        [77.4248, 15.5972]
+      ],
+      [
+        [78.6345, -8.2016],
+        [81.1192, -2.3971],
+        [83.0017, -0.2991],
+        [81.2828, 6.3497],
+        [83.7845, 9.9342],
+        [88.7929, 7.4071],
+        [85.1897, -1.9426],
+        [86.9391, -9.6696]
+      ],
+      [
+        [85.1897, -1.9426],
+        [84.0534, -1.2019],
+        [83.0017, -0.2991]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Betelgeuse",
+        "ra": 88.7929,
+        "dec": 7.4071,
+        "mag": 0.42,
+        "systemId": "betelgeuse"
+      },
+      {
+        "name": "Rigel",
+        "ra": 78.6345,
+        "dec": -8.2016,
+        "mag": 0.13,
+        "systemId": "rigel"
+      },
+      { "name": "Bellatrix", "ra": 81.2828, "dec": 6.3497, "mag": 1.64 },
+      { "name": "Saiph", "ra": 86.9391, "dec": -9.6696, "mag": 2.07 },
+      { "name": "Mintaka", "ra": 83.0017, "dec": -0.2991, "mag": 2.23 },
+      { "name": "Alnilam", "ra": 84.0534, "dec": -1.2019, "mag": 1.7 },
+      { "name": "Alnitak", "ra": 85.1897, "dec": -1.9426, "mag": 1.88 }
+    ]
+  }
+}

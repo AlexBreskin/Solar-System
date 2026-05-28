@@ -1,0 +1,36 @@
+{
+  "id": "aquila",
+  "name": "Aquila",
+  "description": "The Eagle soars along the Milky Way in northern summer, its brightest star Altair forming the southern vertex of the Summer Triangle alongside Vega and Deneb. Altair is one of the closest naked-eye stars to Earth at just 16.7 light-years.",
+  "funFact": "Altair rotates so rapidly — once every 9 hours compared to the Sun's 25 days — that it is measurably oblate: it bulges at its equator and is about 20% wider across its equator than from pole to pole.",
+  "systems": ["altair"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Aquila_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-63.4351, 10.6133],
+        [-62.3042, 8.8683],
+        [-61.1717, 6.4068],
+        [-57.1738, -0.8215],
+        [-61.8818, 1.0057],
+        [-68.6254, 3.1148],
+        [-73.6475, 13.8635],
+        [-62.3042, 8.8683],
+        [-68.6254, 3.1148],
+        [-73.4378, -4.8826]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Altair",
+        "ra": -62.3042,
+        "dec": 8.8683,
+        "mag": 0.77,
+        "systemId": "altair"
+      },
+      { "name": "Tarazed", "ra": -63.4351, "dec": 10.6133, "mag": 2.72 },
+      { "name": "Alshain", "ra": -61.1717, "dec": 6.4068, "mag": 3.71 },
+      { "name": "δ Aquilae", "ra": -68.6254, "dec": 3.1148, "mag": 3.36 }
+    ]
+  }
+}

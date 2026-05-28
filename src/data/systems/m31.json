@@ -1,0 +1,13 @@
+{
+  "system": {
+    "id": "m31",
+    "name": "Andromeda Galaxy",
+    "description": "The nearest large spiral galaxy, 2.537 million light-years away and home to around a trillion stars. M31 is on a slow collision course with the Milky Way, destined to merge in roughly 4.5 billion years into a giant elliptical galaxy.",
+    "starColor": "#FFE8C8",
+    "displayOrder": 51,
+    "distanceFromEarth": 2537000,
+    "rootType": "galaxy",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Andromeda_Galaxy"
+  }
+}

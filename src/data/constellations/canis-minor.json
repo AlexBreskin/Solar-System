@@ -1,0 +1,26 @@
+{
+  "id": "canis-minor",
+  "name": "Canis Minor",
+  "description": "The Little Dog is one of the smallest constellations, consisting of just two prominent stars — Procyon and Gomeisa. It trails behind Orion and precedes the Large Dog (Canis Major) across the winter sky. Procyon is one of the Sun's nearest neighbours and is one of the brightest stars in the night sky.",
+  "funFact": "Procyon's name comes from the Greek for 'before the dog' — it rises just before Sirius, the Dog Star. Like Sirius, Procyon has a white dwarf companion; in fact, Friedrich Bessel predicted Procyon B's existence in 1844 from the wobble in Procyon's proper motion, 12 years before it was directly observed.",
+  "systems": ["procyon"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Canis_Minor",
+  "outline": {
+    "lines": [
+      [
+        [114.8275, 5.225],
+        [111.7878, 8.2893]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Procyon",
+        "ra": 114.8275,
+        "dec": 5.225,
+        "mag": 0.34,
+        "systemId": "procyon"
+      },
+      { "name": "Gomeisa", "ra": 111.7878, "dec": 8.2893, "mag": 2.9 }
+    ]
+  }
+}

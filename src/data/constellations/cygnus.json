@@ -1,0 +1,64 @@
+{
+  "id": "cygnus",
+  "name": "Cygnus",
+  "description": "The Swan flies along the Milky Way in the northern summer sky. Its brightest star, Deneb, sits at one end of the Northern Cross asterism. Cygnus is rich in extraordinary objects: it contains one of the first confirmed stellar black holes, two systems with confirmed exoplanets from the Kepler mission, and 61 Cygni — the first star to have its distance measured via parallax.",
+  "funFact": "Cygnus X-1 was the subject of a famous bet between Stephen Hawking and Kip Thorne in 1974 over whether it was truly a black hole. Hawking conceded in 1990.",
+  "systems": ["deneb", "61cygni", "cygnusx1", "kepler16", "kepler90"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Cygnus_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-41.7659, 30.2269],
+        [-48.4472, 33.9703],
+        [-54.4429, 40.2567],
+        [-63.7563, 45.1308],
+        [-67.5735, 51.7298],
+        [-70.7243, 53.3685]
+      ],
+      [
+        [-49.642, 45.2803],
+        [-54.4429, 40.2567],
+        [-60.9235, 35.0834],
+        [-67.3197, 27.9597]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Deneb",
+        "ra": -49.642,
+        "dec": 45.2803,
+        "mag": 1.25,
+        "systemId": "deneb"
+      },
+      { "name": "ζ Cygni", "ra": -41.7659, "dec": 30.2269, "mag": 3.2 },
+      { "name": "Sadr", "ra": -54.4429, "dec": 40.2567, "mag": 2.2 },
+      { "name": "Albireo", "ra": -67.3197, "dec": 27.9597, "mag": 3.08 },
+      { "name": "Gienah", "ra": -63.7563, "dec": 45.1308, "mag": 2.46 },
+      {
+        "name": "61 Cygni",
+        "ra": -43.28,
+        "dec": 38.75,
+        "mag": 5.21,
+        "systemId": "61cygni"
+      },
+      {
+        "name": "Cygnus X-1",
+        "ra": -60.41,
+        "dec": 35.2,
+        "systemId": "cygnusx1"
+      },
+      {
+        "name": "Kepler-16",
+        "ra": -70.78,
+        "dec": 51.75,
+        "systemId": "kepler16"
+      },
+      {
+        "name": "Kepler-90",
+        "ra": -75.57,
+        "dec": 49.24,
+        "systemId": "kepler90"
+      }
+    ]
+  }
+}

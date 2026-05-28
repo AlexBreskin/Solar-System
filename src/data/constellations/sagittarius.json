@@ -1,0 +1,78 @@
+{
+  "id": "sagittarius",
+  "name": "Sagittarius",
+  "description": "The Archer points his arrow toward the heart of the Milky Way, making this the richest region of the night sky for star clusters, nebulae, and deep-sky objects. Looking toward Sagittarius means looking toward the Galactic centre, about 26,000 light-years away — where Sgr A*, the Milky Way's supermassive black hole, resides.",
+  "funFact": "The existence of Sgr A* as a black hole was confirmed beyond doubt by tracking the orbits of stars near the Galactic centre over 30 years. The star S2 completes a full orbit in just 16 years, swinging to within 120 AU of the black hole at 2.7% the speed of light. This work earned Reinhard Genzel and Andrea Ghez the 2020 Nobel Prize in Physics.",
+  "systems": ["sgrA", "pistolstar", "wr104"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Sagittarius_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-85.593, -36.762],
+        [-83.9571, -34.3846],
+        [-84.7516, -29.828],
+        [-83.0071, -25.4217],
+        [-86.559, -21.059]
+      ],
+      [
+        [-69.34, -44.459],
+        [-69.028, -40.616],
+        [-74.347, -29.8806],
+        [-78.5859, -26.9908],
+        [-83.0071, -25.4217]
+      ],
+      [
+        [-61.185, -41.868],
+        [-60.066, -35.276],
+        [-61.04, -26.3],
+        [-65.823, -24.884],
+        [-68.681, -24.509],
+        [-71.115, -25.257],
+        [-76.1836, -26.2967],
+        [-78.5859, -26.9908],
+        [-84.7516, -29.828],
+        [-88.548, -30.424],
+        [-83.9571, -34.3846],
+        [-74.347, -29.8806],
+        [-73.265, -27.6704],
+        [-76.1836, -26.2967],
+        [-73.829, -21.742],
+        [-72.559, -21.024],
+        [-70.591, -18.953],
+        [-69.582, -17.847],
+        [-69.568, -15.955]
+      ],
+      [
+        [-73.829, -21.742],
+        [-75.568, -21.107],
+        [-76.458, -22.745],
+        [-76.1836, -26.2967]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Kaus Australis",
+        "ra": -83.9571,
+        "dec": -34.3846,
+        "mag": 1.79
+      },
+      { "name": "Nunki", "ra": -76.1836, "dec": -26.2967, "mag": 2.05 },
+      { "name": "Kaus Media", "ra": -84.7516, "dec": -29.828, "mag": 2.7 },
+      {
+        "name": "Kaus Borealis",
+        "ra": -83.0071,
+        "dec": -25.4217,
+        "mag": 2.81
+      },
+      { "name": "Ascella", "ra": -74.347, "dec": -29.8806, "mag": 2.59 },
+      { "name": "Sgr A*", "ra": -93.583, "dec": -29.008, "systemId": "sgrA" },
+      {
+        "name": "Pistol Star",
+        "ra": -93.437,
+        "dec": -28.834,
+        "systemId": "pistolstar"
+      },
+      { "name": "WR 104", "ra": -89.483, "dec": -23.617, "systemId": "wr104" }
+    ]
+  }
+}

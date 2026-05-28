@@ -6,7 +6,7 @@
     "starColor": "#A0B8FF",
     "displayOrder": 36,
     "distanceFromEarth": 22000,
-    "rootType": "star",
+    "rootType": "stellar-cluster",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/NGC_3603"
   },
   "bodies": {

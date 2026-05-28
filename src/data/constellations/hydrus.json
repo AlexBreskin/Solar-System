@@ -1,0 +1,31 @@
+{
+  "id": "hydrus",
+  "name": "Hydrus",
+  "description": "The Small Water Snake is a southern constellation introduced by Dutch navigators Pieter Dirkszoon Keyser and Frederick de Houtman around 1597. It lies between the two Magellanic Clouds and contains HD 10180, a Sun-like star with one of the most populated known planetary systems.",
+  "funFact": "HD 10180 may host up to nine planets — potentially the most of any known system outside our Solar System. The confirmed count is six, with evidence for three more. If all are confirmed, this system would surpass even our own Solar System's planet count of eight.",
+  "systems": ["hd10180"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Hydrus",
+  "outline": {
+    "lines": [
+      [
+        [6.438, -77.254],
+        [56.81, -74.239],
+        [39.897, -68.267],
+        [35.437, -68.659],
+        [28.734, -67.647],
+        [29.693, -61.57]
+      ]
+    ],
+    "stars": [
+      { "name": "Beta Hyi", "ra": 6.438, "dec": -77.254, "mag": 2.8 },
+      { "name": "Alpha Hyi", "ra": 29.693, "dec": -61.57, "mag": 2.86 },
+      {
+        "name": "HD 10180",
+        "ra": 24.472,
+        "dec": -60.502,
+        "mag": 7.54,
+        "systemId": "hd10180"
+      }
+    ]
+  }
+}

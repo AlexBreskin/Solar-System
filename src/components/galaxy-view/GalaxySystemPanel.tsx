@@ -1,13 +1,15 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { STAR_SYSTEMS } from "@/data/systems";
 import { GALAXY_DATA, GALACTIC_IDS, GALAXY_REGIONS } from "@/data/galaxy";
 import { CONSTELLATIONS } from "@/data/constellations";
-import type {
-  GalacticArmHint,
-  ConstellationOutline,
-  ConstellationStar,
-} from "@/types/galaxy";
+import type { GalacticArmHint } from "@/types/galaxy";
 import { formatLY } from "@/utils/distance";
+import { ConstellationDiagram } from "./constellation/ConstellationDiagram";
+import {
+  ROOT_TYPE_BY_ID,
+  ROOT_TYPE_ICONS,
+  ROOT_TYPE_LABELS,
+} from "@/data/systemMeta";
 import "./GalaxySystemPanel.css";
 
 const ARROW_SVG = (
@@ -88,183 +90,6 @@ const ARM_DISPLAY_NAMES: Record<GalacticArmHint, string> = {
   halo: "Galactic Halo",
 };
 
-const SYSTEM_COLORS: Record<string, string> = {};
-for (const s of STAR_SYSTEMS) SYSTEM_COLORS[s.id] = s.starColor;
-
-function starRadius(mag: number = 3.5): number {
-  return Math.max(0.8, 3.5 - mag * 0.4);
-}
-
-function projectOutline(
-  lines: number[][][],
-  stars: ConstellationStar[],
-): { toX: (ra: number) => number; toY: (dec: number) => number } {
-  const allPts = [...lines.flat(1), ...stars.map((s) => [s.ra, s.dec])] as [
-    number,
-    number,
-  ][];
-
-  if (allPts.length === 0) return { toX: () => 50, toY: () => 50 };
-
-  let raMin = Infinity;
-  let raMax = -Infinity;
-  let decMin = Infinity;
-  let decMax = -Infinity;
-  for (const [ra, dec] of allPts) {
-    if (ra < raMin) raMin = ra;
-    if (ra > raMax) raMax = ra;
-    if (dec < decMin) decMin = dec;
-    if (dec > decMax) decMax = dec;
-  }
-
-  // Guard: span > 180° means data mixes 0-360° with d3-celestial's -180-180°
-  // convention. Re-derive RA bounds after normalising values > 180 by -360.
-  if (raMax - raMin > 180) {
-    raMin = Infinity;
-    raMax = -Infinity;
-    for (const [ra] of allPts) {
-      const norm = ra > 180 ? ra - 360 : ra;
-      if (norm < raMin) raMin = norm;
-      if (norm > raMax) raMax = norm;
-    }
-  }
-
-  const raPad = Math.max((raMax - raMin) * 0.12, 2);
-  const decPad = Math.max((decMax - decMin) * 0.12, 2);
-  raMin -= raPad;
-  raMax += raPad;
-  decMin -= decPad;
-  decMax += decPad;
-
-  // Uniform scale: use the larger span for both axes to preserve shape.
-  const range = Math.max(raMax - raMin, decMax - decMin);
-  const raCentre = (raMin + raMax) / 2;
-  const decCentre = (decMin + decMax) / 2;
-
-  // RA increases eastward (left in sky view); normalise to -180-180° convention.
-  const toX = (ra: number) => {
-    const norm = ra > 180 ? ra - 360 : ra;
-    return 50 + ((raCentre - norm) / range) * 90;
-  };
-  // Dec increases upward, SVG Y increases downward.
-  const toY = (dec: number) => 50 + ((decCentre - dec) / range) * 90;
-  return { toX, toY };
-}
-
-function ConstellationDiagram({
-  outline,
-  onSelectSystem,
-  onZoomToSystem,
-}: {
-  outline: ConstellationOutline;
-  onSelectSystem?: (id: string) => void;
-  onZoomToSystem?: (id: string) => void;
-}): JSX.Element {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const { toX, toY } = useMemo(
-    () => projectOutline(outline.lines, outline.stars),
-    [outline],
-  );
-
-  const tooltip =
-    hoveredIdx !== null
-      ? (() => {
-          const star = outline.stars[hoveredIdx];
-          const sx = toX(star.ra);
-          const sy = toY(star.dec);
-          const r = starRadius(star.mag);
-          const name = star.name;
-          const tWidth = Math.max(20, name.length * 4.4 + 6);
-          const tHeight = 7.5;
-          const rawTX = sx - tWidth / 2;
-          const tX = Math.max(1, Math.min(rawTX, 99 - tWidth));
-          const tY = sy > 75 ? sy - r - tHeight - 2 : sy + r + 2;
-          return { tX, tY, tWidth, tHeight, name };
-        })()
-      : null;
-
-  return (
-    <svg
-      className="gsp-constellation-diagram"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      <rect width="100" height="100" rx="4" fill="rgba(0,0,0,0.5)" />
-      {outline.lines.map((segment, si) => (
-        <polyline
-          key={si}
-          points={segment
-            .map(([ra, dec]) => `${toX(ra)},${toY(dec)}`)
-            .join(" ")}
-          stroke="rgba(200,215,255,0.25)"
-          strokeWidth="0.7"
-          fill="none"
-        />
-      ))}
-      {outline.stars.map((star, i) => {
-        const sx = toX(star.ra);
-        const sy = toY(star.dec);
-        const isSystem = !!star.systemId;
-        const color = isSystem
-          ? (SYSTEM_COLORS[star.systemId!] ?? "#ffffff")
-          : "#c8d8ff";
-        const r = starRadius(star.mag);
-        return (
-          <g
-            key={i}
-            style={{ cursor: isSystem ? "pointer" : "default" }}
-            onMouseEnter={() => setHoveredIdx(i)}
-            onMouseLeave={() => setHoveredIdx(null)}
-            onClick={() => isSystem && onSelectSystem?.(star.systemId!)}
-            onDoubleClick={() => isSystem && onZoomToSystem?.(star.systemId!)}
-          >
-            {isSystem && (
-              <circle
-                cx={sx}
-                cy={sy}
-                r={r + 3}
-                fill="none"
-                stroke={color}
-                strokeWidth="0.6"
-                opacity="0.4"
-              />
-            )}
-            <circle
-              cx={sx}
-              cy={sy}
-              r={r}
-              fill={color}
-              opacity={isSystem ? 1 : 0.75}
-            />
-          </g>
-        );
-      })}
-      {tooltip && (
-        <g style={{ pointerEvents: "none" }}>
-          <rect
-            x={tooltip.tX}
-            y={tooltip.tY}
-            width={tooltip.tWidth}
-            height={tooltip.tHeight}
-            rx="1.5"
-            fill="rgba(8,12,24,0.9)"
-          />
-          <text
-            x={tooltip.tX + tooltip.tWidth / 2}
-            y={tooltip.tY + 5.4}
-            textAnchor="middle"
-            fontSize="4.5"
-            fill="rgba(200,220,255,0.95)"
-            fontFamily="Syne,sans-serif"
-          >
-            {tooltip.name}
-          </text>
-        </g>
-      )}
-    </svg>
-  );
-}
-
 interface GalaxySystemPanelProps {
   systemId: string | null;
   regionId: string | null;
@@ -275,20 +100,6 @@ interface GalaxySystemPanelProps {
   onZoomToSystem?: (id: string) => void;
 }
 
-const ROOT_TYPE_LABELS: Record<string, string> = {
-  star: "Star System",
-  "black-hole": "Black Hole",
-  "neutron-star": "Neutron Star",
-  quasar: "Quasar",
-};
-
-const ROOT_TYPE_ICONS: Record<string, string> = {
-  star: "☀",
-  "black-hole": "◉",
-  "neutron-star": "✶",
-  quasar: "✵",
-};
-
 export default function GalaxySystemPanel({
   systemId,
   regionId,
@@ -298,17 +109,6 @@ export default function GalaxySystemPanel({
   onSelectSystem,
   onZoomToSystem,
 }: GalaxySystemPanelProps): JSX.Element {
-  const rootTypeById = useMemo(() => {
-    const map: Record<string, string> = {};
-    for (const entry of GALAXY_DATA.systems) {
-      map[entry.id] = entry.rootType;
-    }
-    for (const s of STAR_SYSTEMS) {
-      if (!map[s.id]) map[s.id] = s.rootType ?? "star";
-    }
-    return map;
-  }, []);
-
   if (constellationId && !systemId && !regionId) {
     const constellation = CONSTELLATIONS.find((c) => c.id === constellationId);
     if (constellation) {
@@ -441,7 +241,7 @@ export default function GalaxySystemPanel({
     );
   }
 
-  const rootType = rootTypeById[systemId] ?? "star";
+  const rootType = ROOT_TYPE_BY_ID[systemId] ?? "star";
   const rootTypeLabel = ROOT_TYPE_LABELS[rootType] ?? "Star System";
   const rootTypeIcon = ROOT_TYPE_ICONS[rootType] ?? "☀";
   const isExtragalactic = !GALACTIC_IDS.has(systemId);

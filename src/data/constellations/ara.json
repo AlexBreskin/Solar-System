@@ -1,0 +1,36 @@
+{
+  "id": "ara",
+  "name": "Ara",
+  "description": "The Altar is an ancient southern constellation sitting in a rich section of the Milky Way between Scorpius and Triangulum Australe. It contains Westerlund 1, one of the most massive and compact young star clusters known in the Milky Way, packed with dozens of hypergiant and supergiant stars.",
+  "funFact": "Westerlund 1 is estimated to contain over 100,000 solar masses within a single parsec — making it among the most massive young clusters in the Galaxy. It hosts more red and yellow hypergiants than anywhere else known, along with the magnetar CXOU J164710.2-455216, a neutron star with an extraordinarily powerful magnetic field.",
+  "systems": ["westerlund1"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Ara_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-98.651, -56.378],
+        [-97.225, -60.684],
+        [-107.554, -59.041],
+        [-105.345, -55.99],
+        [-105.104, -53.16],
+        [-97.0399, -49.8791],
+        [-98.9507, -55.5317]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Alpha Ara",
+        "ra": -97.0399,
+        "dec": -49.8791,
+        "mag": 2.95
+      },
+      { "name": "Beta Ara", "ra": -98.9507, "dec": -55.5317, "mag": 2.85 },
+      {
+        "name": "Westerlund 1",
+        "ra": -108.233,
+        "dec": -45.851,
+        "systemId": "westerlund1"
+      }
+    ]
+  }
+}

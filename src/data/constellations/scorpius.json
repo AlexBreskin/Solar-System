@@ -1,0 +1,50 @@
+{
+  "id": "scorpius",
+  "name": "Scorpius",
+  "description": "Scorpius the Scorpion is a summer constellation in the southern sky, dominated by the blood-red supergiant Antares — 'rival of Mars' — at its heart. The constellation is a favourite of southern-hemisphere observers and lies in the direction of the galactic core.",
+  "funFact": "Antares is so large that if placed at the centre of our Solar System it would extend beyond the orbit of Mars. It is expected to explode as a supernova within the next ~100,000 years.",
+  "systems": ["antares", "gliese667c"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Scorpius",
+  "outline": {
+    "lines": [
+      [
+        [-120.287, -26.1141],
+        [-119.9166, -22.6217],
+        [-118.6407, -19.8055]
+      ],
+      [
+        [-119.9166, -22.6217],
+        [-114.7028, -25.5928],
+        [-112.6481, -26.432],
+        [-111.0294, -28.216],
+        [-107.4591, -34.2932],
+        [-107.0324, -38.0474],
+        [-106.3541, -42.3613],
+        [-101.9617, -43.2392],
+        [-95.6703, -42.9978],
+        [-93.1038, -40.127],
+        [-94.378, -39.03],
+        [-96.5978, -37.1038]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Antares",
+        "ra": -112.6481,
+        "dec": -26.432,
+        "mag": 1.09,
+        "systemId": "antares"
+      },
+      { "name": "Shaula", "ra": -96.5978, "dec": -37.1038, "mag": 1.62 },
+      { "name": "Sargas", "ra": -95.6703, "dec": -42.9978, "mag": 1.87 },
+      { "name": "Graffias", "ra": -118.6407, "dec": -19.8055, "mag": 2.62 },
+      { "name": "Dschubba", "ra": -119.9166, "dec": -22.6217, "mag": 2.29 },
+      {
+        "name": "Gliese 667C",
+        "ra": -100.26,
+        "dec": -34.99,
+        "systemId": "gliese667c"
+      }
+    ]
+  }
+}

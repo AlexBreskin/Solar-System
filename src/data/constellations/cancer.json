@@ -1,0 +1,33 @@
+{
+  "id": "cancer",
+  "name": "Cancer",
+  "description": "The Crab is the faintest of the zodiacal constellations, but its open cluster Praesepe (the Beehive) is one of the nearest star clusters to Earth. It also hosts 55 Cancri, a nearby star system with five confirmed planets including a potential 'super-Earth' that was once described as possibly diamond-rich.",
+  "funFact": "55 Cancri e, the innermost planet orbiting the star at only 0.015 AU, completes a full orbit in just 17.7 hours and was once theorised to be a carbon-rich world where conditions might allow diamond to be stable at depth. More recent studies favour a volatile-rich composition, but it remains one of the best-studied super-Earths.",
+  "systems": ["55cancri"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Cancer_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [134.622, 11.858],
+        [131.171, 18.154],
+        [130.821, 21.469],
+        [131.667, 28.765]
+      ],
+      [
+        [131.171, 18.154],
+        [124.129, 9.186]
+      ]
+    ],
+    "stars": [
+      { "name": "Acubens", "ra": 134.622, "dec": 11.858, "mag": 4.26 },
+      { "name": "Al Tarf", "ra": 124.129, "dec": 9.186, "mag": 3.52 },
+      {
+        "name": "55 Cancri",
+        "ra": 133.149,
+        "dec": 28.331,
+        "mag": 5.95,
+        "systemId": "55cancri"
+      }
+    ]
+  }
+}

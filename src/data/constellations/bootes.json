@@ -1,0 +1,43 @@
+{
+  "id": "bootes",
+  "name": "Boötes",
+  "description": "The Herdsman is a large northern constellation best known for Arcturus, the fourth-brightest star in the night sky and the brightest in the northern celestial hemisphere. Arcturus is an orange K-type giant about 36 light-years away on its way out of our galactic neighbourhood at unusually high speed.",
+  "funFact": "Arcturus belongs to the 'Arcturus stream' — a group of stars thought to be the remnant of a dwarf galaxy absorbed by the Milky Way billions of years ago, which explains its unusually high proper motion across our sky.",
+  "systems": ["arcturus"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Bo%C3%B6tes",
+  "outline": {
+    "lines": [
+      [
+        [-153.1844, 17.4569],
+        [-151.3288, 18.3977],
+        [-146.0847, 19.1824],
+        [-142.0425, 30.3714],
+        [-141.9805, 38.3083],
+        [-134.5135, 40.3906],
+        [-131.1243, 33.3148],
+        [-138.7533, 27.0742],
+        [-146.0847, 19.1824],
+        [-139.7127, 13.7283]
+      ],
+      [
+        [-141.9805, 38.3083],
+        [-145.9041, 46.0883],
+        [-146.6341, 51.7879],
+        [-143.7008, 51.8507],
+        [-145.9041, 46.0883]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Arcturus",
+        "ra": -146.0847,
+        "dec": 19.1824,
+        "mag": -0.05,
+        "systemId": "arcturus"
+      },
+      { "name": "Izar", "ra": -138.7533, "dec": 27.0742, "mag": 2.37 },
+      { "name": "Seginus", "ra": -141.9805, "dec": 38.3083, "mag": 3.04 },
+      { "name": "Muphrid", "ra": -151.3288, "dec": 18.3977, "mag": 2.68 }
+    ]
+  }
+}

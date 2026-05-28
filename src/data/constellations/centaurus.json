@@ -1,0 +1,57 @@
+{
+  "id": "centaurus",
+  "name": "Centaurus",
+  "description": "The Centaur is one of the largest constellations, straddling the southern Milky Way and containing two of the ten brightest stars in the sky. It is home to Alpha Centauri, our nearest stellar neighbour, and to Omega Centauri, the largest and most massive globular cluster in the Milky Way.",
+  "funFact": "Proxima Centauri — the closest star to the Sun at 4.24 light-years — is a faint red dwarf gravitationally bound to Alpha Centauri A and B, orbiting the pair at a vast distance of roughly 13,000 AU. Even at Voyager 1's speed it would take over 70,000 years to reach.",
+  "systems": ["alphacentauri", "omegacentauri"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Centaurus",
+  "outline": {
+    "lines": [
+      [
+        [170.2517, -54.491],
+        [-177.9104, -50.7224],
+        [-172.9901, -50.2306],
+        [-169.6207, -48.9599],
+        [-155.0281, -53.4664],
+        [-151.1151, -47.2884],
+        [-152.5959, -42.4737],
+        [-152.6238, -41.6877],
+        [-148.3294, -36.37],
+        [-141.1232, -42.1578],
+        [-135.2096, -42.1042]
+      ],
+      [
+        [-152.6238, -41.6877],
+        [-159.8508, -36.7123]
+      ],
+      [
+        [-140.0991, -60.835],
+        [-155.0281, -53.4664],
+        [-149.0441, -60.373]
+      ],
+      [
+        [-172.9901, -50.2306],
+        [-177.087, -52.3685],
+        [172.942, -59.4421]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Rigil Kentaurus",
+        "ra": -140.0991,
+        "dec": -60.835,
+        "mag": -0.27,
+        "systemId": "alphacentauri"
+      },
+      { "name": "Hadar", "ra": -149.0441, "dec": -60.373, "mag": 0.61 },
+      { "name": "Menkent", "ra": -148.3294, "dec": -36.37, "mag": 2.06 },
+      {
+        "name": "Omega Centauri",
+        "ra": -158.303,
+        "dec": -47.479,
+        "mag": 3.9,
+        "systemId": "omegacentauri"
+      }
+    ]
+  }
+}

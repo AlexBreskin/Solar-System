@@ -1,0 +1,70 @@
+{
+  "id": "ursa-major",
+  "name": "Ursa Major",
+  "description": "The Great Bear is the third-largest constellation and one of the most widely recognised in the northern sky. Its most famous feature is the Big Dipper asterism, formed by seven bright stars whose two 'pointer' stars lead directly to Polaris. Ursa Major contains Bode's Galaxy (M81), one of the brightest galaxies visible in the northern sky.",
+  "funFact": "Five of the Big Dipper's seven stars — Merak, Phecda, Alioth, Mizar, and Megrez — are genuine siblings, born from the same molecular cloud around 500 million years ago and still moving together through space as the 'Ursa Major Moving Group'. Dubhe and Alkaid are unrelated and moving in different directions, so in 50,000 years the Dipper will be unrecognisable.",
+  "systems": ["m81"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Ursa_Major",
+  "outline": {
+    "lines": [
+      [
+        [-176.1435, 57.0326],
+        [165.9316, 61.751],
+        [165.4603, 56.3823],
+        [178.4577, 53.6947],
+        [-176.1435, 57.0326],
+        [-166.4927, 55.9598],
+        [-159.0186, 54.9254],
+        [-153.1148, 49.3133]
+      ],
+      [
+        [178.4577, 53.6947],
+        [176.513, 47.779],
+        [169.62, 33.094],
+        [169.547, 31.531]
+      ],
+      [
+        [176.513, 47.779],
+        [167.416, 44.499],
+        [155.582, 41.5]
+      ],
+      [
+        [167.416, 44.499],
+        [154.274, 42.914]
+      ],
+      [
+        [165.9316, 61.751],
+        [142.882, 63.062],
+        [127.566, 60.718],
+        [147.747, 59.039],
+        [165.4603, 56.3823]
+      ],
+      [
+        [165.4603, 56.3823],
+        [148.027, 54.064],
+        [143.214, 51.677],
+        [134.802, 48.042]
+      ],
+      [
+        [135.906, 47.157],
+        [143.214, 51.677]
+      ]
+    ],
+    "stars": [
+      { "name": "Dubhe", "ra": 165.9316, "dec": 61.751, "mag": 1.81 },
+      { "name": "Alioth", "ra": -166.4927, "dec": 55.9598, "mag": 1.77 },
+      { "name": "Mizar", "ra": -159.0186, "dec": 54.9254, "mag": 2.27 },
+      { "name": "Alkaid", "ra": -153.1148, "dec": 49.3133, "mag": 1.86 },
+      { "name": "Merak", "ra": 165.4603, "dec": 56.3823, "mag": 2.37 },
+      { "name": "Phecda", "ra": 178.4577, "dec": 53.6947, "mag": 2.44 },
+      { "name": "Megrez", "ra": -176.1435, "dec": 57.0326, "mag": 3.31 },
+      {
+        "name": "Bode's Galaxy (M81)",
+        "ra": 148.888,
+        "dec": 69.066,
+        "mag": 6.94,
+        "systemId": "m81"
+      }
+    ]
+  }
+}

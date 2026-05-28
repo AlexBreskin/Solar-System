@@ -1,0 +1,37 @@
+{
+  "id": "tucana",
+  "name": "Tucana",
+  "description": "The Toucan is a southern constellation introduced in the late 16th century by Dutch navigators. Although faint by stellar standards, it contains two of the most spectacular deep-sky objects visible from Earth — the globular cluster 47 Tucanae and the Small Magellanic Cloud, a satellite galaxy of the Milky Way visible to the naked eye.",
+  "funFact": "47 Tucanae and the Small Magellanic Cloud appear close together in the sky but are at vastly different distances — the cluster is 16,700 light-years away while the SMC is 200,000 light-years distant. They are purely a line-of-sight coincidence, but together they make Tucana one of the most rewarding patches of sky for a small telescope.",
+  "systems": ["ngc104"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Tucana",
+  "outline": {
+    "lines": [
+      [
+        [-25.375, -60.259],
+        [-10.643, -58.235],
+        [7.886, -62.958],
+        [5.018, -64.875],
+        [-0.021, -65.577],
+        [-23.167, -64.966],
+        [-25.375, -60.259]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Alpha Tuc",
+        "ra": -25.375,
+        "dec": -60.259,
+        "mag": 2.86
+      },
+      { "name": "γ Tucanae", "ra": -10.643, "dec": -58.235, "mag": 3.99 },
+      {
+        "name": "47 Tucanae",
+        "ra": 6.024,
+        "dec": -72.079,
+        "mag": 4.09,
+        "systemId": "ngc104"
+      }
+    ]
+  }
+}

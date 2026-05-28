@@ -1,0 +1,45 @@
+{
+  "id": "pegasus",
+  "name": "Pegasus",
+  "description": "The Winged Horse dominates the northern-hemisphere autumn sky. Its four brightest stars form the Great Square of Pegasus, a prominent asterism that serves as a landmark for navigating the autumn sky. The constellation contains HR 8799, a young star with four directly imaged giant planets.",
+  "funFact": "HR 8799 hosts four confirmed planets detected directly in infrared images — the largest number of directly imaged exoplanets in any single system. All four are gas giants 5–7 times Jupiter's mass, orbiting at vast distances in a system that resembles a scaled-up version of our outer Solar System.",
+  "systems": ["hr8799"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Pegasus_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-19.249, 30.2212],
+        [-14.0565, 28.0828],
+        [2.0969, 29.0904],
+        [3.3093, 15.1836],
+        [-13.8098, 15.2053],
+        [-18.327, 12.173],
+        [-19.635, 10.831],
+        [-27.45, 6.198],
+        [-33.9535, 9.875]
+      ],
+      [
+        [-13.8098, 15.2053],
+        [-14.0565, 28.0828],
+        [-17.499, 24.602],
+        [-18.367, 23.566],
+        [-28.247, 25.345],
+        [-33.839, 25.645]
+      ]
+    ],
+    "stars": [
+      { "name": "Enif", "ra": -33.9535, "dec": 9.875, "mag": 2.38 },
+      { "name": "Scheat", "ra": -14.0565, "dec": 28.0828, "mag": 2.42 },
+      { "name": "Markab", "ra": -13.8098, "dec": 15.2053, "mag": 2.49 },
+      { "name": "Algenib", "ra": 3.3093, "dec": 15.1836, "mag": 2.83 },
+      { "name": "Matar", "ra": -19.249, "dec": 30.2212, "mag": 2.94 },
+      {
+        "name": "HR 8799",
+        "ra": -13.129,
+        "dec": 21.134,
+        "mag": 5.95,
+        "systemId": "hr8799"
+      }
+    ]
+  }
+}

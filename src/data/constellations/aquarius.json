@@ -1,0 +1,51 @@
+{
+  "id": "aquarius",
+  "name": "Aquarius",
+  "description": "The Water Bearer is one of the oldest constellations, recorded by the Babylonians as early as 1200 BCE. This large zodiacal constellation spans the equatorial sky and contains TRAPPIST-1, a faint ultra-cool red dwarf with the most known temperate rocky planets of any star system, as well as the Helix Nebula, one of the closest and largest planetary nebulae.",
+  "funFact": "TRAPPIST-1 is a dim red dwarf barely 8% the mass of the Sun, yet it hosts seven Earth-sized rocky planets — three of which orbit in the habitable zone. All seven are so tightly packed that standing on any one of them, the others would appear larger in the sky than the Moon does from Earth.",
+  "systems": ["trappist1"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Aquarius_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-48.081, -9.496],
+        [-46.837, -8.983],
+        [-37.111, -5.571],
+        [-28.554, -0.32],
+        [-24.586, -1.387],
+        [-22.792, -0.02],
+        [-21.161, -0.118],
+        [-16.846, -7.58],
+        [-10.524, -9.183],
+        [-12.638, -21.172]
+      ],
+      [
+        [-37.111, -5.571],
+        [-28.391, -13.87]
+      ],
+      [
+        [-28.554, -0.32],
+        [-25.792, -7.783]
+      ],
+      [
+        [-22.792, -0.02],
+        [-23.681, 1.377]
+      ],
+      [
+        [-9.257, -20.101],
+        [-10.524, -9.183],
+        [-4.559, -17.817]
+      ]
+    ],
+    "stars": [
+      { "name": "Sadalsuud", "ra": -37.111, "dec": -8.983, "mag": 2.87 },
+      { "name": "Sadalmelik", "ra": -28.804, "dec": -0.32, "mag": 2.96 },
+      {
+        "name": "TRAPPIST-1",
+        "ra": -13.378,
+        "dec": -5.041,
+        "systemId": "trappist1"
+      }
+    ]
+  }
+}

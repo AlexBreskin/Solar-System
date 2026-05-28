@@ -1,0 +1,27 @@
+{
+  "id": "pictor",
+  "name": "Pictor",
+  "description": "The Painter's Easel is a small southern constellation introduced by Nicolas-Louis de Lacaille in the 1750s. It contains Beta Pictoris, a young star surrounded by a vast debris disk seen nearly edge-on, and PSR J0437-4715, the nearest and most precisely timed millisecond pulsar to Earth.",
+  "funFact": "PSR J0437-4715 rotates 174 times per second and is so stable that it rivals atomic clocks in precision. Arrays of millisecond pulsars like this one are used as a 'pulsar timing array' — a galaxy-scale gravitational wave detector sensitive to nanohertz waves from supermassive black hole mergers.",
+  "systems": ["psr-j0437"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Pictor",
+  "outline": {
+    "lines": [
+      [
+        [102.048, -61.94],
+        [87.458, -56.167],
+        [86.821, -51.0662]
+      ]
+    ],
+    "stars": [
+      { "name": "Alpha Pic", "ra": 102.048, "dec": -61.94, "mag": 3.27 },
+      { "name": "Beta Pic", "ra": 86.821, "dec": -51.0662, "mag": 3.85 },
+      {
+        "name": "PSR J0437",
+        "ra": 69.316,
+        "dec": -47.248,
+        "systemId": "psr-j0437"
+      }
+    ]
+  }
+}

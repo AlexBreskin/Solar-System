@@ -6,7 +6,7 @@
     "starColor": "#FFCC50",
     "displayOrder": 37,
     "distanceFromEarth": 15000,
-    "rootType": "star",
+    "rootType": "stellar-cluster",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Westerlund_1"
   },
   "bodies": {

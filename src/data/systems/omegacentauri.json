@@ -6,7 +6,7 @@
     "starColor": "#FFE890",
     "displayOrder": 38,
     "distanceFromEarth": 17000,
-    "rootType": "star",
+    "rootType": "globular-cluster",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Omega_Centauri"
   },
   "bodies": {

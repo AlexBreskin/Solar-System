@@ -1,0 +1,52 @@
+{
+  "id": "virgo",
+  "name": "Virgo",
+  "description": "The Maiden is the second-largest constellation and lies in the direction of the Virgo Supercluster — the enormous concentration of galaxies that includes the Milky Way. It contains Spica, one of the sky's brightest stars, and is home to the Virgo Cluster of galaxies anchored by the giant elliptical M87, along with the quasar 3C 273 and the pulsar Lich.",
+  "funFact": "The Virgo Cluster's gravitational pull is so immense that it is drawing our entire Local Group of galaxies toward it at about 600 km/s. We will never fall into it — the expansion of the universe is faster — but it is detectable as an anomalous component of our galaxy's motion through space.",
+  "systems": ["m87", "3c273", "lich"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Virgo_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [176.465, 6.529],
+        [177.674, 1.765],
+        [-175.024, -0.667],
+        [-169.5849, -1.4494],
+        [-162.513, -5.539],
+        [-158.7017, -11.1613],
+        [-145.996, -6.001],
+        [-139.235, -5.658]
+      ],
+      [
+        [-164.456, 10.9592],
+        [-166.099, 3.398],
+        [-169.5849, -1.4494]
+      ],
+      [
+        [-162.513, -5.539],
+        [-156.327, -0.596],
+        [-149.588, 1.545],
+        [-138.438, 1.893]
+      ]
+    ],
+    "stars": [
+      { "name": "Spica", "ra": -158.7017, "dec": -11.1613, "mag": 0.97 },
+      { "name": "Porrima", "ra": -169.5849, "dec": -1.4494, "mag": 2.74 },
+      {
+        "name": "Vindemiatrix",
+        "ra": -164.456,
+        "dec": 10.9592,
+        "mag": 2.83
+      },
+      { "name": "Heze", "ra": -156.327, "dec": -0.596, "mag": 3.37 },
+      { "name": "M87", "ra": -172.294, "dec": 12.391, "systemId": "m87" },
+      {
+        "name": "3C 273",
+        "ra": -172.722,
+        "dec": 2.052,
+        "systemId": "3c273"
+      },
+      { "name": "Lich", "ra": -164.996, "dec": 12.683, "systemId": "lich" }
+    ]
+  }
+}

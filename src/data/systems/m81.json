@@ -1,0 +1,13 @@
+{
+  "system": {
+    "id": "m81",
+    "name": "Bode's Galaxy",
+    "description": "A grand design spiral galaxy 11.8 million light-years away in Ursa Major, one of the brightest galaxies in the northern sky. M81 (NGC 3031) was discovered by Johann Elert Bode in 1774 and is the dominant member of the M81 Group, a tight cluster of about 34 galaxies.",
+    "starColor": "#FFD8A8",
+    "displayOrder": 53,
+    "distanceFromEarth": 11800000,
+    "rootType": "galaxy",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Messier_81"
+  }
+}

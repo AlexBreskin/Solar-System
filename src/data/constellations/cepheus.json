@@ -1,0 +1,41 @@
+{
+  "id": "cepheus",
+  "name": "Cepheus",
+  "description": "The King of Ethiopia circles the northern celestial pole between Cassiopeia and Draco, never setting for most northern-hemisphere observers. The constellation contains Delta Cephei, the prototype of the Cepheid variable stars used as standard candles to measure cosmic distances, and Mu Cephei, one of the largest and most luminous stars known.",
+  "funFact": "Delta Cephei (a yellow supergiant in the constellation, not to be confused with Mu Cephei) was the first Cepheid variable identified, in 1784 by John Goodricke. Its predictable brightness cycle became the foundation of the 'cosmic distance ladder' — Henrietta Leavitt's 1908 discovery that Cepheid period correlates with luminosity let astronomers measure distances to other galaxies for the first time.",
+  "systems": ["mucephei"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Cepheus_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-52.605, 62.994],
+        [-48.678, 61.839],
+        [-40.3553, 62.5856],
+        [-34.123, 58.78],
+        [-26.241, 57.044],
+        [-27.286, 58.201],
+        [-22.707, 58.415],
+        [-17.58, 66.2],
+        [-5.1632, 77.6322],
+        [-37.835, 70.5607],
+        [-40.3553, 62.5856]
+      ],
+      [
+        [-37.835, 70.5607],
+        [-17.58, 66.2]
+      ]
+    ],
+    "stars": [
+      { "name": "Alderamin", "ra": -40.3553, "dec": 62.5856, "mag": 2.45 },
+      { "name": "Alfirk", "ra": -37.835, "dec": 70.5607, "mag": 3.23 },
+      { "name": "Errai", "ra": -5.1632, "dec": 77.6322, "mag": 3.21 },
+      {
+        "name": "Mu Cephei",
+        "ra": -34.123,
+        "dec": 58.78,
+        "mag": 4.08,
+        "systemId": "mucephei"
+      }
+    ]
+  }
+}

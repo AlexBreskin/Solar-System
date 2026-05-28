@@ -1,0 +1,13 @@
+{
+  "system": {
+    "id": "m13",
+    "name": "Hercules Globular Cluster",
+    "description": "The Great Globular Cluster in Hercules, one of the most impressive in the northern sky. M13 contains around 300,000 ancient stars packed into a sphere 145 light-years across, sitting 25,100 light-years from Earth.",
+    "starColor": "#FFE4A0",
+    "displayOrder": 52,
+    "distanceFromEarth": 25100,
+    "rootType": "globular-cluster",
+    "navigable": false,
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Messier_13"
+  }
+}

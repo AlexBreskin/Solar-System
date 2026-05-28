@@ -1,0 +1,37 @@
+{
+  "id": "ursa-minor",
+  "name": "Ursa Minor",
+  "description": "The Little Bear, or Little Dipper, circles the north celestial pole and is home to Polaris, the current North Star. Because it lies so close to the pole, Polaris has guided navigators for centuries — it marks true north to within about 0.7° and has appeared virtually stationary in the sky throughout recorded history.",
+  "funFact": "Polaris is actually a Cepheid variable star, pulsing in brightness by about 0.1 magnitudes every 3.97 days. It is also a triple star system: Polaris A, a yellow supergiant, has two much fainter companions — one of which, Polaris Ab, orbits so closely it was only resolved by Hubble in 2006.",
+  "systems": ["polaris"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Ursa_Minor",
+  "outline": {
+    "lines": [
+      [
+        [-123.9853, 77.7945],
+        [-115.6238, 75.7553],
+        [-129.8179, 71.834],
+        [-137.324, 74.1555],
+        [-123.9853, 77.7945],
+        [-108.5073, 82.0373],
+        [-96.9458, 86.5865],
+        [37.9529, 89.2641]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Polaris",
+        "ra": 37.9529,
+        "dec": 89.2641,
+        "mag": 1.98,
+        "systemId": "polaris"
+      },
+      { "name": "Kochab", "ra": -137.324, "dec": 74.1555, "mag": 2.07 },
+      { "name": "Pherkad", "ra": -129.8179, "dec": 71.834, "mag": 3.0 },
+      { "name": "Zeta UMi", "ra": -123.9853, "dec": 77.7945, "mag": 4.32 },
+      { "name": "Eta UMi", "ra": -115.6238, "dec": 75.7553, "mag": 4.95 },
+      { "name": "Epsilon UMi", "ra": -108.5073, "dec": 82.0373, "mag": 4.23 },
+      { "name": "Yildun", "ra": -96.9458, "dec": 86.5865, "mag": 4.35 }
+    ]
+  }
+}

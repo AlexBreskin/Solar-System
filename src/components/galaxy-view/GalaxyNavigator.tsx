@@ -1,8 +1,13 @@
 import { useMemo, useState } from "react";
 import { STAR_SYSTEMS } from "@/data/systems";
-import { GALAXY_DATA, GALACTIC_IDS } from "@/data/galaxy";
+import { GALACTIC_IDS } from "@/data/galaxy";
 import { CONSTELLATIONS } from "@/data/constellations";
 import type { Constellation, StarSystemMeta } from "@/types";
+import {
+  ROOT_TYPE_BY_ID,
+  ROOT_TYPE_ICONS,
+  ROOT_TYPE_LABELS,
+} from "@/data/systemMeta";
 import "./GalaxyNavigator.css";
 
 interface GalaxyNavigatorProps {
@@ -14,20 +19,6 @@ interface GalaxyNavigatorProps {
   selectedConstellation: string | null;
   onSelectConstellation: (id: string | null) => void;
 }
-
-const ROOT_TYPE_ICONS: Record<string, string> = {
-  star: "☀",
-  "black-hole": "◉",
-  "neutron-star": "✶",
-  quasar: "✵",
-};
-
-const ROOT_TYPE_LABELS: Record<string, string> = {
-  star: "Star System",
-  "black-hole": "Black Hole",
-  "neutron-star": "Neutron Star",
-  quasar: "Quasar",
-};
 
 function SystemRow({
   s,
@@ -103,15 +94,6 @@ export default function GalaxyNavigator({
     "systems",
   );
   const [query, setQuery] = useState("");
-
-  const rootTypeById = useMemo(() => {
-    const map: Record<string, string> = {};
-    for (const entry of GALAXY_DATA.systems) map[entry.id] = entry.rootType;
-    for (const s of STAR_SYSTEMS) {
-      if (!map[s.id]) map[s.id] = s.rootType ?? "star";
-    }
-    return map;
-  }, []);
 
   const systemNameById = useMemo(() => {
     const map: Record<string, string> = {};
@@ -198,7 +180,7 @@ export default function GalaxyNavigator({
               <SystemRow
                 key={s.id}
                 s={s}
-                rootType={rootTypeById[s.id] ?? "star"}
+                rootType={ROOT_TYPE_BY_ID[s.id] ?? "star"}
                 isSelected={selectedSystem === s.id}
                 isHovered={hoveredSystem === s.id}
                 onSelectSystem={onSelectSystem}
@@ -213,7 +195,7 @@ export default function GalaxyNavigator({
               <SystemRow
                 key={s.id}
                 s={s}
-                rootType={rootTypeById[s.id] ?? "star"}
+                rootType={ROOT_TYPE_BY_ID[s.id] ?? "star"}
                 isSelected={selectedSystem === s.id}
                 isHovered={hoveredSystem === s.id}
                 onSelectSystem={onSelectSystem}

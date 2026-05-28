@@ -1,0 +1,60 @@
+{
+  "id": "hercules",
+  "name": "Hercules",
+  "description": "The Hero is the fifth-largest constellation and dominates the summer sky between Lyra and Corona Borealis. Although it contains no first-magnitude stars, it is home to M13, the finest globular cluster in the northern sky, and to Ras Algethi, a pulsating red supergiant whose diameter varies between 400 and 500 solar diameters.",
+  "funFact": "In 1974, astronomers used the Arecibo radio telescope to broadcast the 'Arecibo Message' toward M13 — a binary-encoded image describing humanity, DNA, and our Solar System. The message will arrive at M13 in about 25,000 years. Any reply would take an equal time to return, making it more a symbolic gesture than a conversation.",
+  "systems": ["m13"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Hercules_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [-114.52, 19.153],
+        [-112.4451, 21.4896],
+        [-109.679, 31.603],
+        [-109.276, 38.922],
+        [-111.474, 42.437],
+        [-115.065, 46.313],
+        [-117.808, 44.935],
+        [-121.831, 42.452]
+      ],
+      [
+        [-109.679, 31.603],
+        [-104.928, 30.926]
+      ],
+      [
+        [-109.276, 38.922],
+        [-101.238, 36.809]
+      ],
+      [
+        [-90.937, 37.251],
+        [-99.079, 37.146],
+        [-101.238, 36.809],
+        [-104.928, 30.926],
+        [-101.242, 24.839],
+        [-93.3853, 27.7207],
+        [-90.559, 29.248],
+        [-88.114, 28.763]
+      ],
+      [
+        [-101.3382, 14.39],
+        [-112.4451, 21.4896]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Kornephoros",
+        "ra": -112.4451,
+        "dec": 21.4896,
+        "mag": 2.77
+      },
+      { "name": "Ras Algethi", "ra": -101.3382, "dec": 14.39, "mag": 3.48 },
+      {
+        "name": "Great Globular Cluster (M13)",
+        "ra": -109.577,
+        "dec": 36.46,
+        "mag": 5.8,
+        "systemId": "m13"
+      }
+    ]
+  }
+}

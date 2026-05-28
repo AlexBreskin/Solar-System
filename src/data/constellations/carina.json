@@ -1,0 +1,55 @@
+{
+  "id": "carina",
+  "name": "Carina",
+  "description": "The Keel of the mythological ship Argo, Carina contains Canopus — the second-brightest star in the night sky — and Eta Carinae, one of the most massive and unstable stars known. The Carina Nebula is one of the largest and brightest nebulae in the sky.",
+  "funFact": "Eta Carinae underwent a 'Great Eruption' in the 1840s, briefly becoming the second-brightest star in the sky despite being 7,500 light-years away. It ejected material equivalent to ten solar masses and is considered a prime supernova candidate.",
+  "systems": ["canopus", "etacarinae"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Carina_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [99.4403, -43.1959],
+        [95.988, -52.6957],
+        [138.2999, -69.7172],
+        [153.4342, -70.0379],
+        [160.7392, -64.3945],
+        [158.0061, -61.6853],
+        [154.2707, -61.3323],
+        [139.2725, -59.2752],
+        [125.6285, -59.5095],
+        [119.1946, -52.9824],
+        [122.3831, -47.3366],
+        [131.1759, -54.7088],
+        [139.2725, -59.2752]
+      ],
+      [
+        [160.7392, -64.3945],
+        [166.6351, -62.4241],
+        [167.1417, -61.9472],
+        [168.1501, -60.3176],
+        [167.1475, -58.975],
+        [163.3736, -58.8532],
+        [158.0061, -61.6853]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Canopus",
+        "ra": 95.988,
+        "dec": -52.6957,
+        "mag": -0.72,
+        "systemId": "canopus"
+      },
+      { "name": "Miaplacidus", "ra": 138.2999, "dec": -69.7172, "mag": 1.68 },
+      { "name": "Avior", "ra": 125.6285, "dec": -59.5095, "mag": 1.86 },
+      { "name": "Aspidiske", "ra": 119.1946, "dec": -52.9824, "mag": 2.21 },
+      {
+        "name": "Eta Carinae",
+        "ra": 161.27,
+        "dec": -59.68,
+        "mag": 6.2,
+        "systemId": "etacarinae"
+      }
+    ]
+  }
+}

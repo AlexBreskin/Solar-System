@@ -1,0 +1,39 @@
+{
+  "id": "piscis-austrinus",
+  "name": "Piscis Austrinus",
+  "description": "The Southern Fish is an ancient constellation most prominent in southern-hemisphere autumn skies. Its sole bright star, Fomalhaut, is the 18th brightest in the sky and was one of the four 'Royal Stars' of ancient Persian astronomy. Fomalhaut is surrounded by a vast, narrow ring of dust and debris that hinted at a planetary system long before exoplanets were confirmed.",
+  "funFact": "In 2008, Fomalhaut b became the first exoplanet candidate directly imaged in visible light by Hubble. Subsequent observations revealed it is more likely a large dust cloud from a recent planetary collision — still a remarkable discovery, showing that planet-building collisions happen around other stars.",
+  "systems": ["fomalhaut"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Piscis_Austrinus",
+  "outline": {
+    "lines": [
+      [
+        [-19.836, -27.044],
+        [-15.5871, -29.6221],
+        [-16.013, -32.54],
+        [-16.869, -32.876],
+        [-22.124, -32.346],
+        [-27.904, -32.989],
+        [-33.763, -33.026],
+        [-33.066, -30.898],
+        [-27.904, -32.989],
+        [-19.836, -27.044]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Fomalhaut",
+        "ra": -15.5871,
+        "dec": -29.6221,
+        "mag": 1.16,
+        "systemId": "fomalhaut"
+      },
+      {
+        "name": "ε Piscis Austrini",
+        "ra": -19.836,
+        "dec": -27.044,
+        "mag": 4.18
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "cetus",
+  "name": "Cetus",
+  "description": "The Sea Monster (or Whale) is one of the largest constellations in the sky, sprawling across the equatorial region of the celestial sphere. It contains Tau Ceti, one of the nearest Sun-like stars and a historic target in the search for extraterrestrial intelligence, as well as Mira, the prototype of long-period variable stars.",
+  "funFact": "Tau Ceti was one of the two stars targeted in Project Ozma (1960), the first systematic scientific search for signals from extraterrestrial civilisations. Frank Drake listened for 200 hours and heard nothing, but the star's similarity to the Sun — same spectral type, similar age — has kept it high on astronomers' target lists. It now has five candidate planets.",
+  "systems": ["tauceti"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Cetus",
+  "outline": {
+    "lines": [
+      [
+        [40.825, 3.236],
+        [38.969, 5.593],
+        [37.04, 8.46],
+        [41.236, 10.114],
+        [44.929, 8.907],
+        [45.57, 4.09],
+        [40.825, 3.236],
+        [39.871, 0.329],
+        [34.837, -2.978],
+        [27.865, -10.335],
+        [26.017, -15.937],
+        [10.897, -17.987],
+        [4.857, -8.824],
+        [17.148, -10.182],
+        [21.006, -8.183],
+        [27.865, -10.335]
+      ]
+    ],
+    "stars": [
+      { "name": "Diphda", "ra": 10.897, "dec": -17.987, "mag": 2.02 },
+      { "name": "Menkar", "ra": 45.57, "dec": 4.09, "mag": 2.54 },
+      {
+        "name": "Tau Ceti",
+        "ra": 26.017,
+        "dec": -15.937,
+        "mag": 3.49,
+        "systemId": "tauceti"
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "canes-venatici",
+  "name": "Canes Venatici",
+  "description": "The Hunting Dogs, held on a leash by Boötes, is a small constellation between Ursa Major and Coma Berenices. Though it contains only two notable stars, it is extraordinarily rich in deep-sky objects — including spiral galaxies, globular clusters, and the quasar TON 618, one of the most massive black holes known.",
+  "funFact": "TON 618's central black hole has a mass of 66 billion solar masses — so large that the entire Solar System would fit comfortably within its event horizon with room to spare. Its accretion disk shines 140 trillion times brighter than the Sun, making it visible as a faint 15th-magnitude object despite being 10.4 billion light-years away.",
+  "systems": ["ton618"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Canes_Venatici",
+  "outline": {
+    "lines": [
+      [
+        [-165.9935, 38.3183],
+        [-171.5645, 41.3574]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Cor Caroli",
+        "ra": -165.9935,
+        "dec": 38.3183,
+        "mag": 2.9
+      },
+      { "name": "Chara", "ra": -171.5645, "dec": 41.3574, "mag": 4.26 },
+      {
+        "name": "TON 618",
+        "ra": -172.896,
+        "dec": 31.477,
+        "systemId": "ton618"
+      }
+    ]
+  }
+}

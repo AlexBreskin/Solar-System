@@ -1,0 +1,33 @@
+{
+  "id": "lyra",
+  "name": "Lyra",
+  "description": "The small but prominent constellation of the Lyre is home to Vega, the fifth-brightest star in the night sky and one vertex of the famous Summer Triangle. Vega has been used as a standard reference star for brightness calibration in astronomy.",
+  "funFact": "Due to precession of the Earth's axis, Vega was the North Pole star around 12,000 BCE and will be again around 13,700 CE — a 26,000-year cycle known as the precession of the equinoxes.",
+  "systems": ["vega"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Lyra",
+  "outline": {
+    "lines": [
+      [
+        [-78.8068, 37.6051],
+        [-78.9051, 39.6127],
+        [-80.7653, 38.7837],
+        [-78.8068, 37.6051],
+        [-76.3738, 36.8986],
+        [-75.2641, 32.6896],
+        [-77.48, 33.3627],
+        [-78.8068, 37.6051]
+      ]
+    ],
+    "stars": [
+      {
+        "name": "Vega",
+        "ra": -80.7653,
+        "dec": 38.7837,
+        "mag": 0.03,
+        "systemId": "vega"
+      },
+      { "name": "Sheliak", "ra": -77.48, "dec": 33.3627, "mag": 3.52 },
+      { "name": "Sulafat", "ra": -75.2641, "dec": 32.6896, "mag": 3.24 }
+    ]
+  }
+}

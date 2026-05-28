@@ -1,0 +1,55 @@
+{
+  "id": "andromeda",
+  "name": "Andromeda",
+  "description": "The Princess of Ethiopia extends from the Great Square of Pegasus northward toward Perseus. It is best known for the Andromeda Galaxy (M31), the nearest large spiral galaxy and the most distant object visible to the unaided eye. On a clear night far from city lights, M31 appears as a faint, elongated smudge about 6 times the width of the full Moon.",
+  "funFact": "In roughly 4.5 billion years, the Andromeda Galaxy and the Milky Way will collide and eventually merge. Despite the collision of two galaxies containing hundreds of billions of stars each, actual stellar impacts are unlikely — the distances between individual stars are so vast that the two galaxies will pass through each other largely unimpeded, though their shapes will be catastrophically distorted.",
+  "systems": ["m31"],
+  "wikipediaUrl": "https://en.wikipedia.org/wiki/Andromeda_(constellation)",
+  "outline": {
+    "lines": [
+      [
+        [30.9745, 42.3297],
+        [17.433, 35.6205],
+        [9.832, 30.861],
+        [2.0969, 29.0904]
+      ],
+      [
+        [14.302, 23.418],
+        [11.835, 24.267],
+        [9.639, 29.312],
+        [9.832, 30.861],
+        [9.22, 33.719],
+        [-5.466, 43.268],
+        [-14.52, 42.326]
+      ],
+      [
+        [-5.466, 43.268],
+        [-4.898, 44.334],
+        [-5.609, 46.458]
+      ],
+      [
+        [17.433, 35.6205],
+        [14.188, 38.499],
+        [12.454, 41.079],
+        [17.376, 47.242],
+        [24.498, 48.628]
+      ],
+      [
+        [-4.898, 44.334],
+        [-3.492, 46.42]
+      ]
+    ],
+    "stars": [
+      { "name": "Alpheratz", "ra": 2.0969, "dec": 29.0904, "mag": 2.06 },
+      { "name": "Mirach", "ra": 17.433, "dec": 35.6205, "mag": 2.05 },
+      { "name": "Almach", "ra": 30.9745, "dec": 42.3297, "mag": 2.26 },
+      {
+        "name": "Andromeda Galaxy (M31)",
+        "ra": 10.685,
+        "dec": 41.269,
+        "mag": 3.44,
+        "systemId": "m31"
+      }
+    ]
+  }
+}
