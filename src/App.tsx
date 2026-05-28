@@ -1,16 +1,11 @@
-import { useState, useCallback, useMemo, useRef } from "react";
-import SystemCanvas from "@/components/system-view/SystemCanvas";
-import PlanetCanvas from "@/components/planet-view/PlanetCanvas";
-import GalaxyCanvas, {
-  type GalaxyCanvasHandle,
-} from "@/components/galaxy-view/GalaxyCanvas";
+import { useState, useCallback } from "react";
 import BodyNavigator from "@/components/system-view/BodyNavigator";
 import GalaxyNavigator from "@/components/galaxy-view/GalaxyNavigator";
-import InfoPanel from "@/components/system-view/InfoPanel";
-import GalaxySystemPanel from "@/components/galaxy-view/GalaxySystemPanel";
+import HeaderControls from "@/components/app/HeaderControls";
+import CanvasArea from "@/components/app/CanvasArea";
+import RightPanel from "@/components/app/RightPanel";
 import { loadStarSystem } from "@/data/celestialBodies";
 import { STAR_SYSTEMS } from "@/data/systems";
-import { CONSTELLATIONS } from "@/data/constellations";
 import {
   StarSystemContext,
   type StarSystemData,
@@ -22,6 +17,7 @@ import {
 } from "@/data/celestialBodies";
 import { BodyType, ROOT_BODY_TYPES } from "@/types";
 import type { BodyId, TabId, StarSystemMeta } from "@/types";
+import { useGalaxyState } from "@/hooks/useGalaxyState";
 import "./App.css";
 
 const defaultSystemData: StarSystemData = {
@@ -41,6 +37,21 @@ const defaultSystemData: StarSystemData = {
   visualConfig: VISUAL_CONFIG,
 };
 
+function getPlanetViewId(
+  selectedBody: BodyId,
+  bodies: StarSystemData["bodies"],
+): BodyId | null {
+  const body = bodies[selectedBody];
+  if (
+    (body?.type === BodyType.Moon || body?.type === BodyType.Companion) &&
+    body.parent
+  ) {
+    return body.parent as BodyId;
+  }
+  if (body && body.type !== BodyType.Belt) return selectedBody;
+  return null;
+}
+
 export default function App(): JSX.Element {
   const [systemData, setSystemData] =
     useState<StarSystemData>(defaultSystemData);
@@ -54,25 +65,8 @@ export default function App(): JSX.Element {
   const [showOrbits, setShowOrbits] = useState<boolean>(true);
   const [showLabels, setShowLabels] = useState<boolean>(false);
   const [viewedPlanet, setViewedPlanet] = useState<BodyId>("earth");
-  const [galaxySelectedSystem, setGalaxySelectedSystem] = useState<
-    string | null
-  >(defaultSystemData.id);
-  const [galaxyHoveredSystem, setGalaxyHoveredSystem] = useState<string | null>(
-    null,
-  );
-  const [galaxySelectedRegion, setGalaxySelectedRegion] = useState<
-    string | null
-  >(null);
-  const [galaxySelectedConstellation, setGalaxySelectedConstellation] =
-    useState<string | null>(null);
   const [showSystemPanel, setShowSystemPanel] = useState<boolean>(false);
-  const galaxyCanvasRef = useRef<GalaxyCanvasHandle>(null);
-
-  const constellationSystemIds = useMemo(() => {
-    if (!galaxySelectedConstellation) return new Set<string>();
-    const c = CONSTELLATIONS.find((c) => c.id === galaxySelectedConstellation);
-    return new Set(c?.systems ?? []);
-  }, [galaxySelectedConstellation]);
+  const galaxy = useGalaxyState(defaultSystemData.id);
 
   const handleSystemChange = useCallback(
     (id: string) => {
@@ -85,7 +79,7 @@ export default function App(): JSX.Element {
               ROOT_BODY_TYPES.has(b.type),
             )?.id ?? id;
           setSystemData(loaded);
-          setGalaxySelectedSystem(id);
+          galaxy.selectSystem(id);
           setSelectedBody(starId);
           setHoveredBody(null);
           setTrackedBody(null);
@@ -95,7 +89,7 @@ export default function App(): JSX.Element {
         })
         .catch(() => setLoadingSystem(false));
     },
-    [systemData.id],
+    [systemData.id, galaxy.selectSystem],
   );
 
   const handleSelectBody = useCallback(
@@ -128,15 +122,8 @@ export default function App(): JSX.Element {
     (tab: TabId) => {
       setActiveTab(tab);
       if (tab === "planet-view") {
-        const body = systemData.bodies[selectedBody];
-        if (
-          (body?.type === BodyType.Moon || body?.type === BodyType.Companion) &&
-          body.parent
-        ) {
-          setViewedPlanet(body.parent);
-        } else if (body && body.type !== BodyType.Belt) {
-          setViewedPlanet(selectedBody);
-        }
+        const planetId = getPlanetViewId(selectedBody, systemData.bodies);
+        if (planetId) setViewedPlanet(planetId);
         setTrackedBody(null);
       }
     },
@@ -158,43 +145,15 @@ export default function App(): JSX.Element {
 
   const handleExploreSystem = useCallback(
     (id: string) => {
-      setGalaxySelectedSystem(id);
+      galaxy.selectSystem(id);
       if (id === systemData.id) {
         setActiveTab("solar-system");
       } else {
         handleSystemChange(id);
       }
     },
-    [systemData.id, handleSystemChange],
+    [systemData.id, handleSystemChange, galaxy.selectSystem],
   );
-
-  const handleGalaxySelectSystem = useCallback((id: string) => {
-    setGalaxySelectedSystem(id);
-    setGalaxySelectedRegion(null);
-    setGalaxySelectedConstellation(null);
-  }, []);
-
-  const handleGalaxyHoverSystem = useCallback((id: string | null) => {
-    setGalaxyHoveredSystem(id);
-  }, []);
-
-  const handleGalaxySelectRegion = useCallback((id: string | null) => {
-    setGalaxySelectedRegion(id);
-    setGalaxySelectedSystem(null);
-  }, []);
-
-  const handleGalaxySelectConstellation = useCallback((id: string | null) => {
-    setGalaxySelectedConstellation(id);
-    setGalaxySelectedSystem(null);
-    setGalaxySelectedRegion(null);
-  }, []);
-
-  const handleZoomToSystem = useCallback((id: string) => {
-    setGalaxySelectedSystem(id);
-    setGalaxySelectedRegion(null);
-    setGalaxySelectedConstellation(null);
-    galaxyCanvasRef.current?.zoomToSystem(id);
-  }, []);
 
   const isGalaxy = activeTab === "galaxy";
 
@@ -251,56 +210,18 @@ export default function App(): JSX.Element {
               )}
             </div>
 
-            <div className="header-controls">
-              {!isGalaxy && (
-                <>
-                  <button
-                    className={`ctrl-btn${paused ? " active" : ""}`}
-                    onClick={() => setPaused((p) => !p)}
-                    title={paused ? "Resume" : "Pause"}
-                  >
-                    {paused ? "▶" : "⏸"}
-                  </button>
-                  <div className="speed-control">
-                    <span className="ctrl-label">Speed</span>
-                    <input
-                      type="range"
-                      min="0.1"
-                      max="10"
-                      step="0.1"
-                      value={speed}
-                      onChange={(e) => setSpeed(parseFloat(e.target.value))}
-                      className="speed-slider"
-                    />
-                    <span className="speed-value">{speed.toFixed(1)}×</span>
-                  </div>
-                </>
-              )}
-              {activeTab === "solar-system" && (
-                <>
-                  <button
-                    className={`ctrl-btn${showOrbits ? " active" : ""}`}
-                    onClick={() => setShowOrbits((o) => !o)}
-                  >
-                    ⊙ Orbits
-                  </button>
-                  <button
-                    className={`ctrl-btn${showLabels ? " active" : ""}`}
-                    onClick={() => setShowLabels((l) => !l)}
-                  >
-                    ◫ Labels
-                  </button>
-                </>
-              )}
-              {activeTab === "planet-view" && (
-                <button
-                  className={`ctrl-btn${showLabels ? " active" : ""}`}
-                  onClick={() => setShowLabels((l) => !l)}
-                >
-                  ◫ Labels
-                </button>
-              )}
-            </div>
+            <HeaderControls
+              isGalaxy={isGalaxy}
+              activeTab={activeTab}
+              paused={paused}
+              speed={speed}
+              showOrbits={showOrbits}
+              showLabels={showLabels}
+              onTogglePause={() => setPaused((p) => !p)}
+              onSpeedChange={setSpeed}
+              onToggleOrbits={() => setShowOrbits((o) => !o)}
+              onToggleLabels={() => setShowLabels((l) => !l)}
+            />
           </div>
 
           {activeTab === "solar-system" && trackedBody && (
@@ -321,13 +242,13 @@ export default function App(): JSX.Element {
           <aside className="left-panel">
             {isGalaxy ? (
               <GalaxyNavigator
-                selectedSystem={galaxySelectedSystem}
-                hoveredSystem={galaxyHoveredSystem}
-                onSelectSystem={handleGalaxySelectSystem}
-                onHoverSystem={handleGalaxyHoverSystem}
-                onZoomToSystem={handleZoomToSystem}
-                selectedConstellation={galaxySelectedConstellation}
-                onSelectConstellation={handleGalaxySelectConstellation}
+                selectedSystem={galaxy.selectedSystem}
+                hoveredSystem={galaxy.hoveredSystem}
+                onSelectSystem={galaxy.selectSystem}
+                onHoverSystem={galaxy.hoverSystem}
+                onZoomToSystem={galaxy.zoomToSystem}
+                selectedConstellation={galaxy.selectedConstellation}
+                onSelectConstellation={galaxy.selectConstellation}
               />
             ) : (
               <BodyNavigator
@@ -348,62 +269,45 @@ export default function App(): JSX.Element {
           </aside>
 
           <div className="canvas-area">
-            {activeTab === "solar-system" && (
-              <SystemCanvas
-                key={systemData.id}
-                selectedBody={selectedBody}
-                hoveredBody={hoveredBody}
-                trackedBody={trackedBody}
-                speed={speed}
-                paused={paused}
-                showOrbits={showOrbits}
-                showLabels={showLabels}
-                onSelectBody={handleSelectBody}
-                onHoverBody={handleHoverBody}
-                onTrackBody={handleTrackBody}
-              />
-            )}
-            {activeTab === "galaxy" && (
-              <GalaxyCanvas
-                ref={galaxyCanvasRef}
-                selectedSystem={galaxySelectedSystem}
-                hoveredSystem={galaxyHoveredSystem}
-                selectedRegion={galaxySelectedRegion}
-                onSelectSystem={handleGalaxySelectSystem}
-                onHoverSystem={handleGalaxyHoverSystem}
-                onSelectRegion={handleGalaxySelectRegion}
-                constellationSystemIds={constellationSystemIds}
-              />
-            )}
-            {activeTab === "planet-view" && (
-              <PlanetCanvas
-                key={`${systemData.id}-${viewedPlanet}`}
-                planetId={viewedPlanet}
-                selectedBody={selectedBody}
-                hoveredBody={hoveredBody}
-                speed={speed}
-                paused={paused}
-                showLabels={showLabels}
-                onSelectBody={handleSelectBody}
-                onHoverBody={handleHoverBody}
-              />
-            )}
+            <CanvasArea
+              activeTab={activeTab}
+              systemDataId={systemData.id}
+              selectedBody={selectedBody}
+              hoveredBody={hoveredBody}
+              trackedBody={trackedBody}
+              speed={speed}
+              paused={paused}
+              showOrbits={showOrbits}
+              showLabels={showLabels}
+              viewedPlanet={viewedPlanet}
+              galaxyCanvasRef={galaxy.canvasRef}
+              galaxySelectedSystem={galaxy.selectedSystem}
+              galaxyHoveredSystem={galaxy.hoveredSystem}
+              galaxySelectedRegion={galaxy.selectedRegion}
+              constellationSystemIds={galaxy.constellationSystemIds}
+              onSelectBody={handleSelectBody}
+              onHoverBody={handleHoverBody}
+              onTrackBody={handleTrackBody}
+              onGalaxySelectSystem={galaxy.selectSystem}
+              onGalaxyHoverSystem={galaxy.hoverSystem}
+              onGalaxySelectRegion={galaxy.selectRegion}
+            />
           </div>
 
           <aside className="right-panel">
-            {isGalaxy || showSystemPanel ? (
-              <GalaxySystemPanel
-                systemId={isGalaxy ? galaxySelectedSystem : systemData.id}
-                regionId={isGalaxy ? galaxySelectedRegion : null}
-                constellationId={isGalaxy ? galaxySelectedConstellation : null}
-                onExplore={handleExploreSystem}
-                onSelectRegion={isGalaxy ? handleGalaxySelectRegion : undefined}
-                onSelectSystem={isGalaxy ? handleGalaxySelectSystem : undefined}
-                onZoomToSystem={isGalaxy ? handleZoomToSystem : undefined}
-              />
-            ) : (
-              <InfoPanel selectedBody={selectedBody} />
-            )}
+            <RightPanel
+              isGalaxy={isGalaxy}
+              showSystemPanel={showSystemPanel}
+              selectedSystem={galaxy.selectedSystem}
+              selectedRegion={galaxy.selectedRegion}
+              selectedConstellation={galaxy.selectedConstellation}
+              systemDataId={systemData.id}
+              selectedBody={selectedBody}
+              onExplore={handleExploreSystem}
+              onSelectRegion={galaxy.selectRegion}
+              onSelectSystem={galaxy.selectSystem}
+              onZoomToSystem={galaxy.zoomToSystem}
+            />
           </aside>
         </main>
       </div>
