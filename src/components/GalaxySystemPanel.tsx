@@ -2,7 +2,11 @@ import { useMemo, useState, type ReactNode } from "react";
 import { STAR_SYSTEMS } from "../data/systems";
 import { GALAXY_DATA, GALACTIC_IDS, GALAXY_REGIONS } from "../data/galaxy";
 import { CONSTELLATIONS } from "../data/constellations";
-import type { GalacticArmHint, ConstellationOutline } from "../types/galaxy";
+import type {
+  GalacticArmHint,
+  ConstellationOutline,
+  ConstellationStar,
+} from "../types/galaxy";
 import { formatLY } from "../utils/distance";
 import "./GalaxySystemPanel.css";
 
@@ -91,6 +95,62 @@ function starRadius(mag: number = 3.5): number {
   return Math.max(0.8, 3.5 - mag * 0.4);
 }
 
+function projectOutline(
+  lines: number[][][],
+  stars: ConstellationStar[],
+): { toX: (ra: number) => number; toY: (dec: number) => number } {
+  const allPts = [...lines.flat(1), ...stars.map((s) => [s.ra, s.dec])] as [
+    number,
+    number,
+  ][];
+
+  if (allPts.length === 0) return { toX: () => 50, toY: () => 50 };
+
+  let raMin = Infinity,
+    raMax = -Infinity,
+    decMin = Infinity,
+    decMax = -Infinity;
+  for (const [ra, dec] of allPts) {
+    if (ra < raMin) raMin = ra;
+    if (ra > raMax) raMax = ra;
+    if (dec < decMin) decMin = dec;
+    if (dec > decMax) decMax = dec;
+  }
+
+  // Guard: span > 180° means data mixes 0-360° with d3-celestial's -180-180°
+  // convention. Re-derive RA bounds after normalising values > 180 by -360.
+  if (raMax - raMin > 180) {
+    raMin = Infinity;
+    raMax = -Infinity;
+    for (const [ra] of allPts) {
+      const norm = ra > 180 ? ra - 360 : ra;
+      if (norm < raMin) raMin = norm;
+      if (norm > raMax) raMax = norm;
+    }
+  }
+
+  const raPad = Math.max((raMax - raMin) * 0.12, 2);
+  const decPad = Math.max((decMax - decMin) * 0.12, 2);
+  raMin -= raPad;
+  raMax += raPad;
+  decMin -= decPad;
+  decMax += decPad;
+
+  // Uniform scale: use the larger span for both axes to preserve shape.
+  const range = Math.max(raMax - raMin, decMax - decMin);
+  const raCentre = (raMin + raMax) / 2;
+  const decCentre = (decMin + decMax) / 2;
+
+  // RA increases eastward (left in sky view); normalise to -180-180° convention.
+  const toX = (ra: number) => {
+    const norm = ra > 180 ? ra - 360 : ra;
+    return 50 + ((raCentre - norm) / range) * 90;
+  };
+  // Dec increases upward, SVG Y increases downward.
+  const toY = (dec: number) => 50 + ((decCentre - dec) / range) * 90;
+  return { toX, toY };
+}
+
 function ConstellationDiagram({
   outline,
   onSelectSystem,
@@ -101,18 +161,24 @@ function ConstellationDiagram({
   onZoomToSystem?: (id: string) => void;
 }): JSX.Element {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const { toX, toY } = useMemo(
+    () => projectOutline(outline.lines, outline.stars),
+    [outline],
+  );
 
   const tooltip =
     hoveredIdx !== null
       ? (() => {
           const star = outline.stars[hoveredIdx];
+          const sx = toX(star.ra);
+          const sy = toY(star.dec);
           const r = starRadius(star.mag);
           const name = star.name;
           const tWidth = Math.max(20, name.length * 4.4 + 6);
           const tHeight = 7.5;
-          const rawTX = star.x - tWidth / 2;
+          const rawTX = sx - tWidth / 2;
           const tX = Math.max(1, Math.min(rawTX, 99 - tWidth));
-          const tY = star.y > 75 ? star.y - r - tHeight - 2 : star.y + r + 2;
+          const tY = sy > 75 ? sy - r - tHeight - 2 : sy + r + 2;
           return { tX, tY, tWidth, tHeight, name };
         })()
       : null;
@@ -124,22 +190,20 @@ function ConstellationDiagram({
       preserveAspectRatio="xMidYMid meet"
     >
       <rect width="100" height="100" rx="4" fill="rgba(0,0,0,0.5)" />
-      {outline.lines.map((line, i) => {
-        const sa = outline.stars[line[0]];
-        const sb = outline.stars[line[1]];
-        return (
-          <line
-            key={i}
-            x1={sa.x}
-            y1={sa.y}
-            x2={sb.x}
-            y2={sb.y}
-            stroke="rgba(200,215,255,0.25)"
-            strokeWidth="0.7"
-          />
-        );
-      })}
+      {outline.lines.map((segment, si) => (
+        <polyline
+          key={si}
+          points={segment
+            .map(([ra, dec]) => `${toX(ra)},${toY(dec)}`)
+            .join(" ")}
+          stroke="rgba(200,215,255,0.25)"
+          strokeWidth="0.7"
+          fill="none"
+        />
+      ))}
       {outline.stars.map((star, i) => {
+        const sx = toX(star.ra);
+        const sy = toY(star.dec);
         const isSystem = !!star.systemId;
         const color = isSystem
           ? (SYSTEM_COLORS[star.systemId!] ?? "#ffffff")
@@ -156,8 +220,8 @@ function ConstellationDiagram({
           >
             {isSystem && (
               <circle
-                cx={star.x}
-                cy={star.y}
+                cx={sx}
+                cy={sy}
                 r={r + 3}
                 fill="none"
                 stroke={color}
@@ -166,8 +230,8 @@ function ConstellationDiagram({
               />
             )}
             <circle
-              cx={star.x}
-              cy={star.y}
+              cx={sx}
+              cy={sy}
               r={r}
               fill={color}
               opacity={isSystem ? 1 : 0.75}
@@ -261,11 +325,25 @@ export default function GalaxySystemPanel({
           </div>
           <div className="gsp-name">{constellation.name}</div>
           {constellation.outline && (
-            <ConstellationDiagram
-              outline={constellation.outline}
-              onSelectSystem={onSelectSystem}
-              onZoomToSystem={onZoomToSystem}
-            />
+            <>
+              <ConstellationDiagram
+                key={constellation.id}
+                outline={constellation.outline}
+                onSelectSystem={onSelectSystem}
+                onZoomToSystem={onZoomToSystem}
+              />
+              <p className="gsp-diagram-credit">
+                Outline:{" "}
+                <a
+                  href="https://github.com/ofrohn/d3-celestial"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  d3-celestial
+                </a>{" "}
+                · BSD-3-Clause
+              </p>
+            </>
           )}
           <p className="gsp-description">{constellation.description}</p>
           <div className="gsp-section">

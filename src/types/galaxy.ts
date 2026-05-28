@@ -35,15 +35,15 @@ export interface GalaxyData {
 
 export interface ConstellationStar {
   name: string;
-  x: number;
-  y: number;
+  ra: number;
+  dec: number;
   mag?: number;
   systemId?: string;
 }
 
 export interface ConstellationOutline {
   stars: ConstellationStar[];
-  lines: number[][];
+  lines: number[][][]; // MultiLineString: segments of [ra, dec] pairs from d3-celestial
 }
 
 export interface Constellation {
