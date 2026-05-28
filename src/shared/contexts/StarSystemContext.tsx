@@ -1,7 +1,11 @@
-import { createContext, useContext } from 'react';
-import { CELESTIAL_BODIES, BODY_HIERARCHY, VISUAL_CONFIG } from '../data/celestialBodies';
-import type { CelestialBody, HierarchyNode, StarSystemMeta } from '../types';
-import type { VisualConfig } from '../types/visual';
+import { createContext, useContext } from "react";
+import {
+  CELESTIAL_BODIES,
+  BODY_HIERARCHY,
+  VISUAL_CONFIG,
+} from "@/data/celestialBodies";
+import type { CelestialBody, HierarchyNode, StarSystemMeta } from "@/types";
+import type { VisualConfig } from "@/types/visual";
 
 export interface StarSystemData {
   id: string;
@@ -12,15 +16,16 @@ export interface StarSystemData {
 }
 
 const defaultMeta: StarSystemMeta = {
-  id: 'sol',
-  name: 'Solar System',
-  description: 'Our home system — 8 planets, 5 dwarf planets, and two asteroid belts orbiting the Sun.',
-  starColor: '#FDB813',
+  id: "sol",
+  name: "Solar System",
+  description:
+    "Our home system — 8 planets, 5 dwarf planets, and two asteroid belts orbiting the Sun.",
+  starColor: "#FDB813",
   displayOrder: 0,
 };
 
 const defaultData: StarSystemData = {
-  id: 'sol',
+  id: "sol",
   meta: defaultMeta,
   bodies: CELESTIAL_BODIES,
   hierarchy: BODY_HIERARCHY,

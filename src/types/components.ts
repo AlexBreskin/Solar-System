@@ -2,7 +2,7 @@ import type { BodyId } from "./bodies";
 
 export type TabId = "solar-system" | "planet-view" | "galaxy";
 
-export interface SolarSystemCanvasProps {
+export interface SystemCanvasProps {
   selectedBody: BodyId;
   hoveredBody: BodyId | null;
   trackedBody: BodyId | null;
@@ -15,7 +15,7 @@ export interface SolarSystemCanvasProps {
   onTrackBody: (id: BodyId | null) => void;
 }
 
-export interface SolarSystemCanvasState {
+export interface SystemCanvasState {
   angles: Record<string, number>;
   positions: Record<string, { x: number; y: number }>;
   zoom: number;
@@ -34,7 +34,7 @@ export interface SolarSystemCanvasState {
   dragBrokeFree: boolean;
 }
 
-export interface PlanetViewCanvasProps {
+export interface PlanetCanvasProps {
   planetId: BodyId;
   selectedBody: BodyId;
   hoveredBody: BodyId | null;
@@ -45,7 +45,7 @@ export interface PlanetViewCanvasProps {
   onHoverBody: (id: BodyId | null) => void;
 }
 
-export interface PlanetViewCanvasState {
+export interface PlanetCanvasState {
   angles: Record<string, number>;
   positions: Record<string, { x: number; y: number }>;
   zoom: number;

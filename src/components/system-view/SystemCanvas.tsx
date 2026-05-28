@@ -1,17 +1,17 @@
-import React, { useRef, useEffect, useCallback } from "react";
-import { useZoomControls } from "../hooks/useZoomControls";
-import ZoomControls from "./ZoomControls";
-import { SolarSystemSimulation } from "../simulation/solarSystemSimulation";
+import React, { useRef, useEffect, useCallback, useMemo } from "react";
+import { useZoomControls } from "@/shared/hooks/useZoomControls";
+import ZoomControls from "@/shared/components/ZoomControls";
+import { SolarSystemSimulation } from "@/simulation/solarSystemSimulation";
 import {
   drawStarField,
   drawOrbits,
   drawBelt,
   drawBodies,
   drawBodyRings,
-} from "../renderers/systemview";
-import { useStarSystem } from "../contexts/StarSystemContext";
-import { BodyType, ROOT_BODY_TYPES } from "../types";
-import type { CanvasSize, SolarSystemCanvasProps } from "../types";
+} from "@/renderers/system-view";
+import { useStarSystem } from "@/shared/contexts/StarSystemContext";
+import { BodyType, ROOT_BODY_TYPES } from "@/types";
+import type { CanvasSize, SystemCanvasProps } from "@/types";
 
 interface PanState {
   panX: number;
@@ -33,7 +33,7 @@ interface DragState {
   lastTime: number | null;
 }
 
-export default function SolarSystemCanvas({
+export default function SystemCanvas({
   selectedBody,
   hoveredBody,
   trackedBody,
@@ -44,7 +44,7 @@ export default function SolarSystemCanvas({
   onSelectBody,
   onHoverBody,
   onTrackBody,
-}: SolarSystemCanvasProps): JSX.Element {
+}: SystemCanvasProps): JSX.Element {
   const { bodies, visualConfig } = useStarSystem();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -74,8 +74,9 @@ export default function SolarSystemCanvas({
   });
 
   const sim = simRef.current;
-  const beltIds = sim.bodyIds.filter(
-    (id) => bodies[id]?.type === BodyType.Belt,
+  const beltIds = useMemo(
+    () => sim.bodyIds.filter((id) => bodies[id]?.type === BodyType.Belt),
+    [sim.bodyIds, bodies],
   );
 
   useEffect(() => {

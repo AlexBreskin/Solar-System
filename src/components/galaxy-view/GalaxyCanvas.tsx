@@ -6,17 +6,17 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { GalaxySimulation } from "../simulation/galaxySimulation";
-import type { GalaxyMarker } from "../simulation/galaxySimulation";
+import { GalaxySimulation } from "@/simulation/galaxySimulation";
+import type { GalaxyMarker } from "@/simulation/galaxySimulation";
 import {
   drawGalaxyBackground,
   drawSystemMarkers,
   drawRegionLabels,
-} from "../renderers/galaxyview";
-import { STAR_SYSTEMS } from "../data/systems";
-import { GALAXY_DATA, GALAXY_REGIONS } from "../data/galaxy";
-import { useZoomControls } from "../hooks/useZoomControls";
-import ZoomControls from "./ZoomControls";
+} from "@/renderers/galaxy-view";
+import { STAR_SYSTEMS } from "@/data/systems";
+import { GALAXY_DATA, GALAXY_REGIONS } from "@/data/galaxy";
+import { useZoomControls } from "@/shared/hooks/useZoomControls";
+import ZoomControls from "@/shared/components/ZoomControls";
 import "./GalaxyCanvas.css";
 
 export interface GalaxyCanvasHandle {

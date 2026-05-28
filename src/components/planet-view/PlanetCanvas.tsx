@@ -1,17 +1,17 @@
-import React, { useRef, useEffect, useCallback } from "react";
-import { useZoomControls } from "../hooks/useZoomControls";
-import ZoomControls from "./ZoomControls";
+import React, { useRef, useEffect, useCallback, useMemo } from "react";
+import { useZoomControls } from "@/shared/hooks/useZoomControls";
+import ZoomControls from "@/shared/components/ZoomControls";
 import {
   PlanetViewSimulation,
   getMoonsOf,
-} from "../simulation/planetViewSimulation";
+} from "@/simulation/planetViewSimulation";
 import {
   drawStarField,
   drawBody,
   drawBodyRings,
-} from "../renderers/planetview";
-import { useStarSystem } from "../contexts/StarSystemContext";
-import type { BodyId, CanvasSize, PlanetViewCanvasProps } from "../types";
+} from "@/renderers/planet-view";
+import { useStarSystem } from "@/shared/contexts/StarSystemContext";
+import type { BodyId, CanvasSize, PlanetCanvasProps } from "@/types";
 
 interface PanState {
   panX: number;
@@ -31,7 +31,7 @@ interface DragState {
   lastTime: number | null;
 }
 
-export default function PlanetViewCanvas({
+export default function PlanetCanvas({
   planetId,
   selectedBody,
   hoveredBody,
@@ -40,7 +40,7 @@ export default function PlanetViewCanvas({
   showLabels,
   onSelectBody,
   onHoverBody,
-}: PlanetViewCanvasProps): JSX.Element {
+}: PlanetCanvasProps): JSX.Element {
   const { bodies } = useStarSystem();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -69,7 +69,7 @@ export default function PlanetViewCanvas({
   });
 
   const planet = bodies[planetId];
-  const moons = getMoonsOf(planetId, bodies);
+  const moons = useMemo(() => getMoonsOf(planetId, bodies), [planetId, bodies]);
 
   useEffect(() => {
     sim.initMoons(moons);

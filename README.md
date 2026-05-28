@@ -204,8 +204,6 @@ src/
 │   ├── components.ts           # TabId, canvas props, InfoPanelProps
 │   ├── galaxy.ts               # GalacticSystemEntry, GalaxyData, EXTRAGALACTIC_IDS
 │   └── index.ts                # Barrel re-export
-├── contexts/
-│   └── StarSystemContext.tsx   # Active system data distributed via React context
 ├── data/
 │   ├── systems/                # One JSON file per star system (add a file to add a system)
 │   │   ├── sol.json
@@ -225,16 +223,16 @@ src/
 │   ├── galaxySimulation.ts         # Galaxy marker positions, hover/select state, hit-testing
 │   └── __tests__/
 ├── renderers/
-│   ├── galaxyview/
+│   ├── galaxy-view/
 │   │   ├── galaxyParticles.ts  # LOD particle generation + offscreen canvas caches
 │   │   ├── galaxyMarkers.ts    # System marker bitmaps and drawSystemMarkers
 │   │   ├── galaxyRegions.ts    # Galactic region pill labels
 │   │   ├── galaxyRenderer.ts   # Background, galactic bar, arm guides, viewport stars
 │   │   └── index.ts            # Public API re-exports
-│   ├── planetview/
-│   │   ├── planetViewRenderer.ts  # Planet, moons, rings
+│   ├── planet-view/
+│   │   ├── planetRenderer.ts   # Planet, moons, rings
 │   │   └── index.ts
-│   └── systemview/
+│   └── system-view/
 │       ├── systemRenderer.ts   # Star field, orbits, ring drawing
 │       ├── systemBelts.ts      # Belt particle fields and drawing
 │       ├── systemBodies.ts     # Bodies, sun, black hole, selection glows
@@ -243,14 +241,24 @@ src/
 │   ├── mulberry32.ts           # Shared seeded RNG
 │   ├── color.ts                # lighten() hex colour utility
 │   └── distance.ts             # AU ↔ km ↔ ly conversion and formatting
-└── components/
-    ├── SolarSystemCanvas.tsx   # System view — animation loop, camera, hit-testing
-    ├── PlanetViewCanvas.tsx    # Planet view — animation loop, camera, hit-testing
-    ├── GalaxyCanvas.tsx/css    # Galaxy view — spiral map, system markers, cluster menu
-    ├── GalaxyNavigator.tsx/css # Galaxy left panel — all systems sorted by distance
-    ├── GalaxySystemPanel.tsx/css # Galaxy right panel — system info + Explore button
-    ├── BodyNavigator.tsx/css   # System/Planet View left panel — body hierarchy tree
-    └── InfoPanel.tsx/css       # System/Planet View right panel — body detail (context-driven)
+├── components/
+│   ├── system-view/
+│   │   ├── SystemCanvas.tsx    # System view — animation loop, camera, hit-testing
+│   │   ├── BodyNavigator.tsx/css # Left panel — body hierarchy tree
+│   │   └── InfoPanel.tsx/css   # Right panel — body detail (context-driven)
+│   ├── planet-view/
+│   │   └── PlanetCanvas.tsx    # Planet view — animation loop, camera, hit-testing
+│   └── galaxy-view/
+│       ├── GalaxyCanvas.tsx/css  # Galaxy view — spiral map, system markers, cluster menu
+│       ├── GalaxyNavigator.tsx/css # Left panel — systems and constellations
+│       └── GalaxySystemPanel.tsx/css # Right panel — system info + Explore button
+└── shared/
+    ├── contexts/
+    │   └── StarSystemContext.tsx # Active system data distributed via React context
+    ├── components/
+    │   └── ZoomControls.tsx    # +/− zoom buttons shared across all canvas views
+    └── hooks/
+        └── useZoomControls.ts  # Zoom state logic shared across all canvas views
 ```
 
 ## Adding a New Star System

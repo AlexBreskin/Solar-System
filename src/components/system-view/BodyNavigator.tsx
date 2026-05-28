@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useStarSystem } from "../contexts/StarSystemContext";
-import { BodyType, ROOT_BODY_TYPES } from "../types";
-import { GALACTIC_IDS } from "../data/galaxy";
-import type { TabId, HierarchyNode } from "../types";
+import { useStarSystem } from "@/shared/contexts/StarSystemContext";
+import { BodyType, ROOT_BODY_TYPES } from "@/types";
+import { GALACTIC_IDS } from "@/data/galaxy";
+import type { TabId, HierarchyNode } from "@/types";
 import "./BodyNavigator.css";
 
 const TYPE_ICONS: Record<BodyType, string> = {

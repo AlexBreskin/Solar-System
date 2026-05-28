@@ -1,27 +1,27 @@
 import { useState, useCallback, useMemo, useRef } from "react";
-import SolarSystemCanvas from "./components/SolarSystemCanvas";
-import PlanetViewCanvas from "./components/PlanetViewCanvas";
+import SystemCanvas from "@/components/system-view/SystemCanvas";
+import PlanetCanvas from "@/components/planet-view/PlanetCanvas";
 import GalaxyCanvas, {
   type GalaxyCanvasHandle,
-} from "./components/GalaxyCanvas";
-import BodyNavigator from "./components/BodyNavigator";
-import GalaxyNavigator from "./components/GalaxyNavigator";
-import InfoPanel from "./components/InfoPanel";
-import GalaxySystemPanel from "./components/GalaxySystemPanel";
-import { loadStarSystem } from "./data/celestialBodies";
-import { STAR_SYSTEMS } from "./data/systems";
-import { CONSTELLATIONS } from "./data/constellations";
+} from "@/components/galaxy-view/GalaxyCanvas";
+import BodyNavigator from "@/components/system-view/BodyNavigator";
+import GalaxyNavigator from "@/components/galaxy-view/GalaxyNavigator";
+import InfoPanel from "@/components/system-view/InfoPanel";
+import GalaxySystemPanel from "@/components/galaxy-view/GalaxySystemPanel";
+import { loadStarSystem } from "@/data/celestialBodies";
+import { STAR_SYSTEMS } from "@/data/systems";
+import { CONSTELLATIONS } from "@/data/constellations";
 import {
   StarSystemContext,
   type StarSystemData,
-} from "./contexts/StarSystemContext";
+} from "@/shared/contexts/StarSystemContext";
 import {
   CELESTIAL_BODIES,
   BODY_HIERARCHY,
   VISUAL_CONFIG,
-} from "./data/celestialBodies";
-import { BodyType, ROOT_BODY_TYPES } from "./types";
-import type { BodyId, TabId, StarSystemMeta } from "./types";
+} from "@/data/celestialBodies";
+import { BodyType, ROOT_BODY_TYPES } from "@/types";
+import type { BodyId, TabId, StarSystemMeta } from "@/types";
 import "./App.css";
 
 const defaultSystemData: StarSystemData = {
@@ -349,7 +349,7 @@ export default function App(): JSX.Element {
 
           <div className="canvas-area">
             {activeTab === "solar-system" && (
-              <SolarSystemCanvas
+              <SystemCanvas
                 key={systemData.id}
                 selectedBody={selectedBody}
                 hoveredBody={hoveredBody}
@@ -376,7 +376,7 @@ export default function App(): JSX.Element {
               />
             )}
             {activeTab === "planet-view" && (
-              <PlanetViewCanvas
+              <PlanetCanvas
                 key={`${systemData.id}-${viewedPlanet}`}
                 planetId={viewedPlanet}
                 selectedBody={selectedBody}

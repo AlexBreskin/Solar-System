@@ -1,13 +1,13 @@
 import { useMemo, useState, type ReactNode } from "react";
-import { STAR_SYSTEMS } from "../data/systems";
-import { GALAXY_DATA, GALACTIC_IDS, GALAXY_REGIONS } from "../data/galaxy";
-import { CONSTELLATIONS } from "../data/constellations";
+import { STAR_SYSTEMS } from "@/data/systems";
+import { GALAXY_DATA, GALACTIC_IDS, GALAXY_REGIONS } from "@/data/galaxy";
+import { CONSTELLATIONS } from "@/data/constellations";
 import type {
   GalacticArmHint,
   ConstellationOutline,
   ConstellationStar,
-} from "../types/galaxy";
-import { formatLY } from "../utils/distance";
+} from "@/types/galaxy";
+import { formatLY } from "@/utils/distance";
 import "./GalaxySystemPanel.css";
 
 const ARROW_SVG = (
@@ -106,10 +106,10 @@ function projectOutline(
 
   if (allPts.length === 0) return { toX: () => 50, toY: () => 50 };
 
-  let raMin = Infinity,
-    raMax = -Infinity,
-    decMin = Infinity,
-    decMax = -Infinity;
+  let raMin = Infinity;
+  let raMax = -Infinity;
+  let decMin = Infinity;
+  let decMax = -Infinity;
   for (const [ra, dec] of allPts) {
     if (ra < raMin) raMin = ra;
     if (ra > raMax) raMax = ra;

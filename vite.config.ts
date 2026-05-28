@@ -1,8 +1,9 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   base: "/Solar-System/",
   test: {
     globals: true,
@@ -19,8 +20,8 @@ export default defineConfig({
         "src/App.tsx",
         "src/index.tsx",
         "src/components/**",
+        "src/shared/**",
         "src/renderers/**",
-        "src/contexts/**",
       ],
       thresholds: { lines: 0, functions: 0, branches: 0, statements: 0 },
     },

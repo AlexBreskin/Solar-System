@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { STAR_SYSTEMS } from "../data/systems";
-import { GALAXY_DATA, GALACTIC_IDS } from "../data/galaxy";
-import { CONSTELLATIONS } from "../data/constellations";
-import type { Constellation, StarSystemMeta } from "../types";
+import { STAR_SYSTEMS } from "@/data/systems";
+import { GALAXY_DATA, GALACTIC_IDS } from "@/data/galaxy";
+import { CONSTELLATIONS } from "@/data/constellations";
+import type { Constellation, StarSystemMeta } from "@/types";
 import "./GalaxyNavigator.css";
 
 interface GalaxyNavigatorProps {
