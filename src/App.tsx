@@ -14,7 +14,7 @@ import {
   BODY_HIERARCHY,
   VISUAL_CONFIG,
 } from "@/data/celestialBodies";
-import type { TabId, StarSystemMeta } from "@/types";
+import type { BodyId, TabId, StarSystemMeta } from "@/types";
 import { useGalaxyState } from "@/hooks/useGalaxyState";
 import { useBodySelection } from "@/hooks/useBodySelection";
 import { useSystemNavigation } from "@/hooks/useSystemNavigation";
@@ -23,6 +23,14 @@ import "./App.css";
 
 function tabClass(activeTab: TabId, tab: TabId): string {
   return `tab-btn${activeTab === tab ? " active" : ""}`;
+}
+
+function mobileTabClass(activeTab: TabId, tab: TabId): string {
+  return `mobile-tab-btn${activeTab === tab ? " active" : ""}`;
+}
+
+function drawerClass(side: "left" | "right", open: boolean): string {
+  return `${side}-panel${open ? ` ${side}-panel--open` : ""}`;
 }
 
 const navigableSystems = STAR_SYSTEMS.filter((s) => s.navigable !== false);
@@ -52,6 +60,8 @@ export default function App(): JSX.Element {
   const [paused, setPaused] = useState(false);
   const [showOrbits, setShowOrbits] = useState(true);
   const [showLabels, setShowLabels] = useState(false);
+  const [leftOpen, setLeftOpen] = useState(false);
+  const [rightOpen, setRightOpen] = useState(false);
 
   const galaxy = useGalaxyState(defaultSystemData.id);
 
@@ -65,7 +75,7 @@ export default function App(): JSX.Element {
     setViewedPlanet,
     setShowSystemPanel,
     resetForNewSystem,
-    handleSelectBody,
+    handleSelectBody: selectBody,
     handleHoverBody,
     handleTrackBody,
     handleViewPlanet,
@@ -80,9 +90,20 @@ export default function App(): JSX.Element {
       resetForNewSystem,
     );
 
+  // Close left panel after selecting a body on mobile
+  const handleSelectBody = useCallback(
+    (id: BodyId) => {
+      selectBody(id);
+      setLeftOpen(false);
+    },
+    [selectBody],
+  );
+
   const handleTabChange = useCallback(
     (tab: TabId) => {
       setActiveTab(tab);
+      setLeftOpen(false);
+      setRightOpen(false);
       if (tab === "planet-view") {
         const planetId = getPlanetViewId(selectedBody, systemData.bodies);
         if (planetId) setViewedPlanet(planetId);
@@ -102,12 +123,38 @@ export default function App(): JSX.Element {
     setTrackedBody(null);
   }, [setShowSystemPanel, setTrackedBody]);
 
+  const toggleLeft = useCallback(() => {
+    setLeftOpen((v) => !v);
+    setRightOpen(false);
+  }, []);
+
+  const toggleRight = useCallback(() => {
+    setRightOpen((v) => !v);
+    setLeftOpen(false);
+  }, []);
+
+  const closePanels = useCallback(() => {
+    setLeftOpen(false);
+    setRightOpen(false);
+  }, []);
+
   const isGalaxy = activeTab === "galaxy";
+  const anyPanelOpen = leftOpen || rightOpen;
 
   return (
     <StarSystemContext.Provider value={systemData}>
       <div className="app">
         <header className="app-header">
+          {/* Mobile-only left toggle */}
+          <button
+            className="mobile-panel-toggle mobile-panel-toggle--left"
+            aria-label="Toggle navigator"
+            aria-expanded={leftOpen}
+            onClick={toggleLeft}
+          >
+            ☰
+          </button>
+
           <div className="header-left">
             <div className="logo">
               <span className="logo-icon">◉</span>
@@ -171,6 +218,16 @@ export default function App(): JSX.Element {
             />
           </div>
 
+          {/* Mobile-only right toggle */}
+          <button
+            className="mobile-panel-toggle mobile-panel-toggle--right"
+            aria-label="Toggle info panel"
+            aria-expanded={rightOpen}
+            onClick={toggleRight}
+          >
+            ℹ
+          </button>
+
           {activeTab === "solar-system" && trackedBody && (
             <div className="tracking-indicator">
               <span className="track-dot" />
@@ -186,7 +243,16 @@ export default function App(): JSX.Element {
         </header>
 
         <main className="app-main">
-          <aside className="left-panel">
+          {/* Backdrop — closes drawers on mobile */}
+          {anyPanelOpen && (
+            <div
+              className="panel-backdrop"
+              aria-hidden="true"
+              onClick={closePanels}
+            />
+          )}
+
+          <aside className={drawerClass("left", leftOpen)}>
             {isGalaxy ? (
               <GalaxyNavigator
                 selectedSystem={galaxy.selectedSystem}
@@ -241,7 +307,7 @@ export default function App(): JSX.Element {
             />
           </div>
 
-          <aside className="right-panel">
+          <aside className={drawerClass("right", rightOpen)}>
             <RightPanel
               isGalaxy={isGalaxy}
               showSystemPanel={showSystemPanel}
@@ -257,6 +323,32 @@ export default function App(): JSX.Element {
             />
           </aside>
         </main>
+
+        {/* Bottom tab bar — mobile only */}
+        <nav className="mobile-tab-bar" aria-label="View tabs">
+          <button
+            className={mobileTabClass(activeTab, "galaxy")}
+            onClick={() => handleTabChange("galaxy")}
+          >
+            <span className="mobile-tab-icon">✦</span>
+            <span className="mobile-tab-label">Galaxy</span>
+          </button>
+          <button
+            className={mobileTabClass(activeTab, "solar-system")}
+            onClick={() => handleTabChange("solar-system")}
+          >
+            <span className="mobile-tab-icon">🌌</span>
+            <span className="mobile-tab-label">System</span>
+          </button>
+          <button
+            className={mobileTabClass(activeTab, "planet-view")}
+            onClick={() => handleTabChange("planet-view")}
+            disabled={isGalaxy}
+          >
+            <span className="mobile-tab-icon">🪐</span>
+            <span className="mobile-tab-label">Body</span>
+          </button>
+        </nav>
       </div>
     </StarSystemContext.Provider>
   );

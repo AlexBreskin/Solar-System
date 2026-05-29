@@ -54,6 +54,13 @@ interface DragState {
   dragStartPanX: number;
   dragStartPanY: number;
   dragBrokeFree: boolean;
+  pinching: boolean;
+  pinchStartDist: number;
+  pinchStartZoom: number;
+  pinchStartPanX: number;
+  pinchStartPanY: number;
+  pinchCenterX: number;
+  pinchCenterY: number;
 }
 
 interface ClusterMenu {
@@ -137,7 +144,17 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
       dragStartPanX: 0,
       dragStartPanY: 0,
       dragBrokeFree: false,
+      pinching: false,
+      pinchStartDist: 0,
+      pinchStartZoom: 1,
+      pinchStartPanX: 0,
+      pinchStartPanY: 0,
+      pinchCenterX: 0,
+      pinchCenterY: 0,
     });
+    const pointersRef = useRef<Map<number, { x: number; y: number }>>(
+      new Map(),
+    );
 
     // Size both canvases whenever the container resizes
     useEffect(() => {
@@ -296,70 +313,131 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
       [sim, getWorldCoords],
     );
 
-    const handleMouseMove = useCallback(
-      (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const applyPinch = useCallback(() => {
+      const drag = dragRef.current;
+      const pointers = Array.from(pointersRef.current.values());
+      if (pointers.length < 2 || drag.pinchStartDist <= 0) return;
+      const [p1, p2] = pointers;
+      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+      const newZoom = Math.max(
+        0.1,
+        Math.min(100, drag.pinchStartZoom * (dist / drag.pinchStartDist)),
+      );
+      const { w, h } = sizeRef.current;
+      const cx = w / 2;
+      const cy = h / 2;
+      const mx = drag.pinchCenterX;
+      const my = drag.pinchCenterY;
+      const ratio = newZoom / drag.pinchStartZoom;
+      panRef.current.targetPanX =
+        mx - ratio * (mx - (cx + drag.pinchStartPanX)) - cx;
+      panRef.current.targetPanY =
+        my - ratio * (my - (cy + drag.pinchStartPanY)) - cy;
+      panRef.current.targetZoom = newZoom;
+    }, []);
+
+    const handlePointerDown = useCallback(
+      (e: React.PointerEvent<HTMLCanvasElement>) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
         const canvas = topCanvasRef.current!;
+        canvas.setPointerCapture(e.pointerId);
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+        pointersRef.current.set(e.pointerId, { x, y });
         const drag = dragRef.current;
-        if (drag.dragging) {
-          const dx = x - drag.dragStartX;
-          const dy = y - drag.dragStartY;
-          if (!drag.dragBrokeFree && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
-            drag.dragBrokeFree = true;
-            setClusterMenu(null);
-          }
-          panRef.current.targetPanX = drag.dragStartPanX + dx;
-          panRef.current.targetPanY = drag.dragStartPanY + dy;
-        } else {
-          const hit = hitTest(x, y);
-          sim.setHovered(hit);
-          onHoverSystem(hit);
-          if (!hit) {
-            const region = showRegionsRef.current ? hitTestRegion(x, y) : null;
-            hoveredRegionRef.current = region?.id ?? null;
-            canvas.style.cursor = region ? "pointer" : "grab";
-          } else {
-            hoveredRegionRef.current = null;
-            canvas.style.cursor = "pointer";
-          }
-        }
-      },
-      [hitTest, hitTestRegion, sim, onHoverSystem],
-    );
 
-    const handleMouseDown = useCallback(
-      (e: React.MouseEvent<HTMLCanvasElement>) => {
-        const canvas = topCanvasRef.current!;
-        const rect = canvas.getBoundingClientRect();
-        const drag = dragRef.current;
-        drag.dragging = true;
-        drag.dragBrokeFree = false;
-        drag.dragStartX = e.clientX - rect.left;
-        drag.dragStartY = e.clientY - rect.top;
-        drag.dragStartPanX = panRef.current.targetPanX;
-        drag.dragStartPanY = panRef.current.targetPanY;
-        canvas.style.cursor = "grabbing";
-        setClusterMenu(null);
+        if (pointersRef.current.size === 1) {
+          drag.dragging = true;
+          drag.dragBrokeFree = false;
+          drag.pinching = false;
+          drag.dragStartX = x;
+          drag.dragStartY = y;
+          drag.dragStartPanX = panRef.current.targetPanX;
+          drag.dragStartPanY = panRef.current.targetPanY;
+          canvas.style.cursor = "grabbing";
+          setClusterMenu(null);
+        } else if (pointersRef.current.size === 2) {
+          const [p1, p2] = Array.from(pointersRef.current.values());
+          drag.pinching = true;
+          drag.dragging = false;
+          drag.dragBrokeFree = true;
+          drag.pinchStartDist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+          drag.pinchStartZoom = panRef.current.targetZoom;
+          drag.pinchStartPanX = panRef.current.targetPanX;
+          drag.pinchStartPanY = panRef.current.targetPanY;
+          drag.pinchCenterX = (p1.x + p2.x) / 2;
+          drag.pinchCenterY = (p1.y + p2.y) / 2;
+          setClusterMenu(null);
+        }
       },
       [],
     );
 
-    const handleMouseUp = useCallback(
-      (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const updateHover = useCallback(
+      (x: number, y: number) => {
+        const canvas = topCanvasRef.current!;
+        const hit = hitTest(x, y);
+        sim.setHovered(hit);
+        onHoverSystem(hit);
+        if (hit) {
+          hoveredRegionRef.current = null;
+          canvas.style.cursor = "pointer";
+          return;
+        }
+        const region = showRegionsRef.current ? hitTestRegion(x, y) : null;
+        hoveredRegionRef.current = region?.id ?? null;
+        canvas.style.cursor = region ? "pointer" : "grab";
+      },
+      [hitTest, hitTestRegion, sim, onHoverSystem],
+    );
+
+    const updateDrag = useCallback((x: number, y: number) => {
+      const drag = dragRef.current;
+      const dx = x - drag.dragStartX;
+      const dy = y - drag.dragStartY;
+      if (!drag.dragBrokeFree && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+        drag.dragBrokeFree = true;
+        setClusterMenu(null);
+      }
+      panRef.current.targetPanX = drag.dragStartPanX + dx;
+      panRef.current.targetPanY = drag.dragStartPanY + dy;
+    }, []);
+
+    const handlePointerMove = useCallback(
+      (e: React.PointerEvent<HTMLCanvasElement>) => {
         const canvas = topCanvasRef.current!;
         const rect = canvas.getBoundingClientRect();
-        const drag = dragRef.current;
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+        if (pointersRef.current.has(e.pointerId)) {
+          pointersRef.current.set(e.pointerId, { x, y });
+        }
+        const drag = dragRef.current;
+
+        if (drag.pinching && pointersRef.current.size >= 2) {
+          applyPinch();
+        } else if (drag.dragging) {
+          updateDrag(x, y);
+        } else if (e.pointerType === "mouse") {
+          updateHover(x, y);
+        }
+      },
+      [applyPinch, updateDrag, updateHover],
+    );
+
+    const endGesture = useCallback(() => {
+      const drag = dragRef.current;
+      if (pointersRef.current.size < 2) drag.pinching = false;
+      if (pointersRef.current.size === 0) {
         drag.dragging = false;
         drag.dragBrokeFree = false;
-        canvas.style.cursor = "grab";
+        topCanvasRef.current!.style.cursor = "grab";
+      }
+    }, []);
 
-        if (Math.abs(x - drag.dragStartX) + Math.abs(y - drag.dragStartY) >= 5)
-          return;
-
+    const handleTap = useCallback(
+      (x: number, y: number) => {
         const hit = hitTest(x, y);
         if (hit) {
           const { worldX, worldY, scale } = getWorldCoords(x, y);
@@ -374,7 +452,6 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
           }
           return;
         }
-
         const region = showRegionsRef.current ? hitTestRegion(x, y) : null;
         if (region) {
           onSelectRegion(region.id);
@@ -389,6 +466,30 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
         onSelectSystem,
         onSelectRegion,
       ],
+    );
+
+    const handlePointerUp = useCallback(
+      (e: React.PointerEvent<HTMLCanvasElement>) => {
+        const canvas = topCanvasRef.current!;
+        try {
+          canvas.releasePointerCapture(e.pointerId);
+        } catch {
+          /* already released */
+        }
+        pointersRef.current.delete(e.pointerId);
+        const drag = dragRef.current;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const wasPinching = drag.pinching;
+        const wasTap =
+          drag.dragging &&
+          Math.abs(x - drag.dragStartX) + Math.abs(y - drag.dragStartY) < 5;
+
+        endGesture();
+        if (!wasPinching && wasTap) handleTap(x, y);
+      },
+      [endGesture, handleTap],
     );
 
     const handleWheel = useCallback(
@@ -414,12 +515,29 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
       [],
     );
 
-    const handleMouseLeave = useCallback(() => {
-      sim.setHovered(null);
-      onHoverSystem(null);
-      hoveredRegionRef.current = null;
-      dragRef.current.dragging = false;
-    }, [sim, onHoverSystem]);
+    const handlePointerLeave = useCallback(
+      (e: React.PointerEvent<HTMLCanvasElement>) => {
+        if (e.pointerType !== "mouse") return;
+        sim.setHovered(null);
+        onHoverSystem(null);
+        hoveredRegionRef.current = null;
+      },
+      [sim, onHoverSystem],
+    );
+
+    const handlePointerCancel = useCallback(
+      (e: React.PointerEvent<HTMLCanvasElement>) => {
+        const canvas = topCanvasRef.current!;
+        try {
+          canvas.releasePointerCapture(e.pointerId);
+        } catch {
+          /* already released */
+        }
+        pointersRef.current.delete(e.pointerId);
+        endGesture();
+      },
+      [endGesture],
+    );
 
     const { handleZoomIn, handleZoomOut } = useZoomControls(panRef, 0.1, 100);
 
@@ -457,11 +575,13 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
             inset: 0,
             display: "block",
             cursor: "grab",
+            touchAction: "none",
           }}
-          onMouseMove={handleMouseMove}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
+          onPointerLeave={handlePointerLeave}
           onWheel={handleWheel}
         />
         {clusterMenu && (
@@ -496,7 +616,7 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
         </button>
         <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
         <div className="galaxy-hint">
-          Scroll to zoom · Drag to pan · Click to select
+          Scroll or pinch to zoom · Drag to pan · Tap to select
         </div>
       </div>
     );

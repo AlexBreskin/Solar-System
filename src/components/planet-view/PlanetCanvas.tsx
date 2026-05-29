@@ -29,6 +29,13 @@ interface DragState {
   dragStartPanX: number;
   dragStartPanY: number;
   lastTime: number | null;
+  pinching: boolean;
+  pinchStartDist: number;
+  pinchStartZoom: number;
+  pinchStartPanX: number;
+  pinchStartPanY: number;
+  pinchCenterX: number;
+  pinchCenterY: number;
 }
 
 export default function PlanetCanvas({
@@ -66,7 +73,15 @@ export default function PlanetCanvas({
     dragStartPanX: 0,
     dragStartPanY: 0,
     lastTime: null,
+    pinching: false,
+    pinchStartDist: 0,
+    pinchStartZoom: 1,
+    pinchStartPanX: 0,
+    pinchStartPanY: 0,
+    pinchCenterX: 0,
+    pinchCenterY: 0,
   });
+  const pointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
 
   const planet = bodies[planetId];
   const moons = useMemo(() => getMoonsOf(planetId, bodies), [planetId, bodies]);
@@ -270,53 +285,127 @@ export default function PlanetCanvas({
     [planetId, moons, sim],
   );
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const applyPinch = useCallback(() => {
+    const drag = dragRef.current;
+    const pointers = Array.from(pointersRef.current.values());
+    if (pointers.length < 2) return;
+    const [p1, p2] = pointers;
+    const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+    if (drag.pinchStartDist <= 0) return;
+    const newZoom = Math.max(
+      0.2,
+      Math.min(8, drag.pinchStartZoom * (dist / drag.pinchStartDist)),
+    );
+    const { w, h } = sizeRef.current;
+    const cx = w / 2;
+    const cy = h / 2;
+    const mx = drag.pinchCenterX;
+    const my = drag.pinchCenterY;
+    const ratio = newZoom / drag.pinchStartZoom;
+    panRef.current.targetPanX =
+      mx - ratio * (mx - (cx + drag.pinchStartPanX)) - cx;
+    panRef.current.targetPanY =
+      my - ratio * (my - (cy + drag.pinchStartPanY)) - cy;
+    panRef.current.targetZoom = newZoom;
+  }, []);
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      const canvas = canvasRef.current!;
+      canvas.setPointerCapture(e.pointerId);
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      pointersRef.current.set(e.pointerId, { x, y });
+      const drag = dragRef.current;
+
+      if (pointersRef.current.size === 1) {
+        drag.dragging = true;
+        drag.pinching = false;
+        drag.dragStartX = x;
+        drag.dragStartY = y;
+        drag.dragStartPanX = panRef.current.targetPanX;
+        drag.dragStartPanY = panRef.current.targetPanY;
+        canvas.style.cursor = "grabbing";
+      } else if (pointersRef.current.size === 2) {
+        const [p1, p2] = Array.from(pointersRef.current.values());
+        drag.pinching = true;
+        drag.dragging = false;
+        drag.pinchStartDist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+        drag.pinchStartZoom = panRef.current.targetZoom;
+        drag.pinchStartPanX = panRef.current.targetPanX;
+        drag.pinchStartPanY = panRef.current.targetPanY;
+        drag.pinchCenterX = (p1.x + p2.x) / 2;
+        drag.pinchCenterY = (p1.y + p2.y) / 2;
+      }
+    },
+    [],
+  );
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current!;
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+      if (pointersRef.current.has(e.pointerId)) {
+        pointersRef.current.set(e.pointerId, { x, y });
+      }
       const drag = dragRef.current;
+
+      if (drag.pinching && pointersRef.current.size >= 2) {
+        applyPinch();
+        return;
+      }
+
       if (drag.dragging) {
         panRef.current.targetPanX = drag.dragStartPanX + (x - drag.dragStartX);
         panRef.current.targetPanY = drag.dragStartPanY + (y - drag.dragStartY);
-      } else {
+      } else if (e.pointerType === "mouse") {
         const hit = getBodyAtPoint(x, y);
         onHoverBody(hit);
         canvas.style.cursor = hit ? "pointer" : "grab";
       }
     },
-    [getBodyAtPoint, onHoverBody],
+    [applyPinch, getBodyAtPoint, onHoverBody],
   );
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current!;
-      const rect = canvas.getBoundingClientRect();
+      try {
+        canvas.releasePointerCapture(e.pointerId);
+      } catch {
+        /* already released */
+      }
+      pointersRef.current.delete(e.pointerId);
       const drag = dragRef.current;
-      drag.dragging = true;
-      drag.dragStartX = e.clientX - rect.left;
-      drag.dragStartY = e.clientY - rect.top;
-      drag.dragStartPanX = panRef.current.targetPanX;
-      drag.dragStartPanY = panRef.current.targetPanY;
-      canvas.style.cursor = "grabbing";
-    },
-    [],
-  );
-
-  const handleMouseUp = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const canvas = canvasRef.current!;
       const rect = canvas.getBoundingClientRect();
-      const drag = dragRef.current;
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      if (Math.abs(x - drag.dragStartX) + Math.abs(y - drag.dragStartY) < 5) {
+
+      if (drag.pinching) {
+        if (pointersRef.current.size < 2) drag.pinching = false;
+        if (pointersRef.current.size === 0) {
+          drag.dragging = false;
+          canvas.style.cursor = "grab";
+        }
+        return;
+      }
+
+      if (
+        drag.dragging &&
+        Math.abs(x - drag.dragStartX) + Math.abs(y - drag.dragStartY) < 5
+      ) {
         const hit = getBodyAtPoint(x, y);
         if (hit) onSelectBody(hit);
       }
-      drag.dragging = false;
-      canvas.style.cursor = "grab";
+
+      if (pointersRef.current.size === 0) {
+        drag.dragging = false;
+        canvas.style.cursor = "grab";
+      }
     },
     [getBodyAtPoint, onSelectBody],
   );
@@ -340,10 +429,31 @@ export default function PlanetCanvas({
     pan.targetZoom = newZoom;
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    onHoverBody(null);
-    dragRef.current.dragging = false;
-  }, [onHoverBody]);
+  const handlePointerLeave = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (e.pointerType === "mouse") onHoverBody(null);
+    },
+    [onHoverBody],
+  );
+
+  const handlePointerCancel = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      const canvas = canvasRef.current!;
+      try {
+        canvas.releasePointerCapture(e.pointerId);
+      } catch {
+        /* already released */
+      }
+      pointersRef.current.delete(e.pointerId);
+      const drag = dragRef.current;
+      if (pointersRef.current.size < 2) drag.pinching = false;
+      if (pointersRef.current.size === 0) {
+        drag.dragging = false;
+        canvas.style.cursor = "grab";
+      }
+    },
+    [],
+  );
 
   const { handleZoomIn, handleZoomOut } = useZoomControls(panRef, 0.2, 8);
 
@@ -356,11 +466,13 @@ export default function PlanetCanvas({
           height: "100%",
           display: "block",
           cursor: "grab",
+          touchAction: "none",
         }}
-        onMouseMove={handleMouseMove}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onPointerLeave={handlePointerLeave}
         onWheel={handleWheel}
       />
       {moons.length === 0 && (
@@ -393,7 +505,7 @@ export default function PlanetCanvas({
           lineHeight: 1.8,
         }}
       >
-        Scroll to zoom · Drag to pan · Click to select
+        Scroll or pinch to zoom · Drag to pan · Tap to select
       </div>
     </div>
   );

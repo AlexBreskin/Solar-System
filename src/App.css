@@ -1,6 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -8,32 +10,34 @@
 
 :root {
   --bg-deep: #050812;
-  --bg-panel: #0A0F1E;
-  --bg-panel-2: #0F1628;
-  --bg-hover: #161D35;
-  --bg-selected: #1A2440;
-  --border: rgba(255,255,255,0.07);
-  --border-bright: rgba(255,255,255,0.15);
-  --text-primary: #E8EAF0;
-  --text-secondary: #8892AA;
-  --text-dim: #4A5266;
-  --accent: #4A90E2;
+  --bg-panel: #0a0f1e;
+  --bg-panel-2: #0f1628;
+  --bg-hover: #161d35;
+  --bg-selected: #1a2440;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-bright: rgba(255, 255, 255, 0.15);
+  --text-primary: #e8eaf0;
+  --text-secondary: #8892aa;
+  --text-dim: #4a5266;
+  --accent: #4a90e2;
   --accent-glow: rgba(74, 144, 226, 0.3);
-  --gold: #E8B84B;
+  --gold: #e8b84b;
   --gold-dim: rgba(232, 184, 75, 0.2);
-  --success: #4AE28E;
-  --danger: #E24A4A;
+  --success: #4ae28e;
+  --danger: #e24a4a;
   --panel-width: 340px;
   --header-height: 52px;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   overflow: hidden;
 }
 
 body {
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   background: var(--bg-deep);
   color: var(--text-primary);
   font-size: 14px;
@@ -89,7 +93,7 @@ body {
   background: transparent;
   border: 1px solid var(--border-bright);
   color: var(--text-secondary);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   font-size: 12px;
   padding: 5px 10px;
   border-radius: 6px;
@@ -130,7 +134,7 @@ body {
 }
 
 .speed-value {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 12px;
   color: var(--accent);
   min-width: 36px;
@@ -157,8 +161,15 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
 }
 
 .untrack-btn {
@@ -172,7 +183,9 @@ body {
   transition: opacity 0.15s;
 }
 
-.untrack-btn:hover { opacity: 1; }
+.untrack-btn:hover {
+  opacity: 1;
+}
 
 /* ─── Layout ──────────────────────────────── */
 .app-main {
@@ -214,10 +227,19 @@ body {
 }
 
 /* ─── Scrollbar ───────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
 
 /* ─── Tab Bar ─────────────────────────────── */
 .tab-bar {
@@ -237,7 +259,7 @@ body {
   background: transparent;
   border: none;
   color: var(--text-secondary);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   font-size: 12px;
   font-weight: 500;
   padding: 5px 12px;
@@ -255,7 +277,7 @@ body {
 .tab-btn.active {
   background: var(--bg-selected);
   color: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .tab-icon {
@@ -274,7 +296,7 @@ body {
   background: var(--bg-panel-2);
   border: 1px solid var(--border-bright);
   color: var(--text-primary);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 6px;
@@ -306,6 +328,227 @@ body {
 .system-loading {
   font-size: 12px;
   color: var(--text-dim);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   animation: pulse 1s ease-in-out infinite;
+}
+
+/* ─── Mobile panel toggles (hidden on desktop) ── */
+.mobile-panel-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.mobile-panel-toggle:hover,
+.mobile-panel-toggle[aria-expanded="true"] {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ─── Panel backdrop (mobile drawers) ─────────── */
+.panel-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 150;
+}
+
+/* ─── Mobile bottom tab bar (hidden on desktop) ── */
+.mobile-tab-bar {
+  display: none;
+}
+
+.mobile-tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: "Syne", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: color 0.15s;
+  min-height: 56px;
+}
+
+.mobile-tab-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.mobile-tab-btn.active {
+  color: var(--accent);
+}
+
+.mobile-tab-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.mobile-tab-label {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Tablet (640 – 1023 px) ─────────────────── */
+@media (max-width: 1023px) {
+  :root {
+    --panel-width: 280px;
+  }
+
+  .left-panel {
+    width: 200px;
+  }
+
+  .header-left {
+    gap: 12px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .speed-control {
+    display: none;
+  }
+}
+
+/* ─── Mobile (< 640 px) ──────────────────────── */
+@media (max-width: 639px) {
+  :root {
+    --header-height: 52px;
+    --mobile-tab-bar-height: 56px;
+  }
+
+  /* Header layout */
+  .app-header {
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .header-left {
+    flex: 1;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  /* Hide desktop tab bar and header controls — replaced by bottom bar */
+  .tab-bar,
+  .header-controls {
+    display: none;
+  }
+
+  /* Show mobile toggle buttons */
+  .mobile-panel-toggle {
+    display: flex;
+  }
+
+  /* System selector fills available header space */
+  .system-selector {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .system-select {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Main area shrinks to leave room for bottom tab bar */
+  .app-main {
+    height: calc(100vh - var(--header-height) - var(--mobile-tab-bar-height));
+  }
+
+  /* Panels become fixed drawers */
+  .left-panel,
+  .right-panel {
+    position: fixed;
+    top: var(--header-height);
+    bottom: var(--mobile-tab-bar-height);
+    z-index: 200;
+    width: min(85vw, 320px);
+    transform: translateX(-110%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+  }
+
+  .left-panel {
+    left: 0;
+    border-right: 1px solid var(--border-bright);
+  }
+
+  .left-panel--open {
+    transform: translateX(0);
+  }
+
+  .right-panel {
+    right: 0;
+    left: auto;
+    transform: translateX(110%);
+    border-left: 1px solid var(--border-bright);
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.6);
+  }
+
+  .right-panel--open {
+    transform: translateX(0);
+  }
+
+  /* Backdrop visible only when panel is open — clipped to canvas area so the
+     header toggles and bottom tab bar remain tappable */
+  .panel-backdrop {
+    display: block;
+    top: var(--header-height);
+    bottom: var(--mobile-tab-bar-height);
+  }
+
+  /* Bottom tab bar */
+  .mobile-tab-bar {
+    display: flex;
+    height: var(--mobile-tab-bar-height);
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  /* Touch-friendly targets throughout */
+  .ctrl-btn {
+    min-height: 40px;
+    padding: 8px 14px;
+  }
+
+  .tab-btn {
+    min-height: 40px;
+  }
+
+  /* Tracking indicator moves to full-width below header on mobile */
+  .tracking-indicator {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
 }
