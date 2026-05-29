@@ -3,7 +3,7 @@
 **[Live app → alexbreskin.github.io/Solar-System](https://alexbreskin.github.io/Solar-System/)**
 [![Deploy](https://github.com/AlexBreskin/Solar-System/actions/workflows/deploy.yml/badge.svg)](https://github.com/AlexBreskin/Solar-System/actions/workflows/deploy.yml)
 
-An interactive multi-system space simulator built with React, TypeScript, and HTML Canvas. Explore the Solar System and 44 exoplanetary/stellar systems — including black holes, neutron stars, quasars, and galaxies — with real orbital mechanics, a galaxy map, a planet view with physically-scaled moon layouts, and detailed information for every body.
+An interactive multi-system space simulator built with React, TypeScript, and HTML Canvas. Explore the Solar System and 46 exoplanetary/stellar systems — including black holes, neutron stars, quasars, and galaxies — with real orbital mechanics, a galaxy map, a planet view with physically-scaled moon layouts, and detailed information for every body.
 
 ## Features
 
@@ -59,52 +59,54 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 
 **Exosystems** — each system includes star and planet data with orbital mechanics tuned for visual clarity:
 
-| System              | Type                              | Planets | Highlight                                                                       |
-| ------------------- | --------------------------------- | ------- | ------------------------------------------------------------------------------- |
-| TRAPPIST-1          | Ultra-cool red dwarf              | 7       | Three planets in the habitable zone                                             |
-| Kepler-90           | G-type (Solar twin)               | 8       | First exosystem with 8 confirmed planets                                        |
-| 55 Cancri           | G8V binary primary                | 5       | Lava-world super-Earth + super-Jupiter                                          |
-| HD 10180            | G1V Sun-like                      | 6       | Densest known Neptune-class system                                              |
-| Tau Ceti            | G8.5V nearby                      | 4       | 11.9 light-years away; habitable-zone candidates                                |
-| Gliese 667C         | M1.5V red dwarf                   | 3       | Triple star system; two habitable-zone worlds                                   |
-| Kepler-16           | K+M binary ("Tatooine")           | 1       | First confirmed circumbinary planet — two suns in the sky                       |
-| Alpha Centauri      | G+K+M triple star                 | 1       | Nearest stellar system; hosts closest known exoplanet                           |
-| 40 Eridani          | K+WD+M triple star                | 1       | Home of Vulcan (Star Trek); real super-Earth confirmed 2018                     |
-| Epsilon Eridani     | K2V orange dwarf                  | 1       | Nearest single sun-like star; top SETI target since Project Ozma                |
-| Sirius              | A1V + white dwarf                 | —       | Brightest star in the night sky; white dwarf companion                          |
-| Procyon             | F5 subgiant + white dwarf         | —       | Eighth brightest star; white dwarf companion                                    |
-| 61 Cygni            | K5+K7 binary                      | —       | First star to have its distance measured; nearly equal-mass pair                |
-| Fomalhaut           | A3V + debris ring                 | 1       | Stunning debris ring; first Hubble-imaged planetary candidate                   |
-| HR 8799             | A5V young star                    | 4       | First multi-planet system directly photographed                                 |
-| Vega                | A0Va rapid rotator                | —       | Future north pole star; photometric calibration standard                        |
-| Altair              | A7V oblate rotator                | —       | One of the fastest-spinning stars known; directly resolved shape                |
-| Arcturus            | K1.5 III orange giant             | —       | Brightest northern star; ancient stellar stream traveller                       |
-| Canopus             | F0 II supergiant                  | —       | Second brightest star; NASA deep-space navigation reference                     |
-| Polaris             | F6 Cepheid + 2 companions         | —       | North Star; triple system with close and wide F-type companions                 |
-| Antares             | M1.5 red supergiant + B companion | —       | Heart of Scorpius; red giant would engulf Mars if placed at the Sun             |
-| Rigel               | B8 blue supergiant + companion    | —       | Orion's foot; 120,000× the Sun's luminosity                                     |
-| Betelgeuse          | M2 red supergiant                 | —       | Orion's shoulder; Great Dimming event 2019–2020                                 |
-| Deneb               | A2 blue-white supergiant          | —       | One of the most luminous stars in the Milky Way                                 |
-| Eta Carinae         | LBV + companion                   | —       | Great Eruption of 1843; one of the most massive stars known                     |
-| WR 104              | Wolf-Rayet + OB binary            | —       | Perfect pinwheel nebula; collimated jet may aim at Earth                        |
-| VY Canis Majoris    | M5e red hypergiant                | —       | One of the largest known stars; would engulf Jupiter's orbit                    |
-| Mu Cephei           | M2 Ia red supergiant              | —       | Herschel's Garnet Star; 1,000× the Sun's diameter                               |
-| NGC 3603            | Massive stellar cluster           | —       | Most massive young cluster in the Milky Way; home of NGC 3603-A1                |
-| Westerlund 1        | Compact stellar cluster           | —       | Densest known young cluster; hosts a magnetar                                   |
-| Omega Centauri      | Globular cluster (halo)           | —       | Largest globular cluster in the Milky Way; possible stripped dwarf galaxy       |
-| 47 Tucanae          | Globular cluster (halo)           | —       | Brightest globular cluster; 25+ millisecond pulsars                             |
-| Pistol Star         | Blue hypergiant (LBV)             | —       | Among the most luminous stars known; hidden behind galactic dust                |
-| SS 433              | Black hole + A supergiant         | —       | First relativistic-jet source found; jets at 26% the speed of light             |
-| Sagittarius A\*     | Black hole + S2 star              | —       | Milky Way's central black hole; S2 orbits at 2.7% light speed                   |
-| M87\*               | Supermassive black hole           | —       | First ever imaged black hole; event horizon spans the solar system              |
-| Cygnus X-1          | Black hole + blue supergiant      | —       | One of the first identified black hole candidates; Hawking's lost bet           |
-| Lich (PSR B1257+12) | Millisecond pulsar                | 3       | First confirmed exoplanets ever discovered, orbiting a stellar corpse           |
-| PSR J0437-4715      | Millisecond pulsar + white dwarf  | —       | Nearest millisecond pulsar; used as a gravitational-wave detector               |
-| 3C 273              | Quasar                            | —       | Brightest quasar in the sky; 4 trillion solar luminosities                      |
-| TON 618             | Quasar                            | —       | One of the most massive black holes known; event horizon spans 2,600 AU         |
-| Andromeda Galaxy    | Spiral galaxy                     | —       | Nearest large galaxy; on a 4.5-billion-year collision course with the Milky Way |
-| Hercules Cluster    | Globular cluster                  | —       | Finest northern globular; 1974 Arecibo Message aimed here                       |
-| Bode's Galaxy       | Spiral galaxy                     | —       | Brightest northern galaxy; gravitationally linked to the Cigar Galaxy           |
+| System              | Type                              | Planets | Highlight                                                                              |
+| ------------------- | --------------------------------- | ------- | -------------------------------------------------------------------------------------- |
+| TRAPPIST-1          | Ultra-cool red dwarf              | 7       | Three planets in the habitable zone                                                    |
+| Kepler-90           | G-type (Solar twin)               | 8       | First exosystem with 8 confirmed planets                                               |
+| 55 Cancri           | G8V binary primary                | 5       | Lava-world super-Earth + super-Jupiter                                                 |
+| HD 10180            | G1V Sun-like                      | 6       | Densest known Neptune-class system                                                     |
+| Tau Ceti            | G8.5V nearby                      | 4       | 11.9 light-years away; habitable-zone candidates                                       |
+| Gliese 667C         | M1.5V red dwarf                   | 3       | Triple star system; two habitable-zone worlds                                          |
+| Kepler-16           | K+M binary ("Tatooine")           | 1       | First confirmed circumbinary planet — two suns in the sky                              |
+| Alpha Centauri      | G+K+M triple star                 | 1       | Nearest stellar system; hosts closest known exoplanet                                  |
+| 40 Eridani          | K+WD+M triple star                | 1       | Home of Vulcan (Star Trek); real super-Earth confirmed 2018                            |
+| Epsilon Eridani     | K2V orange dwarf                  | 1       | Nearest single sun-like star; top SETI target since Project Ozma                       |
+| Sirius              | A1V + white dwarf                 | —       | Brightest star in the night sky; white dwarf companion                                 |
+| Procyon             | F5 subgiant + white dwarf         | —       | Eighth brightest star; white dwarf companion                                           |
+| 61 Cygni            | K5+K7 binary                      | —       | First star to have its distance measured; nearly equal-mass pair                       |
+| Fomalhaut           | A3V + debris ring                 | 1       | Stunning debris ring; first Hubble-imaged planetary candidate                          |
+| HR 8799             | A5V young star                    | 4       | First multi-planet system directly photographed                                        |
+| Vega                | A0Va rapid rotator                | —       | Future north pole star; photometric calibration standard                               |
+| Altair              | A7V oblate rotator                | —       | One of the fastest-spinning stars known; directly resolved shape                       |
+| Arcturus            | K1.5 III orange giant             | —       | Brightest northern star; ancient stellar stream traveller                              |
+| Canopus             | F0 II supergiant                  | —       | Second brightest star; NASA deep-space navigation reference                            |
+| Polaris             | F6 Cepheid + 2 companions         | —       | North Star; triple system with close and wide F-type companions                        |
+| Antares             | M1.5 red supergiant + B companion | —       | Heart of Scorpius; red giant would engulf Mars if placed at the Sun                    |
+| Rigel               | B8 blue supergiant + companion    | —       | Orion's foot; 120,000× the Sun's luminosity                                            |
+| Betelgeuse          | M2 red supergiant                 | —       | Orion's shoulder; Great Dimming event 2019–2020                                        |
+| Deneb               | A2 blue-white supergiant          | —       | One of the most luminous stars in the Milky Way                                        |
+| Eta Carinae         | LBV + companion                   | —       | Great Eruption of 1843; one of the most massive stars known                            |
+| WR 104              | Wolf-Rayet + OB binary            | —       | Perfect pinwheel nebula; collimated jet may aim at Earth                               |
+| VY Canis Majoris    | M5e red hypergiant                | —       | One of the largest known stars; would engulf Jupiter's orbit                           |
+| Mu Cephei           | M2 Ia red supergiant              | —       | Herschel's Garnet Star; 1,000× the Sun's diameter                                      |
+| NGC 3603            | Massive stellar cluster           | —       | Most massive young cluster in the Milky Way; home of NGC 3603-A1                       |
+| Westerlund 1        | Compact stellar cluster           | —       | Densest known young cluster; hosts a magnetar                                          |
+| Omega Centauri      | Globular cluster (halo)           | —       | Largest globular cluster in the Milky Way; possible stripped dwarf galaxy              |
+| 47 Tucanae          | Globular cluster (halo)           | —       | Brightest globular cluster; 25+ millisecond pulsars                                    |
+| Pistol Star         | Blue hypergiant (LBV)             | —       | Among the most luminous stars known; hidden behind galactic dust                       |
+| SS 433              | Black hole + A supergiant         | —       | First relativistic-jet source found; jets at 26% the speed of light                    |
+| Sagittarius A\*     | Black hole + S2 star              | —       | Milky Way's central black hole; S2 orbits at 2.7% light speed                          |
+| M87\*               | Supermassive black hole           | —       | First ever imaged black hole; event horizon spans the solar system                     |
+| Cygnus X-1          | Black hole + blue supergiant      | —       | One of the first identified black hole candidates; Hawking's lost bet                  |
+| Lich (PSR B1257+12) | Millisecond pulsar                | 3       | First confirmed exoplanets ever discovered, orbiting a stellar corpse                  |
+| PSR J0437-4715      | Millisecond pulsar + white dwarf  | —       | Nearest millisecond pulsar; used as a gravitational-wave detector                      |
+| 3C 273              | Quasar                            | —       | Brightest quasar in the sky; 4 trillion solar luminosities                             |
+| TON 618             | Quasar                            | —       | One of the most massive black holes known; event horizon spans 2,600 AU                |
+| Andromeda Galaxy    | Spiral galaxy                     | —       | Nearest large galaxy; on a 4.5-billion-year collision course with the Milky Way        |
+| Hercules Cluster    | Globular cluster                  | —       | Finest northern globular; 1974 Arecibo Message aimed here                              |
+| Bode's Galaxy       | Spiral galaxy                     | —       | Brightest northern galaxy; gravitationally linked to the Cigar Galaxy                  |
+| GRO J1655-40        | Black hole + F subgiant binary    | —       | Second Milky Way object with apparent superluminal jets; black hole mass 6.3 M☉        |
+| Circinus X-1        | Neutron star + B giant binary     | —       | Highly elliptical orbit (e=0.45); sits inside its own 4,600-year-old supernova remnant |
 
 ## Getting Started
 
@@ -220,7 +222,7 @@ src/
 │   ├── systems/                # One JSON file per star system (add a file to add a system)
 │   │   ├── sol.json
 │   │   ├── trappist1.json
-│   │   └── ...                 # 45 total
+│   │   └── ...                 # 47 total
 │   ├── constellations/         # One JSON file per constellation (auto-discovered via glob)
 │   │   ├── orion.json
 │   │   ├── centaurus.json
@@ -332,4 +334,4 @@ src/
 - **Constellation data** — 29 constellations in individual JSON files under `src/data/constellations/`; each file is validated by `constellations.test.ts` against the Hipparcos J2000 catalog (positions within 2°, magnitudes within ±1.0 mag) and all 88 official IAU constellation names; `constellations.ts` auto-discovers files via `import.meta.glob` and builds a `CONSTELLATION_BY_SYSTEM` reverse index
 - **Pointer Events API** — all three canvas views handle input through `onPointerDown/Move/Up/Cancel/Leave` instead of separate mouse and touch handlers; `setPointerCapture` keeps events flowing when a finger leaves the canvas boundary; a `Map<pointerId, {x,y}>` tracks simultaneous pointers to compute two-finger pinch distance; `touch-action: none` prevents browser scroll/pinch from intercepting canvas gestures
 - **Responsive layout** — CSS breakpoints at 1023px (tablet: narrower panels, logo/speed hidden) and 639px (mobile: fixed-position slide-out drawers, bottom tab bar); `100dvh` with `100vh` fallback in `.app-main` height calculations ensures the layout is correct on Firefox Android as the address bar appears and disappears; Firefox-native `scrollbar-width: thin` and `scrollbar-color` applied alongside the webkit pseudo-element rules
-- **Tooling** — Vite for dev and builds; Vitest (906 unit tests across 18 suites) + Cypress E2E (8 spec files); ESLint with `max-statements-per-line`, `one-var`, and `complexity` (max 10) rules; V8 coverage via `@vitest/coverage-v8`; simulation layer at 100% branch coverage
+- **Tooling** — Vite for dev and builds; Vitest (938 unit tests across 18 suites) + Cypress E2E (8 spec files); ESLint with `max-statements-per-line`, `one-var`, and `complexity` (max 10) rules; V8 coverage via `@vitest/coverage-v8`; simulation layer at 100% branch coverage

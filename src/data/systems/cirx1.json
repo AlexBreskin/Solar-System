@@ -1,0 +1,76 @@
+{
+  "system": {
+    "id": "cirx1",
+    "name": "Circinus X-1",
+    "description": "One of the brightest X-ray sources in the sky, 9,400 light-years away in Circinus. A neutron star and an evolved giant companion trace a highly elliptical orbit every 16.6 days; at closest approach the neutron star tears away mass in intense X-ray bursts, while relativistic jets stream outward at near-light speed — all inside a supernova remnant only ~4,600 years old.",
+    "starColor": "#FFB060",
+    "displayOrder": 47,
+    "distanceFromEarth": 9400,
+    "rootType": "neutron-star",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Circinus_X-1"
+  },
+  "bodies": {
+    "cirx1-ns": {
+      "id": "cirx1-ns",
+      "name": "Circinus X-1",
+      "type": "neutron-star",
+      "parent": null,
+      "diameter": 22,
+      "mass": "3.54 × 10³⁰ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#C0DCFF",
+      "glowColor": "#6090FF",
+      "moons": 0,
+      "description": "A young neutron star — possibly a magnetar — formed in a supernova whose remnant is still visible as a radio shell surrounding the system. At each periastron, when the companion swings within 0.14 AU, tidal forces drive supercritical accretion onto the neutron star surface, detonating thermonuclear Type I X-ray bursts bright enough to be seen across tens of thousands of light-years.",
+      "surfaceTemp": "~10⁷ K (surface)",
+      "funFact": "Circinus X-1 sits inside a radio supernova remnant estimated to be only about 4,600 years old — making it one of the youngest known X-ray binaries, and giving astronomers a rare view of a neutron star within centuries of its birth.",
+      "nasaUrl": "https://www.nasa.gov/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Circinus_X-1"
+    },
+    "cirx1-companion": {
+      "id": "cirx1-companion",
+      "name": "Circinus X-1 Companion",
+      "type": "companion",
+      "parent": "cirx1-ns",
+      "diameter": 9750000,
+      "mass": "1.39 × 10³¹ kg",
+      "distanceFromParent": 0.26,
+      "orbitalPeriod": 16.59,
+      "rotationPeriod": 16.59,
+      "eccentricity": 0.45,
+      "inclination": 60,
+      "color": "#FFB060",
+      "glowColor": "#FFC880",
+      "binaryMassFraction": 0.797,
+      "showOrbitRing": true,
+      "moons": 0,
+      "description": "A late O-type or early B-type giant of roughly 7 solar masses. Its highly elliptical orbit sweeps between 0.14 AU (periastron) and 0.38 AU (apoapsis) from the neutron star, creating a dramatic range of X-ray brightness throughout the orbit. At periastron Roche-lobe overflow drives intense accretion; at apoapsis the system fades almost to quiescence.",
+      "surfaceTemp": "~15,000 K",
+      "funFact": "The extreme orbital eccentricity is almost certainly a relic of the supernova kick — the asymmetric explosion that birthed the neutron star imparted a velocity kick that distorted what was probably once a circular orbit into this elongated path.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Circinus_X-1"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "cirx1-ns",
+      "children": [{ "id": "cirx1-companion", "children": [] }]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "cirx1-ns": 9,
+      "cirx1-companion": 20
+    },
+    "moonOrbitalRadii": {
+      "cirx1-companion": 70
+    },
+    "speedMultiplier": 0.077,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}

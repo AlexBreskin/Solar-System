@@ -311,6 +311,22 @@
       "galacticArmHint": "sagittarius",
       "distanceFromCentreKly": 16.7,
       "rootType": "black-hole"
+    },
+    {
+      "id": "groj1655",
+      "galacticX": -2703,
+      "galacticY": -10085,
+      "galacticArmHint": "norma",
+      "distanceFromCentreKly": 16.1,
+      "rootType": "black-hole"
+    },
+    {
+      "id": "cirx1",
+      "galacticX": -5787,
+      "galacticY": -7406,
+      "galacticArmHint": "norma",
+      "distanceFromCentreKly": 19.5,
+      "rootType": "neutron-star"
     }
   ],
   "regions": [

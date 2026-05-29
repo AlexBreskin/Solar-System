@@ -1,0 +1,76 @@
+{
+  "system": {
+    "id": "groj1655",
+    "name": "GRO J1655-40",
+    "description": "A black hole microquasar 10,440 light-years away in Scorpius. A precisely measured 6.3-solar-mass black hole and an F-type subgiant orbit each other every 2.62 days, with matter overflowing the companion's Roche lobe and spiralling into an accretion disk. In 1994 it launched apparently superluminal jets, becoming only the second Milky Way object known to do so.",
+    "starColor": "#FFD080",
+    "displayOrder": 46,
+    "distanceFromEarth": 10440,
+    "rootType": "black-hole",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/GRO_J1655-40"
+  },
+  "bodies": {
+    "groj1655-bh": {
+      "id": "groj1655-bh",
+      "name": "GRO J1655-40",
+      "type": "black-hole",
+      "parent": null,
+      "diameter": 37,
+      "mass": "1.25 × 10³¹ kg",
+      "distanceFromParent": 0,
+      "orbitalPeriod": 0,
+      "rotationPeriod": 0,
+      "eccentricity": 0,
+      "inclination": 0,
+      "color": "#040408",
+      "glowColor": "#FF6020",
+      "moons": 0,
+      "description": "A stellar-mass black hole of 6.3 solar masses — one of the most precisely measured in the Milky Way, pinned by spectroscopic modelling of its companion's orbit. It accretes material overflowing the companion's Roche lobe, generating X-ray outbursts intense enough to saturate detectors aboard satellites observing from Earth orbit.",
+      "surfaceTemp": "N/A (event horizon)",
+      "funFact": "The Schwarzschild radius of this black hole is only about 18.6 km — smaller than a city — yet its gravity confines a binary orbit tighter than the distance between Earth and Moon.",
+      "nasaUrl": "https://www.nasa.gov/",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/GRO_J1655-40"
+    },
+    "v1033sco": {
+      "id": "v1033sco",
+      "name": "V1033 Scorpii",
+      "type": "companion",
+      "parent": "groj1655-bh",
+      "diameter": 3340000,
+      "mass": "4.97 × 10³⁰ kg",
+      "distanceFromParent": 0.077,
+      "orbitalPeriod": 2.62,
+      "rotationPeriod": 2.62,
+      "eccentricity": 0.0,
+      "inclination": 70.2,
+      "color": "#FFD080",
+      "glowColor": "#FFE8A0",
+      "binaryMassFraction": 0.284,
+      "showOrbitRing": true,
+      "moons": 0,
+      "description": "An F5–F6 IV subgiant of about 2.5 solar masses being slowly consumed by its black hole companion. Its outer envelope overflows the Roche lobe — the gravitational boundary where the black hole's pull wins — and streams onto the accretion disk, triggering recurrent X-ray outbursts. Its precise orbital parameters provided the first dynamical mass measurement of the system's black hole.",
+      "surfaceTemp": "~6,300 K",
+      "funFact": "V1033 Scorpii is tidally locked to the same face-on orientation as the black hole — meaning its day equals its year — and is slowly but inevitably being stripped of its outer layers.",
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/GRO_J1655-40"
+    }
+  },
+  "hierarchy": [
+    {
+      "id": "groj1655-bh",
+      "children": [{ "id": "v1033sco", "children": [] }]
+    }
+  ],
+  "visualConfig": {
+    "orbitalRadii": {},
+    "planetSizes": {
+      "groj1655-bh": 10,
+      "v1033sco": 18
+    },
+    "moonOrbitalRadii": {
+      "v1033sco": 50
+    },
+    "speedMultiplier": 0.077,
+    "moonSpeedMultiplier": 0.5,
+    "beltConfigs": {}
+  }
+}
