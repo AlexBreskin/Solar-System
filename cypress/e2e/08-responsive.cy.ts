@@ -5,6 +5,9 @@
 const DESKTOP = { width: 1440, height: 900 } as const;
 const TABLET = { width: 768, height: 1024 } as const;
 const MOBILE = { width: 390, height: 844 } as const;
+// Galaxy S26 Ultra approximate CSS viewport (≈3× DPR device, portrait + landscape)
+const GALAXY_PORTRAIT = { width: 393, height: 851 } as const;
+const GALAXY_LANDSCAPE = { width: 851, height: 393 } as const;
 
 // ─── Desktop ─────────────────────────────────────────────────────────────────
 
@@ -182,5 +185,75 @@ describe("Mobile (390×844)", () => {
   it("canvas is visible and fills the available space when panels are closed", () => {
     cy.get(".canvas-area").should("be.visible");
     cy.get(".canvas-area").invoke("width").should("be.gt", 300);
+  });
+});
+
+// ─── Galaxy S26 Ultra – Portrait (393×851) ────────────────────────────────────
+
+describe("Galaxy S26 Ultra – Portrait (393×851)", () => {
+  beforeEach(() => {
+    cy.viewport(GALAXY_PORTRAIT.width, GALAXY_PORTRAIT.height);
+    cy.visit("/");
+  });
+
+  it("shows the mobile bottom tab bar", () => {
+    cy.get(".mobile-tab-bar").should("be.visible");
+    cy.get(".mobile-tab-btn").should("have.length", 3);
+  });
+
+  it("both panels are closed by default", () => {
+    cy.get(".left-panel").should("not.have.class", "left-panel--open");
+    cy.get(".right-panel").should("not.have.class", "right-panel--open");
+  });
+
+  it("canvas fills the viewport between header and tab bar", () => {
+    cy.get(".canvas-area").should("be.visible");
+    cy.get(".canvas-area")
+      .invoke("height")
+      .should("be.gt", GALAXY_PORTRAIT.height - 52 - 56 - 10);
+  });
+
+  it("opening and closing a drawer works", () => {
+    cy.get(".mobile-panel-toggle--left").click();
+    cy.get(".left-panel").should("have.class", "left-panel--open");
+    cy.get(".panel-backdrop").click();
+    cy.get(".left-panel").should("not.have.class", "left-panel--open");
+  });
+
+  it("tab switching works and shows the galaxy canvas", () => {
+    cy.contains(".mobile-tab-btn", "Galaxy").click();
+    cy.contains(".mobile-tab-btn", "Galaxy").should("have.class", "active");
+    cy.get(".canvas-area .galaxy-hint").should("exist");
+  });
+});
+
+// ─── Galaxy S26 Ultra – Landscape (851×393) ───────────────────────────────────
+
+describe("Galaxy S26 Ultra – Landscape (851×393)", () => {
+  beforeEach(() => {
+    cy.viewport(GALAXY_LANDSCAPE.width, GALAXY_LANDSCAPE.height);
+    cy.visit("/");
+  });
+
+  it("uses tablet layout — both panels visible, no mobile tab bar", () => {
+    cy.get(".left-panel").should("be.visible");
+    cy.get(".right-panel").should("be.visible");
+    cy.get(".mobile-tab-bar").should("not.be.visible");
+  });
+
+  it("desktop tab bar is visible", () => {
+    cy.get(".tab-bar").should("be.visible");
+  });
+
+  it("canvas is visible with usable height", () => {
+    cy.get(".canvas-area").should("be.visible");
+    cy.get(".canvas-area")
+      .invoke("height")
+      .should("be.gt", GALAXY_LANDSCAPE.height - 52 - 10);
+  });
+
+  it("switching to Galaxy tab shows galaxy canvas", () => {
+    cy.get(".tab-btn").contains("Galaxy").click();
+    cy.get(".gnav").should("be.visible");
   });
 });

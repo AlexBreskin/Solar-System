@@ -191,6 +191,7 @@ body {
 .app-main {
   display: flex;
   height: calc(100vh - var(--header-height));
+  height: calc(100dvh - var(--header-height));
   overflow: hidden;
 }
 
@@ -239,6 +240,12 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-dim);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bright) transparent;
 }
 
 /* ─── Tab Bar ─────────────────────────────── */
@@ -482,6 +489,7 @@ body {
   /* Main area shrinks to leave room for bottom tab bar */
   .app-main {
     height: calc(100vh - var(--header-height) - var(--mobile-tab-bar-height));
+    height: calc(100dvh - var(--header-height) - var(--mobile-tab-bar-height));
   }
 
   /* Panels become fixed drawers */
