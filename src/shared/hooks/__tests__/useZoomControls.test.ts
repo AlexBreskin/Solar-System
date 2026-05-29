@@ -1,19 +1,6 @@
 import React, { act, createRef } from "react";
-import ReactDOM from "react-dom/client";
 import { useZoomControls } from "../useZoomControls";
-
-function renderHook<T>(hook: () => T): { result: { current: T } } {
-  const result = { current: null as unknown as T };
-  function TestComponent() {
-    result.current = hook();
-    return null;
-  }
-  const container = document.createElement("div");
-  act(() => {
-    ReactDOM.createRoot(container).render(React.createElement(TestComponent));
-  });
-  return { result };
-}
+import { renderHook } from "../../../utils/renderHook";
 
 describe("useZoomControls", () => {
   function makeRef(initialZoom: number) {

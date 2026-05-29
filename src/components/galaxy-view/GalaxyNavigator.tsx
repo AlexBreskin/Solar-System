@@ -1,13 +1,11 @@
-import { useMemo, useState } from "react";
-import { STAR_SYSTEMS } from "@/data/systems";
-import { GALACTIC_IDS } from "@/data/galaxy";
-import { CONSTELLATIONS } from "@/data/constellations";
+import { useState } from "react";
 import type { Constellation, StarSystemMeta } from "@/types";
 import {
   ROOT_TYPE_BY_ID,
   ROOT_TYPE_ICONS,
   ROOT_TYPE_LABELS,
 } from "@/data/systemMeta";
+import { useNavFilter } from "@/hooks/useNavFilter";
 import "./GalaxyNavigator.css";
 
 interface GalaxyNavigatorProps {
@@ -95,38 +93,8 @@ export default function GalaxyNavigator({
   );
   const [query, setQuery] = useState("");
 
-  const systemNameById = useMemo(() => {
-    const map: Record<string, string> = {};
-    for (const s of STAR_SYSTEMS) map[s.id] = s.name.toLowerCase();
-    return map;
-  }, []);
-
-  const { galactic, extragalactic } = useMemo(() => {
-    const byDist = (a: StarSystemMeta, b: StarSystemMeta) =>
-      (a.distanceFromEarth ?? 0) - (b.distanceFromEarth ?? 0);
-    return {
-      galactic: STAR_SYSTEMS.filter((s) => GALACTIC_IDS.has(s.id)).sort(byDist),
-      extragalactic: STAR_SYSTEMS.filter((s) => !GALACTIC_IDS.has(s.id)).sort(
-        byDist,
-      ),
-    };
-  }, []);
-
-  const q = query.toLowerCase();
-
-  const filteredGalactic = q
-    ? galactic.filter((s) => s.name.toLowerCase().includes(q))
-    : galactic;
-  const filteredExtragalactic = q
-    ? extragalactic.filter((s) => s.name.toLowerCase().includes(q))
-    : extragalactic;
-  const filteredConstellations = q
-    ? CONSTELLATIONS.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.systems.some((id) => systemNameById[id]?.includes(q)),
-      )
-    : CONSTELLATIONS;
+  const { filteredGalactic, filteredExtragalactic, filteredConstellations } =
+    useNavFilter(query);
 
   const handleTabChange = (tab: "systems" | "constellations") => {
     setActiveTab(tab);
@@ -141,8 +109,8 @@ export default function GalaxyNavigator({
         </span>
         <span className="gnav-count">
           {activeTab === "systems"
-            ? STAR_SYSTEMS.length
-            : CONSTELLATIONS.length}
+            ? filteredGalactic.length + filteredExtragalactic.length
+            : filteredConstellations.length}
         </span>
       </div>
       <div className="gnav-tabs">

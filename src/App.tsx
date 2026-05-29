@@ -4,7 +4,6 @@ import GalaxyNavigator from "@/components/galaxy-view/GalaxyNavigator";
 import HeaderControls from "@/components/app/HeaderControls";
 import CanvasArea from "@/components/app/CanvasArea";
 import RightPanel from "@/components/app/RightPanel";
-import { loadStarSystem } from "@/data/celestialBodies";
 import { STAR_SYSTEMS } from "@/data/systems";
 import {
   StarSystemContext,
@@ -15,10 +14,18 @@ import {
   BODY_HIERARCHY,
   VISUAL_CONFIG,
 } from "@/data/celestialBodies";
-import { BodyType, ROOT_BODY_TYPES } from "@/types";
-import type { BodyId, TabId, StarSystemMeta } from "@/types";
+import type { TabId, StarSystemMeta } from "@/types";
 import { useGalaxyState } from "@/hooks/useGalaxyState";
+import { useBodySelection } from "@/hooks/useBodySelection";
+import { useSystemNavigation } from "@/hooks/useSystemNavigation";
+import { getPlanetViewId } from "@/utils/getPlanetViewId";
 import "./App.css";
+
+function tabClass(activeTab: TabId, tab: TabId): string {
+  return `tab-btn${activeTab === tab ? " active" : ""}`;
+}
+
+const navigableSystems = STAR_SYSTEMS.filter((s) => s.navigable !== false);
 
 const defaultSystemData: StarSystemData = {
   id: "sol",
@@ -37,86 +44,41 @@ const defaultSystemData: StarSystemData = {
   visualConfig: VISUAL_CONFIG,
 };
 
-function getPlanetViewId(
-  selectedBody: BodyId,
-  bodies: StarSystemData["bodies"],
-): BodyId | null {
-  const body = bodies[selectedBody];
-  if (
-    (body?.type === BodyType.Moon || body?.type === BodyType.Companion) &&
-    body.parent
-  ) {
-    return body.parent as BodyId;
-  }
-  if (body && body.type !== BodyType.Belt) return selectedBody;
-  return null;
-}
-
 export default function App(): JSX.Element {
+  const [activeTab, setActiveTab] = useState<TabId>("solar-system");
   const [systemData, setSystemData] =
     useState<StarSystemData>(defaultSystemData);
-  const [loadingSystem, setLoadingSystem] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabId>("solar-system");
-  const [selectedBody, setSelectedBody] = useState<BodyId>("sun");
-  const [hoveredBody, setHoveredBody] = useState<BodyId | null>(null);
-  const [trackedBody, setTrackedBody] = useState<BodyId | null>(null);
-  const [speed, setSpeed] = useState<number>(1);
-  const [paused, setPaused] = useState<boolean>(false);
-  const [showOrbits, setShowOrbits] = useState<boolean>(true);
-  const [showLabels, setShowLabels] = useState<boolean>(false);
-  const [viewedPlanet, setViewedPlanet] = useState<BodyId>("earth");
-  const [showSystemPanel, setShowSystemPanel] = useState<boolean>(false);
+  const [speed, setSpeed] = useState(1);
+  const [paused, setPaused] = useState(false);
+  const [showOrbits, setShowOrbits] = useState(true);
+  const [showLabels, setShowLabels] = useState(false);
+
   const galaxy = useGalaxyState(defaultSystemData.id);
 
-  const handleSystemChange = useCallback(
-    (id: string) => {
-      if (id === systemData.id) return;
-      setLoadingSystem(true);
-      loadStarSystem(id)
-        .then((loaded) => {
-          const starId =
-            Object.values(loaded.bodies).find((b) =>
-              ROOT_BODY_TYPES.has(b.type),
-            )?.id ?? id;
-          setSystemData(loaded);
-          galaxy.selectSystem(id);
-          setSelectedBody(starId);
-          setHoveredBody(null);
-          setTrackedBody(null);
-          setViewedPlanet(starId);
-          setActiveTab("solar-system");
-          setLoadingSystem(false);
-        })
-        .catch(() => setLoadingSystem(false));
-    },
-    [systemData.id, galaxy.selectSystem],
-  );
+  const {
+    selectedBody,
+    hoveredBody,
+    trackedBody,
+    viewedPlanet,
+    showSystemPanel,
+    setTrackedBody,
+    setViewedPlanet,
+    setShowSystemPanel,
+    resetForNewSystem,
+    handleSelectBody,
+    handleHoverBody,
+    handleTrackBody,
+    handleViewPlanet,
+  } = useBodySelection(activeTab, systemData.bodies);
 
-  const handleSelectBody = useCallback(
-    (id: BodyId) => {
-      setSelectedBody(id);
-      setShowSystemPanel(false);
-      if (activeTab === "solar-system") {
-        if (systemData.bodies[id]?.type === BodyType.Belt) setTrackedBody(null);
-        else setTrackedBody(id);
-      }
-    },
-    [activeTab, systemData.bodies],
-  );
-
-  const handleHoverBody = useCallback(
-    (id: BodyId | null) => setHoveredBody(id),
-    [],
-  );
-
-  const handleTrackBody = useCallback((id: BodyId | null) => {
-    setTrackedBody((prev) => (prev === id ? null : id));
-    if (id) setSelectedBody(id);
-  }, []);
-
-  const handleViewPlanet = useCallback((id: BodyId) => {
-    setViewedPlanet(id);
-  }, []);
+  const { loadingSystem, handleSystemChange, handleExploreSystem } =
+    useSystemNavigation(
+      systemData.id,
+      setSystemData,
+      galaxy.selectSystem,
+      setActiveTab,
+      resetForNewSystem,
+    );
 
   const handleTabChange = useCallback(
     (tab: TabId) => {
@@ -127,33 +89,18 @@ export default function App(): JSX.Element {
         setTrackedBody(null);
       }
     },
-    [selectedBody, systemData.bodies],
+    [selectedBody, systemData.bodies, setViewedPlanet, setTrackedBody],
   );
 
-  const handleGoToSolarSystem = useCallback(() => {
-    setActiveTab("solar-system");
-  }, []);
-
-  const handleGoToGalaxy = useCallback(() => {
-    setActiveTab("galaxy");
-  }, []);
-
+  const handleGoToSolarSystem = useCallback(
+    () => setActiveTab("solar-system"),
+    [],
+  );
+  const handleGoToGalaxy = useCallback(() => setActiveTab("galaxy"), []);
   const handleSelectSystem = useCallback(() => {
     setShowSystemPanel(true);
     setTrackedBody(null);
-  }, []);
-
-  const handleExploreSystem = useCallback(
-    (id: string) => {
-      galaxy.selectSystem(id);
-      if (id === systemData.id) {
-        setActiveTab("solar-system");
-      } else {
-        handleSystemChange(id);
-      }
-    },
-    [systemData.id, handleSystemChange, galaxy.selectSystem],
-  );
+  }, [setShowSystemPanel, setTrackedBody]);
 
   const isGalaxy = activeTab === "galaxy";
 
@@ -175,7 +122,7 @@ export default function App(): JSX.Element {
                 disabled={loadingSystem}
                 title="Switch star system"
               >
-                {STAR_SYSTEMS.filter((s) => s.navigable !== false).map((s) => (
+                {navigableSystems.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
                   </option>
@@ -186,14 +133,14 @@ export default function App(): JSX.Element {
 
             <div className="tab-bar">
               <button
-                className={`tab-btn${activeTab === "galaxy" ? " active" : ""}`}
+                className={tabClass(activeTab, "galaxy")}
                 onClick={() => handleTabChange("galaxy")}
               >
                 <span className="tab-icon">✦</span>
                 Galaxy
               </button>
               <button
-                className={`tab-btn${activeTab === "solar-system" ? " active" : ""}`}
+                className={tabClass(activeTab, "solar-system")}
                 onClick={() => handleTabChange("solar-system")}
               >
                 <span className="tab-icon">🌌</span>
@@ -201,7 +148,7 @@ export default function App(): JSX.Element {
               </button>
               {!isGalaxy && (
                 <button
-                  className={`tab-btn${activeTab === "planet-view" ? " active" : ""}`}
+                  className={tabClass(activeTab, "planet-view")}
                   onClick={() => handleTabChange("planet-view")}
                 >
                   <span className="tab-icon">🪐</span>
