@@ -49,6 +49,9 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 - **Celestial body navigator** — persistent left panel showing the body hierarchy when in System or Planet View; replaced by a star-system list when in Galaxy View
 - **Info panel** — physical properties, orbital data, atmosphere, a fun fact, and direct links to NASA and Wikipedia articles for every body
 - **Bidirectional highlighting** — hovering or selecting in the canvas syncs with the navigator, and vice versa
+- **Touch and pointer support** — all three canvas views accept mouse, touch, and stylus input via the Pointer Events API; drag to pan, two-finger pinch to zoom, tap to select, double-tap to track (System View)
+- **Responsive layout** — adapts to desktop, tablet, and phone viewports; panels compress on tablet (≤1023px); on mobile (<640px) the side panels become slide-out drawers with a backdrop dismiss and navigation moves to a bottom tab bar; tested at 1440×900, 768×1024, 390×844, Galaxy S26 Ultra portrait (393×851), and Galaxy S26 Ultra landscape (851×393)
+- **Firefox mobile compatible** — `100dvh` layout heights update correctly as the address bar shows and hides; Firefox-native `scrollbar-width`/`scrollbar-color` styles apply in all scrollable panels
 
 ## Celestial Bodies
 
@@ -141,7 +144,7 @@ npm run cypress:run      # headless
 npm run cypress:open     # interactive UI
 ```
 
-The Cypress suite covers 7 feature areas: system selector, tab switching, body navigator, info panel, speed controls, galaxy view, and zoom controls. Screenshots of failures are saved to `cypress/screenshots/` automatically.
+The Cypress suite covers 8 feature areas: system selector, tab switching, body navigator, info panel, speed controls, galaxy view, zoom controls, and responsive layout (desktop/tablet/mobile/Galaxy S26 Ultra portrait+landscape). Screenshots of failures are saved to `cypress/screenshots/` automatically.
 
 CI runs unit tests then Cypress headlessly before every build — the badge above reflects the combined status.
 
@@ -157,25 +160,27 @@ Output goes to `dist/`.
 
 ### System View
 
-| Action              | Effect                                  |
-| ------------------- | --------------------------------------- |
-| Scroll              | Zoom toward cursor                      |
-| +/− buttons         | Zoom in / zoom out (0.3× – 8×)          |
-| Drag                | Pan the view                            |
-| Click body          | Select, zoom in, and follow with camera |
-| Double-click body   | Untrack (stop following)                |
-| Drag while tracking | Break free from tracking                |
-| Hover               | Highlight in canvas and navigator       |
-| Click in navigator  | Select and track                        |
+| Action                    | Effect                                  |
+| ------------------------- | --------------------------------------- |
+| Scroll                    | Zoom toward cursor                      |
+| Pinch (two fingers)       | Zoom (0.3× – 8×)                        |
+| +/− buttons               | Zoom in / zoom out (0.3× – 8×)          |
+| Drag / touch-drag         | Pan the view                            |
+| Click / tap body          | Select, zoom in, and follow with camera |
+| Double-click / double-tap | Untrack (stop following)                |
+| Drag while tracking       | Break free from tracking                |
+| Hover                     | Highlight in canvas and navigator       |
+| Click in navigator        | Select and track                        |
 
 ### Planet View
 
 | Action                    | Effect                                          |
 | ------------------------- | ----------------------------------------------- |
 | Scroll                    | Zoom                                            |
+| Pinch (two fingers)       | Zoom (0.2× – 8×)                                |
 | +/− buttons               | Zoom in / zoom out (0.2× – 8×)                  |
-| Drag                      | Pan                                             |
-| Click body                | Select                                          |
+| Drag / touch-drag         | Pan                                             |
+| Click / tap body          | Select                                          |
 | Hover                     | Highlight in canvas and navigator               |
 | Click planet in navigator | Switch viewed planet                            |
 | Click moon in navigator   | Switch to its parent planet and select the moon |
@@ -185,10 +190,11 @@ Output goes to `dist/`.
 | Action                            | Effect                                             |
 | --------------------------------- | -------------------------------------------------- |
 | Scroll                            | Zoom (0.1× – 100×)                                 |
+| Pinch (two fingers)               | Zoom (0.1× – 100×)                                 |
 | +/− buttons                       | Zoom in / zoom out (0.1× – 100×)                   |
-| Drag                              | Pan                                                |
-| Click system marker               | Select system and show info panel                  |
-| Click region label                | Select galactic region and show info panel         |
+| Drag / touch-drag                 | Pan                                                |
+| Click / tap system marker         | Select system and show info panel                  |
+| Click / tap region label          | Select galactic region and show info panel         |
 | Click overlapping markers         | Show cluster menu to pick a system                 |
 | "Explore System →" button         | Load the selected system and switch to System View |
 | Click row in left panel           | Select system and highlight marker                 |
@@ -200,7 +206,10 @@ Output goes to `dist/`.
 
 ```
 src/
-├── App.tsx / App.css           # Root layout, system loading, tab state
+├── App.tsx / App.css           # Root layout, tab state, responsive drawer/mobile logic
+├── index.tsx / vite-env.d.ts
+├── __tests__/
+│   └── folder-naming.test.ts       # Enforces naming conventions across the src tree
 ├── types/
 │   ├── bodies.ts               # BodyId, BodyType, CelestialBody, HierarchyNode, StarSystemMeta
 │   ├── visual.ts               # Vec2, CanvasSize, BeltConfig, VisualConfig, PlanetViewLayout
@@ -211,8 +220,7 @@ src/
 │   ├── systems/                # One JSON file per star system (add a file to add a system)
 │   │   ├── sol.json
 │   │   ├── trappist1.json
-│   │   ├── kepler90.json
-│   │   └── ...
+│   │   └── ...                 # 45 total
 │   ├── constellations/         # One JSON file per constellation (auto-discovered via glob)
 │   │   ├── orion.json
 │   │   ├── centaurus.json
@@ -222,15 +230,30 @@ src/
 │   ├── constellations.ts       # CONSTELLATIONS list + CONSTELLATION_BY_SYSTEM index — auto-built
 │   ├── celestialBodies.ts      # Typed loader — auto-discovers systems via import.meta.glob
 │   ├── systems.ts              # STAR_SYSTEMS list — auto-built from JSON metadata
+│   ├── systemMeta.ts           # Helper to resolve StarSystemMeta by id
 │   └── __tests__/
 │       ├── celestialBodies.test.ts   # Full Sol validation suite (shape, hierarchy, visualConfig)
 │       ├── constellations.test.ts    # IAU name, coordinate (Hipparcos), magnitude, and system-ID checks
-│       └── exosystems.test.ts        # Runs the same checks against every non-Sol system
+│       ├── exosystems.test.ts        # Runs the same checks against every non-Sol system
+│       └── systemMeta.test.ts        # systemMeta lookup and fallback edge cases
+├── hooks/                      # App-level React hooks extracted from App.tsx
+│   ├── useBodySelection.ts     # Selected/hovered/tracked body state and event handlers
+│   ├── useGalaxyState.ts       # Galaxy canvas ref, selected system/region/constellation
+│   ├── useNavFilter.ts         # Search-filter state for the left-panel navigator
+│   ├── useSystemNavigation.ts  # System-switching with stale-load cancellation
+│   └── __tests__/
+│       ├── useBodySelection.test.ts
+│       ├── useGalaxyState.test.ts
+│       ├── useNavFilter.test.ts
+│       └── useSystemNavigation.test.ts
 ├── simulation/
 │   ├── solarSystemSimulation.ts    # Orbital angle and position state
 │   ├── planetViewSimulation.ts     # Moon angles, scaled layout, binary adjustment
 │   ├── galaxySimulation.ts         # Galaxy marker positions, hover/select state, hit-testing
 │   └── __tests__/
+│       ├── solarSystemSimulation.test.ts
+│       ├── planetViewSimulation.test.ts
+│       └── galaxySimulation.test.ts
 ├── renderers/
 │   ├── galaxy-view/
 │   │   ├── galaxyParticles.ts  # LOD particle generation + offscreen canvas caches
@@ -247,27 +270,45 @@ src/
 │       ├── systemBodies.ts     # Bodies, sun, black hole, selection glows
 │       └── index.ts            # Public API re-exports
 ├── utils/
-│   ├── mulberry32.ts           # Shared seeded RNG
-│   ├── color.ts                # lighten() hex colour utility
-│   └── distance.ts             # AU ↔ km ↔ ly conversion and formatting
+│   ├── mulberry32.ts                # Shared seeded RNG
+│   ├── color.ts                     # lighten() hex colour utility
+│   ├── distance.ts                  # AU ↔ km ↔ ly conversion and formatting
+│   ├── constellationProjection.ts   # Project galactic coordinates onto canvas space
+│   ├── getPlanetViewId.ts           # Resolve which body to show in Planet View for a selection
+│   ├── renderHook.ts                # Minimal React test helper for unit-testing custom hooks
+│   └── __tests__/
+│       ├── color.test.ts
+│       ├── constellationProjection.test.ts
+│       ├── distance.test.ts
+│       ├── getPlanetViewId.test.ts
+│       └── mulberry32.test.ts
 ├── components/
+│   ├── app/
+│   │   ├── CanvasArea.tsx      # Switches between System/Planet/Galaxy canvas per active tab
+│   │   ├── HeaderControls.tsx  # Speed, pause, orbits, labels controls
+│   │   └── RightPanel.tsx      # Context-sensitive right panel (body info or galaxy info)
 │   ├── system-view/
-│   │   ├── SystemCanvas.tsx    # System view — animation loop, camera, hit-testing
+│   │   ├── SystemCanvas.tsx    # System view — animation loop, camera, pointer events, pinch zoom
 │   │   ├── BodyNavigator.tsx/css # Left panel — body hierarchy tree
 │   │   └── InfoPanel.tsx/css   # Right panel — body detail (context-driven)
 │   ├── planet-view/
-│   │   └── PlanetCanvas.tsx    # Planet view — animation loop, camera, hit-testing
+│   │   └── PlanetCanvas.tsx    # Planet view — animation loop, camera, pointer events, pinch zoom
 │   └── galaxy-view/
-│       ├── GalaxyCanvas.tsx/css  # Galaxy view — spiral map, system markers, cluster menu
-│       ├── GalaxyNavigator.tsx/css # Left panel — systems and constellations
-│       └── GalaxySystemPanel.tsx/css # Right panel — system info + Explore button
+│       ├── GalaxyCanvas.tsx/css        # Galaxy view — spiral map, markers, cluster menu, pinch zoom
+│       ├── GalaxyNavigator.tsx/css     # Left panel — systems and constellations tabs
+│       ├── GalaxySystemPanel.tsx/css   # Right panel — system info + Explore button
+│       └── constellation/
+│           └── ConstellationDiagram.tsx  # Interactive star-chart for the selected constellation
 └── shared/
     ├── contexts/
     │   └── StarSystemContext.tsx # Active system data distributed via React context
     ├── components/
-    │   └── ZoomControls.tsx    # +/− zoom buttons shared across all canvas views
+    │   ├── ZoomControls.tsx      # +/− zoom buttons shared across all three canvas views
+    │   └── canvas-shared.css     # Shared zoom-control button styles
     └── hooks/
-        └── useZoomControls.ts  # Zoom state logic shared across all canvas views
+        ├── useZoomControls.ts    # Zoom state logic shared across all three canvas views
+        └── __tests__/
+            └── useZoomControls.test.ts
 ```
 
 ## Adding a New Star System
@@ -289,4 +330,6 @@ src/
 - **Exotic objects** — `BodyType.BlackHole`, `BodyType.NeutronStar`, and `BodyType.Quasar` supported; black holes render as a dark disc with an accretion-disk glow; the `ROOT_BODY_TYPES` set replaces hardcoded star checks throughout
 - **Simulation design** — `SolarSystemSimulation` uses a static `create()` factory that pre-computes all derived state (orbital speed lookup, pre-filtered binary/non-binary moon arrays); the private constructor does pure assignment only, keeping cyclomatic complexity at 1; per-frame methods (`updatePositions`, `advanceAngles`) stay below CC 5 by delegating each placement pass to a private helper
 - **Constellation data** — 29 constellations in individual JSON files under `src/data/constellations/`; each file is validated by `constellations.test.ts` against the Hipparcos J2000 catalog (positions within 2°, magnitudes within ±1.0 mag) and all 88 official IAU constellation names; `constellations.ts` auto-discovers files via `import.meta.glob` and builds a `CONSTELLATION_BY_SYSTEM` reverse index
-- **Tooling** — Vite for dev and builds; Vitest (840 unit tests across 11 suites) + Cypress E2E (8 spec files); ESLint with `max-statements-per-line`, `one-var`, and `complexity` (max 10) rules; V8 coverage via `@vitest/coverage-v8`; simulation layer at 100% branch coverage
+- **Pointer Events API** — all three canvas views handle input through `onPointerDown/Move/Up/Cancel/Leave` instead of separate mouse and touch handlers; `setPointerCapture` keeps events flowing when a finger leaves the canvas boundary; a `Map<pointerId, {x,y}>` tracks simultaneous pointers to compute two-finger pinch distance; `touch-action: none` prevents browser scroll/pinch from intercepting canvas gestures
+- **Responsive layout** — CSS breakpoints at 1023px (tablet: narrower panels, logo/speed hidden) and 639px (mobile: fixed-position slide-out drawers, bottom tab bar); `100dvh` with `100vh` fallback in `.app-main` height calculations ensures the layout is correct on Firefox Android as the address bar appears and disappears; Firefox-native `scrollbar-width: thin` and `scrollbar-color` applied alongside the webkit pseudo-element rules
+- **Tooling** — Vite for dev and builds; Vitest (906 unit tests across 18 suites) + Cypress E2E (8 spec files); ESLint with `max-statements-per-line`, `one-var`, and `complexity` (max 10) rules; V8 coverage via `@vitest/coverage-v8`; simulation layer at 100% branch coverage
