@@ -1,4 +1,4 @@
-import { useNavFilter } from "../useNavFilter";
+import { useNavFilter, sortByDistance } from "../useNavFilter";
 import { STAR_SYSTEMS } from "../../data/systems";
 import { GALACTIC_IDS } from "../../data/galaxy";
 import { CONSTELLATIONS } from "../../data/constellations";
@@ -6,6 +6,32 @@ import { renderHook } from "../../utils/renderHook";
 
 const allGalactic = STAR_SYSTEMS.filter((s) => GALACTIC_IDS.has(s.id));
 const allExtragalactic = STAR_SYSTEMS.filter((s) => !GALACTIC_IDS.has(s.id));
+
+describe("sortByDistance", () => {
+  const sys = (dist?: number) =>
+    ({ id: "x", name: "X", rootType: "star", distanceFromEarth: dist }) as any;
+
+  it("sorts closer system before farther one", () => {
+    expect(sortByDistance(sys(10), sys(100))).toBeLessThan(0);
+  });
+
+  it("sorts farther system after closer one", () => {
+    expect(sortByDistance(sys(100), sys(10))).toBeGreaterThan(0);
+  });
+
+  it("treats undefined distanceFromEarth as 0", () => {
+    expect(sortByDistance(sys(undefined), sys(100))).toBeLessThan(0);
+    expect(sortByDistance(sys(100), sys(undefined))).toBeGreaterThan(0);
+  });
+
+  it("returns 0 when both distances are equal", () => {
+    expect(sortByDistance(sys(50), sys(50))).toBe(0);
+  });
+
+  it("returns 0 when both distances are undefined", () => {
+    expect(sortByDistance(sys(undefined), sys(undefined))).toBe(0);
+  });
+});
 
 describe("useNavFilter", () => {
   it("returns all systems and constellations when query is empty", () => {

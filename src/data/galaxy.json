@@ -204,7 +204,7 @@
       "id": "antares",
       "galacticX": -75.4,
       "galacticY": -529.5,
-      "galacticArmHint": "sagittarius",
+      "galacticArmHint": "orion",
       "distanceFromCentreKly": 25.47,
       "rootType": "star"
     },
@@ -260,7 +260,7 @@
       "id": "mucephei",
       "galacticX": 2773,
       "galacticY": 385,
-      "galacticArmHint": "perseus",
+      "galacticArmHint": "orion",
       "distanceFromCentreKly": 26.5,
       "rootType": "star"
     },
@@ -268,7 +268,7 @@
       "id": "ngc3603",
       "galacticX": -20459,
       "galacticY": -8087,
-      "galacticArmHint": "sagittarius",
+      "galacticArmHint": "perseus",
       "distanceFromCentreKly": 27.2,
       "rootType": "star"
     },
@@ -308,7 +308,7 @@
       "id": "ss433",
       "galacticX": 11416,
       "galacticY": -13784,
-      "galacticArmHint": "sagittarius",
+      "galacticArmHint": "scutum",
       "distanceFromCentreKly": 16.7,
       "rootType": "black-hole"
     },
@@ -316,7 +316,7 @@
       "id": "groj1655",
       "galacticX": -2703,
       "galacticY": -10085,
-      "galacticArmHint": "norma",
+      "galacticArmHint": "scutum",
       "distanceFromCentreKly": 16.1,
       "rootType": "black-hole"
     },
@@ -324,7 +324,7 @@
       "id": "cirx1",
       "galacticX": -5787,
       "galacticY": -7406,
-      "galacticArmHint": "norma",
+      "galacticArmHint": "sagittarius",
       "distanceFromCentreKly": 19.5,
       "rootType": "neutron-star"
     }
@@ -338,7 +338,15 @@
       "color": "#D4C080",
       "description": "The local arm segment where the Sun resides, branching off between the Carina–Sagittarius and Perseus arms. About 3,500 light-years long and 1,000 light-years wide, it is a minor branch rather than a full major arm — though some astronomers now classify it as a longer, distinct segment. All the nearest star systems, including Alpha Centauri and Sirius, share this spur with us.",
       "funFact": "The Orion Spur takes its name from the Orion OB1 association — a cluster of hot, massive stars in the constellation Orion visible to the naked eye. The Sun has orbited within this spur for the entirety of recorded human history.",
-      "wikipediaUrl": "https://en.wikipedia.org/wiki/Orion_Arm"
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Orion_Arm",
+      "shape": {
+        "type": "ellipse",
+        "cx": 0,
+        "cy": 0,
+        "rx": 3400,
+        "ry": 1700,
+        "angleRad": 0.26
+      }
     },
     {
       "id": "sagittarius",
@@ -348,7 +356,14 @@
       "color": "#C87040",
       "description": "One of the Milky Way's two primary inner spiral arms, curling 5,000–7,000 light-years inward from the Sun. Home to massive stellar nurseries including the Carina Nebula and the Sagittarius Star Cloud — one of the densest visible concentrations of stars in the sky. Its dual name reflects that it passes through both constellations as seen from Earth.",
       "funFact": "The Carina Nebula in this arm is over four times larger than the famous Orion Nebula and contains some of the most massive and luminous stars in the Milky Way — including Eta Carinae, a hypergiant candidate for the next naked-eye supernova.",
-      "wikipediaUrl": "https://en.wikipedia.org/wiki/Carina%E2%80%93Sagittarius_Arm"
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Carina%E2%80%93Sagittarius_Arm",
+      "shape": {
+        "type": "spiralBand",
+        "armOffset": 0,
+        "halfWidth": 3000,
+        "tStart": 8.5,
+        "tEnd": 13.0
+      }
     },
     {
       "id": "perseus",
@@ -358,7 +373,14 @@
       "color": "#70A8D8",
       "description": "The nearest major outer arm of the Milky Way, roughly 6,000–8,000 light-years beyond the Sun. One of only two arms classified as truly 'grand design' spiral features — meaning it is long, continuous, and well-defined. The Perseus Arm contains the famous Double Cluster (h and χ Persei), two dazzling young open clusters visible to the naked eye.",
       "funFact": "The distance to the Perseus Arm was precisely measured using water masers — tiny radio beacons produced by star-forming regions. VLBI parallax pinned it at 6,370 light-years, making it one of the most accurately measured distances in the galaxy.",
-      "wikipediaUrl": "https://en.wikipedia.org/wiki/Perseus_Arm"
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Perseus_Arm",
+      "shape": {
+        "type": "spiralBand",
+        "armOffset": 4.712,
+        "halfWidth": 3500,
+        "tStart": 11.0,
+        "tEnd": 14.5
+      }
     },
     {
       "id": "scutum",
@@ -368,7 +390,14 @@
       "color": "#D47830",
       "description": "One of the two main spiral arms of the Milky Way (alongside Perseus), beginning near the end of the Galactic Bar and winding outward for tens of thousands of light-years. Contains the star-forming region W51 — one of the most luminous radio sources in the sky — and the Scutum Star Cloud, a dense condensation of millions of old red stars backlit against the galactic core.",
       "funFact": "W51, a star factory deep in this arm, is spawning stars hundreds of times more massive than the Sun across a region 150 light-years wide. It produces more new stellar mass each year than almost any other region in the galaxy.",
-      "wikipediaUrl": "https://en.wikipedia.org/wiki/Scutum%E2%80%93Centaurus_Arm"
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Scutum%E2%80%93Centaurus_Arm",
+      "shape": {
+        "type": "spiralBand",
+        "armOffset": 1.571,
+        "halfWidth": 2500,
+        "tStart": 6.5,
+        "tEnd": 11.0
+      }
     },
     {
       "id": "norma",
@@ -378,7 +407,14 @@
       "color": "#B86020",
       "description": "An inner arm nestled between the Scutum–Centaurus and the galactic core, also known as the 3-kpc Arm for its distance from the centre. Home to dense stellar populations and many X-ray binaries — systems where a neutron star or black hole strips matter from a companion. Westerlund 1, the most massive young star cluster in the Milky Way, resides here.",
       "funFact": "Westerlund 1 in the Norma Arm is so dense and massive that its combined light would cast shadows if it were the distance of Sirius from Earth. It also harbours a magnetar — a neutron star with a magnetic field a quadrillion times stronger than Earth's.",
-      "wikipediaUrl": "https://en.wikipedia.org/wiki/Norma_Arm"
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Norma_Arm",
+      "shape": {
+        "type": "spiralBand",
+        "armOffset": 3.142,
+        "halfWidth": 2500,
+        "tStart": 4.5,
+        "tEnd": 9.5
+      }
     },
     {
       "id": "core",
@@ -388,7 +424,15 @@
       "color": "#FFD860",
       "description": "The rotational centre of the Milky Way, dominated by Sagittarius A* — a supermassive black hole four million times the mass of the Sun. The central few hundred light-years form the Central Molecular Zone: an extreme environment of dense gas, magnetic fields, and a star-formation rate far higher than the galactic average. Thousands of neutron stars and stellar-mass black holes orbit within the inner parsec.",
       "funFact": "The star S2 orbits Sgr A* once every 16 years, reaching speeds of nearly 3% the speed of light at closest approach — the fastest-moving natural object tracked from Earth. Its orbit provided the first direct proof of a supermassive black hole at the galactic centre.",
-      "wikipediaUrl": "https://en.wikipedia.org/wiki/Galactic_Center"
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Galactic_Center",
+      "shape": {
+        "type": "ellipse",
+        "cx": 0,
+        "cy": -26000,
+        "rx": 3500,
+        "ry": 2200,
+        "angleRad": 0.96
+      }
     },
     {
       "id": "outer",
@@ -398,7 +442,14 @@
       "color": "#5090B8",
       "description": "The outermost defined spiral arm of the Milky Way, roughly 14,000–18,000 light-years beyond the Sun and more than 40,000 light-years from the galactic centre. Sparsely populated compared to the inner arms, its full extent and connection to the broader spiral structure are still being mapped. It may represent the fraying outer edge of the galaxy's disk.",
       "funFact": "The Outer Arm is so remote and thinly populated that overlapping radio signals from nearer arms make it extremely difficult to disentangle. Its true structural identity — whether it is a continuation of Perseus or an independent feature — is still actively debated.",
-      "wikipediaUrl": "https://en.wikipedia.org/wiki/Outer_Arm"
+      "wikipediaUrl": "https://en.wikipedia.org/wiki/Outer_Arm",
+      "shape": {
+        "type": "spiralBand",
+        "armOffset": 4.32,
+        "halfWidth": 3500,
+        "tStart": 12.0,
+        "tEnd": 14.8
+      }
     },
     {
       "id": "halo",

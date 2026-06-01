@@ -14,7 +14,7 @@ export const CELESTIAL_BODIES = rawSolData.bodies as Record<
 export const BODY_HIERARCHY = rawSolData.hierarchy as HierarchyNode[];
 export const VISUAL_CONFIG = rawSolData.visualConfig as VisualConfig;
 
-type RawSystemJson = {
+export type RawSystemJson = {
   system?: StarSystemMeta;
   bodies: Record<string, CelestialBody>;
   hierarchy: HierarchyNode[];
@@ -26,10 +26,8 @@ const systemModules = import.meta.glob("./systems/*.json") as Record<
   () => Promise<{ default: RawSystemJson }>
 >;
 
-export async function loadStarSystem(id: string): Promise<StarSystem> {
-  const loader = systemModules[`./systems/${id}.json`];
-  if (!loader) throw new Error(`Unknown system: ${id}`);
-  const { default: raw } = await loader();
+/** Pure assembly step — separated so it can be unit-tested without I/O. */
+export function assembleStarSystem(id: string, raw: RawSystemJson): StarSystem {
   const meta: StarSystemMeta = raw.system ?? {
     id,
     name: id,
@@ -43,4 +41,11 @@ export async function loadStarSystem(id: string): Promise<StarSystem> {
     hierarchy: raw.hierarchy,
     visualConfig: raw.visualConfig,
   };
+}
+
+export async function loadStarSystem(id: string): Promise<StarSystem> {
+  const loader = systemModules[`./systems/${id}.json`];
+  if (!loader) throw new Error(`Unknown system: ${id}`);
+  const { default: raw } = await loader();
+  return assembleStarSystem(id, raw);
 }

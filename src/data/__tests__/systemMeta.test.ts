@@ -2,9 +2,41 @@ import {
   ROOT_TYPE_ICONS,
   ROOT_TYPE_LABELS,
   ROOT_TYPE_BY_ID,
+  buildRootTypeById,
 } from "../systemMeta";
 import { STAR_SYSTEMS } from "../systems";
 import { GALAXY_DATA } from "../galaxy";
+
+describe("buildRootTypeById", () => {
+  it("galaxy entry takes precedence over star-system entry for the same id", () => {
+    const result = buildRootTypeById(
+      [{ id: "a", rootType: "black-hole" }],
+      [{ id: "a", rootType: "star" }],
+    );
+    expect(result["a"]).toBe("black-hole");
+  });
+
+  it("uses the star-system rootType when the system is not in galaxy entries", () => {
+    const result = buildRootTypeById(
+      [],
+      [{ id: "b", rootType: "neutron-star" }],
+    );
+    expect(result["b"]).toBe("neutron-star");
+  });
+
+  it("falls back to 'star' when rootType is missing from the star-system entry", () => {
+    const result = buildRootTypeById([], [{ id: "c" }]);
+    expect(result["c"]).toBe("star");
+  });
+
+  it("ignores star-system entries already covered by galaxy entries", () => {
+    const result = buildRootTypeById(
+      [{ id: "d", rootType: "quasar" }],
+      [{ id: "d" }],
+    );
+    expect(result["d"]).toBe("quasar");
+  });
+});
 
 describe("ROOT_TYPE_ICONS", () => {
   it("has an icon for every expected root type", () => {

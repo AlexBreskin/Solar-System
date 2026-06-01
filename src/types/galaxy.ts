@@ -17,6 +17,25 @@ export interface GalacticSystemEntry {
   rootType: string;
 }
 
+export type SpiralBandShape = {
+  type: "spiralBand";
+  armOffset: number;
+  halfWidth: number;
+  tStart: number;
+  tEnd: number;
+};
+
+export type EllipseShape = {
+  type: "ellipse";
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+  angleRad: number;
+};
+
+export type RegionShape = SpiralBandShape | EllipseShape;
+
 export interface GalaxyRegion {
   id: string;
   name: string;
@@ -26,6 +45,7 @@ export interface GalaxyRegion {
   description: string;
   funFact: string;
   wikipediaUrl?: string;
+  shape?: RegionShape;
 }
 
 export interface GalaxyData {

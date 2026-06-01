@@ -6,13 +6,14 @@ import type { Constellation, StarSystemMeta } from "@/types";
 const systemNameById: Record<string, string> = {};
 for (const s of STAR_SYSTEMS) systemNameById[s.id] = s.name.toLowerCase();
 
-const byDist = (a: StarSystemMeta, b: StarSystemMeta) =>
+/** Exported for testing: treats missing distanceFromEarth as 0. */
+export const sortByDistance = (a: StarSystemMeta, b: StarSystemMeta): number =>
   (a.distanceFromEarth ?? 0) - (b.distanceFromEarth ?? 0);
 const galactic = STAR_SYSTEMS.filter((s) => GALACTIC_IDS.has(s.id)).sort(
-  byDist,
+  sortByDistance,
 );
 const extragalactic = STAR_SYSTEMS.filter((s) => !GALACTIC_IDS.has(s.id)).sort(
-  byDist,
+  sortByDistance,
 );
 
 export interface NavFilterResult {

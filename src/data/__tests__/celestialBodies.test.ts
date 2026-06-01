@@ -3,7 +3,9 @@ import {
   BODY_HIERARCHY,
   VISUAL_CONFIG,
   loadStarSystem,
+  assembleStarSystem,
 } from "../celestialBodies";
+import type { RawSystemJson } from "../celestialBodies";
 import { BodyType } from "../../types";
 import type {
   CelestialBody,
@@ -324,6 +326,50 @@ describe("cross-consistency: VisualConfig keys vs CELESTIAL_BODIES", () => {
     for (const id of Object.keys(VISUAL_CONFIG.beltConfigs)) {
       expect(CELESTIAL_BODIES).toHaveProperty(id);
     }
+  });
+});
+
+// ─── assembleStarSystem ───────────────────────────────────────────────────────
+
+describe("assembleStarSystem", () => {
+  const minimalRaw: RawSystemJson = {
+    bodies: {},
+    hierarchy: [],
+    visualConfig: {
+      orbitalRadii: {},
+      planetSizes: {},
+      moonOrbitalRadii: {},
+      speedMultiplier: 1,
+      moonSpeedMultiplier: 1,
+      beltConfigs: {},
+    },
+  };
+
+  it("uses the system field when present", () => {
+    const raw: RawSystemJson = {
+      ...minimalRaw,
+      system: {
+        id: "test",
+        name: "Test System",
+        description: "desc",
+        starColor: "#ff0000",
+        displayOrder: 1,
+        distanceFromEarth: 0,
+        rootType: "star",
+      },
+    };
+    const result = assembleStarSystem("test", raw);
+    expect(result.meta.name).toBe("Test System");
+    expect(result.meta.starColor).toBe("#ff0000");
+  });
+
+  it("falls back to a minimal meta when system field is absent", () => {
+    const result = assembleStarSystem("legacy-id", minimalRaw);
+    expect(result.id).toBe("legacy-id");
+    expect(result.meta.id).toBe("legacy-id");
+    expect(result.meta.name).toBe("legacy-id");
+    expect(result.meta.description).toBe("");
+    expect(result.meta.starColor).toBe("#ffffff");
   });
 });
 

@@ -21,10 +21,19 @@ export const ROOT_TYPE_LABELS: Record<string, string> = {
   "stellar-cluster": "Stellar Cluster",
 };
 
-// GALAXY_DATA rootType takes precedence; STAR_SYSTEMS fills any gaps.
-const _map: Record<string, string> = {};
-for (const entry of GALAXY_DATA.systems) _map[entry.id] = entry.rootType;
-for (const s of STAR_SYSTEMS) {
-  if (!_map[s.id]) _map[s.id] = s.rootType ?? "star";
+/** Pure builder — separated so it can be unit-tested with synthetic data. */
+export function buildRootTypeById(
+  galaxyEntries: readonly { id: string; rootType: string }[],
+  systems: readonly { id: string; rootType?: string }[],
+): Record<string, string> {
+  const map: Record<string, string> = {};
+  // GALAXY_DATA rootType takes precedence; STAR_SYSTEMS fills any gaps.
+  for (const entry of galaxyEntries) map[entry.id] = entry.rootType;
+  for (const s of systems) {
+    if (!map[s.id]) map[s.id] = s.rootType ?? "star";
+  }
+  return map;
 }
-export const ROOT_TYPE_BY_ID: Readonly<Record<string, string>> = _map;
+
+export const ROOT_TYPE_BY_ID: Readonly<Record<string, string>> =
+  buildRootTypeById(GALAXY_DATA.systems, STAR_SYSTEMS);

@@ -1,4 +1,5 @@
 import type { GalaxyData, GalaxyRegion, StarSystemMeta } from "../types";
+import { pointInRegionShape } from "../utils/spiralGeometry";
 
 export interface GalaxyMarker {
   id: string;
@@ -45,16 +46,29 @@ export class GalaxySimulation {
     worldY: number,
     lyThreshold: number,
   ): GalaxyRegion | null {
-    let best: GalaxyRegion | null = null;
-    let bestDist = Infinity;
+    // Single pass: accumulate best shape-match (nearest label among containing
+    // shapes) and best label-proximity match simultaneously.
+    let shapeBest: GalaxyRegion | null = null;
+    let shapeBestLabelDist = Infinity;
+    let labelBest: GalaxyRegion | null = null;
+    let labelBestDist = Infinity;
     for (const region of this.regions) {
-      const d = Math.hypot(worldX - region.labelX, worldY - region.labelY);
-      if (d < lyThreshold && d < bestDist) {
-        best = region;
-        bestDist = d;
+      const labelDist = Math.hypot(
+        worldX - region.labelX,
+        worldY - region.labelY,
+      );
+      if (labelDist < lyThreshold && labelDist < labelBestDist) {
+        labelBest = region;
+        labelBestDist = labelDist;
+      }
+      if (!region.shape) continue;
+      if (!pointInRegionShape(worldX, worldY, region.shape)) continue;
+      if (labelDist < shapeBestLabelDist) {
+        shapeBest = region;
+        shapeBestLabelDist = labelDist;
       }
     }
-    return best;
+    return shapeBest ?? labelBest;
   }
 
   hitTest(worldX: number, worldY: number, lyThreshold: number): string | null {

@@ -12,9 +12,11 @@ import {
   drawGalaxyBackground,
   drawSystemMarkers,
   drawRegionLabels,
+  drawRegionHighlight,
 } from "@/renderers/galaxy-view";
 import { STAR_SYSTEMS } from "@/data/systems";
 import { GALAXY_DATA, GALAXY_REGIONS } from "@/data/galaxy";
+import { GALACTIC_CENTRE_WORLD_Y } from "@/utils/spiralGeometry";
 import { useZoomControls } from "@/shared/hooks/useZoomControls";
 import ZoomControls from "@/shared/components/ZoomControls";
 import "./GalaxyCanvas.css";
@@ -24,7 +26,6 @@ export interface GalaxyCanvasHandle {
 }
 
 const GALAXY_SCALE = 0.01;
-const GALACTIC_CENTRE_WORLD_Y = -26000;
 const INITIAL_ZOOM = 0.8;
 const INITIAL_PAN_Y = (26000 / 2) * GALAXY_SCALE * INITIAL_ZOOM;
 
@@ -78,6 +79,25 @@ interface LastBg {
   h: number;
 }
 
+function bgNeedsRepaint(
+  gcx: number,
+  gcy: number,
+  scale: number,
+  zoom: number,
+  w: number,
+  h: number,
+  last: LastBg,
+): boolean {
+  return (
+    gcx !== last.gcx ||
+    gcy !== last.gcy ||
+    scale !== last.scale ||
+    zoom !== last.zoom ||
+    w !== last.w ||
+    h !== last.h
+  );
+}
+
 function rootTypeIcon(rootType: string): string {
   const icons: Record<string, string> = {
     star: "☀",
@@ -116,6 +136,9 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
     const hoveredRegionRef = useRef<string | null>(null);
     const selectedSystemRef = useRef(selectedSystem);
     const selectedRegionRef = useRef(selectedRegion);
+    const selectedRegionObjRef = useRef(
+      GALAXY_REGIONS.find((r) => r.id === selectedRegion) ?? null,
+    );
     const showRegionsRef = useRef(showRegions);
     const constellationSystemIdsRef = useRef(constellationSystemIds);
 
@@ -193,6 +216,8 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
 
     useEffect(() => {
       selectedRegionRef.current = selectedRegion;
+      selectedRegionObjRef.current =
+        GALAXY_REGIONS.find((r) => r.id === selectedRegion) ?? null;
     }, [selectedRegion]);
 
     useEffect(() => {
@@ -224,14 +249,7 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
         const gcy = cy + pan.panY + GALACTIC_CENTRE_WORLD_Y * scale;
 
         // Background canvas — only repaint when the view has actually changed
-        const bgChanged =
-          gcx !== lastBg.gcx ||
-          gcy !== lastBg.gcy ||
-          scale !== lastBg.scale ||
-          pan.zoom !== lastBg.zoom ||
-          w !== lastBg.w ||
-          h !== lastBg.h;
-        if (bgChanged) {
+        if (bgNeedsRepaint(gcx, gcy, scale, pan.zoom, w, h, lastBg)) {
           bgCtx.save();
           bgCtx.scale(dpr, dpr);
           drawGalaxyBackground(bgCtx, w, h, gcx, gcy, scale, pan.zoom);
@@ -249,6 +267,16 @@ const GalaxyCanvas = forwardRef<GalaxyCanvasHandle, GalaxyCanvasProps>(
         topCtx.scale(dpr, dpr);
         topCtx.clearRect(0, 0, w, h);
         if (showRegionsRef.current) {
+          if (selectedRegionObjRef.current) {
+            drawRegionHighlight(
+              topCtx,
+              selectedRegionObjRef.current,
+              gcx,
+              gcy,
+              scale,
+              pan.zoom,
+            );
+          }
           drawRegionLabels(
             topCtx,
             GALAXY_REGIONS,
