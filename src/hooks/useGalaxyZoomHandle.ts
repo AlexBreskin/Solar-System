@@ -1,6 +1,5 @@
 import { useImperativeHandle } from "react";
 import type { Ref } from "react";
-import type { RefObject } from "react";
 import type { GalaxySimulation } from "@/simulation/galaxySimulation";
 import { GALAXY_SCALE } from "@/hooks/useGalaxyPointerHandlers";
 import type { PanState } from "@/hooks/useGalaxyPointerHandlers";
@@ -12,7 +11,7 @@ export interface GalaxyCanvasHandle {
 export function useGalaxyZoomHandle(
   ref: Ref<GalaxyCanvasHandle | null> | undefined,
   sim: GalaxySimulation,
-  panRef: RefObject<PanState>,
+  panRef: { current: PanState },
 ): void {
   useImperativeHandle(
     ref,

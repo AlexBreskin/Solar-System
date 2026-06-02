@@ -72,11 +72,11 @@ export function makeDragState(): DragState {
 
 interface UseGalaxyPointerHandlersProps {
   topCanvasRef: RefObject<HTMLCanvasElement | null>;
-  sizeRef: RefObject<{ w: number; h: number }>;
-  panRef: RefObject<PanState>;
-  dragRef: RefObject<DragState>;
-  pointersRef: RefObject<Map<number, { x: number; y: number }>>;
-  hoveredRegionRef: RefObject<string | null>;
+  sizeRef: { current: { w: number; h: number } };
+  panRef: { current: PanState };
+  dragRef: { current: DragState };
+  pointersRef: { current: Map<number, { x: number; y: number }> };
+  hoveredRegionRef: { current: string | null };
   selectedRegionRef: RefObject<string | null>;
   showRegionsRef: RefObject<boolean>;
   sim: GalaxySimulation;

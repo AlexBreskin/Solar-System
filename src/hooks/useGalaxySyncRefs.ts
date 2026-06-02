@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import type { RefObject } from "react";
 import type { GalaxySimulation } from "@/simulation/galaxySimulation";
 import { GALAXY_REGIONS } from "@/data/galaxy";
 import type { GalaxyRegion } from "@/types/galaxy";
@@ -8,12 +7,12 @@ interface UseGalaxySyncRefsProps {
   sim: GalaxySimulation;
   hoveredSystem: string | null;
   selectedSystem: string | null;
-  selectedSystemRef: RefObject<string | null>;
+  selectedSystemRef: { current: string | null };
   selectedRegion: string | null;
-  selectedRegionRef: RefObject<string | null>;
-  selectedRegionObjRef: RefObject<GalaxyRegion | null>;
+  selectedRegionRef: { current: string | null };
+  selectedRegionObjRef: { current: GalaxyRegion | null };
   constellationSystemIds: Set<string> | undefined;
-  constellationSystemIdsRef: RefObject<Set<string> | undefined>;
+  constellationSystemIdsRef: { current: Set<string> | undefined };
 }
 
 export function useGalaxySyncRefs({

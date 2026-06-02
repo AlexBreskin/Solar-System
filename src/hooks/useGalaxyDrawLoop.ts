@@ -57,7 +57,7 @@ export interface DrawLoopRefs {
   hoveredRegionRef: RefObject<string | null>;
   selectedRegionRef: RefObject<string | null>;
   selectedSystemRef: RefObject<string | null>;
-  constellationSystemIdsRef: RefObject<Set<string> | undefined>;
+  constellationSystemIdsRef: { current: Set<string> | undefined };
 }
 
 export function useGalaxyDrawLoop(
@@ -83,7 +83,7 @@ export function useGalaxyDrawLoop(
     const bgCtx = bgCanvasRef.current!.getContext("2d")!;
     const topCtx = topCanvasRef.current!.getContext("2d")!;
     const pan = panRef.current!;
-    const lastBg = lastBgRef.current;
+    const lastBg = lastBgRef.current!;
     const dpr = window.devicePixelRatio;
 
     function draw(ts: number): void {
