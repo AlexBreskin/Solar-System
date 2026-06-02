@@ -57,9 +57,6 @@ function makeProps(overrides?: { sim?: GalaxySimulation }) {
     current: new Map(),
   };
   const hoveredRegionRef: { current: string | null } = { current: null };
-  const selectedRegionRef = { current: null } as unknown as RefObject<
-    string | null
-  >;
   const showRegionsRef = { current: false } as unknown as RefObject<boolean>;
   const onSelectSystem = vi.fn();
   const onHoverSystem = vi.fn();
@@ -73,7 +70,6 @@ function makeProps(overrides?: { sim?: GalaxySimulation }) {
     dragRef,
     pointersRef,
     hoveredRegionRef,
-    selectedRegionRef,
     showRegionsRef,
     sim,
     onSelectSystem,

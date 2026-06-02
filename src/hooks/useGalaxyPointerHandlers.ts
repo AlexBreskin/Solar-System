@@ -77,7 +77,6 @@ interface UseGalaxyPointerHandlersProps {
   dragRef: { current: DragState };
   pointersRef: { current: Map<number, { x: number; y: number }> };
   hoveredRegionRef: { current: string | null };
-  selectedRegionRef: RefObject<string | null>;
   showRegionsRef: RefObject<boolean>;
   sim: GalaxySimulation;
   onSelectSystem: (id: string) => void;
@@ -92,7 +91,6 @@ export function useGalaxyPointerHandlers({
   dragRef,
   pointersRef,
   hoveredRegionRef,
-  selectedRegionRef,
   showRegionsRef,
   sim,
   onSelectSystem,
@@ -200,7 +198,6 @@ export function useGalaxyPointerHandlers({
           setClusterMenu({ x, y, systems: nearby });
         } else {
           onSelectSystem(hit);
-          if (selectedRegionRef.current !== null) onSelectRegion(null);
           setClusterMenu(null);
         }
         return;

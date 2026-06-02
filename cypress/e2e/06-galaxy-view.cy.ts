@@ -29,4 +29,21 @@ describe("Galaxy View", () => {
     cy.get(".gsp-explore-btn").should("be.visible").click();
     cy.get(".tab-btn.active").should("contain.text", "System View");
   });
+
+  it("selecting a system after a region shows the system info, not an empty panel", () => {
+    // Select Solar System so the arm-hint button (region link) appears
+    cy.contains(".gnav-row", "Solar System").click();
+    cy.get(".gsp-name").should("contain.text", "Solar System");
+
+    // Click the galactic-arm button to select the Orion Spur region
+    cy.get(".gsp-arm-hint--clickable").first().click();
+    cy.get(".gsp-type-badge--region").should("be.visible");
+    cy.get(".gsp-name").should("not.contain.text", "Solar System");
+
+    // Now select a different system — the right panel must show that system, not be blank
+    cy.contains(".gnav-row", "Alpha Centauri").click();
+    cy.get(".gsp-name").should("contain.text", "Alpha Centauri");
+    cy.get(".gsp-type-badge--region").should("not.exist");
+    cy.get(".galaxy-system-panel--empty").should("not.exist");
+  });
 });

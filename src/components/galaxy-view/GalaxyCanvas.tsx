@@ -129,7 +129,6 @@ export default function GalaxyCanvas({
     dragRef,
     pointersRef,
     hoveredRegionRef,
-    selectedRegionRef,
     showRegionsRef,
     sim,
     onSelectSystem,
