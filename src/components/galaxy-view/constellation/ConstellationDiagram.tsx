@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { JSX, useMemo, useState } from "react";
 import { STAR_SYSTEMS } from "@/data/systems";
 import type { ConstellationOutline } from "@/types/galaxy";
 import { buildProjection } from "@/utils/constellationProjection";

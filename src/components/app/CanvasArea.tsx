@@ -1,8 +1,7 @@
-import type { RefObject } from "react";
+import type { JSX, RefObject } from "react";
 import SystemCanvas from "@/components/system-view/SystemCanvas";
-import GalaxyCanvas, {
-  type GalaxyCanvasHandle,
-} from "@/components/galaxy-view/GalaxyCanvas";
+import GalaxyCanvas from "@/components/galaxy-view/GalaxyCanvas";
+import type { GalaxyCanvasHandle } from "@/hooks/useGalaxyZoomHandle";
 import PlanetCanvas from "@/components/planet-view/PlanetCanvas";
 import type { BodyId, TabId } from "@/types";
 
@@ -17,7 +16,7 @@ interface CanvasAreaProps {
   showOrbits: boolean;
   showLabels: boolean;
   viewedPlanet: BodyId;
-  galaxyCanvasRef: RefObject<GalaxyCanvasHandle>;
+  galaxyCanvasRef: RefObject<GalaxyCanvasHandle | null>;
   galaxySelectedSystem: string | null;
   galaxyHoveredSystem: string | null;
   galaxySelectedRegion: string | null;

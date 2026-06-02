@@ -1,6 +1,7 @@
 import GalaxySystemPanel from "@/components/galaxy-view/GalaxySystemPanel";
 import InfoPanel from "@/components/system-view/InfoPanel";
 import type { BodyId } from "@/types";
+import { JSX } from "react";
 
 interface RightPanelProps {
   isGalaxy: boolean;

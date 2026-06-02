@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { JSX, useCallback, useEffect, useRef, useState } from "react";
 import { useStarSystem } from "@/shared/contexts/StarSystemContext";
 import { BodyType, ROOT_BODY_TYPES } from "@/types";
 import { GALACTIC_IDS } from "@/data/galaxy";

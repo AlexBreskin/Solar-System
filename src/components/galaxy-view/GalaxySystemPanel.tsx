@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { JSX, type ReactNode } from "react";
 import { STAR_SYSTEMS } from "@/data/systems";
 import { GALAXY_DATA, GALACTIC_IDS, GALAXY_REGIONS } from "@/data/galaxy";
 import { CONSTELLATIONS } from "@/data/constellations";

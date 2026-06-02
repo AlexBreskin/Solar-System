@@ -3,6 +3,7 @@ import { BodyType, ROOT_BODY_TYPES } from "@/types";
 import type { InfoPanelProps, StatRowProps } from "@/types";
 import { auToKm, formatAU, formatKm, formatLY, lyToAU } from "@/utils/distance";
 import "./InfoPanel.css";
+import { JSX } from "react";
 
 const TYPE_LABELS: Record<BodyType, string> = {
   [BodyType.Star]: "Star",

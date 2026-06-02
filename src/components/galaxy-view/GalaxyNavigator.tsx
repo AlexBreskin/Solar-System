@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import type { Constellation, StarSystemMeta } from "@/types";
 import {
   ROOT_TYPE_BY_ID,

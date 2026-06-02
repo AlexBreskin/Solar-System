@@ -1,4 +1,5 @@
 import type { TabId } from "@/types";
+import { JSX } from "react";
 
 interface HeaderControlsProps {
   isGalaxy: boolean;

@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useRef } from "react";
-import type { GalaxyCanvasHandle } from "@/components/galaxy-view/GalaxyCanvas";
+import type { GalaxyCanvasHandle } from "@/hooks/useGalaxyZoomHandle";
 import { CONSTELLATIONS } from "@/data/constellations";
 
 export interface GalaxyState {
@@ -8,7 +8,7 @@ export interface GalaxyState {
   selectedRegion: string | null;
   selectedConstellation: string | null;
   constellationSystemIds: Set<string>;
-  canvasRef: React.RefObject<GalaxyCanvasHandle>;
+  canvasRef: React.RefObject<GalaxyCanvasHandle | null>;
   selectSystem: (id: string) => void;
   hoverSystem: (id: string | null) => void;
   selectRegion: (id: string | null) => void;

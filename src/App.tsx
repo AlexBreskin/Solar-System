@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, JSX } from "react";
 import BodyNavigator from "@/components/system-view/BodyNavigator";
 import GalaxyNavigator from "@/components/galaxy-view/GalaxyNavigator";
 import HeaderControls from "@/components/app/HeaderControls";

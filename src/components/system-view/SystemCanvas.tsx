@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useMemo } from "react";
+import React, { useRef, useEffect, useCallback, useMemo, JSX } from "react";
 import { useZoomControls } from "@/shared/hooks/useZoomControls";
 import ZoomControls from "@/shared/components/ZoomControls";
 import { SolarSystemSimulation } from "@/simulation/solarSystemSimulation";

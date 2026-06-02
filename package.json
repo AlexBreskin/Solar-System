@@ -29,9 +29,9 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc --noEmit -p tsconfig.app.json && vite build",
     "test": "vitest run",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit -p tsconfig.app.json",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "cypress:open": "cypress open",
