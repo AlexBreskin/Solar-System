@@ -5,8 +5,8 @@ export function useGalaxyCanvasResize(
   containerRef: RefObject<HTMLDivElement | null>,
   bgCanvasRef: RefObject<HTMLCanvasElement | null>,
   topCanvasRef: RefObject<HTMLCanvasElement | null>,
-  sizeRef: RefObject<{ w: number; h: number }>,
-  lastBgRef: RefObject<{ w: number }>,
+  sizeRef: { current: { w: number; h: number } | null },
+  lastBgRef: { current: { w: number } | null },
 ): void {
   useEffect(() => {
     const container = containerRef.current!;
@@ -25,7 +25,7 @@ export function useGalaxyCanvasResize(
         topCanvas.style.width = `${width}px`;
         topCanvas.style.height = `${height}px`;
         sizeRef.current = { w: width, h: height };
-        lastBgRef.current.w = 0;
+        if (lastBgRef.current) lastBgRef.current.w = 0;
       }
     });
     ro.observe(container);

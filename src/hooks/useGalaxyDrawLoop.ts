@@ -50,7 +50,7 @@ export interface DrawLoopRefs {
   topCanvasRef: RefObject<HTMLCanvasElement | null>;
   sizeRef: RefObject<{ w: number; h: number }>;
   panRef: RefObject<PanState>;
-  animRef: RefObject<number | null>;
+  animRef: { current: number | null };
   lastBgRef: RefObject<LastBg>;
   showRegionsRef: RefObject<boolean>;
   selectedRegionObjRef: RefObject<GalaxyRegion | null>;
@@ -82,13 +82,13 @@ export function useGalaxyDrawLoop(
   useEffect(() => {
     const bgCtx = bgCanvasRef.current!.getContext("2d")!;
     const topCtx = topCanvasRef.current!.getContext("2d")!;
-    const pan = panRef.current;
+    const pan = panRef.current!;
     const lastBg = lastBgRef.current;
     const dpr = window.devicePixelRatio;
 
     function draw(ts: number): void {
       animRef.current = requestAnimationFrame(draw);
-      const { w, h } = sizeRef.current;
+      const { w, h } = sizeRef.current!;
       if (!w || !h) return;
 
       pan.panX += (pan.targetPanX - pan.panX) * 0.1;
