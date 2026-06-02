@@ -8,20 +8,16 @@ import {
   useGalaxyPointerHandlers,
   makePanState,
   makeDragState,
-  type PanState,
-  type DragState,
-} from "@/hooks/useGalaxyPointerHandlers";
-import {
   useGalaxyDrawLoop,
   makeLastBg,
-  type LastBg,
-} from "@/hooks/useGalaxyDrawLoop";
-import { useGalaxyCanvasResize } from "@/hooks/useGalaxyCanvasResize";
-import { useGalaxySyncRefs } from "@/hooks/useGalaxySyncRefs";
-import {
+  useGalaxyCanvasResize,
+  useGalaxySyncRefs,
   useGalaxyZoomHandle,
+  type PanState,
+  type DragState,
+  type LastBg,
   type GalaxyCanvasHandle,
-} from "@/hooks/useGalaxyZoomHandle";
+} from "@/hooks";
 import ClusterMenuPopup from "@/components/galaxy-view/ClusterMenuPopup";
 import "./GalaxyCanvas.css";
 

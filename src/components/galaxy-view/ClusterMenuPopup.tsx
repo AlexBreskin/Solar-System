@@ -1,4 +1,4 @@
-import type { ClusterMenu } from "@/hooks/useGalaxyPointerHandlers";
+import type { ClusterMenu } from "@/hooks";
 import { JSX } from "react";
 
 function rootTypeIcon(rootType: string): string {

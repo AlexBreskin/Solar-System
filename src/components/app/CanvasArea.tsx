@@ -1,7 +1,7 @@
 import type { JSX, RefObject } from "react";
 import SystemCanvas from "@/components/system-view/SystemCanvas";
 import GalaxyCanvas from "@/components/galaxy-view/GalaxyCanvas";
-import type { GalaxyCanvasHandle } from "@/hooks/useGalaxyZoomHandle";
+import type { GalaxyCanvasHandle } from "@/hooks";
 import PlanetCanvas from "@/components/planet-view/PlanetCanvas";
 import type { BodyId, TabId } from "@/types";
 

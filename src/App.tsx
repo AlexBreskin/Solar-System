@@ -15,9 +15,7 @@ import {
   VISUAL_CONFIG,
 } from "@/data/celestialBodies";
 import type { BodyId, TabId, StarSystemMeta } from "@/types";
-import { useGalaxyState } from "@/hooks/useGalaxyState";
-import { useBodySelection } from "@/hooks/useBodySelection";
-import { useSystemNavigation } from "@/hooks/useSystemNavigation";
+import { useGalaxyState, useBodySelection, useSystemNavigation } from "@/hooks";
 import { getPlanetViewId } from "@/utils/getPlanetViewId";
 import "./App.css";
 

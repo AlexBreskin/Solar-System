@@ -5,7 +5,7 @@ import {
   ROOT_TYPE_ICONS,
   ROOT_TYPE_LABELS,
 } from "@/data/systemMeta";
-import { useNavFilter } from "@/hooks/useNavFilter";
+import { useNavFilter } from "@/hooks";
 import "./GalaxyNavigator.css";
 
 interface GalaxyNavigatorProps {

@@ -9,7 +9,7 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 
 ### System Selector
 
-- **Multiple star systems** — switch between the Solar System and 15 confirmed exoplanetary/stellar systems, including black holes (Sgr A\*, Cygnus X-1), neutron stars (Lich, PSR J0437), and quasars (3C 273, TON 618)
+- **Multiple star systems** — switch between all 47 star systems (including Sol), including confirmed exoplanetary systems, black holes (Sgr A\*, Cygnus X-1), neutron stars (Lich, PSR J0437), quasars (3C 273, TON 618), globular clusters, and galaxies
 - **Auto-discovery** — the app scans `src/data/systems/` at build time; adding a new JSON file with a `"system"` metadata block makes it appear in the selector automatically
 - **Seamless switching** — switching systems resets the camera and simulation while preserving all UI preferences
 
@@ -112,7 +112,7 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 24+ and npm
 
 ### Install and run
 
@@ -126,13 +126,10 @@ Opens at `http://localhost:5173`.
 ### Run tests
 
 ```bash
-npm test
-```
-
-**Unit tests with coverage report** (HTML report written to `coverage/`):
-
-```bash
-npm test -- --coverage
+npm test                  # unit tests
+npm test -- --coverage    # unit tests + HTML coverage report (written to coverage/)
+npm run lint              # ESLint
+npm run check             # type-check + lint + unit tests in one command
 ```
 
 **E2E tests** (Cypress — requires the dev server to be running):
@@ -147,6 +144,8 @@ npm run cypress:open     # interactive UI
 ```
 
 The Cypress suite covers 8 feature areas: system selector, tab switching, body navigator, info panel, speed controls, galaxy view, zoom controls, and responsive layout (desktop/tablet/mobile/Galaxy S26 Ultra portrait+landscape). Screenshots of failures are saved to `cypress/screenshots/` automatically.
+
+A pre-commit hook (`.githooks/pre-commit`) runs `npm run lint` and `npm test` automatically before every commit. The hook path is wired up via `npm install` through the `prepare` script.
 
 CI runs unit tests then Cypress headlessly before every build — the badge above reflects the combined status.
 
@@ -242,7 +241,7 @@ src/
 │   ├── useBodySelection.ts     # Selected/hovered/tracked body state and event handlers
 │   ├── useGalaxyState.ts       # Galaxy canvas ref, selected system/region/constellation
 │   ├── useNavFilter.ts         # Search-filter state for the left-panel navigator
-│   ├── useSystemNavigation.ts  # System-switching with stale-load cancellation
+│   ├── useSystemNavigation.ts  # System-switching (synchronous — all data is eagerly loaded)
 │   └── __tests__/
 │       ├── useBodySelection.test.ts
 │       ├── useGalaxyState.test.ts
@@ -324,7 +323,7 @@ src/
 
 - **Architecture** — three layers: simulation (pure state classes), renderers (pure canvas functions with no React dependency), components (React lifecycle, events, refs)
 - **Multi-system** — active system data flows from `App` through `StarSystemContext`; all components read bodies, hierarchy, and visualConfig from context rather than static imports; canvas components remount on system switch via `key` prop
-- **Auto-discovery** — `import.meta.glob('./systems/*.json')` at build time scans the directory; the `"system"` metadata block in each JSON provides the name and display order without any TypeScript registration
+- **Auto-discovery** — `import.meta.glob('./systems/*.json', { eager: true })` at build time scans the directory; all 47 system JSON files are bundled eagerly so switching systems is instantaneous; the `"system"` metadata block in each JSON provides the name and display order without any TypeScript registration
 - **Binary/multi-star systems** — stellar companions use `BodyType.Companion` and a `binaryMassFraction` field; the simulation does a two-pass position update so both bodies orbit the true barycenter; supports double and triple star configurations
 - **Rendering** — HTML5 Canvas 2D with `requestAnimationFrame`; DevicePixelRatio-aware for high-DPI displays
 - **Deterministic particles** — belt particle fields and the galaxy spiral background use a shared seeded RNG (`src/utils/mulberry32.ts`) so layouts are consistent across renders
@@ -334,4 +333,4 @@ src/
 - **Constellation data** — 29 constellations in individual JSON files under `src/data/constellations/`; each file is validated by `constellations.test.ts` against the Hipparcos J2000 catalog (positions within 2°, magnitudes within ±1.0 mag) and all 88 official IAU constellation names; `constellations.ts` auto-discovers files via `import.meta.glob` and builds a `CONSTELLATION_BY_SYSTEM` reverse index
 - **Pointer Events API** — all three canvas views handle input through `onPointerDown/Move/Up/Cancel/Leave` instead of separate mouse and touch handlers; `setPointerCapture` keeps events flowing when a finger leaves the canvas boundary; a `Map<pointerId, {x,y}>` tracks simultaneous pointers to compute two-finger pinch distance; `touch-action: none` prevents browser scroll/pinch from intercepting canvas gestures
 - **Responsive layout** — CSS breakpoints at 1023px (tablet: narrower panels, logo/speed hidden) and 639px (mobile: fixed-position slide-out drawers, bottom tab bar); `100dvh` with `100vh` fallback in `.app-main` height calculations ensures the layout is correct on Firefox Android as the address bar appears and disappears; Firefox-native `scrollbar-width: thin` and `scrollbar-color` applied alongside the webkit pseudo-element rules
-- **Tooling** — Vite for dev and builds; Vitest (938 unit tests across 18 suites) + Cypress E2E (8 spec files); ESLint with `max-statements-per-line`, `one-var`, and `complexity` (max 10) rules; V8 coverage via `@vitest/coverage-v8`; simulation layer at 100% branch coverage
+- **Tooling** — Vite 8 (native `tsconfig` paths, no plugin needed) for dev and builds; Vitest unit tests + Cypress E2E (8 spec files); ESLint flat config with `max-statements-per-line`, `one-var`, and `complexity` (max 10) rules; pre-commit hook (see "Run tests" above); V8 coverage via `@vitest/coverage-v8` (85%+ overall, 100% branch on simulation layer)
