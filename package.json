@@ -34,6 +34,8 @@
     "type-check": "tsc --noEmit -p tsconfig.app.json",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "check": "npm run type-check && npm run lint && npm test",
+    "prepare": "git config core.hooksPath .githooks",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --headless"
   }

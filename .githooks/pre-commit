@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Enforce kebab-case folder names under src/
+# __tests__ and systems/ are allowed exceptions.
+
+KEBAB_RE='^[a-z][a-z0-9]*(-[a-z0-9]+)*$'
+ALLOWED='__tests__|systems'
+ROOT="$(git rev-parse --show-toplevel)/src"
+VIOLATIONS=()
+
+while IFS= read -r -d '' dir; do
+  name="$(basename "$dir")"
+  if echo "$name" | grep -qE "^($ALLOWED)$"; then
+    continue
+  fi
+  if ! echo "$name" | grep -qE "$KEBAB_RE"; then
+    VIOLATIONS+=("${dir#"$ROOT/"}")
+  fi
+done < <(find "$ROOT" -mindepth 1 -type d -print0)
+
+if [ ${#VIOLATIONS[@]} -gt 0 ]; then
+  echo "❌ Folder naming violation — all src/ directories must use kebab-case."
+  echo "   Offending directories:"
+  for v in "${VIOLATIONS[@]}"; do
+    echo "     src/$v"
+  done
+  echo ""
+  echo "   Rename them to kebab-case before committing."
+  exit 1
+fi
+
+# ESLint
+if ! npm run lint --silent 2>&1; then
+  echo "❌ ESLint failed — fix errors before committing."
+  exit 1
+fi
+
+# Unit tests
+if ! npm test 2>&1; then
+  echo "❌ Tests failed — fix failures before committing."
+  exit 1
+fi
