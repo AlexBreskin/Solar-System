@@ -8,7 +8,8 @@
   "type": "module",
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "rollup": "^4.61.0"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
@@ -24,7 +25,6 @@
     "jsdom": "^29.1.1",
     "typescript": "^6.0.3",
     "vite": "^8.0.14",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.7"
   },
   "scripts": {

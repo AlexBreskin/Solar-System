@@ -59,13 +59,6 @@ describe("useSystemNavigation", () => {
     mockLoadStarSystem.mockReset();
   });
 
-  it("starts with loadingSystem false", () => {
-    const { result } = renderHook(() =>
-      useSystemNavigation("sol", vi.fn(), vi.fn(), vi.fn(), vi.fn()),
-    );
-    expect(result.current.loadingSystem).toBe(false);
-  });
-
   it("handleSystemChange is a no-op when id matches current system", () => {
     const setSystemData = vi.fn();
     const onGalaxySelect = vi.fn();
@@ -84,9 +77,9 @@ describe("useSystemNavigation", () => {
     expect(onGalaxySelect).not.toHaveBeenCalled();
   });
 
-  it("handleSystemChange loads the system and calls all callbacks on success", async () => {
+  it("handleSystemChange loads the system and calls all callbacks", () => {
     const fakeSystem = makeFakeSystem("alpha-centauri", "alpha");
-    mockLoadStarSystem.mockResolvedValueOnce(fakeSystem);
+    mockLoadStarSystem.mockReturnValueOnce(fakeSystem);
     const setSystemData = vi.fn();
     const onGalaxySelect = vi.fn();
     const onTabChange = vi.fn();
@@ -100,39 +93,35 @@ describe("useSystemNavigation", () => {
         onBodyReset,
       ),
     );
-    await act(async () => {
-      result.current.handleSystemChange("alpha-centauri");
-    });
+    act(() => result.current.handleSystemChange("alpha-centauri"));
     expect(setSystemData).toHaveBeenCalledWith(fakeSystem);
     expect(onGalaxySelect).toHaveBeenCalledWith("alpha-centauri");
     expect(onBodyReset).toHaveBeenCalledWith("alpha");
     expect(onTabChange).toHaveBeenCalledWith("solar-system");
-    expect(result.current.loadingSystem).toBe(false);
   });
 
-  it("handleSystemChange falls back to system id when no root-type body found", async () => {
+  it("handleSystemChange falls back to system id when no root-type body found", () => {
     const fakeSystem = makeFakeSystem("mystery", "mystery");
     fakeSystem.bodies["mystery"].type = BodyType.Planet;
-    mockLoadStarSystem.mockResolvedValueOnce(fakeSystem);
+    mockLoadStarSystem.mockReturnValueOnce(fakeSystem);
     const onBodyReset = vi.fn();
     const { result } = renderHook(() =>
       useSystemNavigation("sol", vi.fn(), vi.fn(), vi.fn(), onBodyReset),
     );
-    await act(async () => {
-      result.current.handleSystemChange("mystery");
-    });
+    act(() => result.current.handleSystemChange("mystery"));
     expect(onBodyReset).toHaveBeenCalledWith("mystery");
   });
 
-  it("handleSystemChange clears loadingSystem on failure", async () => {
-    mockLoadStarSystem.mockRejectedValueOnce(new Error("network error"));
-    const { result } = renderHook(() =>
-      useSystemNavigation("sol", vi.fn(), vi.fn(), vi.fn(), vi.fn()),
-    );
-    await act(async () => {
-      result.current.handleSystemChange("bad-system");
+  it("handleSystemChange silently ignores unknown systems", () => {
+    mockLoadStarSystem.mockImplementationOnce(() => {
+      throw new Error("Unknown system: bad-system");
     });
-    expect(result.current.loadingSystem).toBe(false);
+    const setSystemData = vi.fn();
+    const { result } = renderHook(() =>
+      useSystemNavigation("sol", setSystemData, vi.fn(), vi.fn(), vi.fn()),
+    );
+    act(() => result.current.handleSystemChange("bad-system"));
+    expect(setSystemData).not.toHaveBeenCalled();
   });
 
   it("handleExploreSystem for current system calls onTabChange without loading", () => {
@@ -147,77 +136,14 @@ describe("useSystemNavigation", () => {
     expect(mockLoadStarSystem).not.toHaveBeenCalled();
   });
 
-  it("ignores stale .then() when a newer load has already completed", async () => {
-    let resolveA!: (v: unknown) => void;
-    let resolveB!: (v: unknown) => void;
-    const promiseA = new Promise((res) => {
-      resolveA = res;
-    });
-    const promiseB = new Promise((res) => {
-      resolveB = res;
-    });
-    mockLoadStarSystem
-      .mockReturnValueOnce(promiseA)
-      .mockReturnValueOnce(promiseB);
-
-    const fakeSysA = makeFakeSystem("alpha-centauri", "alpha");
-    const fakeSysB = makeFakeSystem("betelgeuse", "betel");
-    const setSystemData = vi.fn();
-    const onBodyReset = vi.fn();
-    const { result } = renderHook(() =>
-      useSystemNavigation("sol", setSystemData, vi.fn(), vi.fn(), onBodyReset),
-    );
-
-    act(() => result.current.handleSystemChange("alpha-centauri")); // gen = 1
-    act(() => result.current.handleSystemChange("betelgeuse")); // gen = 2
-
-    await act(async () => {
-      resolveB(fakeSysB);
-    });
-    expect(setSystemData).toHaveBeenCalledTimes(1);
-    expect(setSystemData).toHaveBeenCalledWith(fakeSysB);
-
-    await act(async () => {
-      resolveA(fakeSysA); // stale — gen=1 != loadGenRef.current=2, should be ignored
-    });
-    expect(setSystemData).toHaveBeenCalledTimes(1); // still 1
-    expect(onBodyReset).toHaveBeenCalledTimes(1); // only called for B
-  });
-
-  it("does not clear loadingSystem when a stale load rejects", async () => {
-    let rejectA!: (e: Error) => void;
-    const promiseA = new Promise<unknown>((_, rej) => {
-      rejectA = rej;
-    });
-    // promiseB never resolves — simulates still-loading second request
-    const promiseB = new Promise<unknown>(() => {});
-    mockLoadStarSystem
-      .mockReturnValueOnce(promiseA)
-      .mockReturnValueOnce(promiseB);
-
-    const { result } = renderHook(() =>
-      useSystemNavigation("sol", vi.fn(), vi.fn(), vi.fn(), vi.fn()),
-    );
-
-    act(() => result.current.handleSystemChange("alpha-centauri")); // gen = 1
-    act(() => result.current.handleSystemChange("betelgeuse")); // gen = 2
-
-    await act(async () => {
-      rejectA(new Error("stale rejection")); // gen=1, loadGenRef=2 → should NOT clear loadingSystem
-    });
-    expect(result.current.loadingSystem).toBe(true); // still loading B
-  });
-
-  it("handleExploreSystem for a different system triggers handleSystemChange", async () => {
+  it("handleExploreSystem for a different system triggers handleSystemChange", () => {
     const fakeSystem = makeFakeSystem("proxima", "proxima-star");
-    mockLoadStarSystem.mockResolvedValueOnce(fakeSystem);
+    mockLoadStarSystem.mockReturnValueOnce(fakeSystem);
     const setSystemData = vi.fn();
     const { result } = renderHook(() =>
       useSystemNavigation("sol", setSystemData, vi.fn(), vi.fn(), vi.fn()),
     );
-    await act(async () => {
-      result.current.handleExploreSystem("proxima");
-    });
+    act(() => result.current.handleExploreSystem("proxima"));
     expect(setSystemData).toHaveBeenCalledWith(fakeSystem);
   });
 });

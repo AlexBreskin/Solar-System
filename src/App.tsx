@@ -81,14 +81,13 @@ export default function App(): JSX.Element {
     handleViewPlanet,
   } = useBodySelection(activeTab, systemData.bodies);
 
-  const { loadingSystem, handleSystemChange, handleExploreSystem } =
-    useSystemNavigation(
-      systemData.id,
-      setSystemData,
-      galaxy.selectSystem,
-      setActiveTab,
-      resetForNewSystem,
-    );
+  const { handleSystemChange, handleExploreSystem } = useSystemNavigation(
+    systemData.id,
+    setSystemData,
+    galaxy.selectSystem,
+    setActiveTab,
+    resetForNewSystem,
+  );
 
   // Close left panel after selecting a body on mobile
   const handleSelectBody = useCallback(
@@ -166,7 +165,6 @@ export default function App(): JSX.Element {
                 className="system-select"
                 value={systemData.id}
                 onChange={(e) => handleSystemChange(e.target.value)}
-                disabled={loadingSystem}
                 title="Switch star system"
               >
                 {navigableSystems.map((s) => (
@@ -175,7 +173,6 @@ export default function App(): JSX.Element {
                   </option>
                 ))}
               </select>
-              {loadingSystem && <span className="system-loading">…</span>}
             </div>
 
             <div className="tab-bar">

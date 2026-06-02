@@ -376,8 +376,8 @@ describe("assembleStarSystem", () => {
 // ─── loadStarSystem ───────────────────────────────────────────────────────────
 
 describe("loadStarSystem", () => {
-  it("loads the Sol system with correct shape", async () => {
-    const system = await loadStarSystem("sol");
+  it("loads the Sol system with correct shape", () => {
+    const system = loadStarSystem("sol");
     expect(system.id).toBe("sol");
     expect(system.meta.name).toBe("Solar System");
     expect(typeof system.bodies).toBe("object");
@@ -386,8 +386,8 @@ describe("loadStarSystem", () => {
     expect(system.hierarchy.length).toBeGreaterThan(0);
   });
 
-  it("throws for an unknown system id", async () => {
-    await expect(loadStarSystem("no-such-system")).rejects.toThrow(
+  it("throws for an unknown system id", () => {
+    expect(() => loadStarSystem("no-such-system")).toThrow(
       "Unknown system: no-such-system",
     );
   });
