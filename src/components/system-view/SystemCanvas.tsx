@@ -293,13 +293,14 @@ export default function SystemCanvas({
     const { w, h } = sizeRef.current;
     const cx = w / 2;
     const cy = h / 2;
-    const mx = drag.pinchCenterX;
-    const my = drag.pinchCenterY;
+    // Keep the start-midpoint world position anchored under the current finger midpoint.
+    const curMx = (p1.x + p2.x) / 2;
+    const curMy = (p1.y + p2.y) / 2;
     const ratio = newZoom / drag.pinchStartZoom;
     panRef.current.targetPanX =
-      mx - ratio * (mx - (cx + drag.pinchStartPanX)) - cx;
+      curMx - ratio * (drag.pinchCenterX - (cx + drag.pinchStartPanX)) - cx;
     panRef.current.targetPanY =
-      my - ratio * (my - (cy + drag.pinchStartPanY)) - cy;
+      curMy - ratio * (drag.pinchCenterY - (cy + drag.pinchStartPanY)) - cy;
     panRef.current.targetZoom = newZoom;
   }, []);
 
@@ -393,17 +394,21 @@ export default function SystemCanvas({
       onSelectBody(hit);
       if (bodies[hit]?.type === "belt") {
         zoomToBelt(hit);
-      } else if (
-        panRef.current.targetZoom < 1.5 &&
-        !ROOT_BODY_TYPES.has(bodies[hit]?.type as BodyType)
-      ) {
-        panRef.current.targetZoom = Math.min(
-          2.5,
-          panRef.current.targetZoom * 1.8,
-        );
+      } else if (!ROOT_BODY_TYPES.has(bodies[hit]?.type as BodyType)) {
+        const pos = sim.positions[hit];
+        const { w, h } = sizeRef.current;
+        const cx = w / 2;
+        const cy = h / 2;
+        const newZoom =
+          panRef.current.targetZoom < 1.5
+            ? Math.min(2.5, panRef.current.targetZoom * 1.8)
+            : panRef.current.targetZoom;
+        panRef.current.targetZoom = newZoom;
+        panRef.current.targetPanX = (cx - pos.x) * newZoom;
+        panRef.current.targetPanY = (cy - pos.y) * newZoom;
       }
     },
-    [getBodyAtPoint, onSelectBody, zoomToBelt, bodies],
+    [getBodyAtPoint, onSelectBody, zoomToBelt, bodies, sim],
   );
 
   const handlePointerUp = useCallback(

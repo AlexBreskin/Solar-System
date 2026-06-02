@@ -87,11 +87,12 @@ export default function App(): JSX.Element {
     resetForNewSystem,
   );
 
-  // Close left panel after selecting a body on mobile
+  // On mobile: close the left drawer and open the right drawer so body details are immediately visible
   const handleSelectBody = useCallback(
     (id: BodyId) => {
       selectBody(id);
       setLeftOpen(false);
+      setRightOpen(true);
     },
     [selectBody],
   );
