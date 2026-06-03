@@ -45,6 +45,41 @@ interface BodyNavigatorProps {
   onSelectSystem: () => void;
 }
 
+function navRowClass(
+  isSelected: boolean,
+  isViewed: boolean,
+  isHovered: boolean,
+): string {
+  let cls = "nav-row";
+  if (isSelected) cls += " selected";
+  else if (isViewed) cls += " pv-viewed";
+  if (isHovered) cls += " hovered";
+  return cls;
+}
+
+function ExpandButton({
+  open,
+  nodeId,
+  onToggle,
+}: {
+  open: boolean;
+  nodeId: string;
+  onToggle: (id: string) => void;
+}): JSX.Element {
+  return (
+    <button
+      className={`expand-btn${open ? " open" : ""}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        onToggle(nodeId);
+      }}
+      aria-label={open ? "Collapse" : "Expand"}
+    >
+      ›
+    </button>
+  );
+}
+
 interface NodeProps {
   node: HierarchyNode;
   depth: number;
@@ -101,10 +136,11 @@ function NavigatorNode({
     }
   };
 
+  const isHighlighted = isSelected || isViewed;
   return (
     <div className="nav-node">
       <div
-        className={`nav-row${isSelected ? " selected" : ""}${!isSelected && isViewed ? " pv-viewed" : ""}${isHovered ? " hovered" : ""}`}
+        className={navRowClass(isSelected, isViewed, isHovered)}
         style={{ paddingLeft: 28 + depth * 16 }}
         data-body-id={node.id}
         onClick={handleClick}
@@ -112,16 +148,7 @@ function NavigatorNode({
         onMouseLeave={() => onHoverBody(null)}
       >
         {hasChildren ? (
-          <button
-            className={`expand-btn${open ? " open" : ""}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle(node.id);
-            }}
-            aria-label={open ? "Collapse" : "Expand"}
-          >
-            ›
-          </button>
+          <ExpandButton open={open} nodeId={node.id} onToggle={onToggle} />
         ) : (
           <span className="expand-spacer" />
         )}
@@ -129,8 +156,7 @@ function NavigatorNode({
           className="body-dot"
           style={{
             background: body.color,
-            boxShadow:
-              isSelected || isViewed ? `0 0 6px ${body.color}` : "none",
+            boxShadow: isHighlighted ? `0 0 6px ${body.color}` : "none",
           }}
         />
         <span className="body-icon" title={TYPE_LABELS[body.type]}>

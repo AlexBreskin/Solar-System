@@ -1,7 +1,13 @@
 import { useStarSystem } from "@/shared/contexts/StarSystemContext";
 import { BodyType, ROOT_BODY_TYPES } from "@/types";
-import type { InfoPanelProps, StatRowProps } from "@/types";
+import type {
+  CelestialBody,
+  InfoPanelProps,
+  StarSystemMeta,
+  StatRowProps,
+} from "@/types";
 import { auToKm, formatAU, formatKm, formatLY, lyToAU } from "@/utils/distance";
+import { ExternalLink, PanelLinks } from "@/shared/components/ExternalLink";
 import "./InfoPanel.css";
 import { JSX } from "react";
 
@@ -49,6 +55,76 @@ function formatDiameter(km: number): string {
   return `${km.toLocaleString()} km`;
 }
 
+function ParentLabel({
+  body,
+  bodies,
+}: {
+  body: CelestialBody;
+  bodies: Record<string, CelestialBody>;
+}): JSX.Element | null {
+  if (!body.parent) return null;
+  return (
+    <div className="info-parent">
+      Orbiting <span>{bodies[body.parent]?.name ?? body.parent}</span>
+    </div>
+  );
+}
+
+function OrbitalSection({ body }: { body: CelestialBody }): JSX.Element {
+  const isRetrograde = body.rotationPeriod < 0;
+  return (
+    <div className="info-section">
+      <div className="info-section-title">Orbital</div>
+      <StatRow
+        label="Distance"
+        value={formatAU(body.distanceFromParent)}
+        title={
+          body.distanceFromParent
+            ? formatKm(auToKm(body.distanceFromParent))
+            : undefined
+        }
+      />
+      <StatRow
+        label="Orbital Period"
+        value={formatPeriod(body.orbitalPeriod)}
+      />
+      <StatRow
+        label="Rotation Period"
+        value={formatPeriod(body.rotationPeriod)}
+      />
+      <StatRow label="Eccentricity" value={body.eccentricity?.toFixed(3)} />
+      <StatRow
+        label="Inclination"
+        value={body.inclination != null ? `${body.inclination}°` : null}
+      />
+      {isRetrograde && (
+        <div className="retrograde-tag">⟲ Retrograde rotation</div>
+      )}
+    </div>
+  );
+}
+
+function LocationSection({
+  body,
+  meta,
+}: {
+  body: CelestialBody;
+  meta: StarSystemMeta;
+}): JSX.Element | null {
+  if (!ROOT_BODY_TYPES.has(body.type)) return null;
+  if (meta.distanceFromEarth == null) return null;
+  return (
+    <div className="info-section">
+      <div className="info-section-title">Location</div>
+      <StatRow
+        label="Distance from Earth"
+        value={formatLY(meta.distanceFromEarth)}
+        title={formatAU(lyToAU(meta.distanceFromEarth))}
+      />
+    </div>
+  );
+}
+
 export default function InfoPanel({
   selectedBody,
 }: InfoPanelProps): JSX.Element {
@@ -56,7 +132,6 @@ export default function InfoPanel({
   const body = bodies[selectedBody];
   if (!body) return <div className="info-panel empty">Select a body</div>;
 
-  const isRetrograde = body.rotationPeriod < 0;
   const bodyType = body.type as BodyType;
 
   return (
@@ -80,11 +155,7 @@ export default function InfoPanel({
         </div>
       </div>
 
-      {body.parent && (
-        <div className="info-parent">
-          Orbiting <span>{bodies[body.parent]?.name ?? body.parent}</span>
-        </div>
-      )}
+      <ParentLabel body={body} bodies={bodies} />
 
       <p className="info-description">{body.description}</p>
 
@@ -96,45 +167,9 @@ export default function InfoPanel({
         {body.moons > 0 && <StatRow label="Known Moons" value={body.moons} />}
       </div>
 
-      <div className="info-section">
-        <div className="info-section-title">Orbital</div>
-        <StatRow
-          label="Distance"
-          value={formatAU(body.distanceFromParent)}
-          title={
-            body.distanceFromParent
-              ? formatKm(auToKm(body.distanceFromParent))
-              : undefined
-          }
-        />
-        <StatRow
-          label="Orbital Period"
-          value={formatPeriod(body.orbitalPeriod)}
-        />
-        <StatRow
-          label="Rotation Period"
-          value={formatPeriod(body.rotationPeriod)}
-        />
-        <StatRow label="Eccentricity" value={body.eccentricity?.toFixed(3)} />
-        <StatRow
-          label="Inclination"
-          value={body.inclination != null ? `${body.inclination}°` : null}
-        />
-        {isRetrograde && (
-          <div className="retrograde-tag">⟲ Retrograde rotation</div>
-        )}
-      </div>
+      <OrbitalSection body={body} />
 
-      {ROOT_BODY_TYPES.has(body.type) && meta.distanceFromEarth != null && (
-        <div className="info-section">
-          <div className="info-section-title">Location</div>
-          <StatRow
-            label="Distance from Earth"
-            value={formatLY(meta.distanceFromEarth)}
-            title={formatAU(lyToAU(meta.distanceFromEarth))}
-          />
-        </div>
-      )}
+      <LocationSection body={body} meta={meta} />
 
       {body.atmosphere && (
         <div className="info-section">
@@ -150,74 +185,7 @@ export default function InfoPanel({
 
       <div className="info-section">
         <div className="info-section-title">Learn More</div>
-        {!body.nasaUrl && !body.wikipediaUrl ? (
-          <div className="links-unavailable">
-            No publicly available information
-          </div>
-        ) : (
-          <div className="links-list">
-            {body.nasaUrl ? (
-              <a
-                className="ext-link ext-link-active"
-                href={body.nasaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="ext-badge nasa-badge">NASA</span>
-                <span className="ext-link-label">NASA</span>
-                <svg
-                  className="ext-arrow"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 8L8 2M8 2H4M8 2V6"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-            ) : (
-              <span className="ext-link ext-link-none">
-                <span className="ext-badge nasa-badge">NASA</span>
-                <span className="ext-link-label">Not available</span>
-              </span>
-            )}
-            {body.wikipediaUrl ? (
-              <a
-                className="ext-link ext-link-active"
-                href={body.wikipediaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="ext-badge wiki-badge">W</span>
-                <span className="ext-link-label">Wikipedia</span>
-                <svg
-                  className="ext-arrow"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 8L8 2M8 2H4M8 2V6"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-            ) : (
-              <span className="ext-link ext-link-none">
-                <span className="ext-badge wiki-badge">W</span>
-                <span className="ext-link-label">Not available</span>
-              </span>
-            )}
-          </div>
-        )}
+        <PanelLinks nasaUrl={body.nasaUrl} wikipediaUrl={body.wikipediaUrl} />
       </div>
     </div>
   );

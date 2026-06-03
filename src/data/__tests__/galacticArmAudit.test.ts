@@ -62,6 +62,7 @@ function computeNearestArm(
 // Audit types
 // ---------------------------------------------------------------------------
 type Status = "✅" | "⚠️" | "❌" | "—";
+type SystemEntry = (typeof GALAXY_DATA.systems)[number];
 
 interface AuditRow {
   id: string;
@@ -74,6 +75,60 @@ interface AuditRow {
   status: Status;
 }
 
+function classifySystemEntry(
+  entry: SystemEntry,
+  regionById: Map<string, GalaxyRegion>,
+  regions: GalaxyRegion[],
+): AuditRow {
+  const { id, galacticX: px, galacticY: py } = entry;
+  const hint: string = entry.galacticArmHint ?? "none";
+
+  if (hint === "halo") {
+    return {
+      id,
+      hint,
+      computed: "halo (exempt)",
+      insideComputed: false,
+      insideStated: false,
+      distToStated: NaN,
+      distToComputed: NaN,
+      status: "—",
+    };
+  }
+
+  const { id: computedId, dist: distToComputed } = computeNearestArm(
+    px,
+    py,
+    regions,
+  );
+  const statedRegion = regionById.get(hint);
+  const distToStated = statedRegion?.shape
+    ? signedDistToShape(px, py, statedRegion.shape)
+    : Infinity;
+  const insideComputed = distToComputed < 0;
+  const insideStated = distToStated < 0;
+
+  let status: Status;
+  if (computedId === hint) {
+    status = "✅";
+  } else if (insideComputed) {
+    status = "❌";
+  } else {
+    status = "⚠️";
+  }
+
+  return {
+    id,
+    hint,
+    computed: computedId,
+    insideComputed,
+    insideStated,
+    distToStated: Math.round(distToStated),
+    distToComputed: Math.round(distToComputed),
+    status,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Test
 // ---------------------------------------------------------------------------
@@ -84,63 +139,9 @@ describe("Galactic arm assignment audit", () => {
     () => {
       const { systems, regions } = GALAXY_DATA;
       const regionById = new Map(regions.map((r) => [r.id, r]));
-      const rows: AuditRow[] = [];
-
-      for (const entry of systems) {
-        const { id, galacticX: px, galacticY: py } = entry;
-        const hint = entry.galacticArmHint ?? "none";
-
-        // Halo has no 2-D shape — exempt from geometry check.
-        if (hint === "halo") {
-          rows.push({
-            id,
-            hint,
-            computed: "halo (exempt)",
-            insideComputed: false,
-            insideStated: false,
-            distToStated: NaN,
-            distToComputed: NaN,
-            status: "—",
-          });
-          continue;
-        }
-
-        const { id: computedId, dist: distToComputed } = computeNearestArm(
-          px,
-          py,
-          regions,
-        );
-
-        const statedRegion = regionById.get(hint);
-        const distToStated = statedRegion?.shape
-          ? signedDistToShape(px, py, statedRegion.shape)
-          : Infinity;
-
-        const insideComputed = distToComputed < 0;
-        const insideStated = distToStated < 0;
-
-        let status: Status;
-        if (computedId === hint) {
-          status = "✅";
-        } else if (insideComputed) {
-          // Geometry places this system clearly inside a different arm's shape.
-          status = "❌";
-        } else {
-          // Outside all shapes; nearest ≠ stated — human judgement needed.
-          status = "⚠️";
-        }
-
-        rows.push({
-          id,
-          hint,
-          computed: computedId,
-          insideComputed,
-          insideStated,
-          distToStated: Math.round(distToStated),
-          distToComputed: Math.round(distToComputed),
-          status,
-        });
-      }
+      const rows = systems.map((entry) =>
+        classifySystemEntry(entry, regionById, regions),
+      );
 
       // -------------------------------------------------------------------
       // Print the full audit table

@@ -11,7 +11,29 @@ import {
 } from "@/renderers/system-view";
 import { useStarSystem } from "@/shared/contexts/StarSystemContext";
 import { BodyType, ROOT_BODY_TYPES } from "@/types";
-import type { CanvasSize, SystemCanvasProps } from "@/types";
+import type { BeltConfig, CanvasSize, SystemCanvasProps } from "@/types";
+
+function hitTestBelts(
+  wx: number,
+  wy: number,
+  cx: number,
+  cy: number,
+  beltIds: string[],
+  beltConfigs: Record<string, BeltConfig>,
+): string | null {
+  const distFromCenter = Math.hypot(wx - cx, wy - cy);
+  for (const beltId of beltIds) {
+    const cfg = beltConfigs[beltId];
+    if (
+      cfg &&
+      distFromCenter >= cfg.innerRadius &&
+      distFromCenter <= cfg.outerRadius
+    ) {
+      return beltId;
+    }
+  }
+  return null;
+}
 
 interface PanState {
   panX: number;
@@ -261,20 +283,15 @@ export default function SystemCanvas({
           closestDist = dist;
         }
       }
-      if (!closest) {
-        const distFromCenter = Math.hypot(wx - cx, wy - cy);
-        for (const beltId of beltIds) {
-          const cfg = visualConfig.beltConfigs[beltId];
-          if (
-            cfg &&
-            distFromCenter >= cfg.innerRadius &&
-            distFromCenter <= cfg.outerRadius
-          ) {
-            closest = beltId;
-            break;
-          }
-        }
-      }
+      if (!closest)
+        closest = hitTestBelts(
+          wx,
+          wy,
+          cx,
+          cy,
+          beltIds,
+          visualConfig.beltConfigs,
+        );
       return closest;
     },
     [sim, bodies, visualConfig, beltIds],
