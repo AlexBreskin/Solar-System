@@ -8,7 +8,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  build:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,47 +27,13 @@ jobs:
 
       - run: npm run build
 
-  unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: jdx/mise-action@v4
-        with:
-          cache: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-
-      - run: npm ci
-
       - run: npm test
-
-  e2e-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: jdx/mise-action@v4
-        with:
-          cache: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-
-      - run: npm ci
 
       - name: Run Cypress
         run: npx start-server-and-test 'npm start' http://localhost:5173/Solar-System/ 'npm run cypress:run'
 
   auto-merge-dependabot:
-    needs: [build, unit-tests, e2e-tests]
+    needs: checks
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
