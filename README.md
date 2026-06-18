@@ -160,7 +160,7 @@ npm run cypress:run      # headless
 npm run cypress:open     # interactive UI
 ```
 
-The Cypress suite covers 8 feature areas: system selector, tab switching, body navigator, info panel, speed controls, galaxy view, zoom controls, and responsive layout (desktop/tablet/mobile/Galaxy S26 Ultra portrait+landscape). Screenshots of failures are saved to `cypress/screenshots/` automatically.
+The Cypress suite covers: system selector, tab switching, body navigator, info panel, speed controls, galaxy view, zoom controls, responsive layout (desktop/tablet/mobile/Galaxy S26 Ultra portrait+landscape), feature-set coverage for System View / Body View / Galaxy View (multi-body selection, moon navigation, search, constellations), a mobile drawer-interaction smoke test, canvas gestures (drag-to-pan, pinch-to-zoom, double-tap-to-track), and an automated accessibility audit ([cypress-axe](https://github.com/component-driven/cypress-axe)) run against every major view and the mobile drawer states. Screenshots of failures are saved to `cypress/screenshots/` automatically.
 
 A pre-commit hook (`.githooks/pre-commit`) runs `npm run lint` and `npm test` automatically before every commit. The hook path is wired up via `npm install` through the `prepare` script.
 
