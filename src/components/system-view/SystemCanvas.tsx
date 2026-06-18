@@ -540,7 +540,7 @@ export default function SystemCanvas({
           bottom: 16,
           left: 16,
           fontSize: 11,
-          color: "rgba(255,255,255,0.25)",
+          color: "rgba(255,255,255,0.5)",
           fontFamily: "Syne, sans-serif",
           pointerEvents: "none",
           lineHeight: 1.8,

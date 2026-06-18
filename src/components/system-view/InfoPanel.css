@@ -49,8 +49,15 @@
 }
 
 @keyframes sun-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.4; }
-  50% { transform: scale(1.15); opacity: 0.1; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.1;
+  }
 }
 
 .info-title-block {
@@ -112,7 +119,7 @@
   justify-content: space-between;
   align-items: baseline;
   padding: 5px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   gap: 12px;
 }
 
@@ -125,14 +132,14 @@
 .stat-value {
   font-size: 12px;
   color: var(--text-primary);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   text-align: right;
   word-break: break-word;
 }
 
 .retrograde-tag {
   font-size: 10px;
-  color: #E87A50;
+  color: #e87a50;
   background: rgba(232, 122, 80, 0.12);
   border: 1px solid rgba(232, 122, 80, 0.25);
   padding: 4px 8px;
@@ -190,10 +197,12 @@
   gap: 9px;
   padding: 7px 10px;
   border-radius: 7px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
   text-decoration: none;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .ext-link-active {
@@ -202,15 +211,14 @@
 }
 
 .ext-link-active:hover {
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(255,255,255,0.20);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
 
 .ext-link-none {
   color: var(--text-dim);
   cursor: default;
-  opacity: 0.55;
 }
 
 .ext-badge {
@@ -228,7 +236,7 @@
   background: #0b3d91;
   color: #ffffff;
   padding: 2px 5px;
-  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-family: "Arial Narrow", Arial, sans-serif;
 }
 
 .wiki-badge {
@@ -238,7 +246,7 @@
   height: 18px;
   font-size: 11px;
   font-weight: 700;
-  font-family: 'Linux Libertine', 'Georgia', serif;
+  font-family: "Linux Libertine", "Georgia", serif;
   border-radius: 50%;
 }
 

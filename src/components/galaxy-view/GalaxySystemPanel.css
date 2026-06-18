@@ -232,7 +232,6 @@
 .ext-link-none {
   color: var(--text-dim);
   cursor: default;
-  opacity: 0.55;
 }
 
 .ext-badge {
@@ -288,7 +287,7 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   color: #fff;
-  background: var(--accent, #4a90d9);
+  background: #2e6ab3;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -299,7 +298,7 @@
 }
 
 .gsp-explore-btn:hover {
-  background: var(--accent-hover, #5ba0e9);
+  background: #356fb8;
 }
 
 .gsp-explore-btn:active {

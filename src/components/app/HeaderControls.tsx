@@ -47,6 +47,7 @@ export default function HeaderControls({
               value={speed}
               onChange={(e) => onSpeedChange(parseFloat(e.target.value))}
               className="speed-slider"
+              aria-label="Playback speed"
             />
             <span className="speed-value">{speed.toFixed(1)}×</span>
           </div>

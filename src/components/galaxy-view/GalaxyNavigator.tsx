@@ -137,6 +137,11 @@ export default function GalaxyNavigator({
                 ? "Filter systems…"
                 : "Filter constellations…"
             }
+            aria-label={
+              activeTab === "systems"
+                ? "Filter systems"
+                : "Filter constellations"
+            }
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />

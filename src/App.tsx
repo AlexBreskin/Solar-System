@@ -143,6 +143,9 @@ export default function App(): JSX.Element {
     <StarSystemContext.Provider value={systemData}>
       <div className="app">
         <header className="app-header">
+          <h1 className="visually-hidden">
+            Star Systems — Interactive Solar System Explorer
+          </h1>
           {/* Mobile-only left toggle */}
           <button
             className="mobile-panel-toggle mobile-panel-toggle--left"
@@ -165,6 +168,7 @@ export default function App(): JSX.Element {
                 value={systemData.id}
                 onChange={(e) => handleSystemChange(e.target.value)}
                 title="Switch star system"
+                aria-label="Switch star system"
               >
                 {navigableSystems.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -248,7 +252,10 @@ export default function App(): JSX.Element {
             />
           )}
 
-          <aside className={drawerClass("left", leftOpen)}>
+          <aside
+            className={drawerClass("left", leftOpen)}
+            aria-label="Navigator"
+          >
             {isGalaxy ? (
               <GalaxyNavigator
                 selectedSystem={galaxy.selectedSystem}
@@ -303,7 +310,10 @@ export default function App(): JSX.Element {
             />
           </div>
 
-          <aside className={drawerClass("right", rightOpen)}>
+          <aside
+            className={drawerClass("right", rightOpen)}
+            aria-label="Details"
+          >
             <RightPanel
               isGalaxy={isGalaxy}
               showSystemPanel={showSystemPanel}

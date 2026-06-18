@@ -8,6 +8,15 @@
   padding: 0;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 :root {
   --bg-deep: #050812;
   --bg-panel: #0a0f1e;
@@ -18,8 +27,9 @@
   --border-bright: rgba(255, 255, 255, 0.15);
   --text-primary: #e8eaf0;
   --text-secondary: #8892aa;
-  --text-dim: #4a5266;
+  --text-dim: #8590ad;
   --accent: #4a90e2;
+  --accent-active-text: #7fb3ef;
   --accent-glow: rgba(74, 144, 226, 0.3);
   --gold: #e8b84b;
   --gold-dim: rgba(232, 184, 75, 0.2);
@@ -110,7 +120,7 @@ body {
 
 .ctrl-btn.active {
   background: var(--accent-glow);
-  color: var(--accent);
+  color: var(--accent-active-text);
   border-color: var(--accent);
 }
 

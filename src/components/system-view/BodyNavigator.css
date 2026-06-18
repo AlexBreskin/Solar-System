@@ -24,7 +24,7 @@
 }
 
 .nav-count {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 11px;
   color: var(--text-dim);
   background: var(--bg-panel-2);
@@ -38,7 +38,8 @@
   flex: 1;
 }
 
-.nav-node {}
+.nav-node {
+}
 
 .nav-row {
   display: flex;
@@ -62,7 +63,7 @@
 }
 
 .nav-row.selected::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -83,7 +84,9 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.15s, color 0.15s;
+  transition:
+    transform 0.15s,
+    color 0.15s;
   line-height: 1;
   padding: 0;
 }
@@ -136,7 +139,7 @@
 }
 
 .moon-count {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 9px;
   color: var(--text-dim);
   background: var(--bg-panel-2);
@@ -170,23 +173,16 @@
 /* Non-navigable parent (extragalactic host galaxy) */
 .pv-context-row {
   cursor: default;
-  opacity: 0.45;
 }
 
 /* Navigable galaxy row */
 .pv-galaxy-row {
   cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.15s, background 0.15s;
+  transition: background 0.15s;
 }
 
 .pv-galaxy-row:hover {
   background: var(--bg-hover);
-  opacity: 1;
-}
-
-.pv-galaxy-row.pv-system-active {
-  opacity: 1;
 }
 
 /* Clickable system row (sits between Galaxy and star list) */
@@ -201,7 +197,7 @@
 
 /* Currently-viewed planet (not selected) gets a gold left bar */
 .nav-row.pv-viewed::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
