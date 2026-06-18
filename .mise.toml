@@ -1,0 +1,17 @@
+[tools]
+node = "24"
+
+[tasks.build]
+run = "npm run build"
+
+[tasks.test]
+run = "npm test"
+
+[tasks.lint]
+run = "npm run lint"
+
+[tasks.check]
+run = "npm run check"
+
+[tasks.e2e]
+run = "npm run cypress:run"

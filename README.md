@@ -112,16 +112,33 @@ An interactive multi-system space simulator built with React, TypeScript, and HT
 
 ### Prerequisites
 
-- Node.js 24+ and npm
+- [mise](https://mise.jdx.dev) — manages the Node version for this project (see `.mise.toml`)
+- npm (bundled with the Node version mise installs)
 
 ### Install and run
 
 ```bash
+mise install   # installs the Node version pinned in .mise.toml
 npm install
 npm start
 ```
 
 Opens at `http://localhost:5173`.
+
+### Managing the Node version
+
+This project's Node version is pinned in [.mise.toml](.mise.toml), not in `package.json` or a `.nvmrc`. CI (`jdx/mise-action`) reads the same file, so local and CI environments always match.
+
+```bash
+mise current node        # show the version currently active for this project
+mise ls-remote node       # list all available Node versions
+mise use node@22          # pin a different major version (writes to .mise.toml)
+mise install               # install the version now pinned in .mise.toml
+```
+
+After changing `.mise.toml`, run `mise install` and then `npm run check` to confirm the project still builds and passes tests on the new version before committing.
+
+A scheduled workflow ([bump-node-version.yml](.github/workflows/bump-node-version.yml)) automatically checks for newer Node releases within the current major every Monday, runs the full test suite against the candidate version, and opens a PR only if everything passes. Major version bumps (e.g. 24 → 25) are intentionally left out of automation — bump those manually with `mise use node@<major>` once you're ready to test for breaking changes.
 
 ### Run tests
 

@@ -1,0 +1,65 @@
+name: Bump Node Version
+
+on:
+  schedule:
+    - cron: "0 2 * * 1" # every Monday at 02:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for a newer Node release in the same major
+        id: check
+        run: |
+          CURRENT=$(grep '^node = ' .mise.toml | sed 's/.*"\(.*\)".*/\1/')
+          MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+          LATEST=$(mise latest "node@$MAJOR")
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+          if [ "$LATEST" != "$CURRENT" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update .mise.toml
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          sed -i 's/^node = .*/node = "${{ steps.check.outputs.latest }}"/' .mise.toml
+          mise install
+
+      - name: Run full test suite
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          npm ci
+          npm run check
+          npm run build
+          npx start-server-and-test 'npm start' http://localhost:5173/Solar-System/ 'npm run cypress:run'
+
+      - name: Open PR with the bump
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="chore/node-${{ steps.check.outputs.latest }}"
+          git checkout -b "$BRANCH"
+          git add .mise.toml
+          git commit -m "chore: bump Node to ${{ steps.check.outputs.latest }}"
+          git push -u origin "$BRANCH"
+          gh pr create \
+            --title "chore: bump Node to ${{ steps.check.outputs.latest }}" \
+            --body "Automated Node version bump from ${{ steps.check.outputs.current }} to ${{ steps.check.outputs.latest }}. Full test suite (type-check, lint, unit tests, build, E2E) passed before this PR was opened." \
+            --label "dependencies"
