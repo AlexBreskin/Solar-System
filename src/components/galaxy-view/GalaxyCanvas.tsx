@@ -13,6 +13,8 @@ import {
   useGalaxyCanvasResize,
   useGalaxySyncRefs,
   useGalaxyZoomHandle,
+  GALAXY_MIN_ZOOM,
+  GALAXY_MAX_ZOOM,
   type PanState,
   type DragState,
   type LastBg,
@@ -136,7 +138,11 @@ export default function GalaxyCanvas({
     onSelectRegion,
   });
 
-  const { handleZoomIn, handleZoomOut } = useZoomControls(panRef, 0.1, 100);
+  const { handleZoomIn, handleZoomOut } = useZoomControls(
+    panRef,
+    GALAXY_MIN_ZOOM,
+    GALAXY_MAX_ZOOM,
+  );
 
   useGalaxyZoomHandle(ref, sim, panRef);
 

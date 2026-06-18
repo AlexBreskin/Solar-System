@@ -9,6 +9,8 @@ import type {
 export const GALAXY_SCALE = 0.01;
 export const INITIAL_ZOOM = 0.8;
 export const INITIAL_PAN_Y = (26000 / 2) * GALAXY_SCALE * INITIAL_ZOOM;
+export const GALAXY_MIN_ZOOM = 0.1;
+export const GALAXY_MAX_ZOOM = 2500;
 
 export interface PanState {
   panX: number;
@@ -133,8 +135,11 @@ export function useGalaxyPointerHandlers({
     const [p1, p2] = pointers;
     const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
     const newZoom = Math.max(
-      0.1,
-      Math.min(100, drag.pinchStartZoom * (dist / drag.pinchStartDist)),
+      GALAXY_MIN_ZOOM,
+      Math.min(
+        GALAXY_MAX_ZOOM,
+        drag.pinchStartZoom * (dist / drag.pinchStartDist),
+      ),
     );
     const { w, h } = sizeRef.current;
     const cx = w / 2;
@@ -334,8 +339,8 @@ export function useGalaxyPointerHandlers({
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
     const newZoom = Math.max(
-      0.1,
-      Math.min(100, pan.targetZoom * (e.deltaY > 0 ? 0.9 : 1.1)),
+      GALAXY_MIN_ZOOM,
+      Math.min(GALAXY_MAX_ZOOM, pan.targetZoom * (e.deltaY > 0 ? 0.9 : 1.1)),
     );
     const zoomRatio = newZoom / pan.targetZoom;
     pan.targetPanX = mx - zoomRatio * (mx - (cx + pan.targetPanX)) - cx;
