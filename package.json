@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "rollup": "^4.62.0"
+    "rollup": "^4.62.2"
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
