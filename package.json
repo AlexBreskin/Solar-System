@@ -20,7 +20,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/coverage-v8": "^4.1.9",
     "axe-core": "^4.12.1",
-    "cypress": "^15.17.0",
+    "cypress": "^15.18.0",
     "cypress-axe": "^1.7.0",
     "eslint": "^10.5.0",
     "eslint-plugin-check-file": "^3.3.1",
