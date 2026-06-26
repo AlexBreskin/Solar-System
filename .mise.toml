@@ -1,5 +1,5 @@
 [tools]
-node = "24"
+node = "24.17.0"
 
 [tasks.build]
 run = "npm run build"
